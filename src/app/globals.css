@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #FAFAFA;
+  --bg-elevated: rgba(255, 255, 254, 0.72);
+  --bg-canvas: #FFFFFF;
+  --surface: rgba(243, 242, 238, 0.6);
+  --surface-solid: #F3F2EE;
+  --border: rgba(232, 230, 225, 0.6);
+  --border-subtle: rgba(232, 230, 225, 0.3);
+  --text: #1A1919;
+  --text-secondary: #6B6966;
+  --text-tertiary: #9C9890;
+  --accent: #8B5CF6;
+  --accent-subtle: rgba(139, 92, 246, 0.08);
+  --pain: #FECACA;
+  --pain-border: #DC2626;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Liquid Glass Panel */
+.glass-panel {
+  background: var(--bg-elevated);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+/* Canvas dot pattern */
+.canvas-pattern {
+  background-image: radial-gradient(var(--border) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Swimlane */
+.swimlane {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-subtle);
+}
+
+/* Node base styles */
+.node {
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.node:hover {
+  transform: scale(1.02);
+}
+
+.node-manual {
+  background-color: #FFFFFF;
+  border: 1.5px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.node-manual:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.node-agent {
+  background-color: var(--accent-subtle);
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
+}
+
+.node-agent:hover {
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+}
+
+.node-pain {
+  background-color: var(--pain);
+  border: 1.5px solid var(--pain-border);
+  color: #991B1B;
+}
+
+.node-pain:hover {
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.15);
+}
+
+/* Bubble (collapsed panel) */
+.bubble {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bubble:hover {
+  transform: scale(1.08);
+}
+
+/* ReactFlow node selection - ocultar borde azul feo */
+.react-flow__node.selected {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.react-flow__node.selected > div {
+  outline: none !important;
+}
+
+/* Edge selection styles */
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: var(--accent) !important;
+  stroke-width: 3px !important;
+}
+
+.react-flow__edge:hover .react-flow__edge-path {
+  stroke: var(--text-secondary) !important;
+}
+
+/* Mermaid overrides */
+.mermaid {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.mermaid .node rect,
+.mermaid .node polygon {
+  rx: 6px;
+  ry: 6px;
+}
