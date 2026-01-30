@@ -8,6 +8,7 @@ import ReactFlow, {
   Node,
   Edge,
   Connection,
+  ConnectionMode,
   addEdge,
   useNodesState,
   useEdgesState,
@@ -517,7 +518,7 @@ function FlowCanvasInner() {
         snapGrid={[16, 16]}
         className="bg-bg"
         proOptions={{ hideAttribution: true }}
-        connectionMode="loose"
+        connectionMode={ConnectionMode.Loose}
         deleteKeyCode={['Backspace', 'Delete']}
         selectionKeyCode={null}
         edgesFocusable={true}
