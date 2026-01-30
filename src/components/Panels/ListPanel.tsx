@@ -1,20 +1,37 @@
 'use client'
 
+import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useUIStore } from '@/stores/ui'
-
-// Placeholder - will be expanded with actual project list
-const MOCK_PROJECTS = [
-  { id: '1', name: 'Onboarding Flow', type: 'flowchart' },
-  { id: '2', name: 'Data Model v2', type: 'erDiagram' },
-  { id: '3', name: 'Auth Sequence', type: 'sequenceDiagram' },
-]
+import { useAuthStore } from '@/stores/auth'
+import { usePersistenceStore } from '@/stores/persistence'
 
 export function ListPanel() {
   const { expandedPanel, closeAllPanels } = useUIStore()
+  const { user, openLoginModal } = useAuthStore()
+  const {
+    diagrams,
+    isLoadingDiagrams,
+    loadDiagrams,
+    currentDiagramId,
+    setCurrentDiagram
+  } = usePersistenceStore()
+
   const isExpanded = expandedPanel === 'list'
 
+  // Load diagrams when user is available and panel opens
+  useEffect(() => {
+    if (isExpanded && user) {
+      loadDiagrams(user.id)
+    }
+  }, [isExpanded, user, loadDiagrams])
+
   if (!isExpanded) return null
+
+  const handleSelectDiagram = (diagramId: string) => {
+    setCurrentDiagram(diagramId)
+    // TODO: Load diagram into canvas
+  }
 
   return (
     <motion.div
@@ -37,24 +54,53 @@ export function ListPanel() {
         </button>
       </div>
 
-      {/* Project list */}
-      <div className="p-2">
-        {MOCK_PROJECTS.map((project) => (
-          <button
-            key={project.id}
-            className="
-              w-full px-3 py-2 rounded-md
-              text-left text-sm
-              text-text-secondary hover:text-text
-              hover:bg-white/50
-              transition-colors duration-100
-              flex items-center gap-2
-            "
-          >
-            <span className="w-4 h-4 rounded bg-surface border border-border" />
-            <span className="truncate">{project.name}</span>
-          </button>
-        ))}
+      {/* Diagram list */}
+      <div className="p-2 max-h-80 overflow-y-auto">
+        {!user ? (
+          <div className="px-3 py-4 text-center">
+            <p className="text-sm text-text-tertiary mb-3">
+              Inicia sesión para guardar tus diagramas
+            </p>
+            <button
+              onClick={() => { closeAllPanels(); openLoginModal() }}
+              className="text-sm text-accent hover:underline"
+            >
+              Iniciar sesión
+            </button>
+          </div>
+        ) : isLoadingDiagrams ? (
+          <div className="px-3 py-4 text-sm text-text-tertiary text-center">
+            Cargando...
+          </div>
+        ) : diagrams.length === 0 ? (
+          <p className="px-3 py-4 text-sm text-text-tertiary text-center">
+            No hay diagramas guardados
+          </p>
+        ) : (
+          diagrams.map((diagram) => (
+            <button
+              key={diagram.id}
+              onClick={() => handleSelectDiagram(diagram.id)}
+              className={`
+                w-full px-3 py-2 rounded-md
+                text-left text-sm
+                transition-colors duration-100
+                flex items-center gap-2
+                ${currentDiagramId === diagram.id
+                  ? 'bg-accent/10 text-accent'
+                  : 'text-text-secondary hover:text-text hover:bg-white/50'
+                }
+              `}
+            >
+              <span
+                className={`w-2 h-2 rounded-full flex-shrink-0 ${
+                  currentDiagramId === diagram.id ? 'bg-accent' : 'bg-border'
+                }`}
+              />
+              <span className="truncate flex-1">{diagram.name}</span>
+            </button>
+          ))
+        )}
       </div>
     </motion.div>
   )

@@ -1,0 +1,20 @@
+'use client'
+
+import { useEffect } from 'react'
+import { useAuthStore } from '@/stores/auth'
+import { LoginModal } from './LoginModal'
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const initializeAuth = useAuthStore((state) => state.initializeAuth)
+
+  useEffect(() => {
+    initializeAuth()
+  }, [initializeAuth])
+
+  return (
+    <>
+      {children}
+      <LoginModal />
+    </>
+  )
+}
