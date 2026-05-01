@@ -1,88 +1,122 @@
-// Kitchen sponge holder that hooks over a faucet base.
-// Prints flat on the side wall (Y plane) so the loop closes correctly
-// and the layer lines run perpendicular to the load.
+// Sponge holder for kitchen faucet — 3D version
+// =================================================
+// Clip in the horizontal plane (axis = Z, parallel to the floor) pinches
+// a vertical element of the faucet. A horizontal arm leaves the clip and
+// then turns 90° down into a vertical drop, which feeds a U-shaped cradle
+// that holds the sponge vertically.
 //
-// All dimensions in millimetres.
+// Coordinates: Z is up. All dimensions are in millimetres.
 
 // ====== Parameters ======
-faucet_d        = 32;   // diameter of the faucet shaft the hook clips on
-strap_t         = 4;    // wall / strap thickness
-strap_w         = 28;   // strap width (depth, into the page)
-hook_wrap_deg   = 220;  // how far around the faucet the hook wraps (>180 = snap-on)
+wall_t          = 4;     // plastic wall thickness everywhere
 
-descent_h       = 30;   // vertical drop from end of hook to the cradle arm
-arm_l           = 50;   // horizontal arm from descent to cradle back
-cradle_back_h   = 80;   // cradle back wall (vertical, where sponge sits)
-cradle_bottom_l = 55;   // cradle bottom (horizontal)
-cradle_front_h  = 37;   // cradle front lip (vertical, holds sponge in)
+// Clip
+clip_inner_d    = 18;    // < 20 mm so it pinches
+clip_height     = 18;    // along Z (axis of the ring)
+clip_wrap_deg   = 280;   // > 180 → snap-on
+clip_overlap    = 0.6;
 
-corner_r        = 4;    // small fillet radius at sharp bends
-$fn             = 96;
+// Horizontal arm
+arm_len         = 30;
+arm_width_y     = 18;
+
+// Vertical drop (the 90° turn)
+drop_len        = 22;
+
+// Cradle (U opening upward)
+cradle_width_y  = 30;
+cradle_back_h   = 80;
+cradle_bot_len  = 32;
+cradle_front_h  = 37;
+
+$fn = 96;
 
 // ====== Build ======
-linear_extrude(height = strap_w, center = true, convexity = 6)
-    holder_profile();
-
-module holder_profile() {
-    R_inner = faucet_d / 2;
-    R_outer = R_inner + strap_t;
-
-    // Centerline radius for the hook
-    R_c     = R_inner + strap_t / 2;
-
-    // Hook arc endpoints (so wrap > 180 produces a snap-on clip)
-    extra   = (hook_wrap_deg - 180) / 2;          // beyond the equator, both sides
-    a_back  = 180 + extra;                        // back-bottom start
-    a_front = -extra;                             // front-bottom end
-    p_hook_end = [R_c * cos(a_front), R_c * sin(a_front)];
-
-    // Key centerline points after hook
-    p1 = p_hook_end;
-    p2 = [p1[0],            p1[1] - descent_h];
-    p3 = [p2[0] + arm_l,    p2[1]];
-    p4 = [p3[0],            p3[1] - cradle_back_h];
-    p5 = [p4[0] + cradle_bottom_l, p4[1]];
-    p6 = [p5[0],            p5[1] + cradle_front_h];
-
-    // Slightly rounded outer outline by offset() trick:
-    // build the medial polyline as a thin ribbon, then inflate by strap_t/2
-    offset(r = strap_t / 2 + corner_r) offset(r = -corner_r)
-    union() {
-        // --- Hook ring (open ring since wrap < 360) ---
-        hook_ring(R_inner = R_inner, R_outer = R_outer,
-                  a_start = a_back, a_end = a_front);
-
-        // --- Straps as thick segments ---
-        thick_segment(p1, p2);
-        thick_segment(p2, p3);
-        thick_segment(p3, p4);
-        thick_segment(p4, p5);
-        thick_segment(p5, p6);
-    }
+union() {
+    clip();
+    arm();
+    drop();
+    cradle();
 }
 
-// Open ring sweeping CCW from a_start down to a_end (a_start > a_end)
-module hook_ring(R_inner, R_outer, a_start, a_end) {
-    // build by intersection of an annulus with a "wedge" polygon
-    intersection() {
+// ---- Clip: partial cylinder, axis Z, mouth opens on +X ----
+module clip() {
+    r_in  = clip_inner_d / 2;
+    r_out = r_in + wall_t;
+    half_open = (360 - clip_wrap_deg) / 2;
+
+    translate([0, 0, -clip_height / 2])
+    linear_extrude(height = clip_height)
         difference() {
-            circle(r = R_outer);
-            circle(r = R_inner);
+            // ring
+            difference() {
+                circle(r = r_out);
+                circle(r = r_in);
+            }
+            // mouth: wedge that subtracts the +X opening
+            polygon(points = [
+                [0, 0],
+                [(r_out + 2) * cos(-half_open),
+                 (r_out + 2) * sin(-half_open)],
+                [(r_out + 2) * cos( half_open),
+                 (r_out + 2) * sin( half_open)],
+            ]);
         }
-        // wedge polygon covering angular sweep
-        polygon(points = concat(
-            [[0, 0]],
-            [for (a = [a_start : -2 : a_end]) [(R_outer + 2) * cos(a),
-                                               (R_outer + 2) * sin(a)]],
-            [[(R_outer + 2) * cos(a_end), (R_outer + 2) * sin(a_end)]]
-        ));
-    }
 }
 
-// Thick polygon between two 2D points, width = strap_t
-module thick_segment(a, b) {
-    hull() {
-        translate(a) circle(d = strap_t);
-        translate(b) circle(d = strap_t);
-    }
+// ---- Horizontal arm: -X side of clip ----
+module arm() {
+    r_out = clip_inner_d / 2 + wall_t;
+    x_start = -r_out + clip_overlap;
+    x_end   = -r_out - arm_len;
+    z_top   = clip_height / 2;
+    z_bot   = z_top - wall_t;
+    translate([(x_start + x_end) / 2, 0, (z_top + z_bot) / 2])
+        cube([abs(x_end - x_start), arm_width_y, wall_t], center = true);
+}
+
+// ---- Vertical drop ----
+module drop() {
+    r_out = clip_inner_d / 2 + wall_t;
+    x_arm_end = -r_out - arm_len;
+    z_arm_bot = clip_height / 2 - wall_t;
+    translate([
+        x_arm_end - wall_t / 2,
+        0,
+        z_arm_bot - drop_len / 2 + clip_overlap / 2,
+    ])
+        cube([wall_t, cradle_width_y, drop_len + clip_overlap], center = true);
+}
+
+// ---- Cradle ----
+module cradle() {
+    r_out = clip_inner_d / 2 + wall_t;
+    x_back = -r_out - arm_len - wall_t;
+    z_drop_bot = clip_height / 2 - wall_t - drop_len;
+
+    // back wall
+    translate([
+        x_back + wall_t / 2,
+        0,
+        z_drop_bot - cradle_back_h / 2 + clip_overlap / 2,
+    ])
+        cube([wall_t, cradle_width_y, cradle_back_h + clip_overlap], center = true);
+
+    // bottom
+    z_bottom_top = z_drop_bot - cradle_back_h;
+    translate([
+        x_back - cradle_bot_len / 2 + clip_overlap / 2,
+        0,
+        z_bottom_top - wall_t / 2,
+    ])
+        cube([cradle_bot_len + clip_overlap, cradle_width_y, wall_t], center = true);
+
+    // front lip
+    x_front = x_back - cradle_bot_len;
+    translate([
+        x_front + wall_t / 2,
+        0,
+        z_bottom_top - wall_t + cradle_front_h / 2 + clip_overlap / 2,
+    ])
+        cube([wall_t, cradle_width_y, cradle_front_h + clip_overlap], center = true);
 }

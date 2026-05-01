@@ -1,188 +1,203 @@
 #!/usr/bin/env python3
-"""Generate sponge_holder.stl by sweeping a rectangular cross-section
-along a 2D centerline (XZ plane) and extruding it in Y.
+"""Generate sponge_holder.stl as a true 3D model.
 
-The geometry follows the dimensions sketched on the photo:
-    50mm hook wrap, 57mm vertical span on faucet, 55mm cradle bottom,
-    37mm front lip, 80mm cradle back wall.
+Geometry overview (right-handed coords, Z = up):
+
+    Z
+    |    +---+
+    |    | C |  <- clip (axis = Z), wraps a vertical element of the faucet
+    |    +---+      (parallel to the floor: it lies in the horizontal plane)
+    |       \
+    |        \--- horizontal arm ----+
+    |                                 |
+    |                                 |  <- vertical drop (the "giro" of 90°)
+    |                                 |
+    |                  +--------------+   <- cradle back wall
+    |                  |                  (sponge stands here, vertically)
+    |                  |   sponge
+    |                  |     ^
+    |                  |     |
+    |                  +-----+   <- cradle bottom
+    |                        |
+    |                        +-- front lip
+    +----------------> X
+
+The clip pinches a faucet element of less than 20mm diameter; the cradle is
+wider than the clip so the sponge fits comfortably.
 
 Run:   python3 generate_stl.py
-Output: sponge_holder.stl  (binary)
+Output: sponge_holder.stl
 """
 
 from __future__ import annotations
 
-import os
 import math
 from pathlib import Path
 
 import numpy as np
-from stl import mesh as stl_mesh
+import trimesh
+from shapely.geometry import Polygon
 
+# ============================================================================
+# Parameters (mm) — all editable
+# ============================================================================
+WALL_T          = 4.0     # plastic wall thickness everywhere
 
-# ====== Parameters (mm) ======
-FAUCET_D        = 32.0   # faucet shaft diameter where the hook clips
-STRAP_T         = 4.0    # plastic thickness
-STRAP_W         = 28.0   # strap width (Y depth)
-HOOK_WRAP_DEG   = 220.0  # >180 makes it a snap-on clip
+# --- Clip (the "pinza", axis vertical, lies in the horizontal plane) ---
+CLIP_INNER_D    = 18.0    # < 20 mm so it pinches firmly. Measure your faucet.
+CLIP_HEIGHT     = 18.0    # how tall the clip ring is (along Z)
+CLIP_WRAP_DEG   = 280.0   # ring coverage (>180 → snap-on with pinch)
+CLIP_OVERLAP    = 0.6     # tiny overlap with the arm so booleans weld cleanly
 
-DESCENT_H       = 30.0   # vertical drop from hook end to cradle arm
-ARM_L           = 50.0   # horizontal arm from descent to cradle
-CRADLE_BACK_H   = 80.0   # cradle back wall (vertical)
-CRADLE_BOTTOM_L = 55.0   # cradle bottom (horizontal)
-CRADLE_FRONT_H  = 37.0   # cradle front lip (vertical, holds sponge in)
+# --- Horizontal arm (continues the clip's plane, parallel to floor) ---
+ARM_LEN         = 30.0    # how far the arm reaches before the 90° bend
+ARM_WIDTH_Y     = 18.0    # arm width along Y
 
-HOOK_STEPS      = 48
+# --- Vertical drop (the "giro": from horizontal to vertical) ---
+DROP_LEN        = 22.0
+
+# --- Cradle (U opening upward; sponge stands vertically inside it) ---
+CRADLE_WIDTH_Y  = 30.0    # wider than the clip — the sponge sits across this
+CRADLE_BACK_H   = 80.0    # back-wall height (vertical)
+CRADLE_BOT_LEN  = 32.0    # bottom length (≈ sponge thickness + walls)
+CRADLE_FRONT_H  = 37.0    # front lip — keeps the sponge from falling out
+
+ARC_SEG         = 96      # cylinder smoothness
 
 OUT_FILE = Path(__file__).with_name("sponge_holder.stl")
 
 
-# ---------- helpers ----------
-def arc(center, radius, a_start_deg, a_end_deg, steps):
-    cx, cz = center
-    out = []
-    for i in range(steps + 1):
-        t = i / steps
-        a = math.radians(a_start_deg + (a_end_deg - a_start_deg) * t)
-        out.append((cx + radius * math.cos(a), cz + radius * math.sin(a)))
-    return out
+# ============================================================================
+# Helpers
+# ============================================================================
+def partial_annulus(r_in: float, r_out: float,
+                    a_start_deg: float, a_end_deg: float,
+                    segments: int = ARC_SEG) -> Polygon:
+    """2D polygon: annulus arc going CCW from a_start_deg to a_end_deg."""
+    a0, a1 = math.radians(a_start_deg), math.radians(a_end_deg)
+    angles = np.linspace(a0, a1, segments)
+    outer = [(r_out * math.cos(a), r_out * math.sin(a)) for a in angles]
+    inner = [(r_in  * math.cos(a), r_in  * math.sin(a)) for a in angles[::-1]]
+    return Polygon(outer + inner)
 
 
-def build_centerline():
-    """Sharp-corner centerline. The miter offset at the corner gives the
-    outer rounding for free; sharp inside corners are intentional and act
-    as cradle-floor edges."""
-    pts = []
-
-    # 1. Hook arc around faucet (wrap > 180° for snap fit), CW from back to front
-    extra = (HOOK_WRAP_DEG - 180.0) / 2.0
-    a_back  = 180.0 + extra
-    a_front = -extra
-    R_c     = FAUCET_D / 2 + STRAP_T / 2
-    pts.extend(arc((0, 0), R_c, a_back, a_front, HOOK_STEPS))
-
-    # 2. Vertical descent (sharp corner)
-    last = pts[-1]
-    pts.append((last[0], last[1] - DESCENT_H))
-
-    # 3. Horizontal arm
-    last = pts[-1]
-    pts.append((last[0] + ARM_L, last[1]))
-
-    # 4. Cradle back wall (down)
-    last = pts[-1]
-    pts.append((last[0], last[1] - CRADLE_BACK_H))
-
-    # 5. Cradle bottom (right)
-    last = pts[-1]
-    pts.append((last[0] + CRADLE_BOTTOM_L, last[1]))
-
-    # 6. Front lip (up)
-    last = pts[-1]
-    pts.append((last[0], last[1] + CRADLE_FRONT_H))
-
-    # de-duplicate consecutive identical points
-    cleaned = [pts[0]]
-    for p in pts[1:]:
-        if (p[0] - cleaned[-1][0]) ** 2 + (p[1] - cleaned[-1][1]) ** 2 > 1e-8:
-            cleaned.append(p)
-    return cleaned
+def box(extents, center):
+    m = trimesh.creation.box(extents=list(extents))
+    m.apply_translation(list(center))
+    return m
 
 
-def offset_polyline(points, t):
-    """Compute miter-joined left/right offsets at distance t from centerline."""
-    pts = [np.array(p, dtype=float) for p in points]
-    n = len(pts)
-    # segment unit directions and outward (left) normals
-    dirs    = [pts[i + 1] - pts[i] for i in range(n - 1)]
-    dirs    = [d / np.linalg.norm(d) for d in dirs]
-    normals = [np.array([-d[1], d[0]]) for d in dirs]   # rotate +90°
-
-    left, right = [], []
-    for i in range(n):
-        if i == 0:
-            m = normals[0]
-        elif i == n - 1:
-            m = normals[-1]
-        else:
-            n1, n2 = normals[i - 1], normals[i]
-            denom = 1.0 + float(np.dot(n1, n2))
-            if denom < 1e-6:
-                m = n1
-            else:
-                m = (n1 + n2) / denom
-        left.append(pts[i] + t * m)
-        right.append(pts[i] - t * m)
-    return left, right
+# ============================================================================
+# Parts
+# ============================================================================
+def make_clip():
+    """Partial cylinder, axis along Z, mouth opens on +X side."""
+    r_in  = CLIP_INNER_D / 2
+    r_out = r_in + WALL_T
+    half_open = (360 - CLIP_WRAP_DEG) / 2
+    # arc goes CCW from +half_open all the way around to (360 - half_open)
+    poly = partial_annulus(r_in, r_out, half_open, 360 - half_open)
+    clip = trimesh.creation.extrude_polygon(poly, height=CLIP_HEIGHT)
+    # Default extrudes from z=0 upwards. Centre vertically on z=0:
+    clip.apply_translation([0, 0, -CLIP_HEIGHT / 2])
+    return clip
 
 
-def build_mesh(centerline):
-    left, right = offset_polyline(centerline, STRAP_T / 2)
-    n = len(centerline)
-    half_w = STRAP_W / 2
-
-    def v(p2d, y):
-        return [float(p2d[0]), float(y), float(p2d[1])]
-
-    triangles = []
-
-    # Top (+Y) and bottom (-Y) faces, segment by segment.
-    # Each segment forms a quad: left[i], left[i+1], right[i+1], right[i]
-    for i in range(n - 1):
-        L0, L1 = left[i],  left[i + 1]
-        R0, R1 = right[i], right[i + 1]
-        # Top face — outward normal +Y, CCW when viewed from +Y
-        triangles.append([v(L0, +half_w), v(R0, +half_w), v(R1, +half_w)])
-        triangles.append([v(L0, +half_w), v(R1, +half_w), v(L1, +half_w)])
-        # Bottom face — outward normal -Y, reversed winding
-        triangles.append([v(L0, -half_w), v(R1, -half_w), v(R0, -half_w)])
-        triangles.append([v(L0, -half_w), v(L1, -half_w), v(R1, -half_w)])
-
-    # Side walls along the LEFT polyline (outer edge of the strap on +normal side)
-    for i in range(n - 1):
-        A, B = left[i], left[i + 1]
-        # quad: A_top, B_top, B_bot, A_bot ; outward normal points +n direction
-        triangles.append([v(A, +half_w), v(B, -half_w), v(B, +half_w)])
-        triangles.append([v(A, +half_w), v(A, -half_w), v(B, -half_w)])
-
-    # Side walls along the RIGHT polyline (reverse winding)
-    for i in range(n - 1):
-        A, B = right[i], right[i + 1]
-        triangles.append([v(A, +half_w), v(B, +half_w), v(B, -half_w)])
-        triangles.append([v(A, +half_w), v(B, -half_w), v(A, -half_w)])
-
-    # End caps (start: between left[0] and right[0]; end: between left[-1] and right[-1])
-    L0, R0 = left[0], right[0]
-    LN, RN = left[-1], right[-1]
-    # start cap (pointing opposite to first tangent)
-    triangles.append([v(L0, -half_w), v(R0, -half_w), v(R0, +half_w)])
-    triangles.append([v(L0, -half_w), v(R0, +half_w), v(L0, +half_w)])
-    # end cap
-    triangles.append([v(LN, +half_w), v(RN, +half_w), v(RN, -half_w)])
-    triangles.append([v(LN, +half_w), v(RN, -half_w), v(LN, -half_w)])
-
-    return triangles
+def make_arm():
+    """Horizontal arm exits clip on -X side (opposite the mouth)."""
+    r_out = CLIP_INNER_D / 2 + WALL_T
+    # arm sits on top of the ring, lying flat
+    z_top = CLIP_HEIGHT / 2
+    z_bot = z_top - WALL_T
+    x_start = -r_out + CLIP_OVERLAP        # overlaps the ring
+    x_end   = -r_out - ARM_LEN
+    return box(
+        extents=[abs(x_end - x_start), ARM_WIDTH_Y, WALL_T],
+        center=[(x_start + x_end) / 2, 0, (z_top + z_bot) / 2],
+    )
 
 
-def write_stl(triangles, path):
-    data = np.zeros(len(triangles), dtype=stl_mesh.Mesh.dtype)
-    for i, tri in enumerate(triangles):
-        for j in range(3):
-            data["vectors"][i][j] = tri[j]
-    m = stl_mesh.Mesh(data)
-    m.save(str(path))
+def make_drop():
+    """Vertical drop strap from end of arm, widening to cradle width."""
+    r_out = CLIP_INNER_D / 2 + WALL_T
+    x_arm_end = -r_out - ARM_LEN
+    z_arm_bot = CLIP_HEIGHT / 2 - WALL_T
+    # the strap's +X face aligns with the arm end
+    return box(
+        extents=[WALL_T, CRADLE_WIDTH_Y, DROP_LEN + CLIP_OVERLAP],
+        center=[
+            x_arm_end - WALL_T / 2,
+            0,
+            z_arm_bot - DROP_LEN / 2 + CLIP_OVERLAP / 2,
+        ],
+    )
 
 
+def make_cradle():
+    """U-shape opening upward, sponge stands vertically inside."""
+    r_out = CLIP_INNER_D / 2 + WALL_T
+    x_back = -r_out - ARM_LEN - WALL_T          # outer face of drop / back wall
+    z_drop_bot = CLIP_HEIGHT / 2 - WALL_T - DROP_LEN
+
+    parts = []
+
+    # --- Back wall (vertical, continues the drop) ---
+    back = box(
+        extents=[WALL_T, CRADLE_WIDTH_Y, CRADLE_BACK_H + CLIP_OVERLAP],
+        center=[
+            x_back + WALL_T / 2,
+            0,
+            z_drop_bot - CRADLE_BACK_H / 2 + CLIP_OVERLAP / 2,
+        ],
+    )
+    parts.append(back)
+
+    # --- Bottom (horizontal, extends in -X direction) ---
+    z_bottom_top = z_drop_bot - CRADLE_BACK_H
+    bottom = box(
+        extents=[CRADLE_BOT_LEN + CLIP_OVERLAP, CRADLE_WIDTH_Y, WALL_T],
+        center=[
+            x_back - CRADLE_BOT_LEN / 2 + CLIP_OVERLAP / 2,
+            0,
+            z_bottom_top - WALL_T / 2,
+        ],
+    )
+    parts.append(bottom)
+
+    # --- Front lip (vertical, at -X end of bottom) ---
+    x_front = x_back - CRADLE_BOT_LEN
+    front = box(
+        extents=[WALL_T, CRADLE_WIDTH_Y, CRADLE_FRONT_H + CLIP_OVERLAP],
+        center=[
+            x_front + WALL_T / 2,
+            0,
+            z_bottom_top - WALL_T + CRADLE_FRONT_H / 2 + CLIP_OVERLAP / 2,
+        ],
+    )
+    parts.append(front)
+
+    return trimesh.util.concatenate(parts)
+
+
+# ============================================================================
+# Build & write
+# ============================================================================
 def main():
-    cl = build_centerline()
-    tris = build_mesh(cl)
-    write_stl(tris, OUT_FILE)
-    bb_min = np.min([t for tri in tris for t in tri], axis=0)
-    bb_max = np.max([t for tri in tris for t in tri], axis=0)
-    size = bb_max - bb_min
+    parts = [make_clip(), make_arm(), make_drop(), make_cradle()]
+    # Boolean union so the slicer sees a single closed shell.
+    holder = trimesh.boolean.union(parts, engine="manifold")
+    if not holder.is_volume:
+        # fallback: just concatenate (slicers usually still cope)
+        holder = trimesh.util.concatenate(parts)
+
+    holder.export(OUT_FILE)
+
+    bbox_min, bbox_max = holder.bounds
+    size = bbox_max - bbox_min
     print(f"Wrote {OUT_FILE}")
-    print(f"Triangles: {len(tris)}")
+    print(f"Triangles: {len(holder.faces)}")
     print(f"Bounding box (mm): X {size[0]:.1f}  Y {size[1]:.1f}  Z {size[2]:.1f}")
+    print(f"Volume:    {holder.volume / 1000:.1f} cm³  (manifold={holder.is_volume})")
 
 
 if __name__ == "__main__":
