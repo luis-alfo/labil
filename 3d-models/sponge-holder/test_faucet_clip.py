@@ -29,6 +29,7 @@ def main():
     clip.export(OUT)
     WEB.parent.mkdir(parents=True, exist_ok=True)
     clip.export(WEB)
+    g.update_web_version()
 
     bmin, bmax = clip.bounds
     size = bmax - bmin

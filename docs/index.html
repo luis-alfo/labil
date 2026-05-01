@@ -99,7 +99,7 @@
     <h2>Pieza completa</h2>
     <p>Abrazadera Ø 45 mm + brazo con fillet de 90° + pinza para esponja.</p>
     <model-viewer
-      src="models/sponge_holder.glb"
+      data-src="models/sponge_holder.glb"
       alt="Sponge holder pieza completa"
       auto-rotate
       camera-controls
@@ -120,7 +120,7 @@
     <h2>Test 1 — Abrazadera del grifo</h2>
     <p>MVP aislado para probar el agarre sobre el cilindro Ø 45 mm.</p>
     <model-viewer
-      src="models/test_faucet_clip.glb"
+      data-src="models/test_faucet_clip.glb"
       alt="Test abrazadera grifo"
       auto-rotate
       camera-controls
@@ -141,7 +141,7 @@
     <h2>Test 2 — Pinza para esponja</h2>
     <p>MVP aislado para probar el agarre sobre la esponja (gap 14 mm).</p>
     <model-viewer
-      src="models/test_sponge_clip.glb"
+      data-src="models/test_sponge_clip.glb"
       alt="Test pinza esponja"
       auto-rotate
       camera-controls
@@ -160,6 +160,27 @@
 
   <footer>
     Generado con <code>generate_stl.py</code> · regenerable con <code>python3 generate_stl.py</code>
+    <div id="version-tag" style="margin-top:0.4rem;opacity:0.7;"></div>
   </footer>
+
+  <script>
+    // Cache-buster: fetch the version stamp written by generate_stl.py and
+    // append it to every <model-viewer src> so mobile browsers reload the
+    // GLB whenever it actually changes.
+    (async () => {
+      let v;
+      try {
+        const r = await fetch("models/version.txt?_=" + Date.now(), { cache: "no-store" });
+        v = (await r.text()).trim();
+      } catch (_) {
+        v = String(Date.now());
+      }
+      document.querySelectorAll("model-viewer[data-src]").forEach(el => {
+        el.src = el.dataset.src + "?v=" + v;
+      });
+      const tag = document.getElementById("version-tag");
+      if (tag && v) tag.textContent = "build " + v;
+    })();
+  </script>
 </body>
 </html>

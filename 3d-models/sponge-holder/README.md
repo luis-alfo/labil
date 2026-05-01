@@ -35,32 +35,52 @@ openscad -o sponge_holder.stl sponge_holder.scad
 ## Ver en el móvil (GitHub Pages)
 
 `/docs/index.html` es una landing con [`<model-viewer>`](https://modelviewer.dev/)
-que enseña los tres modelos con auto-rotación, zoom y AR (en móvil
-Android/iOS). Cada `python3 generate_stl.py` actualiza los `.glb` que
-sirve esa página.
+que enseña los tres modelos con auto-rotación, zoom y AR (Android scene-viewer
+e iOS quick-look). El visor incluye cache-busting automático (lee
+`models/version.txt`) para que los móviles no muestren la versión cacheada
+después de un update.
 
-**Setup (una sola vez):**
+URL pública: **`https://luis-alfo.github.io/labil/`**
 
-1. En GitHub: `Settings → Pages`.
-2. Source: **Deploy from a branch**.
-3. Branch: `claude/3d-model-generation-IEA7l` (o `main` cuando hagas
-   merge), Folder: `/docs`.
-4. Save. La primera build tarda ~1 minuto.
+### Setup (una vez)
 
-URL pública: `https://luis-alfo.github.io/labil/`
+Hay dos modos. Elige **uno**:
 
-**Iteración:**
+#### Modo A — Recomendado: GitHub Actions regenera y despliega
 
+`.github/workflows/pages.yml` regenera los GLB en CI y despliega a Pages
+cada vez que tocas un `.py` o el HTML. **No tienes que ejecutar los
+scripts en local.**
+
+1. `Settings → Pages → Source`: **GitHub Actions**.
+2. Push cualquier cambio en `3d-models/**` o `docs/**`.
+3. ~1-2 min después la URL refleja los cambios.
+
+Iteración pura:
 ```
-# editar parámetros en generate_stl.py
+# edita parámetros en generate_stl.py
+git add -A && git commit -m "tweak: gap 12 mm" && git push
+# CI regenera + despliega; refresca la URL en el móvil
+```
+
+#### Modo B — Simple: deploy desde la rama
+
+Sin Actions. Tú regeneras los GLB en local antes de pushear.
+
+1. `Settings → Pages → Source`: **Deploy from a branch**.
+2. Branch: la que estés desarrollando, Folder: **`/docs`**.
+3. La primera build tarda ~1 minuto.
+
+Iteración:
+```
+# edita parámetros en generate_stl.py
 python3 generate_stl.py && python3 test_faucet_clip.py && python3 test_sponge_clip.py
-git add -A && git commit -m "tweak gap" && git push
-# esperar ~30 s y refrescar la URL en el móvil
+git add -A && git commit -m "tweak: gap 12 mm" && git push
+# ~30 s después la URL refleja el cambio
 ```
 
-> Si ya usabas GitHub Pages para otra cosa en este repo, sirve esta
-> página desde un subdirectorio (`/docs`) en vez de la raíz para no
-> pisar el sitio existente.
+> Si ya usabas Pages en este repo para otra cosa, ambos modos sirven
+> desde `/docs` así que no pisan la raíz.
 
 ## Flujo recomendado: probar antes de imprimir la pieza entera
 

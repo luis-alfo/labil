@@ -30,6 +30,7 @@ Output: sponge_holder.stl
 from __future__ import annotations
 
 import math
+import time
 from pathlib import Path
 
 import numpy as np
@@ -87,6 +88,13 @@ def box(extents, center):
     m = trimesh.creation.box(extents=list(extents))
     m.apply_translation(list(center))
     return m
+
+
+def update_web_version():
+    """Bump the cache-buster string read by docs/index.html so mobile
+    browsers fetch the freshly regenerated .glb instead of a cached copy."""
+    WEB_DIR.mkdir(parents=True, exist_ok=True)
+    (WEB_DIR / "version.txt").write_text(str(int(time.time())))
 
 
 # ============================================================================
@@ -197,6 +205,7 @@ def main():
     holder.export(OUT_FILE)
     WEB_DIR.mkdir(parents=True, exist_ok=True)
     holder.export(WEB_FILE)
+    update_web_version()
 
     bbox_min, bbox_max = holder.bounds
     size = bbox_max - bbox_min
