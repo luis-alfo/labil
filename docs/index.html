@@ -3,184 +3,354 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#111827">
+  <meta name="theme-color" content="#F5F1E8">
   <title>Sponge Holder — modelos 3D</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+
   <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+
   <style>
     :root {
-      --bg: #0f172a;
-      --card: #1e293b;
-      --text: #e2e8f0;
-      --muted: #94a3b8;
-      --accent: #38bdf8;
-      --border: #334155;
+      --bg:        #F5F1E8;
+      --bg-soft:   #EFE7D2;
+      --bg-canvas: #E8DEC4;
+      --text:      #2D2926;
+      --muted:     #786D60;
+      --accent:    #C2410C;
+      --border:    #DCD0B5;
+      --nav-h:     58px;
     }
-    * { box-sizing: border-box; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
     html, body {
-      margin: 0;
-      padding: 0;
+      height: 100%;
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: 'Source Serif 4', ui-serif, 'Iowan Old Style', Georgia, serif;
+      font-size: 17px;
+      line-height: 1.5;
       -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
+
     body {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 1rem 1rem env(safe-area-inset-bottom, 1rem);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;  /* main scrolls instead */
     }
-    header {
-      padding: 1rem 0 1.5rem;
+
+    /* ---- Sticky top nav ---- */
+    .top {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      height: var(--nav-h);
+      background: rgba(245, 241, 232, 0.82);
+      backdrop-filter: saturate(140%) blur(14px);
+      -webkit-backdrop-filter: saturate(140%) blur(14px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.25rem;
+      flex-shrink: 0;
     }
-    h1 { font-size: 1.4rem; margin: 0 0 0.25rem; }
-    header p { margin: 0; color: var(--muted); font-size: 0.95rem; }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1rem;
-      margin-bottom: 1.25rem;
+
+    .brand {
+      font-weight: 600;
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
     }
-    .card h2 {
-      margin: 0 0 0.5rem;
-      font-size: 1.1rem;
-    }
-    .card p {
-      margin: 0 0 0.75rem;
+    .brand-sub {
       color: var(--muted);
-      font-size: 0.9rem;
+      font-weight: 400;
+      font-style: italic;
+      margin-left: 0.4em;
     }
+
+    .tabs {
+      display: flex;
+      gap: 0.15rem;
+    }
+    .tabs a {
+      font-family: inherit;
+      font-size: 0.92rem;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 0.4rem 0.85rem;
+      border-radius: 999px;
+      transition: color 0.18s ease, background-color 0.18s ease;
+      letter-spacing: 0.005em;
+    }
+    .tabs a:hover {
+      color: var(--text);
+      background: rgba(220, 208, 181, 0.5);
+    }
+    .tabs a.active {
+      color: var(--accent);
+      background: rgba(194, 65, 12, 0.08);
+    }
+
+    /* ---- Scroll-snap container ---- */
+    main {
+      flex: 1;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    section {
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      min-height: calc(100dvh - var(--nav-h));
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 1.5rem 1.25rem 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    section:last-of-type { border-bottom: none; }
+
+    .section-inner {
+      width: 100%;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    section h2 {
+      font-weight: 600;
+      font-size: 1.7rem;
+      letter-spacing: -0.015em;
+      margin-bottom: 0.35rem;
+      line-height: 1.15;
+    }
+    .lede {
+      color: var(--muted);
+      font-size: 0.98rem;
+      margin-bottom: 1.1rem;
+      max-width: 50ch;
+    }
+
     model-viewer {
       width: 100%;
-      height: 360px;
-      background: #0b1220;
-      border-radius: 8px;
+      height: 48vh;
+      max-height: 520px;
+      background: var(--bg-canvas);
+      border: 1px solid var(--border);
+      border-radius: 14px;
       --poster-color: transparent;
     }
     @media (max-width: 480px) {
-      model-viewer { height: 300px; }
+      model-viewer { height: 42vh; }
     }
-    dl {
+
+    .meta {
       display: grid;
       grid-template-columns: max-content 1fr;
-      gap: 0.25rem 1rem;
-      margin: 0.75rem 0 0;
-      font-size: 0.85rem;
+      gap: 0.35rem 1.25rem;
+      margin-top: 1.1rem;
+      font-size: 0.92rem;
     }
-    dt { color: var(--muted); font-weight: 500; }
-    dd { margin: 0; }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    footer {
-      padding: 1rem 0 2rem;
+    .meta dt {
       color: var(--muted);
-      font-size: 0.8rem;
-      text-align: center;
+      font-weight: 400;
+      font-style: italic;
     }
-    .ar-tip {
+    .meta dd { color: var(--text); }
+
+    a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(194, 65, 12, 0.3); }
+    a:hover { border-bottom-color: var(--accent); }
+
+    .ar-pill {
       display: inline-block;
-      margin-top: 0.5rem;
-      padding: 0.25rem 0.5rem;
-      background: rgba(56, 189, 248, 0.1);
+      margin-top: 0.6rem;
+      padding: 0.2rem 0.65rem;
+      background: rgba(194, 65, 12, 0.08);
       color: var(--accent);
-      border-radius: 4px;
-      font-size: 0.8rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-style: italic;
+    }
+
+    .build-stamp {
+      text-align: right;
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-style: italic;
+      padding: 0.4rem 1.25rem 0.6rem;
+      margin-top: -0.3rem;
+    }
+
+    /* hide tabs labels on very small screens */
+    @media (max-width: 380px) {
+      .top { padding: 0 0.85rem; }
+      .tabs a { padding: 0.4rem 0.6rem; font-size: 0.85rem; }
+      .brand { font-size: 0.95rem; }
+      .brand-sub { display: none; }
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Sponge Holder</h1>
-    <p>Soporte de esponja para grifo — iteraciones de impresión 3D.</p>
-    <p class="ar-tip">📱 En el móvil: pulsa el icono AR de la esquina para verlo a tamaño real.</p>
+  <header class="top">
+    <div class="brand">
+      Sponge Holder<span class="brand-sub">— iteraciones</span>
+    </div>
+    <nav class="tabs" aria-label="Modelos">
+      <a href="#full"   data-target="full"   class="active">Completa</a>
+      <a href="#faucet" data-target="faucet">Abrazadera</a>
+      <a href="#sponge" data-target="sponge">Pinza</a>
+    </nav>
   </header>
 
-  <section class="card">
-    <h2>Pieza completa</h2>
-    <p>Abrazadera Ø 45 mm + brazo con fillet de 90° + pinza para esponja.</p>
-    <model-viewer
-      data-src="models/sponge_holder.glb"
-      alt="Sponge holder pieza completa"
-      auto-rotate
-      camera-controls
-      ar
-      ar-modes="webxr scene-viewer quick-look"
-      shadow-intensity="0.8"
-      exposure="1.1"
-      camera-orbit="-35deg 70deg auto">
-    </model-viewer>
-    <dl>
-      <dt>Bounding box</dt><dd>88 × 53 × 42 mm</dd>
-      <dt>Volumen</dt><dd>~22 cm³</dd>
-      <dt>STL</dt><dd><a href="../3d-models/sponge-holder/sponge_holder.stl">descargar</a></dd>
-    </dl>
-  </section>
+  <main id="snap-root">
+    <section id="full">
+      <div class="section-inner">
+        <div class="eyebrow">Modelo 01</div>
+        <h2>Pieza completa</h2>
+        <p class="lede">
+          Abrazadera Ø 45 mm con boca de 240°, brazo trasero con fillet
+          de 90° y pinza para esponja con boca abierta hacia abajo.
+        </p>
+        <model-viewer
+          data-src="models/sponge_holder.glb"
+          alt="Sponge holder pieza completa"
+          auto-rotate
+          camera-controls
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          shadow-intensity="0.7"
+          shadow-softness="0.8"
+          exposure="1.05"
+          camera-orbit="-35deg 70deg auto">
+        </model-viewer>
+        <p class="ar-pill">📱 Pulsa el icono AR para verla a tamaño real</p>
+        <dl class="meta">
+          <dt>Bounding box</dt><dd>88 × 53 × 42 mm</dd>
+          <dt>Volumen</dt><dd>~22 cm³</dd>
+          <dt>STL</dt><dd><a href="../3d-models/sponge-holder/sponge_holder.stl">descargar</a></dd>
+        </dl>
+      </div>
+    </section>
 
-  <section class="card">
-    <h2>Test 1 — Abrazadera del grifo</h2>
-    <p>MVP aislado para probar el agarre sobre el cilindro Ø 45 mm.</p>
-    <model-viewer
-      data-src="models/test_faucet_clip.glb"
-      alt="Test abrazadera grifo"
-      auto-rotate
-      camera-controls
-      ar
-      ar-modes="webxr scene-viewer quick-look"
-      shadow-intensity="0.8"
-      exposure="1.1">
-    </model-viewer>
-    <dl>
-      <dt>Bounding box</dt><dd>40 × 53 × 22 mm</dd>
-      <dt>Volumen</dt><dd>~9 cm³</dd>
-      <dt>Tiempo impr.</dt><dd>~15 min</dd>
-      <dt>STL</dt><dd><a href="../3d-models/sponge-holder/test_faucet_clip.stl">descargar</a></dd>
-    </dl>
-  </section>
+    <section id="faucet">
+      <div class="section-inner">
+        <div class="eyebrow">Modelo 02 · MVP de prueba</div>
+        <h2>Abrazadera del grifo</h2>
+        <p class="lede">
+          Pieza aislada para validar el agarre sobre el cilindro
+          Ø 45 mm. Imprime en ~15 min antes de comprometer la pieza
+          completa.
+        </p>
+        <model-viewer
+          data-src="models/test_faucet_clip.glb"
+          alt="Test abrazadera grifo"
+          auto-rotate
+          camera-controls
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          shadow-intensity="0.7"
+          shadow-softness="0.8"
+          exposure="1.05">
+        </model-viewer>
+        <dl class="meta">
+          <dt>Bounding box</dt><dd>40 × 53 × 22 mm</dd>
+          <dt>Volumen</dt><dd>~9 cm³</dd>
+          <dt>Tiempo impr.</dt><dd>~15 min</dd>
+          <dt>STL</dt><dd><a href="../3d-models/sponge-holder/test_faucet_clip.stl">descargar</a></dd>
+        </dl>
+      </div>
+    </section>
 
-  <section class="card">
-    <h2>Test 2 — Pinza para esponja</h2>
-    <p>MVP aislado para probar el agarre sobre la esponja (gap 14 mm).</p>
-    <model-viewer
-      data-src="models/test_sponge_clip.glb"
-      alt="Test pinza esponja"
-      auto-rotate
-      camera-controls
-      ar
-      ar-modes="webxr scene-viewer quick-look"
-      shadow-intensity="0.8"
-      exposure="1.1">
-    </model-viewer>
-    <dl>
-      <dt>Bounding box</dt><dd>22 × 50 × 15 mm</dd>
-      <dt>Volumen</dt><dd>~7 cm³</dd>
-      <dt>Tiempo impr.</dt><dd>~15 min</dd>
-      <dt>STL</dt><dd><a href="../3d-models/sponge-holder/test_sponge_clip.stl">descargar</a></dd>
-    </dl>
-  </section>
+    <section id="sponge">
+      <div class="section-inner">
+        <div class="eyebrow">Modelo 03 · MVP de prueba</div>
+        <h2>Pinza para esponja</h2>
+        <p class="lede">
+          Clip en C con hueco interior de 14 mm: pellizca la esponja
+          por el grosor. Valida el agarre antes de imprimir la pieza
+          completa.
+        </p>
+        <model-viewer
+          data-src="models/test_sponge_clip.glb"
+          alt="Test pinza esponja"
+          auto-rotate
+          camera-controls
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          shadow-intensity="0.7"
+          shadow-softness="0.8"
+          exposure="1.05">
+        </model-viewer>
+        <dl class="meta">
+          <dt>Bounding box</dt><dd>22 × 50 × 15 mm</dd>
+          <dt>Volumen</dt><dd>~7 cm³</dd>
+          <dt>Tiempo impr.</dt><dd>~15 min</dd>
+          <dt>STL</dt><dd><a href="../3d-models/sponge-holder/test_sponge_clip.stl">descargar</a></dd>
+        </dl>
+      </div>
+    </section>
+  </main>
 
-  <footer>
-    Generado con <code>generate_stl.py</code> · regenerable con <code>python3 generate_stl.py</code>
-    <div id="version-tag" style="margin-top:0.4rem;opacity:0.7;"></div>
-  </footer>
+  <div class="build-stamp" id="build-stamp"></div>
 
   <script>
-    // Cache-buster: fetch the version stamp written by generate_stl.py and
-    // append it to every <model-viewer src> so mobile browsers reload the
-    // GLB whenever it actually changes.
+    // ── Cache-buster: inject ?v=<version.txt> into every model-viewer src
     (async () => {
       let v;
       try {
         const r = await fetch("models/version.txt?_=" + Date.now(), { cache: "no-store" });
         v = (await r.text()).trim();
-      } catch (_) {
-        v = String(Date.now());
-      }
+      } catch (_) { v = String(Date.now()); }
       document.querySelectorAll("model-viewer[data-src]").forEach(el => {
         el.src = el.dataset.src + "?v=" + v;
       });
-      const tag = document.getElementById("version-tag");
+      const tag = document.getElementById("build-stamp");
       if (tag && v) tag.textContent = "build " + v;
     })();
+
+    // ── Active-tab tracking via IntersectionObserver inside <main>
+    const sections = document.querySelectorAll("main section");
+    const tabs     = document.querySelectorAll(".tabs a");
+    const setActive = id => tabs.forEach(a =>
+      a.classList.toggle("active", a.dataset.target === id)
+    );
+    const io = new IntersectionObserver(
+      entries => {
+        let best = null, bestRatio = 0;
+        for (const e of entries) {
+          if (e.intersectionRatio > bestRatio) {
+            bestRatio = e.intersectionRatio;
+            best = e;
+          }
+        }
+        if (best && best.isIntersecting) setActive(best.target.id);
+      },
+      { root: document.getElementById("snap-root"), threshold: [0.4, 0.6, 0.8] }
+    );
+    sections.forEach(s => io.observe(s));
+
+    // ── Smooth scroll inside <main> when clicking a tab
+    tabs.forEach(a => {
+      a.addEventListener("click", e => {
+        e.preventDefault();
+        const target = document.getElementById(a.dataset.target);
+        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
   </script>
 </body>
 </html>
