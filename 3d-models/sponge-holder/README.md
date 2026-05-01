@@ -6,15 +6,21 @@ esponja por su canto superior pellizcándola con un hueco menor de 2 cm.
 
 ## Files
 
-- `sponge_holder.scad` — fuente paramétrica de OpenSCAD.
-- `generate_stl.py`    — generador en Python (`trimesh` + `shapely` + `manifold3d`).
-- `sponge_holder.stl`  — STL listo para imprimir (regenerable).
+- `sponge_holder.scad`    — fuente paramétrica de OpenSCAD.
+- `generate_stl.py`       — generador en Python (`trimesh` + `shapely` + `manifold3d`).
+- `sponge_holder.stl`     — STL completo, listo para imprimir.
+- `test_faucet_clip.py`   — genera solo la abrazadera del grifo (MVP de prueba).
+- `test_faucet_clip.stl`  — STL aislado de la abrazadera (40 × 53 × 22 mm, ~9 cm³).
+- `test_sponge_clip.py`   — genera solo la pinza de la esponja (MVP de prueba).
+- `test_sponge_clip.stl`  — STL aislado de la pinza (22 × 50 × 15 mm, ~7 cm³).
 
-## Generar el STL
+## Generar los STL
 
 ```
 pip install numpy-stl trimesh shapely manifold3d
-python3 generate_stl.py
+python3 generate_stl.py        # pieza completa
+python3 test_faucet_clip.py    # solo abrazadera, para test de agarre
+python3 test_sponge_clip.py    # solo pinza, para test de agarre de esponja
 ```
 
 O con OpenSCAD:
@@ -22,6 +28,19 @@ O con OpenSCAD:
 ```
 openscad -o sponge_holder.stl sponge_holder.scad
 ```
+
+## Flujo recomendado: probar antes de imprimir la pieza entera
+
+Antes de comprometer 1 h 15 min de impresión en la pieza grande, imprime
+los dos test pieces (≈ 15 min cada uno):
+
+1. **`test_faucet_clip.stl`** — comprueba que la abrazadera entra a presión
+   sobre el cilindro de 45 mm del grifo. Si va apretada/floja, ajusta
+   `CLIP_INNER_D` y vuelve a generar.
+2. **`test_sponge_clip.stl`** — comprueba que la esponja se queda bien sujeta
+   en la pinza. Si se cae o cuesta meterla, ajusta `SPONGE_GAP` o
+   `SPONGE_CLIP_LEN_Y`.
+3. Cuando ambos test pasen, regenera y imprime `sponge_holder.stl`.
 
 ## Dimensiones actuales
 
