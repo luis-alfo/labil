@@ -17,12 +17,16 @@ inserts; here it is shown as one continuous piece for visualisation.
 from __future__ import annotations
 
 import math
+import sys
 import time
 from pathlib import Path
 
 import numpy as np
 import trimesh
 from shapely.geometry import LineString, Polygon
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from _bathroom_context import make_context_meshes, colour_pla
 
 # ===== Common ================================================================
 FAUCET_OD       = 29.0
@@ -224,10 +228,16 @@ def main():
         printed = trimesh.util.concatenate(printed_parts)
     printed.export(OUT_FILE)
 
+    colour_pla(body)
+    for p in hook_parts:
+        colour_pla(p)
+
     scene = trimesh.Scene()
     scene.add_geometry(body, geom_name="arm_with_clips")
     for i, p in enumerate(hook_parts):
         scene.add_geometry(p, geom_name=f"hook_part_{i}")
+    for name, mesh in make_context_meshes(FAUCET_OD, HANDLE_OD, CTC):
+        scene.add_geometry(mesh, geom_name=name)
     WEB_DIR.mkdir(parents=True, exist_ok=True)
     scene.export(WEB_FILE)
     update_web_version()

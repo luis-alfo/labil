@@ -31,7 +31,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install Python deps
-        run: pip install trimesh shapely manifold3d numpy-stl
+        run: pip install trimesh shapely manifold3d numpy-stl scipy
 
       - name: Regenerate STL + GLB for every design
         run: |

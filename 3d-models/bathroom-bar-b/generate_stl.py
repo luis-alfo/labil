@@ -14,12 +14,16 @@ by tongue-and-groove; here it is shown as one piece for visualisation.
 from __future__ import annotations
 
 import math
+import sys
 import time
 from pathlib import Path
 
 import numpy as np
 import trimesh
 from shapely.geometry import Polygon
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from _bathroom_context import make_context_meshes, colour_pla
 
 # ===== Common ================================================================
 FAUCET_OD       = 29.0
@@ -261,6 +265,14 @@ def main():
         printed = trimesh.util.concatenate(printed_parts)
     printed.export(OUT_FILE)
 
+    colour_pla(clamp_caño)
+    colour_pla(clamp_manilla)
+    colour_pla(rail)
+    for p in hook_parts:
+        colour_pla(p)
+    for s in screws_a + screws_b:
+        s.visual.face_colors = [180, 180, 188, 255]  # M3 stainless
+
     scene = trimesh.Scene()
     scene.add_geometry(clamp_caño,    geom_name="clamp_caño")
     scene.add_geometry(clamp_manilla, geom_name="clamp_manilla")
@@ -269,6 +281,8 @@ def main():
         scene.add_geometry(p, geom_name=f"hook_part_{i}")
     for i, s in enumerate(screws_a + screws_b):
         scene.add_geometry(s, geom_name=f"m3_screw_{i}")
+    for name, mesh in make_context_meshes(FAUCET_OD, HANDLE_OD, CTC):
+        scene.add_geometry(mesh, geom_name=name)
     WEB_DIR.mkdir(parents=True, exist_ok=True)
     scene.export(WEB_FILE)
     update_web_version()

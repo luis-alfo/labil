@@ -16,12 +16,16 @@ clamp sockets before the clamps are pressed onto the cylinders.
 from __future__ import annotations
 
 import math
+import sys
 import time
 from pathlib import Path
 
 import numpy as np
 import trimesh
 from shapely.geometry import LineString, Polygon
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from _bathroom_context import make_context_meshes, colour_pla, COLOR_CHROME
 
 # ===== Common (all proposals share these) ====================================
 FAUCET_OD       = 29.0
@@ -234,13 +238,20 @@ def main():
         )
     printed.export(OUT_FILE)
 
-    # Web scene = everything (clamps, hook, rod) for visualisation
+    # Web scene = everything (clamps, hook, rod) + bathroom context
+    colour_pla(clamp_caño)
+    colour_pla(clamp_manilla)
+    colour_pla(hook_ring)
+    colour_pla(hook_body)
+    rod.visual.face_colors = COLOR_CHROME  # aluminium reads close to chrome
     scene = trimesh.Scene()
     scene.add_geometry(clamp_caño,    geom_name="clamp_caño",    node_name="clamp_caño")
     scene.add_geometry(clamp_manilla, geom_name="clamp_manilla", node_name="clamp_manilla")
     scene.add_geometry(rod,           geom_name="rod_aluminum",  node_name="rod_aluminum")
     scene.add_geometry(hook_ring,     geom_name="hook_ring",     node_name="hook_ring")
     scene.add_geometry(hook_body,     geom_name="hook_body",     node_name="hook_body")
+    for name, mesh in make_context_meshes(FAUCET_OD, HANDLE_OD, CTC):
+        scene.add_geometry(mesh, geom_name=name, node_name=name)
     WEB_DIR.mkdir(parents=True, exist_ok=True)
     scene.export(WEB_FILE)
     update_web_version()
