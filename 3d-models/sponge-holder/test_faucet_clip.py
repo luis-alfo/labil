@@ -18,6 +18,7 @@ from pathlib import Path
 import generate_stl as g
 
 OUT = Path(__file__).with_name("test_faucet_clip.stl")
+WEB = Path(__file__).resolve().parents[2] / "docs" / "models" / "test_faucet_clip.glb"
 
 
 def main():
@@ -26,6 +27,8 @@ def main():
     bmin, _ = clip.bounds
     clip.apply_translation([0, 0, -bmin[2]])
     clip.export(OUT)
+    WEB.parent.mkdir(parents=True, exist_ok=True)
+    clip.export(WEB)
 
     bmin, bmax = clip.bounds
     size = bmax - bmin

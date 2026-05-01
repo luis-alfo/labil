@@ -14,6 +14,9 @@ esponja por su canto superior pellizcándola con un hueco menor de 2 cm.
 - `test_sponge_clip.py`   — genera solo la pinza de la esponja (MVP de prueba).
 - `test_sponge_clip.stl`  — STL aislado de la pinza (22 × 50 × 15 mm, ~7 cm³).
 
+Cada vez que regeneras los STL, se exporta también un `.glb` paralelo a
+`/docs/models/` para el visor web (ver "Ver en el móvil" más abajo).
+
 ## Generar los STL
 
 ```
@@ -28,6 +31,36 @@ O con OpenSCAD:
 ```
 openscad -o sponge_holder.stl sponge_holder.scad
 ```
+
+## Ver en el móvil (GitHub Pages)
+
+`/docs/index.html` es una landing con [`<model-viewer>`](https://modelviewer.dev/)
+que enseña los tres modelos con auto-rotación, zoom y AR (en móvil
+Android/iOS). Cada `python3 generate_stl.py` actualiza los `.glb` que
+sirve esa página.
+
+**Setup (una sola vez):**
+
+1. En GitHub: `Settings → Pages`.
+2. Source: **Deploy from a branch**.
+3. Branch: `claude/3d-model-generation-IEA7l` (o `main` cuando hagas
+   merge), Folder: `/docs`.
+4. Save. La primera build tarda ~1 minuto.
+
+URL pública: `https://luis-alfo.github.io/labil/`
+
+**Iteración:**
+
+```
+# editar parámetros en generate_stl.py
+python3 generate_stl.py && python3 test_faucet_clip.py && python3 test_sponge_clip.py
+git add -A && git commit -m "tweak gap" && git push
+# esperar ~30 s y refrescar la URL en el móvil
+```
+
+> Si ya usabas GitHub Pages para otra cosa en este repo, sirve esta
+> página desde un subdirectorio (`/docs`) en vez de la raíz para no
+> pisar el sitio existente.
 
 ## Flujo recomendado: probar antes de imprimir la pieza entera
 

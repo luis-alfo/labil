@@ -65,6 +65,8 @@ SPONGE_CLIP_WRAP_DEG = 220.0  # less wrap → flexes well in PLA
 ARC_SEG              = 96
 
 OUT_FILE = Path(__file__).with_name("sponge_holder.stl")
+WEB_DIR  = Path(__file__).resolve().parents[2] / "docs" / "models"
+WEB_FILE = WEB_DIR / "sponge_holder.glb"
 
 
 # ============================================================================
@@ -193,10 +195,13 @@ def main():
         holder = trimesh.util.concatenate(parts)
 
     holder.export(OUT_FILE)
+    WEB_DIR.mkdir(parents=True, exist_ok=True)
+    holder.export(WEB_FILE)
 
     bbox_min, bbox_max = holder.bounds
     size = bbox_max - bbox_min
     print(f"Wrote {OUT_FILE}")
+    print(f"Wrote {WEB_FILE}  (web viewer)")
     print(f"Triangles: {len(holder.faces)}")
     print(f"Bounding box (mm): X {size[0]:.1f}  Y {size[1]:.1f}  Z {size[2]:.1f}")
     print(f"Volume:    {holder.volume / 1000:.1f} cm³  (manifold={holder.is_volume})")
