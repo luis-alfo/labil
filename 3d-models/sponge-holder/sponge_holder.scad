@@ -1,70 +1,53 @@
-// Sponge holder for kitchen faucet — 3D version
-// =================================================
-// Clip in the horizontal plane (axis = Z, parallel to the floor) pinches
-// a vertical element of the faucet. A horizontal arm leaves the clip and
-// then turns 90° down into a vertical drop, which feeds a U-shaped cradle
-// that holds the sponge vertically.
-//
-// Coordinates: Z is up. All dimensions are in millimetres.
+// Sponge holder for kitchen faucet — 3D version with sponge pinch clip.
+// Faucet clip (Ø 45 mm, axis Z) + arm "por detrás" + 90° drop + sponge
+// C-clip (axis Y, mouth -Z) that pinches the sponge by its top edge.
+// Z is up. All dimensions in millimetres.
 
 // ====== Parameters ======
-wall_t          = 4;     // plastic wall thickness everywhere
+wall_t                = 4;
+clip_inner_d          = 45.4;   // 45 mm shaft + 0.4 mm tolerance for PLA
+clip_height           = 22;
+clip_wrap_deg         = 240;    // PLA-friendly snap (less wrap = more flex)
+clip_overlap          = 0.6;
 
-// Clip
-clip_inner_d    = 18;    // < 20 mm so it pinches
-clip_height     = 18;    // along Z (axis of the ring)
-clip_wrap_deg   = 280;   // > 180 → snap-on
-clip_overlap    = 0.6;
+arm_len               = 30;
+arm_width_y           = 22;
 
-// Horizontal arm
-arm_len         = 30;
-arm_width_y     = 18;
+drop_len              = 22;
+drop_width_y          = 30;
 
-// Vertical drop (the 90° turn)
-drop_len        = 22;
-
-// Cradle (U opening upward)
-cradle_width_y  = 30;
-cradle_back_h   = 80;
-cradle_bot_len  = 32;
-cradle_front_h  = 37;
+sponge_gap            = 14;     // < 20 mm: pinches the sponge thickness
+sponge_clip_len_y     = 50;
+sponge_clip_wrap_deg  = 220;
 
 $fn = 96;
 
-// ====== Build ======
 union() {
-    clip();
+    faucet_clip();
     arm();
     drop();
-    cradle();
+    sponge_clip();
 }
 
-// ---- Clip: partial cylinder, axis Z, mouth opens on +X ----
-module clip() {
+module faucet_clip() {
     r_in  = clip_inner_d / 2;
     r_out = r_in + wall_t;
     half_open = (360 - clip_wrap_deg) / 2;
-
     translate([0, 0, -clip_height / 2])
-    linear_extrude(height = clip_height)
+    linear_extrude(clip_height)
         difference() {
-            // ring
             difference() {
                 circle(r = r_out);
                 circle(r = r_in);
             }
-            // mouth: wedge that subtracts the +X opening
-            polygon(points = [
+            polygon([
                 [0, 0],
-                [(r_out + 2) * cos(-half_open),
-                 (r_out + 2) * sin(-half_open)],
-                [(r_out + 2) * cos( half_open),
-                 (r_out + 2) * sin( half_open)],
+                [(r_out + 2) * cos(-half_open), (r_out + 2) * sin(-half_open)],
+                [(r_out + 2) * cos( half_open), (r_out + 2) * sin( half_open)],
             ]);
         }
 }
 
-// ---- Horizontal arm: -X side of clip ----
 module arm() {
     r_out = clip_inner_d / 2 + wall_t;
     x_start = -r_out + clip_overlap;
@@ -75,7 +58,6 @@ module arm() {
         cube([abs(x_end - x_start), arm_width_y, wall_t], center = true);
 }
 
-// ---- Vertical drop ----
 module drop() {
     r_out = clip_inner_d / 2 + wall_t;
     x_arm_end = -r_out - arm_len;
@@ -85,38 +67,36 @@ module drop() {
         0,
         z_arm_bot - drop_len / 2 + clip_overlap / 2,
     ])
-        cube([wall_t, cradle_width_y, drop_len + clip_overlap], center = true);
+        cube([wall_t, drop_width_y, drop_len + clip_overlap], center = true);
 }
 
-// ---- Cradle ----
-module cradle() {
-    r_out = clip_inner_d / 2 + wall_t;
-    x_back = -r_out - arm_len - wall_t;
-    z_drop_bot = clip_height / 2 - wall_t - drop_len;
+module sponge_clip() {
+    r_in  = sponge_gap / 2;
+    r_out = r_in + wall_t;
+    half_open = (360 - sponge_clip_wrap_deg) / 2;
 
-    // back wall
-    translate([
-        x_back + wall_t / 2,
-        0,
-        z_drop_bot - cradle_back_h / 2 + clip_overlap / 2,
-    ])
-        cube([wall_t, cradle_width_y, cradle_back_h + clip_overlap], center = true);
+    r_out_faucet  = clip_inner_d / 2 + wall_t;
+    x_drop_center = -r_out_faucet - arm_len - wall_t / 2;
+    z_drop_bot    = clip_height / 2 - wall_t - drop_len;
 
-    // bottom
-    z_bottom_top = z_drop_bot - cradle_back_h;
-    translate([
-        x_back - cradle_bot_len / 2 + clip_overlap / 2,
-        0,
-        z_bottom_top - wall_t / 2,
-    ])
-        cube([cradle_bot_len + clip_overlap, cradle_width_y, wall_t], center = true);
-
-    // front lip
-    x_front = x_back - cradle_bot_len;
-    translate([
-        x_front + wall_t / 2,
-        0,
-        z_bottom_top - wall_t + cradle_front_h / 2 + clip_overlap / 2,
-    ])
-        cube([wall_t, cradle_width_y, cradle_front_h + clip_overlap], center = true);
+    // build the C-clip with axis along Z, mouth at +Y, then rotate so axis
+    // becomes Y and mouth becomes -Z.
+    translate([x_drop_center, 0, z_drop_bot - r_out + clip_overlap])
+    rotate([-90, 0, 0])
+    translate([0, 0, -sponge_clip_len_y / 2])
+    linear_extrude(sponge_clip_len_y)
+        difference() {
+            difference() {
+                circle(r = r_out);
+                circle(r = r_in);
+            }
+            // mouth wedge on +Y direction (angle 90°)
+            polygon([
+                [0, 0],
+                [(r_out + 2) * cos(90 - half_open),
+                 (r_out + 2) * sin(90 - half_open)],
+                [(r_out + 2) * cos(90 + half_open),
+                 (r_out + 2) * sin(90 + half_open)],
+            ]);
+        }
 }

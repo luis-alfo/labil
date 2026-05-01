@@ -1,70 +1,78 @@
-# Sponge holder (kitchen faucet clip) — 3D version
+# Sponge holder (kitchen faucet clip + sponge pinch clip)
 
-Soporte para esponja que se engancha al grifo. Clip horizontal (eje vertical,
-paralelo al suelo) que aprieta a presión un elemento vertical del grifo,
-un brazo horizontal corto, un giro de 90°, y una **cesta vertical** donde
-la esponja se apoya **de pie** (eje largo perpendicular al suelo).
+Soporte para esponja: clip que abraza un cilindro vertical del grifo (Ø 45 mm),
+brazo horizontal por detrás, giro de 90° y **pinza en C** que sujeta la
+esponja por su canto superior pellizcándola con un hueco menor de 2 cm.
 
 ## Files
 
 - `sponge_holder.scad` — fuente paramétrica de OpenSCAD.
-- `generate_stl.py`    — generador en Python (`trimesh` + `shapely` + `manifold3d`)
-                         que produce el STL sin necesidad de OpenSCAD.
+- `generate_stl.py`    — generador en Python (`trimesh` + `shapely` + `manifold3d`).
 - `sponge_holder.stl`  — STL listo para imprimir (regenerable).
 
-## Generate the STL
-
-Sin OpenSCAD instalado:
+## Generar el STL
 
 ```
 pip install numpy-stl trimesh shapely manifold3d
 python3 generate_stl.py
 ```
 
-Con OpenSCAD:
+O con OpenSCAD:
 
 ```
 openscad -o sponge_holder.stl sponge_holder.scad
 ```
 
+## Dimensiones actuales
+
+- Bounding box: **83 × 53 × 40 mm**
+- Volumen plástico: ~21 cm³ (≈ 26 g de PLA al 30 % gyroid)
+
 ## Parámetros
 
 Edita la cabecera de cualquiera de los dos archivos.
 
-| Parámetro         | Valor   | Significado                                               |
-| ----------------- | ------- | --------------------------------------------------------- |
-| `WALL_T`          | 4 mm    | grosor de pared en toda la pieza                          |
-| `CLIP_INNER_D`    | 18 mm   | diámetro interior del clip (debe ser **< 20 mm** para pinza) |
-| `CLIP_HEIGHT`     | 18 mm   | altura del clip a lo largo de su eje (Z)                  |
-| `CLIP_WRAP_DEG`   | 280°    | ángulo de envoltura (>180° = snap-on a presión)           |
-| `ARM_LEN`         | 30 mm   | longitud del brazo horizontal del clip a la cesta         |
-| `ARM_WIDTH_Y`     | 18 mm   | ancho del brazo (Y)                                       |
-| `DROP_LEN`        | 22 mm   | bajada vertical (el "giro" de 90°)                        |
-| `CRADLE_WIDTH_Y`  | 30 mm   | **ancho de la cesta** — más ancho que el clip             |
-| `CRADLE_BACK_H`   | 80 mm   | pared trasera de la cesta (vertical, donde apoya la esponja) |
-| `CRADLE_BOT_LEN`  | 32 mm   | fondo de la cesta (≈ grosor de la esponja + paredes)      |
-| `CRADLE_FRONT_H`  | 37 mm   | labio frontal (sujeta la esponja para que no caiga)       |
+| Parámetro              | Valor   | Significado                                                           |
+| ---------------------- | ------- | --------------------------------------------------------------------- |
+| `WALL_T`               | 4 mm    | grosor de pared                                                       |
+| `CLIP_INNER_D`         | 45.4 mm | 45 mm + 0.4 mm de holgura para PLA                                    |
+| `CLIP_HEIGHT`          | 22 mm   | altura del anillo del clip                                            |
+| `CLIP_WRAP_DEG`        | 240°    | envoltura del anillo (boca = 120°). Más bajo = más flex, menos grip   |
+| `ARM_LEN`              | 30 mm   | brazo horizontal por detrás                                           |
+| `ARM_WIDTH_Y`          | 22 mm   |                                                                       |
+| `DROP_LEN`             | 22 mm   | bajada vertical (el "giro" de 90°)                                    |
+| `DROP_WIDTH_Y`         | 30 mm   |                                                                       |
+| `SPONGE_GAP`           | 14 mm   | hueco interior de la pinza de esponja (< 2 cm para pellizcar)         |
+| `SPONGE_CLIP_LEN_Y`    | 50 mm   | longitud de la pinza a lo largo del canto de la esponja               |
+| `SPONGE_CLIP_WRAP_DEG` | 220°    | envoltura de la pinza (boca = 140°)                                   |
 
-## Recomendaciones de impresión
+## Recomendaciones de impresión (PLA)
 
-- **Material:** PETG o TPU 95A. PLA funciona pero el clip puede romperse al
-  poner/quitar la esponja muchas veces.
-- **Orientación:** apoya la pieza sobre el lateral (el plano XZ),
-  con el eje del clip paralelo a la cama. Así las líneas de capa van
-  perpendiculares a la fuerza de cierre del clip.
-- **Soportes:** sí, debajo del brazo horizontal y el fondo de la cesta.
-  Algunos slicers (PrusaSlicer, Cura) los detectan automáticamente.
-- **Perímetros / relleno:** 4 perímetros, 30–40 % de relleno gyroid.
-- **Capa:** 0,2 mm.
+- **Material:** PLA (según indicación). Ojo: PLA es rígido; ambos clips
+  tienen flex limitado, por eso `CLIP_WRAP_DEG` está bajado a 240° y
+  `SPONGE_CLIP_WRAP_DEG` a 220° para que abran al meter el grifo / la
+  esponja sin partirse.
+- **Orientación:** apoya la pieza sobre el lateral (plano XZ), con el eje
+  del clip principal paralelo a la cama. Las líneas de capa quedan
+  perpendiculares a la fuerza de cierre del clip, que es lo que aguanta.
+- **Soportes:** sí, debajo del brazo horizontal y bajo la pinza de la
+  esponja. PrusaSlicer/Cura los detectan automáticamente.
+- **Perímetros / relleno:** 4 perímetros, 30–40 % gyroid.
+- **Capa:** 0.2 mm.
 
-## Pendientes — qué necesito de ti para afinar
+## Cómo usarlo
 
-1. **Diámetro real** del elemento del grifo donde va el clip. Mídelo con
-   calibre y ajusta `CLIP_INNER_D` (deja −0,3 mm de holgura para PLA/PETG, 0
-   o incluso −0,5 mm para TPU).
-2. **¿El brazo y la bajada van por delante, por detrás o por el lado** del
-   grifo? (cambia el signo de `ARM_LEN` o rota el clip si hace falta).
-3. **Tamaño de la esponja** (largo × ancho × grosor) → ajusta
-   `CRADLE_WIDTH_Y`, `CRADLE_BOT_LEN` y `CRADLE_BACK_H`.
-4. **Material** elegido → afecta a la holgura del clip y a si conviene
-   subir/bajar `CLIP_WRAP_DEG`.
+1. Abrir el clip principal y meterlo a presión sobre el cilindro del grifo
+   (Ø 45 mm). El brazo queda detrás del grifo.
+2. Empujar la esponja hacia arriba contra la pinza inferior: el hueco de
+   14 mm comprime los 25 mm de la esponja, y la fricción la sujeta.
+3. Cuelga vertical, con el agua escurriendo dentro del fregadero.
+
+## Si algo no encaja
+
+- **Clip muy apretado** → sube `CLIP_INNER_D` en pasos de 0.2 mm.
+- **Clip muy flojo** → baja `CLIP_INNER_D` o sube `CLIP_WRAP_DEG`.
+- **El clip se rompe al ponerlo** → baja `CLIP_WRAP_DEG` (más flex) o
+  cambia a PETG.
+- **La esponja se sale** → baja `SPONGE_GAP` (más pellizco) o sube
+  `SPONGE_CLIP_LEN_Y` para más superficie de fricción.
