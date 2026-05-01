@@ -33,12 +33,22 @@ jobs:
       - name: Install Python deps
         run: pip install trimesh shapely manifold3d numpy-stl
 
-      - name: Regenerate STL + GLB
-        working-directory: 3d-models/sponge-holder
+      - name: Regenerate STL + GLB for every design
         run: |
-          python3 generate_stl.py
-          python3 test_faucet_clip.py
-          python3 test_sponge_clip.py
+          set -euo pipefail
+          shopt -s nullglob
+          for dir in 3d-models/*/; do
+            echo "::group::$dir"
+            cd "$GITHUB_WORKSPACE/$dir"
+            for script in generate_stl.py test_*.py; do
+              if [ -f "$script" ]; then
+                echo "→ $script"
+                python3 "$script"
+              fi
+            done
+            cd "$GITHUB_WORKSPACE"
+            echo "::endgroup::"
+          done
 
       - uses: actions/configure-pages@v5
 
