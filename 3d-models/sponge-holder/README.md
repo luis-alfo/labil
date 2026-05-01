@@ -25,8 +25,9 @@ openscad -o sponge_holder.stl sponge_holder.scad
 
 ## Dimensiones actuales
 
-- Bounding box: **83 × 53 × 40 mm**
-- Volumen plástico: ~21 cm³ (≈ 26 g de PLA al 30 % gyroid)
+- Bounding box: **88 × 53 × 42 mm**
+- Volumen plástico: ~22 cm³ (≈ 27 g de PLA al 30 % gyroid)
+- Giro de 90° con fillet de **8 mm** (curva en lugar de esquina viva)
 
 ## Parámetros
 
@@ -38,10 +39,10 @@ Edita la cabecera de cualquiera de los dos archivos.
 | `CLIP_INNER_D`         | 45.4 mm | 45 mm + 0.4 mm de holgura para PLA                                    |
 | `CLIP_HEIGHT`          | 22 mm   | altura del anillo del clip                                            |
 | `CLIP_WRAP_DEG`        | 240°    | envoltura del anillo (boca = 120°). Más bajo = más flex, menos grip   |
-| `ARM_LEN`              | 30 mm   | brazo horizontal por detrás                                           |
-| `ARM_WIDTH_Y`          | 22 mm   |                                                                       |
-| `DROP_LEN`             | 22 mm   | bajada vertical (el "giro" de 90°)                                    |
-| `DROP_WIDTH_Y`         | 30 mm   |                                                                       |
+| `ARM_LEN`              | 30 mm   | longitud del brazo horizontal (clip → inicio del fillet)              |
+| `ARM_WIDTH_Y`          | 24 mm   | ancho uniforme del brazo + codo + bajada                              |
+| `ELBOW_R`              | 8 mm    | radio del fillet del giro de 90° (más alto = más elegante)            |
+| `DROP_LEN`             | 18 mm   | bajada vertical (fin del fillet → fondo)                              |
 | `SPONGE_GAP`           | 14 mm   | hueco interior de la pinza de esponja (< 2 cm para pellizcar)         |
 | `SPONGE_CLIP_LEN_Y`    | 50 mm   | longitud de la pinza a lo largo del canto de la esponja               |
 | `SPONGE_CLIP_WRAP_DEG` | 220°    | envoltura de la pinza (boca = 140°)                                   |

@@ -10,11 +10,10 @@ clip_height           = 22;
 clip_wrap_deg         = 240;    // PLA-friendly snap (less wrap = more flex)
 clip_overlap          = 0.6;
 
-arm_len               = 30;
-arm_width_y           = 22;
-
-drop_len              = 22;
-drop_width_y          = 30;
+arm_len               = 30;     // arm centerline length (clip → arc start)
+arm_width_y           = 24;     // uniform width along Y for arm-elbow-drop
+elbow_r               = 8;      // 90° fillet radius
+drop_len              = 18;     // drop centerline length (arc end → bottom)
 
 sponge_gap            = 14;     // < 20 mm: pinches the sponge thickness
 sponge_clip_len_y     = 50;
@@ -24,10 +23,17 @@ $fn = 96;
 
 union() {
     faucet_clip();
-    arm();
-    drop();
+    arm_drop();
     sponge_clip();
 }
+
+// Reuse these in sponge_clip() so the drop end is the single source of truth
+function _r_out_faucet() = clip_inner_d / 2 + wall_t;
+function _z_arm()        = clip_height / 2 - wall_t / 2;
+function _x_arm_start()  = -_r_out_faucet() + clip_overlap;
+function _x_corner()     = _x_arm_start() - arm_len;
+function _x_drop_end()   = _x_corner() - elbow_r;
+function _z_drop_end()   = _z_arm() - elbow_r - drop_len;
 
 module faucet_clip() {
     r_in  = clip_inner_d / 2;
@@ -48,26 +54,53 @@ module faucet_clip() {
         }
 }
 
-module arm() {
-    r_out = clip_inner_d / 2 + wall_t;
-    x_start = -r_out + clip_overlap;
-    x_end   = -r_out - arm_len;
-    z_top   = clip_height / 2;
-    z_bot   = z_top - wall_t;
-    translate([(x_start + x_end) / 2, 0, (z_top + z_bot) / 2])
-        cube([abs(x_end - x_start), arm_width_y, wall_t], center = true);
-}
+// Arm + 90° fillet + drop, extruded along Y as a single continuous piece.
+// Side profile is built from three 2D primitives: arm rectangle, elbow ring,
+// drop rectangle.
+module arm_drop() {
+    z_arm    = _z_arm();
+    x_start  = _x_arm_start();
+    x_corner = _x_corner();
+    z_corner = z_arm - elbow_r;
+    x_drop   = _x_drop_end();
+    z_bottom = _z_drop_end();
 
-module drop() {
-    r_out = clip_inner_d / 2 + wall_t;
-    x_arm_end = -r_out - arm_len;
-    z_arm_bot = clip_height / 2 - wall_t;
-    translate([
-        x_arm_end - wall_t / 2,
-        0,
-        z_arm_bot - drop_len / 2 + clip_overlap / 2,
-    ])
-        cube([wall_t, drop_width_y, drop_len + clip_overlap], center = true);
+    translate([0, -arm_width_y / 2, 0])
+    rotate([90, 0, 0])
+    linear_extrude(height = arm_width_y)
+        union() {
+            // arm rectangle (centerline z_arm, ±wall_t/2 in Z)
+            polygon([
+                [x_start,  z_arm - wall_t / 2],
+                [x_corner, z_arm - wall_t / 2],
+                [x_corner, z_arm + wall_t / 2],
+                [x_start,  z_arm + wall_t / 2],
+            ]);
+            // elbow: quarter-annular sector, center (x_corner, z_corner)
+            translate([x_corner, z_corner])
+                difference() {
+                    intersection() {
+                        difference() {
+                            circle(r = elbow_r + wall_t / 2);
+                            circle(r = elbow_r - wall_t / 2);
+                        }
+                        // wedge for 90°→180° (CCW)
+                        polygon([
+                            [0, 0],
+                            [0, elbow_r + wall_t],
+                            [-(elbow_r + wall_t), elbow_r + wall_t],
+                            [-(elbow_r + wall_t), 0],
+                        ]);
+                    }
+                }
+            // drop rectangle (centerline x_drop, ±wall_t/2 in X)
+            polygon([
+                [x_drop - wall_t / 2, z_bottom],
+                [x_drop + wall_t / 2, z_bottom],
+                [x_drop + wall_t / 2, z_corner],
+                [x_drop - wall_t / 2, z_corner],
+            ]);
+        }
 }
 
 module sponge_clip() {
@@ -75,9 +108,9 @@ module sponge_clip() {
     r_out = r_in + wall_t;
     half_open = (360 - sponge_clip_wrap_deg) / 2;
 
-    r_out_faucet  = clip_inner_d / 2 + wall_t;
-    x_drop_center = -r_out_faucet - arm_len - wall_t / 2;
-    z_drop_bot    = clip_height / 2 - wall_t - drop_len;
+    // attach to the bottom of the smooth drop (single source of truth)
+    x_drop_center = _x_drop_end();
+    z_drop_bot    = _z_drop_end();
 
     // build the C-clip with axis along Z, mouth at +Y, then rotate so axis
     // becomes Y and mouth becomes -Z.

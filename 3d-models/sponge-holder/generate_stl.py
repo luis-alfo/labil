@@ -34,7 +34,7 @@ from pathlib import Path
 
 import numpy as np
 import trimesh
-from shapely.geometry import Polygon
+from shapely.geometry import Polygon, LineString
 
 # ============================================================================
 # Parameters (mm)
@@ -48,12 +48,14 @@ CLIP_WRAP_DEG        = 240.0  # PLA-friendly snap (smaller wrap = more flex)
 CLIP_OVERLAP         = 0.6    # tiny overlap so booleans weld cleanly
 
 # --- Horizontal arm "por detrás" ---
-ARM_LEN              = 30.0   # how far the arm reaches before the 90° turn
-ARM_WIDTH_Y          = 22.0
+ARM_LEN              = 30.0   # horizontal centerline length (clip → arc start)
+ARM_WIDTH_Y          = 24.0   # uniform width along Y for the swept arm-elbow-drop
+
+# --- 90° fillet (elbow) ---
+ELBOW_R              = 8.0    # centerline radius of the bend (more = more elegant)
 
 # --- Vertical drop ---
-DROP_LEN             = 22.0
-DROP_WIDTH_Y         = 30.0   # transitions to the sponge clip width
+DROP_LEN             = 18.0   # vertical centerline length (arc end → bottom)
 
 # --- Sponge clip (C-clip, axis Y, mouth -Z; the sponge top edge is pinched) ---
 SPONGE_GAP           = 14.0   # inner gap < 20 mm: pinches the sponge thickness
@@ -100,32 +102,54 @@ def make_faucet_clip():
     return clip
 
 
-def make_arm():
-    """Horizontal arm 'por detrás' (-X side, opposite the mouth)."""
+def arm_drop_centerline():
+    """(x, z) keypoints of the arm + 90° fillet + drop centerline."""
     r_out = CLIP_INNER_D / 2 + WALL_T
-    x_start = -r_out + CLIP_OVERLAP
-    x_end   = -r_out - ARM_LEN
-    z_top   = CLIP_HEIGHT / 2
-    z_bot   = z_top - WALL_T
-    return box(
-        extents=[abs(x_end - x_start), ARM_WIDTH_Y, WALL_T],
-        center=[(x_start + x_end) / 2, 0, (z_top + z_bot) / 2],
-    )
+    z_arm = CLIP_HEIGHT / 2 - WALL_T / 2
+
+    pts = []
+    # arm start (slightly inside clip wall so the boolean welds cleanly)
+    x_arm_start = -r_out + CLIP_OVERLAP
+    pts.append((x_arm_start, z_arm))
+    # arc start (end of arm)
+    x_corner = x_arm_start - ARM_LEN
+    pts.append((x_corner, z_arm))
+    # quarter-circle CCW from angle 90° to 180° around (x_corner, z_arm - ELBOW_R)
+    cx, cz = x_corner, z_arm - ELBOW_R
+    n_arc = 28
+    for i in range(1, n_arc + 1):
+        a = math.radians(90 + 90 * i / n_arc)
+        pts.append((cx + ELBOW_R * math.cos(a), cz + ELBOW_R * math.sin(a)))
+    # drop end
+    arc_end_x, arc_end_z = cx - ELBOW_R, cz
+    pts.append((arc_end_x, arc_end_z - DROP_LEN))
+    return pts
 
 
-def make_drop():
-    """Vertical drop strap from end of arm down to the sponge clip."""
-    r_out = CLIP_INNER_D / 2 + WALL_T
-    x_arm_end = -r_out - ARM_LEN
-    z_arm_bot = CLIP_HEIGHT / 2 - WALL_T
-    return box(
-        extents=[WALL_T, DROP_WIDTH_Y, DROP_LEN + CLIP_OVERLAP],
-        center=[
-            x_arm_end - WALL_T / 2,
-            0,
-            z_arm_bot - DROP_LEN / 2 + CLIP_OVERLAP / 2,
-        ],
-    )
+def drop_end_xz():
+    """Convenience: (x, z) of the drop centerline's lowest point."""
+    return arm_drop_centerline()[-1]
+
+
+def make_arm_drop():
+    """Smooth swept solid: arm + 90° fillet + drop, all one continuous piece.
+
+    Built by taking the centerline polyline in the XZ plane, buffering it by
+    WALL_T/2 in shapely (so the corners get the fillet for free), and then
+    extruding the resulting 2D polygon along Y.
+    """
+    pts = arm_drop_centerline()
+    line = LineString(pts)
+    poly = line.buffer(WALL_T / 2, cap_style=2, join_style=2)
+
+    mesh = trimesh.creation.extrude_polygon(poly, height=ARM_WIDTH_Y)
+    # The polygon was given in (x, z) of the design frame but shapely / extrude
+    # treat the 2D as XY and extrude along +Z. Rotate so the polygon's "Y"
+    # becomes design Z and the extrusion direction becomes design Y.
+    R = trimesh.transformations.rotation_matrix(math.pi / 2, [1, 0, 0])
+    mesh.apply_transform(R)
+    mesh.apply_translation([0, ARM_WIDTH_Y / 2, 0])  # centre on Y=0
+    return mesh
 
 
 def make_sponge_clip():
@@ -148,13 +172,13 @@ def make_sponge_clip():
     clip.apply_translation([0, -SPONGE_CLIP_LEN_Y / 2, 0])
 
     # Position so the +Z top of the outer surface meets the bottom of the drop.
-    r_out_faucet = CLIP_INNER_D / 2 + WALL_T
-    x_drop_center = -r_out_faucet - ARM_LEN - WALL_T / 2
-    z_drop_bot    = CLIP_HEIGHT / 2 - WALL_T - DROP_LEN
+    drop_end_x, drop_end_z = drop_end_xz()
+    # the drop's flat cap is at z = drop_end_z; we want the sponge clip's
+    # +Z outer to coincide (with a tiny overlap for clean booleans)
     clip.apply_translation([
-        x_drop_center,
+        drop_end_x,
         0,
-        z_drop_bot - r_out + CLIP_OVERLAP,
+        drop_end_z - r_out + CLIP_OVERLAP,
     ])
     return clip
 
@@ -163,7 +187,7 @@ def make_sponge_clip():
 # Build & write
 # ============================================================================
 def main():
-    parts = [make_faucet_clip(), make_arm(), make_drop(), make_sponge_clip()]
+    parts = [make_faucet_clip(), make_arm_drop(), make_sponge_clip()]
     holder = trimesh.boolean.union(parts, engine="manifold")
     if not holder.is_volume:
         holder = trimesh.util.concatenate(parts)
