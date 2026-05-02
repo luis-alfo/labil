@@ -195,6 +195,82 @@ def build_c_clip(gap, wrap_deg, length_y):
     return clip
 
 
+def build_fork_pinch(
+    gap_top, gap_bottom, arm_l, total_y,
+    num_prongs=4, prong_y_ratio=0.55, wall_t=None,
+):
+    """Fork-shape converging pinch. Two opposite walls go from gap_bottom
+    at -Z (the open mouth, easy to insert) to gap_top at +Z (the closed
+    throat, where the sponge is wedged). Each wall is split into
+    `num_prongs` vertical fingers separated by Y-direction gaps so air
+    and water reach the sponge instead of being trapped against a solid
+    wall.
+
+    Layout (looking from +Y):
+                                +Z   ┌───── cap ─────┐
+                                     │ │ │ │ │ │ │ │ │     ← prongs
+                                     │ │ │ │ │ │ │ │ │
+                                -Z   ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓        ← open mouth
+                                     ←──── total_y ────→
+    Cross-section in X (looking from +Y): /\\ inverted V (gap_top < gap_bottom).
+    """
+    from shapely.geometry import Polygon as _Poly
+
+    t = WALL_T if wall_t is None else wall_t
+
+    half_top = gap_top / 2
+    half_bot = gap_bottom / 2
+    half_l = arm_l / 2
+    x_outer = half_bot + t   # outermost X face of the walls (constant)
+
+    # Side profile of one LEFT prong, CCW in shapely XY (= design XZ after rot).
+    # bottom-outer → top-outer → top-inner → bottom-inner
+    left_profile = _Poly([
+        (-x_outer, -half_l),
+        (-x_outer, +half_l),
+        (-half_top, +half_l),
+        (-half_bot, -half_l),
+    ])
+    # Mirror for the RIGHT prong, also CCW.
+    right_profile = _Poly([
+        (+half_bot, -half_l),
+        (+half_top, +half_l),
+        (+x_outer, +half_l),
+        (+x_outer, -half_l),
+    ])
+
+    num_gaps = max(num_prongs - 1, 1)
+    prong_w = (total_y * prong_y_ratio) / num_prongs
+    gap_w   = (total_y * (1 - prong_y_ratio)) / num_gaps if num_prongs > 1 else 0
+
+    y_centres = [
+        -total_y / 2 + prong_w / 2 + i * (prong_w + gap_w)
+        for i in range(num_prongs)
+    ]
+
+    R = trimesh.transformations.rotation_matrix(math.pi / 2, [1, 0, 0])
+    parts = []
+    for profile in (left_profile, right_profile):
+        for yc in y_centres:
+            prong = trimesh.creation.extrude_polygon(profile, height=prong_w)
+            prong.apply_transform(R)
+            # rotation places the prism in design Y range [-prong_w, 0]; shift
+            # so its midpoint is at yc.
+            prong.apply_translation([0, yc + prong_w / 2, 0])
+            parts.append(prong)
+
+    cap = box(
+        extents=[2 * x_outer, total_y, t],
+        center=[0, 0, half_l + t / 2 - CLIP_OVERLAP / 2],
+    )
+    parts.append(cap)
+
+    pinch = trimesh.boolean.union(parts, engine="manifold")
+    if not pinch.is_volume:
+        pinch = trimesh.util.concatenate(parts)
+    return pinch
+
+
 def build_parallel_pinch(gap, arm_l, length_y, wall_t=None):
     """Long-walled clothespin-style pinch — two parallel rectangular walls
     spaced `gap` apart in X, joined at the +Z end by a horizontal cap, open
