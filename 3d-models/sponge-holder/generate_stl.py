@@ -166,31 +166,60 @@ def make_sponge_clip():
     """C-clip with axis along Y. Mouth opens -Z so the user pushes the
     sponge up into the clip from below; the clip's <20 mm inner gap pinches
     the sponge thickness."""
-    r_in  = SPONGE_GAP / 2
-    r_out = r_in + WALL_T
-    half_open = (360 - SPONGE_CLIP_WRAP_DEG) / 2
-
-    # In local 2D frame: mouth on +Y (angle 90°). Arc covers 90+half CCW
-    # through 180, 270, 360, back to 90-half (= 450-half).
-    poly = partial_annulus(r_in, r_out, 90 + half_open, 450 - half_open)
-    clip = trimesh.creation.extrude_polygon(poly, height=SPONGE_CLIP_LEN_Y)
-    # extruded along +Z. Rotate by -90° around +X: sends +Y mouth to -Z and
-    # the +Z extrusion axis to +Y, which is what we want.
-    R = trimesh.transformations.rotation_matrix(-math.pi / 2, [1, 0, 0])
-    clip.apply_transform(R)
-    # extrusion now spans Y in [0, SPONGE_CLIP_LEN_Y]; center it
-    clip.apply_translation([0, -SPONGE_CLIP_LEN_Y / 2, 0])
+    clip = build_c_clip(SPONGE_GAP, SPONGE_CLIP_WRAP_DEG, SPONGE_CLIP_LEN_Y)
 
     # Position so the +Z top of the outer surface meets the bottom of the drop.
     drop_end_x, drop_end_z = drop_end_xz()
-    # the drop's flat cap is at z = drop_end_z; we want the sponge clip's
-    # +Z outer to coincide (with a tiny overlap for clean booleans)
+    r_out = SPONGE_GAP / 2 + WALL_T
     clip.apply_translation([
         drop_end_x,
         0,
         drop_end_z - r_out + CLIP_OVERLAP,
     ])
     return clip
+
+
+def build_c_clip(gap, wrap_deg, length_y):
+    """Standalone C-clip primitive — axis along Y, mouth toward -Z,
+    centred at the origin. Reused by the assembled piece and by the
+    sponge-clip variant test scripts."""
+    r_in = gap / 2
+    r_out = r_in + WALL_T
+    half_open = (360 - wrap_deg) / 2
+
+    poly = partial_annulus(r_in, r_out, 90 + half_open, 450 - half_open)
+    clip = trimesh.creation.extrude_polygon(poly, height=length_y)
+    R = trimesh.transformations.rotation_matrix(-math.pi / 2, [1, 0, 0])
+    clip.apply_transform(R)
+    clip.apply_translation([0, -length_y / 2, 0])
+    return clip
+
+
+def build_parallel_pinch(gap, arm_l, length_y, wall_t=None):
+    """Long-walled clothespin-style pinch — two parallel rectangular walls
+    spaced `gap` apart in X, joined at the +Z end by a horizontal cap, open
+    at -Z. Y axis runs along the sponge's top edge. Centred at the origin."""
+    t = WALL_T if wall_t is None else wall_t
+
+    half_g = gap / 2
+    half_l = arm_l / 2
+
+    left_wall = box(
+        extents=[t, length_y, arm_l],
+        center=[-(half_g + t / 2), 0, 0],
+    )
+    right_wall = box(
+        extents=[t, length_y, arm_l],
+        center=[+(half_g + t / 2), 0, 0],
+    )
+    cap = box(
+        extents=[gap + 2 * t, length_y, t],
+        center=[0, 0, half_l + t / 2 - CLIP_OVERLAP / 2],
+    )
+    pinch = trimesh.boolean.union([left_wall, right_wall, cap], engine="manifold")
+    if not pinch.is_volume:
+        pinch = trimesh.util.concatenate([left_wall, right_wall, cap])
+    return pinch
 
 
 # ============================================================================
