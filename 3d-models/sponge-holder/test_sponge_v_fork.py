@@ -1,33 +1,43 @@
 #!/usr/bin/env python3
-"""MVP variant 4: converging fork-pinch.
+"""MVP variant 4: clothespin-tips fork-pinch.
 
-Iteration on the parallel-wall pinch after testing the cylindrical C
-versions. Three changes:
+Inverted from the first attempt after user feedback: narrow at the
+bottom, wider at the top, so the prongs behave like spring-loaded
+clothespin tips. Cap at the top is the rigid "hinge"; the prongs
+hang down converging until they almost touch at the open mouth.
 
-  - Walls converge (gap 16 mm at the mouth → 8 mm at the throat) so the
-    sponge wedges in tighter the further it goes; gravity + water make
-    it self-tighten.
-  - Each wall is split into 4 prongs separated by Y-direction gaps so
-    water drains and air reaches the sponge — fixes the "drying" issue
-    of a fully-enclosed pinch.
-  - Short arm (28 mm) so only the top of the sponge is gripped; the
-    bottom hangs free in the air.
+The pinching action lives in the wall flex: when the sponge pushes
+through the narrow tips, the prongs spread; once past, the sponge
+sits in the wider zone above and the tips spring back, locking it in.
+
+  - Throat (top, where the cap closes the structure): 14 mm — sponge
+    barely compressed here, free to dry.
+  - Tips (bottom, open mouth): 6 mm — sponge has to wedge through;
+    once in, the spring-loaded tips don't let it back out without
+    deliberate pulling.
+  - Each wall is split into 4 vertical prongs with Y-direction air
+    gaps so water drains and air reaches the sponge.
+  - Short arm (28 mm) so only the top edge of the sponge is held; the
+    rest hangs free in the air.
 
 UX:
-  - Mouth is the widest gap → sponge slots in with light pressure.
-  - As it goes up, walls squeeze harder → no slipping.
-  - To remove: pull straight down through the wide mouth.
+  - Insert: push sponge up against the tips, feel them spread, then
+    "click" past as the wider zone above receives the bulk of the
+    sponge.
+  - Remove: pull down — same click-back-through-tips action.
+  - No mechanical opening; the prongs flex as a clothespin would.
 
-Print orientation: walls vertical (Z), gap in X, mouth on the bed.
-The cap on top bridges 8 mm — short enough for PLA without supports.
+Print orientation: walls vertical (Z), gap in X, narrow tips on the
+bed. The 14 mm cap span at the top bridges fine in PLA without
+supports.
 """
 
 from pathlib import Path
 
 import generate_stl as g
 
-GAP_TOP_MM     = 8.0    # narrow throat (final grip)
-GAP_BOTTOM_MM  = 16.0   # wide mouth (easy entry)
+GAP_TOP_MM     = 14.0   # wider top (cap end, hinge)
+GAP_BOTTOM_MM  = 6.0    # narrow tips (the actual pinch)
 ARM_LEN_MM     = 28.0   # how deep the clip grips (sponge sticks out below)
 TOTAL_Y_MM     = 55.0   # along sponge top edge
 NUM_PRONGS     = 4
@@ -64,14 +74,15 @@ def main():
     print(f"Bounding box (mm): X {size[0]:.1f}  Y {size[1]:.1f}  Z {size[2]:.1f}")
     print(f"Volume: {pinch.volume / 1000:.1f} cm³  (manifold={pinch.is_volume})")
     print()
-    print(f"Variant: fork-pinch · gap {GAP_BOTTOM_MM}→{GAP_TOP_MM} mm · "
-          f"arm {ARM_LEN_MM} mm · {NUM_PRONGS} prongs/side")
+    print(f"Variant: clothespin fork-pinch · tips {GAP_BOTTOM_MM} mm → "
+          f"throat {GAP_TOP_MM} mm · arm {ARM_LEN_MM} mm · "
+          f"{NUM_PRONGS} prongs/side")
     print("Test:")
-    print(f"  [ ] Sponge slots in with light pressure at the wide mouth")
-    print(f"  [ ] Wedges tight by the time the top is at the throat")
+    print(f"  [ ] Sponge clicks past the bottom tips with deliberate pressure")
+    print(f"  [ ] Tips spring back — sponge stays without slipping")
     print(f"  [ ] Bottom of sponge hangs free → drips dry")
-    print(f"  [ ] Pull-down release feels intuitive")
-    print(f"  [ ] Walls flex visibly during insertion but no cracks")
+    print(f"  [ ] Pull-down release also clicks past the tips, no jamming")
+    print(f"  [ ] Tip prongs flex without cracking at their base")
 
 
 if __name__ == "__main__":

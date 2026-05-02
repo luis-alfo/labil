@@ -221,7 +221,10 @@ def build_fork_pinch(
     half_top = gap_top / 2
     half_bot = gap_bottom / 2
     half_l = arm_l / 2
-    x_outer = half_bot + t   # outermost X face of the walls (constant)
+    # outermost X face of each wall — must be at least `t` further out than
+    # whichever end of the inner edge is widest, otherwise the wall has zero
+    # thickness or the outline self-degenerates.
+    x_outer = max(half_top, half_bot) + t
 
     # Side profile of one LEFT prong, CCW in shapely XY (= design XZ after rot).
     # bottom-outer → top-outer → top-inner → bottom-inner

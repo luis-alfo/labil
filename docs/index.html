@@ -77,11 +77,7 @@
     .tabs {
       display: flex;
       gap: 0.15rem;
-      overflow-x: auto;
-      scrollbar-width: none;
-      max-width: 70vw;
     }
-    .tabs::-webkit-scrollbar { display: none; }
     .tabs a { white-space: nowrap; }
     .tabs a {
       font-family: inherit;
@@ -100,6 +96,32 @@
     .tabs a.active {
       color: var(--accent);
       background: rgba(194, 65, 12, 0.08);
+    }
+
+    /* Mobile dropdown — replaces the pill row when there's no room */
+    .tabs-mobile { display: none; }
+    @media (max-width: 760px) {
+      .tabs        { display: none; }
+      .tabs-mobile {
+        display: block;
+        font-family: inherit;
+        font-size: 0.95rem;
+        color: var(--text);
+        background: rgba(220, 208, 181, 0.45);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 0.4rem 2rem 0.4rem 0.95rem;
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6' fill='none'><path d='M1 1l4 4 4-4' stroke='%23786D60' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 0.65rem;
+        max-width: 60vw;
+        cursor: pointer;
+      }
+      .tabs-mobile:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+      .tabs-mobile optgroup { font-style: italic; color: var(--muted); }
     }
 
     /* ---- Scroll-snap container ---- */
@@ -226,6 +248,24 @@
       <a href="#pinch-flat" data-target="pinch-flat">Pinza recta</a>
       <a href="#pinch-fork" data-target="pinch-fork">Pinza tenedor</a>
     </nav>
+    <select class="tabs-mobile" aria-label="Modelos">
+      <optgroup label="Barra modular">
+        <option value="bar-a">A · Hilo</option>
+        <option value="bar-b">B · Carril</option>
+        <option value="bar-c">C · Rama</option>
+      </optgroup>
+      <optgroup label="Sponge holder">
+        <option value="full">Esponja completa</option>
+        <option value="faucet">Abrazadera</option>
+        <option value="sponge">Pinza original</option>
+      </optgroup>
+      <optgroup label="Variantes de pinza">
+        <option value="pinch-300">Pinza 300°</option>
+        <option value="pinch-340">Pinza 340°</option>
+        <option value="pinch-flat">Pinza recta</option>
+        <option value="pinch-fork">Pinza tenedor</option>
+      </optgroup>
+    </select>
   </header>
 
   <main id="snap-root">
@@ -510,18 +550,21 @@
     <section id="pinch-fork">
       <div class="section-inner">
         <div class="eyebrow">Variante de pinza · v4 · candidata final</div>
-        <h2>Pinza tenedor — convergente y ventilada</h2>
+        <h2>Pinza tenedor — puntas que pellizcan</h2>
         <p class="lede">
-          Iteración tras tu feedback. Paredes que <em>convergen</em>
-          (16 mm en la boca → 8 mm en la garganta) para que la esponja
-          se cuñe sola al meterla. Cada pared dividida en 4 prongs con
-          huecos para que el agua escurra y el aire seque.
+          Geometría tipo pinza de tender: <em>estrecho abajo</em> (6 mm
+          en las puntas, donde realmente se hace pinza) y
+          <em>ancho arriba</em> (14 mm en la garganta, junto al cap que
+          actúa como bisagra). La esponja entra a presión deliberada por
+          las puntas y, una vez dentro, las puntas se relajan
+          pellizcándola. Cada pared dividida en 4 prongs con huecos para
+          que el agua escurra y el aire seque.
           Brazo corto: solo agarra la parte superior, el resto del
           estropajo cuelga libre.
         </p>
         <model-viewer
           data-src="models/test_sponge_v_fork.glb"
-          alt="Pinza tenedor convergente"
+          alt="Pinza tenedor tipo clothespin"
           auto-rotate
           camera-controls
           ar
@@ -533,10 +576,10 @@
         </model-viewer>
         <p class="ar-pill">📱 La favorita estructural — pruébala primero</p>
         <dl class="meta">
-          <dt>Boca · Garganta</dt><dd>16 mm · 8 mm (cuña)</dd>
+          <dt>Puntas · Garganta</dt><dd>6 mm · 14 mm (clothespin)</dd>
           <dt>Brazo</dt><dd>28 mm (no envuelve toda la esponja)</dd>
           <dt>Prongs</dt><dd>4 por lado, 55% material / 45% aire en Y</dd>
-          <dt>Bounding box</dt><dd>24 × 55 × 32 mm</dd>
+          <dt>Bounding box</dt><dd>22 × 55 × 32 mm</dd>
           <dt>Volumen</dt><dd>~15 cm³</dd>
           <dt>Tiempo impr.</dt><dd>~20 min</dd>
           <dt>STL</dt><dd><a href="../3d-models/sponge-holder/test_sponge_v_fork.stl">descargar</a></dd>
@@ -565,9 +608,13 @@
     // ── Active-tab tracking via IntersectionObserver inside <main>
     const sections = document.querySelectorAll("main section");
     const tabs     = document.querySelectorAll(".tabs a");
-    const setActive = id => tabs.forEach(a =>
-      a.classList.toggle("active", a.dataset.target === id)
-    );
+    const select   = document.querySelector(".tabs-mobile");
+
+    const setActive = id => {
+      tabs.forEach(a => a.classList.toggle("active", a.dataset.target === id));
+      if (select && select.value !== id) select.value = id;
+    };
+
     const io = new IntersectionObserver(
       entries => {
         let best = null, bestRatio = 0;
@@ -583,7 +630,7 @@
     );
     sections.forEach(s => io.observe(s));
 
-    // ── Smooth scroll inside <main> when clicking a tab
+    // ── Smooth scroll when clicking a desktop tab
     tabs.forEach(a => {
       a.addEventListener("click", e => {
         e.preventDefault();
@@ -591,6 +638,14 @@
         if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
       });
     });
+
+    // ── Smooth scroll when picking from the mobile dropdown
+    if (select) {
+      select.addEventListener("change", e => {
+        const target = document.getElementById(e.target.value);
+        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
   </script>
 </body>
 </html>
