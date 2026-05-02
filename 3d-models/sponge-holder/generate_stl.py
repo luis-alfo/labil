@@ -58,14 +58,19 @@ ELBOW_R              = 8.0    # centerline radius of the bend (more = more elega
 # --- Vertical drop ---
 DROP_LEN             = 18.0   # vertical centerline length (arc end → bottom)
 
-# --- Sponge clip (C-clip, axis Y, mouth -Z; the sponge top edge is pinched) ---
-SPONGE_GAP           = 14.0   # inner gap < 20 mm: pinches the sponge thickness
-SPONGE_CLIP_LEN_Y    = 50.0   # length along the sponge's top edge
-SPONGE_CLIP_WRAP_DEG = 220.0  # less wrap → flexes well in PLA
+# --- Sponge pinch (clothespin-tips fork; replaces the old C-clip) ---
+PINCH_GAP_TOP        = 14.0   # wider top: hinge zone, cap base
+PINCH_GAP_BOTTOM     = 6.0    # narrow tips: where the actual pinch happens
+PINCH_ARM_L          = 28.0   # vertical extent of the prongs
+PINCH_LEN_Y          = 55.0   # along sponge top edge
+PINCH_NUM_PRONGS     = 5
+PINCH_PRONG_Y_RATIO  = 0.35
+PINCH_WALL_T         = 3.0    # thinner than WALL_T so the prongs flex
 
 ARC_SEG              = 96
 
 OUT_FILE = Path(__file__).with_name("sponge_holder.stl")
+OUT_3MF  = Path(__file__).with_name("sponge_holder.3mf")
 WEB_DIR  = Path(__file__).resolve().parents[2] / "docs" / "models"
 WEB_FILE = WEB_DIR / "sponge_holder.glb"
 
@@ -163,20 +168,31 @@ def make_arm_drop():
 
 
 def make_sponge_clip():
-    """C-clip with axis along Y. Mouth opens -Z so the user pushes the
-    sponge up into the clip from below; the clip's <20 mm inner gap pinches
-    the sponge thickness."""
-    clip = build_c_clip(SPONGE_GAP, SPONGE_CLIP_WRAP_DEG, SPONGE_CLIP_LEN_Y)
+    """Sponge pinch: clothespin-tips fork-pinch. The curved cap sits at the
+    top, merged with the bottom of the drop strap. Sponge enters from below
+    by pushing past the narrow tips, expands into the wider zone above, and
+    the spring-loaded prongs hold it in place. Air gaps between prongs let
+    the sponge dry."""
+    pinch = build_fork_pinch(
+        gap_top=PINCH_GAP_TOP,
+        gap_bottom=PINCH_GAP_BOTTOM,
+        arm_l=PINCH_ARM_L,
+        total_y=PINCH_LEN_Y,
+        num_prongs=PINCH_NUM_PRONGS,
+        prong_y_ratio=PINCH_PRONG_Y_RATIO,
+        wall_t=PINCH_WALL_T,
+        curved_cap=True,
+    )
 
-    # Position so the +Z top of the outer surface meets the bottom of the drop.
+    # Position so the drop strap's bottom face lands inside the SOLID part
+    # of the curved cap (above the inner-hole boundary). z_local at the drop
+    # bottom must be > half_l + cap_inner_R for a clean weld.
     drop_end_x, drop_end_z = drop_end_xz()
-    r_out = SPONGE_GAP / 2 + WALL_T
-    clip.apply_translation([
-        drop_end_x,
-        0,
-        drop_end_z - r_out + CLIP_OVERLAP,
-    ])
-    return clip
+    half_l = PINCH_ARM_L / 2
+    cap_inner_R = PINCH_GAP_TOP / 2
+    z_local_at_drop = (half_l + cap_inner_R) + CLIP_OVERLAP
+    pinch.apply_translation([drop_end_x, 0, drop_end_z - z_local_at_drop])
+    return pinch
 
 
 def build_c_clip(gap, wrap_deg, length_y):
@@ -319,6 +335,7 @@ def main():
         holder = trimesh.util.concatenate(parts)
 
     holder.export(OUT_FILE)
+    holder.export(OUT_3MF)
     WEB_DIR.mkdir(parents=True, exist_ok=True)
     holder.export(WEB_FILE)
     update_web_version()
@@ -326,6 +343,7 @@ def main():
     bbox_min, bbox_max = holder.bounds
     size = bbox_max - bbox_min
     print(f"Wrote {OUT_FILE}")
+    print(f"Wrote {OUT_3MF}")
     print(f"Wrote {WEB_FILE}  (web viewer)")
     print(f"Triangles: {len(holder.faces)}")
     print(f"Bounding box (mm): X {size[0]:.1f}  Y {size[1]:.1f}  Z {size[2]:.1f}")
