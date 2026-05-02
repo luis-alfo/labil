@@ -40,8 +40,9 @@ GAP_TOP_MM     = 14.0   # wider top (cap end, hinge)
 GAP_BOTTOM_MM  = 6.0    # narrow tips (the actual pinch)
 ARM_LEN_MM     = 28.0   # how deep the clip grips (sponge sticks out below)
 TOTAL_Y_MM     = 55.0   # along sponge top edge
-NUM_PRONGS     = 4
-PRONG_Y_RATIO  = 0.55   # 55% material, 45% air gaps in Y
+NUM_PRONGS     = 5      # more prongs, each thinner — distributes the pinch
+PRONG_Y_RATIO  = 0.35   # 35% material, 65% air gaps in Y (slim "fingers")
+WALL_T_MM      = 3.0    # thinner wall — flexes uniformly along its length
 
 OUT = Path(__file__).with_name("test_sponge_v_fork.stl")
 WEB = Path(__file__).resolve().parents[2] / "docs" / "models" / "test_sponge_v_fork.glb"
@@ -55,6 +56,8 @@ def main():
         total_y=TOTAL_Y_MM,
         num_prongs=NUM_PRONGS,
         prong_y_ratio=PRONG_Y_RATIO,
+        wall_t=WALL_T_MM,
+        curved_cap=True,
     )
     bmin, bmax = pinch.bounds
     pinch.apply_translation([

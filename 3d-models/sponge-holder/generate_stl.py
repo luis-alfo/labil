@@ -197,22 +197,25 @@ def build_c_clip(gap, wrap_deg, length_y):
 
 def build_fork_pinch(
     gap_top, gap_bottom, arm_l, total_y,
-    num_prongs=4, prong_y_ratio=0.55, wall_t=None,
+    num_prongs=5, prong_y_ratio=0.35, wall_t=None, curved_cap=True,
 ):
-    """Fork-shape converging pinch. Two opposite walls go from gap_bottom
-    at -Z (the open mouth, easy to insert) to gap_top at +Z (the closed
-    throat, where the sponge is wedged). Each wall is split into
-    `num_prongs` vertical fingers separated by Y-direction gaps so air
-    and water reach the sponge instead of being trapped against a solid
-    wall.
+    """Fork-shape clothespin-tips pinch. Two opposite walls go from
+    `gap_bottom` at -Z (the narrow tips that pinch) to `gap_top` at +Z
+    (the wider hinge zone, capped by a curved arch). Each wall is split
+    into `num_prongs` thin vertical fingers separated by Y-direction
+    gaps so air and water reach the sponge.
 
-    Layout (looking from +Y):
-                                +Z   ┌───── cap ─────┐
-                                     │ │ │ │ │ │ │ │ │     ← prongs
-                                     │ │ │ │ │ │ │ │ │
-                                -Z   ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓        ← open mouth
+    Walls have constant `wall_t` thickness (outer face slants to follow
+    the inner edge) so the prongs flex uniformly along their length.
+    Rigidity comes from the half-cylinder cap on top, not from extra
+    wall thickness — that gives proper clothespin behaviour: thin
+    flexible tips, rigid hinge.
+
+                                +Z   ╭─── arch cap ───╮
+                                     │ │ │ │ │ │ │ │ │ │   ← prongs (slanted)
+                                     │ │ │ │ │ │ │ │ │ │     gap widens upward
+                                -Z   ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓   ← narrow tips (open)
                                      ←──── total_y ────→
-    Cross-section in X (looking from +Y): /\\ inverted V (gap_top < gap_bottom).
     """
     from shapely.geometry import Polygon as _Poly
 
@@ -221,25 +224,23 @@ def build_fork_pinch(
     half_top = gap_top / 2
     half_bot = gap_bottom / 2
     half_l = arm_l / 2
-    # outermost X face of each wall — must be at least `t` further out than
-    # whichever end of the inner edge is widest, otherwise the wall has zero
-    # thickness or the outline self-degenerates.
-    x_outer = max(half_top, half_bot) + t
 
-    # Side profile of one LEFT prong, CCW in shapely XY (= design XZ after rot).
-    # bottom-outer → top-outer → top-inner → bottom-inner
+    # Constant-thickness walls — outer face mirrors inner face offset by t
+    x_top_outer = half_top + t
+    x_bot_outer = half_bot + t
+
+    # Side profile of one prong (constant t thick, slanted)
     left_profile = _Poly([
-        (-x_outer, -half_l),
-        (-x_outer, +half_l),
-        (-half_top, +half_l),
-        (-half_bot, -half_l),
+        (-x_bot_outer, -half_l),   # bottom outer (close to centre, narrow base)
+        (-x_top_outer, +half_l),   # top outer (further out, wider top)
+        (-half_top, +half_l),      # top inner
+        (-half_bot, -half_l),      # bottom inner (closest to centre — the tip)
     ])
-    # Mirror for the RIGHT prong, also CCW.
     right_profile = _Poly([
+        (+x_bot_outer, -half_l),
         (+half_bot, -half_l),
         (+half_top, +half_l),
-        (+x_outer, +half_l),
-        (+x_outer, -half_l),
+        (+x_top_outer, +half_l),
     ])
 
     num_gaps = max(num_prongs - 1, 1)
@@ -257,15 +258,22 @@ def build_fork_pinch(
         for yc in y_centres:
             prong = trimesh.creation.extrude_polygon(profile, height=prong_w)
             prong.apply_transform(R)
-            # rotation places the prism in design Y range [-prong_w, 0]; shift
-            # so its midpoint is at yc.
             prong.apply_translation([0, yc + prong_w / 2, 0])
             parts.append(prong)
 
-    cap = box(
-        extents=[2 * x_outer, total_y, t],
-        center=[0, 0, half_l + t / 2 - CLIP_OVERLAP / 2],
-    )
+    if curved_cap:
+        # Half-cylinder arch: outer radius matches the wall outer edge at top,
+        # inner radius matches the throat half-gap. The straight base of the
+        # half-annulus joins the prong tops at z = half_l.
+        cap_poly = partial_annulus(half_top, x_top_outer, 0, 180)
+        cap = trimesh.creation.extrude_polygon(cap_poly, height=total_y)
+        cap.apply_transform(R)
+        cap.apply_translation([0, total_y / 2, half_l - CLIP_OVERLAP])
+    else:
+        cap = box(
+            extents=[2 * x_top_outer, total_y, t],
+            center=[0, 0, half_l + t / 2 - CLIP_OVERLAP / 2],
+        )
     parts.append(cap)
 
     pinch = trimesh.boolean.union(parts, engine="manifold")
