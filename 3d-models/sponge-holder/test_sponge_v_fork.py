@@ -45,6 +45,7 @@ PRONG_Y_RATIO  = 0.35   # 35% material, 65% air gaps in Y (slim "fingers")
 WALL_T_MM      = 3.0    # thinner wall — flexes uniformly along its length
 
 OUT = Path(__file__).with_name("test_sponge_v_fork.stl")
+OUT_3MF = Path(__file__).with_name("test_sponge_v_fork.3mf")
 WEB = Path(__file__).resolve().parents[2] / "docs" / "models" / "test_sponge_v_fork.glb"
 
 
@@ -66,6 +67,7 @@ def main():
         -bmin[2],
     ])
     pinch.export(OUT)
+    pinch.export(OUT_3MF)
     WEB.parent.mkdir(parents=True, exist_ok=True)
     pinch.export(WEB)
     g.update_web_version()
@@ -73,6 +75,7 @@ def main():
     bmin, bmax = pinch.bounds
     size = bmax - bmin
     print(f"Wrote {OUT}")
+    print(f"Wrote {OUT_3MF}")
     print(f"Triangles: {len(pinch.faces)}")
     print(f"Bounding box (mm): X {size[0]:.1f}  Y {size[1]:.1f}  Z {size[2]:.1f}")
     print(f"Volume: {pinch.volume / 1000:.1f} cm³  (manifold={pinch.is_volume})")
