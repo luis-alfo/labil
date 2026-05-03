@@ -23,8 +23,11 @@ varias veces al día) sin partirse.
 | Soportes | **Árbol, touching build plate only** | igual |
 | Z-distancia soporte | 0.20 mm | 0.20 mm |
 
-Tiempo estimado: **~1 h 20 min**. Material: **~26 g**.
-Bounding box: **87 × 55 × 56 mm**.
+Tiempo estimado: **~1 h 15 min**. Material: **~25 g**.
+Bounding box: **87 × 55 × 50 mm**.
+
+> Pinza: 2 prongs en los extremos (no 5 distribuidos), brazo de 14 mm.
+> Centro abierto para que la esponja seque, inserción fácil.
 
 ## Orientación
 

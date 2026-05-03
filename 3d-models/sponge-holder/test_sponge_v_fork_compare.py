@@ -19,6 +19,12 @@ ARM_LEFT_MM   = 20.0
 ARM_RIGHT_MM  = 14.0
 SEPARATION_MM = 8.0   # clearance between the two pieces along X
 
+# Frozen at the 5-prong design used during the actual A/B test, so this
+# file stays as a faithful snapshot even if generate_stl.py defaults
+# change in later iterations.
+NUM_PRONGS_FROZEN     = 5
+PRONG_Y_RATIO_FROZEN  = 0.35
+
 OUT     = Path(__file__).with_name("test_sponge_v_fork_compare.stl")
 OUT_3MF = Path(__file__).with_name("test_sponge_v_fork_compare.3mf")
 WEB     = Path(__file__).resolve().parents[2] / "docs" / "models" / "test_sponge_v_fork_compare.glb"
@@ -30,8 +36,8 @@ def _make_pinch(arm_l):
         gap_bottom=g.PINCH_GAP_BOTTOM,
         arm_l=arm_l,
         total_y=g.PINCH_LEN_Y,
-        num_prongs=g.PINCH_NUM_PRONGS,
-        prong_y_ratio=g.PINCH_PRONG_Y_RATIO,
+        num_prongs=NUM_PRONGS_FROZEN,
+        prong_y_ratio=PRONG_Y_RATIO_FROZEN,
         wall_t=g.PINCH_WALL_T,
         curved_cap=True,
     )

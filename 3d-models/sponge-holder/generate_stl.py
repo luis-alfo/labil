@@ -61,11 +61,12 @@ DROP_LEN             = 18.0   # vertical centerline length (arc end → bottom)
 # --- Sponge pinch (clothespin-tips fork; replaces the old C-clip) ---
 PINCH_GAP_TOP        = 14.0   # wider top: hinge zone, cap base
 PINCH_GAP_BOTTOM     = 6.0    # narrow tips: where the actual pinch happens
-PINCH_ARM_L          = 20.0   # vertical extent of the prongs (was 28: shortened
-                              # so the sponge clears the narrow tips faster)
+PINCH_ARM_L          = 14.0   # vertical extent of the prongs (chosen after the
+                              # 20mm vs 14mm A/B test — the short version won)
 PINCH_LEN_Y          = 55.0   # along sponge top edge
-PINCH_NUM_PRONGS     = 5
-PINCH_PRONG_Y_RATIO  = 0.35
+PINCH_NUM_PRONGS     = 2      # only the extremes — middle of the sponge is
+                              # left exposed to air for drying
+PINCH_PRONG_Y_RATIO  = 0.35   # ~9.6 mm per end prong, ~35.7 mm air gap
 PINCH_WALL_T         = 3.0    # thinner than WALL_T so the prongs flex
 
 ARC_SEG              = 96
