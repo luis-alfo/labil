@@ -26,8 +26,12 @@ varias veces al día) sin partirse.
 Tiempo estimado: **~1 h 15 min**. Material: **~25 g**.
 Bounding box: **87 × 55 × 50 mm**.
 
-> Pinza: 2 prongs en los extremos (no 5 distribuidos), brazo de 14 mm.
-> Centro abierto para que la esponja seque, inserción fácil.
+> **Pinza**: 2 prongs triangulares en los extremos (8 mm de base, punta
+> redondeada R 1.5 mm), brazo de 14 mm. Centro abierto para que la
+> esponja seque.
+>
+> **Refuerzo**: gusset triangular 8×10 mm en la junta clip↔brazo,
+> donde se concentra el momento de flexión cuando el estropajo cuelga.
 
 ## Orientación
 

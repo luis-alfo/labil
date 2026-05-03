@@ -66,11 +66,14 @@ PINCH_ARM_L          = 14.0   # vertical extent of the prongs (chosen after the
 PINCH_LEN_Y          = 55.0   # along sponge top edge
 PINCH_NUM_PRONGS     = 2      # only the extremes — middle of the sponge is
                               # left exposed to air for drying
-PINCH_PRONG_Y_RATIO  = 0.14   # ~3.85 mm per end prong (kept thin so insertion
-                              # stays easy; with 14 mm arm the cantilever
-                              # stiffness is 8× higher than at 28 mm, so
-                              # widening per prong stacks too much resistance)
-PINCH_WALL_T         = 3.0    # thinner than WALL_T so the prongs flex
+PINCH_PRONG_W_BASE   = 8.0    # Y-width at the cap end (wide → strong root)
+PINCH_PRONG_TIP_R    = 1.5    # rounding radius at the open mouth (no sharp
+                              # corner; the prong tapers to a soft cylinder edge)
+PINCH_WALL_T         = 3.0    # wall thickness in the X direction
+
+# --- Reinforcement gusset at the clip → arm junction ---
+GUSSET_H             = 8.0    # vertical extent down the clip outer face
+GUSSET_W             = 10.0   # horizontal extent along the arm
 
 ARC_SEG              = 96
 
@@ -151,6 +154,32 @@ def drop_end_xz():
     return arm_drop_centerline()[-1]
 
 
+def make_clip_arm_gusset():
+    """Triangular gusset reinforcing the corner where the horizontal arm
+    exits the clip ring. The arm carries the sponge weight as a cantilever,
+    so the maximum bending moment is at this junction — without the gusset
+    a hairline crack tends to start at the top-back of the clip ring on
+    repeated loading. The gusset spreads the bending stress over a 8×10 mm
+    triangle and into the lower half of the clip wall."""
+    from shapely.geometry import Polygon as _Poly
+
+    r_out = CLIP_INNER_D / 2 + WALL_T
+    z_arm_bot = CLIP_HEIGHT / 2 - WALL_T   # bottom face of the arm
+    # Triangle in XZ plane: starts at the corner (clip outer, arm bottom),
+    # extends DOWN along the clip face by GUSSET_H, and OUT along the arm
+    # bottom by GUSSET_W. Hypotenuse is the diagonal between those tips.
+    poly = _Poly([
+        (-r_out + CLIP_OVERLAP, z_arm_bot),
+        (-r_out + CLIP_OVERLAP, z_arm_bot - GUSSET_H),
+        (-r_out - GUSSET_W,     z_arm_bot),
+    ])
+    mesh = trimesh.creation.extrude_polygon(poly, height=ARM_WIDTH_Y)
+    Rmat = trimesh.transformations.rotation_matrix(math.pi / 2, [1, 0, 0])
+    mesh.apply_transform(Rmat)
+    mesh.apply_translation([0, ARM_WIDTH_Y / 2, 0])
+    return mesh
+
+
 def make_arm_drop():
     """Smooth swept solid: arm + 90° fillet + drop, all one continuous piece.
 
@@ -173,18 +202,19 @@ def make_arm_drop():
 
 
 def make_sponge_clip():
-    """Sponge pinch: clothespin-tips fork-pinch. The curved cap sits at the
-    top, merged with the bottom of the drop strap. Sponge enters from below
-    by pushing past the narrow tips, expands into the wider zone above, and
-    the spring-loaded prongs hold it in place. Air gaps between prongs let
-    the sponge dry."""
+    """Sponge pinch: clothespin-tips fork-pinch with triangular prongs.
+    The curved cap sits at the top, merged with the bottom of the drop
+    strap. Sponge enters from below by pushing past the rounded narrow
+    tips, expands into the wider zone above, and the spring-loaded
+    prongs hold it in place."""
     pinch = build_fork_pinch(
         gap_top=PINCH_GAP_TOP,
         gap_bottom=PINCH_GAP_BOTTOM,
         arm_l=PINCH_ARM_L,
         total_y=PINCH_LEN_Y,
         num_prongs=PINCH_NUM_PRONGS,
-        prong_y_ratio=PINCH_PRONG_Y_RATIO,
+        prong_w_base=PINCH_PRONG_W_BASE,
+        tip_radius=PINCH_PRONG_TIP_R,
         wall_t=PINCH_WALL_T,
         curved_cap=True,
     )
@@ -216,79 +246,94 @@ def build_c_clip(gap, wrap_deg, length_y):
     return clip
 
 
+def _build_triangular_prong(y_c, sign, half_top, half_bot, half_l,
+                            x_top_outer, x_bot_outer,
+                            prong_w_base, tip_radius):
+    """One triangular prong: wide rectangle at the top (cap base, full
+    `prong_w_base` Y-width) tapering down to a half-cylinder rounded tip
+    of radius `tip_radius` at the bottom. Built as the convex hull of
+    the corner vertices."""
+    x_out_top = sign * x_top_outer
+    x_in_top  = sign * half_top
+    x_out_bot = sign * x_bot_outer
+    x_in_bot  = sign * half_bot
+
+    half_w = prong_w_base / 2
+    R = tip_radius
+
+    verts = [
+        # Top rectangle (base; widest part, where cap connects)
+        [x_out_top, y_c - half_w, +half_l],
+        [x_in_top,  y_c - half_w, +half_l],
+        [x_in_top,  y_c + half_w, +half_l],
+        [x_out_top, y_c + half_w, +half_l],
+    ]
+    # Bottom rounded tip — half-cylinder of radius R, axis along X.
+    # Sample the lower half-circle (theta 180° → 360°) at both X faces.
+    n_arc = 9
+    for x in (x_out_bot, x_in_bot):
+        for i in range(n_arc):
+            theta = math.radians(180 + 180 * i / (n_arc - 1))
+            dy = R * math.cos(theta)
+            dz = R * math.sin(theta)
+            verts.append([x, y_c + dy, -half_l + R + dz])
+
+    return trimesh.points.PointCloud(np.array(verts)).convex_hull
+
+
 def build_fork_pinch(
     gap_top, gap_bottom, arm_l, total_y,
-    num_prongs=5, prong_y_ratio=0.35, wall_t=None, curved_cap=True,
+    num_prongs=2,
+    prong_w_base=8.0,
+    tip_radius=1.5,
+    wall_t=None, curved_cap=True,
 ):
-    """Fork-shape clothespin-tips pinch. Two opposite walls go from
-    `gap_bottom` at -Z (the narrow tips that pinch) to `gap_top` at +Z
-    (the wider hinge zone, capped by a curved arch). Each wall is split
-    into `num_prongs` thin vertical fingers separated by Y-direction
-    gaps so air and water reach the sponge.
+    """Fork-pinch with triangular prongs that taper from a wide base
+    (cap end) to a rounded tip (open mouth). Wide base = stiff root,
+    less prone to snapping; rounded tip = no stress-concentration corner.
 
-    Walls have constant `wall_t` thickness (outer face slants to follow
-    the inner edge) so the prongs flex uniformly along their length.
-    Rigidity comes from the half-cylinder cap on top, not from extra
-    wall thickness — that gives proper clothespin behaviour: thin
-    flexible tips, rigid hinge.
+    The two walls converge (gap_bottom at -Z = narrow tips; gap_top at
+    +Z = wider hinge zone) and a half-cylinder arch caps the top.
 
-                                +Z   ╭─── arch cap ───╮
-                                     │ │ │ │ │ │ │ │ │ │   ← prongs (slanted)
-                                     │ │ │ │ │ │ │ │ │ │     gap widens upward
-                                -Z   ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓   ← narrow tips (open)
-                                     ←──── total_y ────→
+                                +Z   ╭───── arch cap ─────╮
+                                     ▲ wide       wide ▲       ← prong base
+                                     │              │           (full prong_w_base)
+                                     │              │
+                                -Z   ▼ rounded tip ▼   ← rounded edge,
+                                     ←─── total_y ───→     no sharp corner
     """
-    from shapely.geometry import Polygon as _Poly
-
     t = WALL_T if wall_t is None else wall_t
 
     half_top = gap_top / 2
     half_bot = gap_bottom / 2
     half_l = arm_l / 2
-
-    # Constant-thickness walls — outer face mirrors inner face offset by t
     x_top_outer = half_top + t
     x_bot_outer = half_bot + t
 
-    # Side profile of one prong (constant t thick, slanted)
-    left_profile = _Poly([
-        (-x_bot_outer, -half_l),   # bottom outer (close to centre, narrow base)
-        (-x_top_outer, +half_l),   # top outer (further out, wider top)
-        (-half_top, +half_l),      # top inner
-        (-half_bot, -half_l),      # bottom inner (closest to centre — the tip)
-    ])
-    right_profile = _Poly([
-        (+x_bot_outer, -half_l),
-        (+half_bot, -half_l),
-        (+half_top, +half_l),
-        (+x_top_outer, +half_l),
-    ])
+    # Distribute prongs along Y. With 2 prongs we want them at the extremes.
+    if num_prongs == 1:
+        y_centres = [0.0]
+    else:
+        usable = total_y - prong_w_base
+        y_centres = [
+            -total_y / 2 + prong_w_base / 2 + i * usable / (num_prongs - 1)
+            for i in range(num_prongs)
+        ]
 
-    num_gaps = max(num_prongs - 1, 1)
-    prong_w = (total_y * prong_y_ratio) / num_prongs
-    gap_w   = (total_y * (1 - prong_y_ratio)) / num_gaps if num_prongs > 1 else 0
-
-    y_centres = [
-        -total_y / 2 + prong_w / 2 + i * (prong_w + gap_w)
-        for i in range(num_prongs)
-    ]
-
-    R = trimesh.transformations.rotation_matrix(math.pi / 2, [1, 0, 0])
     parts = []
-    for profile in (left_profile, right_profile):
-        for yc in y_centres:
-            prong = trimesh.creation.extrude_polygon(profile, height=prong_w)
-            prong.apply_transform(R)
-            prong.apply_translation([0, yc + prong_w / 2, 0])
-            parts.append(prong)
+    for yc in y_centres:
+        for sign in (-1, +1):
+            parts.append(_build_triangular_prong(
+                yc, sign, half_top, half_bot, half_l,
+                x_top_outer, x_bot_outer,
+                prong_w_base, tip_radius,
+            ))
 
     if curved_cap:
-        # Half-cylinder arch: outer radius matches the wall outer edge at top,
-        # inner radius matches the throat half-gap. The straight base of the
-        # half-annulus joins the prong tops at z = half_l.
         cap_poly = partial_annulus(half_top, x_top_outer, 0, 180)
         cap = trimesh.creation.extrude_polygon(cap_poly, height=total_y)
-        cap.apply_transform(R)
+        Rmat = trimesh.transformations.rotation_matrix(math.pi / 2, [1, 0, 0])
+        cap.apply_transform(Rmat)
         cap.apply_translation([0, total_y / 2, half_l - CLIP_OVERLAP])
     else:
         cap = box(
@@ -334,7 +379,12 @@ def build_parallel_pinch(gap, arm_l, length_y, wall_t=None):
 # Build & write
 # ============================================================================
 def main():
-    parts = [make_faucet_clip(), make_arm_drop(), make_sponge_clip()]
+    parts = [
+        make_faucet_clip(),
+        make_clip_arm_gusset(),
+        make_arm_drop(),
+        make_sponge_clip(),
+    ]
     holder = trimesh.boolean.union(parts, engine="manifold")
     if not holder.is_volume:
         holder = trimesh.util.concatenate(parts)

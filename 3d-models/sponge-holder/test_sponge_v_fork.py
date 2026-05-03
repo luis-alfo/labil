@@ -38,12 +38,12 @@ import generate_stl as g
 
 GAP_TOP_MM     = 14.0   # wider top (cap end, hinge)
 GAP_BOTTOM_MM  = 6.0    # narrow tips (the actual pinch)
-ARM_LEN_MM     = 20.0   # how deep the clip grips (was 28: shortened so the
-                        # sponge clears the narrow tips faster)
+ARM_LEN_MM     = 14.0   # short arm — sponge clears the narrow tips faster
 TOTAL_Y_MM     = 55.0   # along sponge top edge
-NUM_PRONGS     = 5      # more prongs, each thinner — distributes the pinch
-PRONG_Y_RATIO  = 0.35   # 35% material, 65% air gaps in Y (slim "fingers")
-WALL_T_MM      = 3.0    # thinner wall — flexes uniformly along its length
+NUM_PRONGS     = 2      # only the extremes — middle of sponge breathes
+PRONG_W_BASE   = 8.0    # triangular base width (mm) — wide root for strength
+PRONG_TIP_R    = 1.5    # rounding radius at the open mouth — no sharp tip
+WALL_T_MM      = 3.0    # wall thickness in X
 
 OUT = Path(__file__).with_name("test_sponge_v_fork.stl")
 OUT_3MF = Path(__file__).with_name("test_sponge_v_fork.3mf")
@@ -57,7 +57,8 @@ def main():
         arm_l=ARM_LEN_MM,
         total_y=TOTAL_Y_MM,
         num_prongs=NUM_PRONGS,
-        prong_y_ratio=PRONG_Y_RATIO,
+        prong_w_base=PRONG_W_BASE,
+        tip_radius=PRONG_TIP_R,
         wall_t=WALL_T_MM,
         curved_cap=True,
     )

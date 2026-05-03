@@ -31,8 +31,9 @@ jobs:
           python-version: '3.11'
 
       - name: Install Python deps
-        # networkx + lxml are required by trimesh to export .3mf
-        run: pip install trimesh shapely manifold3d numpy-stl networkx lxml
+        # networkx + lxml: trimesh's .3mf exporter
+        # scipy: trimesh's convex_hull (used by the triangular prongs)
+        run: pip install trimesh shapely manifold3d numpy-stl networkx lxml scipy
 
       - name: Regenerate STL + GLB for every design
         run: |
