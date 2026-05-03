@@ -247,6 +247,7 @@
       <a href="#pinch-340" data-target="pinch-340">Pinza 340°</a>
       <a href="#pinch-flat" data-target="pinch-flat">Pinza recta</a>
       <a href="#pinch-fork" data-target="pinch-fork">Pinza tenedor</a>
+      <a href="#pinch-compare" data-target="pinch-compare">Comparar largos</a>
     </nav>
     <select class="tabs-mobile" aria-label="Modelos">
       <optgroup label="Barra modular">
@@ -264,6 +265,7 @@
         <option value="pinch-340">Pinza 340°</option>
         <option value="pinch-flat">Pinza recta</option>
         <option value="pinch-fork">Pinza tenedor</option>
+        <option value="pinch-compare">Comparar largos</option>
       </optgroup>
     </select>
   </header>
@@ -594,6 +596,42 @@
           <dt>Tiempo impr.</dt><dd>~10 min</dd>
           <dt>STL</dt><dd><a href="../3d-models/sponge-holder/test_sponge_v_fork.stl">descargar</a></dd>
           <dt>3MF</dt><dd><a href="../3d-models/sponge-holder/test_sponge_v_fork.3mf">descargar</a></dd>
+        </dl>
+      </div>
+    </section>
+
+    <section id="pinch-compare">
+      <div class="section-inner">
+        <div class="eyebrow">Variante de pinza · v4 · A/B test</div>
+        <h2>Comparar largos — 20 mm vs 14 mm</h2>
+        <p class="lede">
+          Imprime una sola vez y prueba ambas. <strong>Izquierda</strong>:
+          brazo de 20 mm (la versión actual). <strong>Derecha</strong>:
+          brazo de 14 mm (el límite de "muy corto"). Mete la esponja en
+          cada una, decide cuál te convence y luego actualizamos
+          <code>PINCH_ARM_L</code> en el modelo completo a la ganadora.
+        </p>
+        <model-viewer
+          data-src="models/test_sponge_v_fork_compare.glb"
+          alt="Test comparativo dos longitudes de pinza tenedor"
+          auto-rotate
+          camera-controls
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          shadow-intensity="0.7"
+          shadow-softness="0.8"
+          exposure="1.05"
+          camera-orbit="-20deg 75deg auto">
+        </model-viewer>
+        <p class="ar-pill">📱 Imprímelo primero, luego itera con feedback real</p>
+        <dl class="meta">
+          <dt>Layout</dt><dd>2 piezas a 8 mm, mismo plate</dd>
+          <dt>Izq · Der</dt><dd>brazo 20 mm · brazo 14 mm</dd>
+          <dt>Bounding box</dt><dd>48 × 55 × 29 mm</dd>
+          <dt>Volumen</dt><dd>~12.6 cm³ (las dos juntas)</dd>
+          <dt>Tiempo impr.</dt><dd>~18 min</dd>
+          <dt>STL</dt><dd><a href="../3d-models/sponge-holder/test_sponge_v_fork_compare.stl">descargar</a></dd>
+          <dt>3MF</dt><dd><a href="../3d-models/sponge-holder/test_sponge_v_fork_compare.3mf">descargar</a></dd>
         </dl>
       </div>
     </section>
