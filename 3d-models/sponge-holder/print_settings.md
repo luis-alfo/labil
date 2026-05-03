@@ -23,7 +23,8 @@ varias veces al día) sin partirse.
 | Soportes | **Árbol, touching build plate only** | igual |
 | Z-distancia soporte | 0.20 mm | 0.20 mm |
 
-Tiempo estimado: **~1 h 30 min**. Material: **~28 g**.
+Tiempo estimado: **~1 h 20 min**. Material: **~26 g**.
+Bounding box: **87 × 55 × 56 mm**.
 
 ## Orientación
 

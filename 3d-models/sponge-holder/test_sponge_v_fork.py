@@ -38,7 +38,8 @@ import generate_stl as g
 
 GAP_TOP_MM     = 14.0   # wider top (cap end, hinge)
 GAP_BOTTOM_MM  = 6.0    # narrow tips (the actual pinch)
-ARM_LEN_MM     = 28.0   # how deep the clip grips (sponge sticks out below)
+ARM_LEN_MM     = 20.0   # how deep the clip grips (was 28: shortened so the
+                        # sponge clears the narrow tips faster)
 TOTAL_Y_MM     = 55.0   # along sponge top edge
 NUM_PRONGS     = 5      # more prongs, each thinner — distributes the pinch
 PRONG_Y_RATIO  = 0.35   # 35% material, 65% air gaps in Y (slim "fingers")
