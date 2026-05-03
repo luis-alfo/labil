@@ -130,9 +130,18 @@ def arm_drop_centerline():
     r_out = CLIP_INNER_D / 2 + WALL_T
     z_arm = CLIP_HEIGHT / 2 - WALL_T / 2
 
+    # The arm is ARM_WIDTH_Y mm wide along Y, but its starting face is a
+    # flat plane in YZ. The clip's outer surface is a cylinder. If we just
+    # set x_arm_start = -r_out + overlap (the centerline position), the
+    # corners at y = ±ARM_WIDTH_Y/2 land OUTSIDE the cylinder (since the
+    # cylinder curves away at increasing |y|). Result: a sliver of arm
+    # hangs in air, not welded to the clip — fragile join. Push x deeper
+    # toward the centre so even at y = ±half_w the point is overlap mm
+    # inside the cylinder.
+    half_w = ARM_WIDTH_Y / 2
+    x_arm_start = -math.sqrt((r_out - CLIP_OVERLAP) ** 2 - half_w ** 2)
+
     pts = []
-    # arm start (slightly inside clip wall so the boolean welds cleanly)
-    x_arm_start = -r_out + CLIP_OVERLAP
     pts.append((x_arm_start, z_arm))
     # arc start (end of arm)
     x_corner = x_arm_start - ARM_LEN
@@ -160,18 +169,25 @@ def make_clip_arm_gusset():
     so the maximum bending moment is at this junction — without the gusset
     a hairline crack tends to start at the top-back of the clip ring on
     repeated loading. The gusset spreads the bending stress over a 8×10 mm
-    triangle and into the lower half of the clip wall."""
+    triangle and into the lower half of the clip wall.
+
+    Same y-cylinder caveat as the arm itself: the gusset's right edge has
+    to be deep enough into the clip that all y values along its width
+    overlap the curved outer surface, not just the centerline."""
     from shapely.geometry import Polygon as _Poly
 
     r_out = CLIP_INNER_D / 2 + WALL_T
     z_arm_bot = CLIP_HEIGHT / 2 - WALL_T   # bottom face of the arm
-    # Triangle in XZ plane: starts at the corner (clip outer, arm bottom),
-    # extends DOWN along the clip face by GUSSET_H, and OUT along the arm
-    # bottom by GUSSET_W. Hypotenuse is the diagonal between those tips.
+    half_w = ARM_WIDTH_Y / 2
+    x_at_clip = -math.sqrt((r_out - CLIP_OVERLAP) ** 2 - half_w ** 2)
+    # Triangle in XZ plane: right edge runs along the (deep) clip-side x;
+    # the bottom-right corner is GUSSET_H below the arm-bottom z; the
+    # top-left corner is GUSSET_W out along the arm bottom; hypotenuse
+    # between the two outer tips.
     poly = _Poly([
-        (-r_out + CLIP_OVERLAP, z_arm_bot),
-        (-r_out + CLIP_OVERLAP, z_arm_bot - GUSSET_H),
-        (-r_out - GUSSET_W,     z_arm_bot),
+        (x_at_clip,           z_arm_bot),
+        (x_at_clip,           z_arm_bot - GUSSET_H),
+        (x_at_clip - GUSSET_W, z_arm_bot),
     ])
     mesh = trimesh.creation.extrude_polygon(poly, height=ARM_WIDTH_Y)
     Rmat = trimesh.transformations.rotation_matrix(math.pi / 2, [1, 0, 0])
