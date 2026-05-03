@@ -1,0 +1,69 @@
+name: Build & deploy 3D viewer
+
+on:
+  push:
+    branches:
+      - main
+      - 'claude/**'
+    paths:
+      - '3d-models/**'
+      - 'docs/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python deps
+        # networkx + lxml: trimesh's .3mf exporter
+        # scipy: trimesh's convex_hull (used by the triangular prongs)
+        run: pip install trimesh shapely manifold3d numpy-stl networkx lxml scipy
+
+      - name: Regenerate STL + GLB for every design
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          for dir in 3d-models/*/; do
+            echo "::group::$dir"
+            cd "$GITHUB_WORKSPACE/$dir"
+            for script in generate_stl.py test_*.py; do
+              if [ -f "$script" ]; then
+                echo "→ $script"
+                python3 "$script"
+              fi
+            done
+            cd "$GITHUB_WORKSPACE"
+            echo "::endgroup::"
+          done
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

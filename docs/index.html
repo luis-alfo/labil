@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#F5F1E8">
+  <title>labil — modelos 3D</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+
+  <style>
+    :root {
+      --bg:        #F5F1E8;
+      --bg-soft:   #EFE7D2;
+      --bg-canvas: #E8DEC4;
+      --text:      #2D2926;
+      --muted:     #786D60;
+      --accent:    #C2410C;
+      --border:    #DCD0B5;
+      --nav-h:     58px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Source Serif 4', ui-serif, 'Iowan Old Style', Georgia, serif;
+      font-size: 17px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;  /* main scrolls instead */
+    }
+
+    /* ---- Sticky top nav ---- */
+    .top {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      height: var(--nav-h);
+      background: rgba(245, 241, 232, 0.82);
+      backdrop-filter: saturate(140%) blur(14px);
+      -webkit-backdrop-filter: saturate(140%) blur(14px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .brand {
+      font-weight: 600;
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
+    }
+    .brand-sub {
+      color: var(--muted);
+      font-weight: 400;
+      font-style: italic;
+      margin-left: 0.4em;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 0.15rem;
+    }
+    .tabs a { white-space: nowrap; }
+    .tabs a {
+      font-family: inherit;
+      font-size: 0.92rem;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 0.4rem 0.85rem;
+      border-radius: 999px;
+      transition: color 0.18s ease, background-color 0.18s ease;
+      letter-spacing: 0.005em;
+    }
+    .tabs a:hover {
+      color: var(--text);
+      background: rgba(220, 208, 181, 0.5);
+    }
+    .tabs a.active {
+      color: var(--accent);
+      background: rgba(194, 65, 12, 0.08);
+    }
+
+    /* Mobile dropdown — replaces the pill row when there's no room */
+    .tabs-mobile { display: none; }
+    @media (max-width: 760px) {
+      .tabs        { display: none; }
+      .tabs-mobile {
+        display: block;
+        font-family: inherit;
+        font-size: 0.95rem;
+        color: var(--text);
+        background: rgba(220, 208, 181, 0.45);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 0.4rem 2rem 0.4rem 0.95rem;
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6' fill='none'><path d='M1 1l4 4 4-4' stroke='%23786D60' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 0.65rem;
+        max-width: 60vw;
+        cursor: pointer;
+      }
+      .tabs-mobile:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+      .tabs-mobile optgroup { font-style: italic; color: var(--muted); }
+    }
+
+    /* ---- Scroll-snap container ---- */
+    main {
+      flex: 1;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    section {
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      min-height: calc(100dvh - var(--nav-h));
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 1.5rem 1.25rem 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    section:last-of-type { border-bottom: none; }
+
+    .section-inner {
+      width: 100%;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    section h2 {
+      font-weight: 600;
+      font-size: 1.7rem;
+      letter-spacing: -0.015em;
+      margin-bottom: 0.35rem;
+      line-height: 1.15;
+    }
+    .lede {
+      color: var(--muted);
+      font-size: 0.98rem;
+      margin-bottom: 1.1rem;
+      max-width: 50ch;
+    }
+
+    model-viewer {
+      width: 100%;
+      height: 48vh;
+      max-height: 520px;
+      background: var(--bg-canvas);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      --poster-color: transparent;
+    }
+    @media (max-width: 480px) {
+      model-viewer { height: 42vh; }
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      gap: 0.35rem 1.25rem;
+      margin-top: 1.1rem;
+      font-size: 0.92rem;
+    }
+    .meta dt {
+      color: var(--muted);
+      font-weight: 400;
+      font-style: italic;
+    }
+    .meta dd { color: var(--text); }
+
+    a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(194, 65, 12, 0.3); }
+    a:hover { border-bottom-color: var(--accent); }
+
+    .ar-pill {
+      display: inline-block;
+      margin-top: 0.6rem;
+      padding: 0.2rem 0.65rem;
+      background: rgba(194, 65, 12, 0.08);
+      color: var(--accent);
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-style: italic;
+    }
+
+    .build-stamp {
+      text-align: right;
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-style: italic;
+      padding: 0.4rem 1.25rem 0.6rem;
+      margin-top: -0.3rem;
+    }
+
+    /* hide tabs labels on very small screens */
+    @media (max-width: 380px) {
+      .top { padding: 0 0.85rem; }
+      .tabs a { padding: 0.4rem 0.6rem; font-size: 0.85rem; }
+      .brand { font-size: 0.95rem; }
+      .brand-sub { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      labil<span class="brand-sub">— modelos 3D</span>
+    </div>
+    <nav class="tabs" aria-label="Modelos">
+      <a href="#bar-a"  data-target="bar-a"  class="active">A · Hilo</a>
+      <a href="#bar-b"  data-target="bar-b">B · Carril</a>
+      <a href="#bar-c"  data-target="bar-c">C · Rama</a>
+      <a href="#full"   data-target="full">Esponja</a>
+      <a href="#faucet" data-target="faucet">Abraz.</a>
+      <a href="#sponge" data-target="sponge">Pinza</a>
+      <a href="#pinch-300" data-target="pinch-300">Pinza 300°</a>
+      <a href="#pinch-340" data-target="pinch-340">Pinza 340°</a>
+      <a href="#pinch-flat" data-target="pinch-flat">Pinza recta</a>
+      <a href="#pinch-fork" data-target="pinch-fork">Pinza tenedor</a>
+      <a href="#pinch-compare" data-target="pinch-compare">Comparar largos</a>
+    </nav>
+    <select class="tabs-mobile" aria-label="Modelos">
+      <optgroup label="Barra modular">
+        <option value="bar-a">A · Hilo</option>
+        <option value="bar-b">B · Carril</option>
+        <option value="bar-c">C · Rama</option>
+      </optgroup>
+      <optgroup label="Sponge holder">
+        <option value="full">Esponja completa</option>
+        <option value="faucet">Abrazadera</option>
+        <option value="sponge">Pinza original</option>
+      </optgroup>
+      <optgroup label="Variantes de pinza">
+        <option value="pinch-300">Pinza 300°</option>
+        <option value="pinch-340">Pinza 340°</option>
+        <option value="pinch-flat">Pinza recta</option>
+        <option value="pinch-fork">Pinza tenedor</option>
+        <option value="pinch-compare">Comparar largos</option>
+      </optgroup>
+    </select>
+  </header>
+
+  <main id="snap-root">
+    <section id="bar-a">
+      <div class="section-inner">
+        <div class="eyebrow">Barra modular · propuesta A</div>
+        <h2>Hilo — varilla aluminio + clamps snap</h2>
+        <p class="lede">
+          Línea Ø 6 mm en aluminio (485 mm, curvas suaves a los extremos)
+          atravesando dos C-clamps PLA con boca hacia arriba. Los ganchos
+          se clipan a la varilla por encaje radial; se cambian sin
+          desmontar nada. Estética minimal, máxima rigidez con el menor
+          material visible.
+        </p>
+        <model-viewer
+          data-src="models/bathroom_bar_a.glb"
+          alt="Propuesta A — varilla aluminio con clamps snap"
+          auto-rotate
+          camera-controls
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          shadow-intensity="0.7"
+          shadow-softness="0.8"
+          exposure="1.05"
+          camera-orbit="-25deg 75deg auto">
+        </model-viewer>
+        <p class="ar-pill">📱 Pulsa el icono AR para verla a tamaño real</p>
+        <dl class="meta">
+          <dt>Línea</dt><dd>varilla aluminio Ø 6 × 485 mm (no impresa)</dd>
+          <dt>Anclaje</dt><dd>2 × C-clamp PLA snap-fit · wrap 240° · boca +Z</dd>
+          <dt>Ganchos</dt><dd>anillo partido PLA · cambio por presión</dd>
+          <dt>Imprimir</dt><dd>2 clamps + N ganchos (~30 g total)</dd>
+          <dt>STL</dt><dd><a href="../3d-models/bathroom-bar-a/bathroom_bar_a.stl">descargar</a></dd>
+        </dl>
+      </div>
+    </section>
+
+    <section id="bar-b">
+      <div class="section-inner">
+        <div class="eyebrow">Barra modular · propuesta B</div>
+        <h2>Carril — perfil PLA con canal en T</h2>
+        <p class="lede">
+          Riel rectangular 14 × 18 mm con canal en T en la cara inferior,
+          imprimible en 3 segmentos. Clamps en dos mitades atornilladas
+          (M3) — fijan por compresión, no por flex. Ganchos con cabezal-T
+          que se desliza por el riel y se fija donde quieras.
+          Modularidad total y reconfigurable en caliente.
+        </p>
+        <model-viewer
+          data-src="models/bathroom_bar_b.glb"
+          alt="Propuesta B — riel PLA con canal en T"
+          auto-rotate
+          camera-controls
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          shadow-intensity="0.7"
+          shadow-softness="0.8"
+          exposure="1.05"
+          camera-orbit="-25deg 75deg auto">
+        </model-viewer>
+        <dl class="meta">
+          <dt>Línea</dt><dd>perfil PLA 14 × 18 mm con T-slot · 3 segmentos</dd>
+          <dt>Anclaje</dt><dd>2 × clamp PLA partido + 2 × M3 (compresión)</dd>
+          <dt>Ganchos</dt><dd>cabezal-T deslizable, posicionable a voluntad</dd>
+          <dt>Imprimir</dt><dd>3 + 4 + N ganchos (~110 g total)</dd>
+          <dt>STL</dt><dd><a href="../3d-models/bathroom-bar-b/bathroom_bar_b.stl">descargar</a></dd>
+        </dl>
+      </div>
+    </section>
+
+    <section id="bar-c">
+      <div class="section-inner">
+        <div class="eyebrow">Barra modular · propuesta C</div>
+        <h2>Rama — brazo curvo monolítico</h2>
+        <p class="lede">
+          Una sola pieza orgánica que dipa entre el caño y la manilla,
+          se eleva en los extremos y abraza ambos cilindros con clips
+          integrados que se refuerzan mutuamente. Ranuras cada 30 mm
+          para plug-in de ganchos. Sin componentes externos, sin
+          tornillos. Estética escultural; configuración fija.
+        </p>
+        <model-viewer
+          data-src="models/bathroom_bar_c.glb"
+          alt="Propuesta C — brazo curvo monolítico"
+          auto-rotate
+          camera-controls
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          shadow-intensity="0.7"
+          shadow-softness="0.8"
+          exposure="1.05"
+          camera-orbit="-25deg 75deg auto">
+        </model-viewer>
+        <dl class="meta">
+          <dt>Línea</dt><dd>brazo PLA monolítico ~485 mm (2-3 segmentos)</dd>
+          <dt>Anclaje</dt><dd>clips integrados al brazo · refuerzo mutuo</dd>
+          <dt>Ganchos</dt><dd>plug-in en ranuras fijas cada 30 mm</dd>
+          <dt>Imprimir</dt><dd>brazo + N ganchos (~95 g total)</dd>
+          <dt>STL</dt><dd><a href="../3d-models/bathroom-bar-c/bathroom_bar_c.stl">descargar</a></dd>
+        </dl>
+      </div>
+    </section>
+
+    <section id="full">
+      <div class="section-inner">
+        <div class="eyebrow">Sponge holder · pieza definitiva</div>
+        <h2>Pieza completa — robusta con prongs triangulares</h2>
+        <p class="lede">
+          Versión reforzada tras feedback de fragilidad. Prongs ahora
+          <strong>triangulares</strong> (8 mm de base anchas en la
+          unión con el cap, afilando hasta una <em>punta redondeada</em>
+          de 1.5 mm de radio en la apertura). Añadido <strong>gusset</strong>
+          en la junta clip↔brazo, donde se concentra todo el momento
+          del peso del estropajo. Centro abierto para que la esponja
+          seque, brazo corto para inserción fácil.
+        </p>
+        <model-viewer
+          data-src="models/sponge_holder.glb"
+          alt="Sponge holder pieza completa"
+          auto-rotate
+          camera-controls
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          shadow-intensity="0.7"
+          shadow-softness="0.8"
+          exposure="1.05"
+          camera-orbit="-35deg 70deg auto">
+        </model-viewer>
+        <p class="ar-pill">📱 Pulsa el icono AR para verla a tamaño real</p>
+        <dl class="meta">
+          <dt>Prongs</dt><dd>2 triangulares · 8 mm base → 3 mm tip rounded R 1.5</dd>
+          <dt>Refuerzo</dt><dd>gusset 8×10 mm en junta clip↔brazo</dd>
+          <dt>Bounding box</dt><dd>85 × 55 × 50 mm</dd>
+          <dt>Volumen</dt><dd>~20 cm³ · ~24 g PLA</dd>
+          <dt>Tiempo impr.</dt><dd>~1 h 10 min</dd>
+          <dt>Material</dt><dd>PLA (215 °C, brim 8 mm) o PETG</dd>
+          <dt>STL</dt><dd><a href="../3d-models/sponge-holder/sponge_holder.stl">descargar</a></dd>
+          <dt>3MF</dt><dd><a href="../3d-models/sponge-holder/sponge_holder.3mf">descargar</a></dd>
+          <dt>Settings</dt><dd><a href="../3d-models/sponge-holder/print_settings.md">cómo imprimir</a></dd>
+        </dl>
+      </div>
+    </section>
+
+    <section id="faucet">
+      <div class="section-inner">
+        <div class="eyebrow">Sponge holder · MVP de prueba</div>
+        <h2>Abrazadera del grifo</h2>
+        <p class="lede">
+          Pieza aislada para validar el agarre sobre el cilindro
+          Ø 45 mm. Imprime en ~15 min antes de comprometer la pieza
+          completa.
+        </p>
+        <model-viewer
+          data-src="models/test_faucet_clip.glb"
+          alt="Test abrazadera grifo"
+          auto-rotate
+          camera-controls
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          shadow-intensity="0.7"
+          shadow-softness="0.8"
+          exposure="1.05">
+        </model-viewer>
+        <dl class="meta">
+          <dt>Bounding box</dt><dd>40 × 53 × 22 mm</dd>
+          <dt>Volumen</dt><dd>~9 cm³</dd>
+          <dt>Tiempo impr.</dt><dd>~15 min</dd>
+          <dt>STL</dt><dd><a href="../3d-models/sponge-holder/test_faucet_clip.stl">descargar</a></dd>
+        </dl>
+      </div>
+    </section>
+
+    <section id="sponge">
+      <div class="section-inner">
+        <div class="eyebrow">Sponge holder · MVP de prueba</div>
+        <h2>Pinza para esponja</h2>
+        <p class="lede">
+          Clip en C con hueco interior de 14 mm: pellizca la esponja
+          por el grosor. Valida el agarre antes de imprimir la pieza
+          completa.
+        </p>
+        <model-viewer
+          data-src="models/test_sponge_clip.glb"
+          alt="Test pinza esponja"
+          auto-rotate
+          camera-controls
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          shadow-intensity="0.7"
+          shadow-softness="0.8"
+          exposure="1.05">
+        </model-viewer>
+        <dl class="meta">
+          <dt>Bounding box</dt><dd>22 × 50 × 15 mm</dd>
+          <dt>Volumen</dt><dd>~7 cm³</dd>
+          <dt>Tiempo impr.</dt><dd>~15 min</dd>
+          <dt>STL</dt><dd><a href="../3d-models/sponge-holder/test_sponge_clip.stl">descargar</a></dd>
+        </dl>
+      </div>
+    </section>
+
+    <section id="pinch-300">
+      <div class="section-inner">
+        <div class="eyebrow">Variante de pinza · v1</div>
+        <h2>Pinza 300° — C casi cerrada</h2>
+        <p class="lede">
+          Mismo C-clip pero con envoltura de 300° en lugar de 220°. La boca
+          se reduce de 140° a 60°: la esponja entra con presión deliberada
+          pero el agarre es notablemente más firme una vez dentro.
+        </p>
+        <model-viewer
+          data-src="models/test_sponge_v_300deg.glb"
+          alt="Variante pinza 300°"
+          auto-rotate
+          camera-controls
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          shadow-intensity="0.7"
+          shadow-softness="0.8"
+          exposure="1.05">
+        </model-viewer>
+        <dl class="meta">
+          <dt>Wrap / Gap</dt><dd>300° · 10 mm</dd>
+          <dt>Bounding box</dt><dd>18 × 50 × 17 mm</dd>
+          <dt>Volumen</dt><dd>~7 cm³</dd>
+          <dt>Tiempo impr.</dt><dd>~15 min</dd>
+          <dt>STL</dt><dd><a href="../3d-models/sponge-holder/test_sponge_v_300deg.stl">descargar</a></dd>
+        </dl>
+      </div>
+    </section>
+
+    <section id="pinch-340">
+      <div class="section-inner">
+        <div class="eyebrow">Variante de pinza · v2</div>
+        <h2>Pinza 340° — anillo casi completo</h2>
+        <p class="lede">
+          Envoltura agresiva: solo 20° de boca. Máximo agarre, pero la
+          esponja entra con esfuerzo y los extremos del clip pueden agrietarse
+          en PLA si lo fuerzas. Variante extrema para comparar contra la 300°.
+        </p>
+        <model-viewer
+          data-src="models/test_sponge_v_340deg.glb"
+          alt="Variante pinza 340°"
+          auto-rotate
+          camera-controls
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          shadow-intensity="0.7"
+          shadow-softness="0.8"
+          exposure="1.05">
+        </model-viewer>
+        <dl class="meta">
+          <dt>Wrap / Gap</dt><dd>340° · 10 mm</dd>
+          <dt>Bounding box</dt><dd>18 × 50 × 18 mm</dd>
+          <dt>Volumen</dt><dd>~8 cm³</dd>
+          <dt>Tiempo impr.</dt><dd>~15 min</dd>
+          <dt>STL</dt><dd><a href="../3d-models/sponge-holder/test_sponge_v_340deg.stl">descargar</a></dd>
+        </dl>
+      </div>
+    </section>
+
+    <section id="pinch-flat">
+      <div class="section-inner">
+        <div class="eyebrow">Variante de pinza · v3</div>
+        <h2>Pinza recta — paredes paralelas</h2>
+        <p class="lede">
+          Dos paredes planas de 50 mm a 8 mm de distancia, unidas por
+          una tapa superior. La esponja se desliza desde abajo y queda
+          pellizcada por toda la longitud de las paredes. Mejor reparto
+          de presión que el C cilíndrico, sin puntos de carga concentrada.
+        </p>
+        <model-viewer
+          data-src="models/test_sponge_v_parallel.glb"
+          alt="Variante pinza recta paralela"
+          auto-rotate
+          camera-controls
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          shadow-intensity="0.7"
+          shadow-softness="0.8"
+          exposure="1.05">
+        </model-viewer>
+        <dl class="meta">
+          <dt>Geometría</dt><dd>paredes paralelas · gap 8 mm · brazo 50 mm</dd>
+          <dt>Bounding box</dt><dd>16 × 50 × 54 mm</dd>
+          <dt>Volumen</dt><dd>~23 cm³</dd>
+          <dt>Tiempo impr.</dt><dd>~25 min</dd>
+          <dt>STL</dt><dd><a href="../3d-models/sponge-holder/test_sponge_v_parallel.stl">descargar</a></dd>
+        </dl>
+      </div>
+    </section>
+
+    <section id="pinch-fork">
+      <div class="section-inner">
+        <div class="eyebrow">Variante de pinza · v4 · candidata final</div>
+        <h2>Pinza tenedor — puntas finas + arco curvo</h2>
+        <p class="lede">
+          Iteración tras tu segundo feedback. Geometría tipo pinza de
+          tender: <em>6 mm en las puntas</em> (las que realmente
+          pellizcan) y <em>14 mm en la garganta</em> donde un
+          <strong>arco de medio cilindro</strong> sustituye al cap
+          plano para mayor elegancia y rigidez de bisagra.
+          5 prongs por lado, finos (3 mm de pared, 35% material en Y),
+          pensados para flexar uniformemente y aplicar ~40 N de pinza
+          por lado sin partirse.
+          Brazo corto (28 mm) — el resto del estropajo cuelga libre y
+          gotea.
+        </p>
+        <model-viewer
+          data-src="models/test_sponge_v_fork.glb"
+          alt="Pinza tenedor tipo clothespin"
+          auto-rotate
+          camera-controls
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          shadow-intensity="0.7"
+          shadow-softness="0.8"
+          exposure="1.05"
+          camera-orbit="-30deg 70deg auto">
+        </model-viewer>
+        <p class="ar-pill">📱 La favorita estructural — pruébala primero</p>
+        <dl class="meta">
+          <dt>Puntas · Garganta</dt><dd>6 mm · 14 mm (clothespin)</dd>
+          <dt>Cap</dt><dd>arco semicilíndrico, R 10 mm</dd>
+          <dt>Brazo</dt><dd>20 mm (acortado de 28 mm tras feedback de inserción)</dd>
+          <dt>Prongs</dt><dd>5 por lado, 35% material / 65% aire en Y</dd>
+          <dt>Pared</dt><dd>3 mm, espesor constante</dd>
+          <dt>Wedge</dt><dd>11° por lado (steeper que v1: 8°)</dd>
+          <dt>Bounding box</dt><dd>20 × 55 × 29 mm</dd>
+          <dt>Volumen</dt><dd>~6.6 cm³</dd>
+          <dt>Tiempo impr.</dt><dd>~10 min</dd>
+          <dt>STL</dt><dd><a href="../3d-models/sponge-holder/test_sponge_v_fork.stl">descargar</a></dd>
+          <dt>3MF</dt><dd><a href="../3d-models/sponge-holder/test_sponge_v_fork.3mf">descargar</a></dd>
+        </dl>
+      </div>
+    </section>
+
+    <section id="pinch-compare">
+      <div class="section-inner">
+        <div class="eyebrow">Variante de pinza · v4 · A/B test</div>
+        <h2>Comparar largos — 20 mm vs 14 mm</h2>
+        <p class="lede">
+          Imprime una sola vez y prueba ambas. <strong>Izquierda</strong>:
+          brazo de 20 mm (la versión actual). <strong>Derecha</strong>:
+          brazo de 14 mm (el límite de "muy corto"). Mete la esponja en
+          cada una, decide cuál te convence y luego actualizamos
+          <code>PINCH_ARM_L</code> en el modelo completo a la ganadora.
+        </p>
+        <model-viewer
+          data-src="models/test_sponge_v_fork_compare.glb"
+          alt="Test comparativo dos longitudes de pinza tenedor"
+          auto-rotate
+          camera-controls
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          shadow-intensity="0.7"
+          shadow-softness="0.8"
+          exposure="1.05"
+          camera-orbit="-20deg 75deg auto">
+        </model-viewer>
+        <p class="ar-pill">📱 Imprímelo primero, luego itera con feedback real</p>
+        <dl class="meta">
+          <dt>Layout</dt><dd>2 piezas a 8 mm, mismo plate</dd>
+          <dt>Izq · Der</dt><dd>brazo 20 mm · brazo 14 mm</dd>
+          <dt>Bounding box</dt><dd>48 × 55 × 29 mm</dd>
+          <dt>Volumen</dt><dd>~12.6 cm³ (las dos juntas)</dd>
+          <dt>Tiempo impr.</dt><dd>~18 min</dd>
+          <dt>STL</dt><dd><a href="../3d-models/sponge-holder/test_sponge_v_fork_compare.stl">descargar</a></dd>
+          <dt>3MF</dt><dd><a href="../3d-models/sponge-holder/test_sponge_v_fork_compare.3mf">descargar</a></dd>
+        </dl>
+      </div>
+    </section>
+  </main>
+
+  <div class="build-stamp" id="build-stamp"></div>
+
+  <script>
+    // ── Cache-buster: inject ?v=<version.txt> into every model-viewer src
+    (async () => {
+      let v;
+      try {
+        const r = await fetch("models/version.txt?_=" + Date.now(), { cache: "no-store" });
+        v = (await r.text()).trim();
+      } catch (_) { v = String(Date.now()); }
+      document.querySelectorAll("model-viewer[data-src]").forEach(el => {
+        el.src = el.dataset.src + "?v=" + v;
+      });
+      const tag = document.getElementById("build-stamp");
+      if (tag && v) tag.textContent = "build " + v;
+    })();
+
+    // ── Active-tab tracking via IntersectionObserver inside <main>
+    const sections = document.querySelectorAll("main section");
+    const tabs     = document.querySelectorAll(".tabs a");
+    const select   = document.querySelector(".tabs-mobile");
+
+    const setActive = id => {
+      tabs.forEach(a => a.classList.toggle("active", a.dataset.target === id));
+      if (select && select.value !== id) select.value = id;
+    };
+
+    const io = new IntersectionObserver(
+      entries => {
+        let best = null, bestRatio = 0;
+        for (const e of entries) {
+          if (e.intersectionRatio > bestRatio) {
+            bestRatio = e.intersectionRatio;
+            best = e;
+          }
+        }
+        if (best && best.isIntersecting) setActive(best.target.id);
+      },
+      { root: document.getElementById("snap-root"), threshold: [0.4, 0.6, 0.8] }
+    );
+    sections.forEach(s => io.observe(s));
+
+    // ── Smooth scroll when clicking a desktop tab
+    tabs.forEach(a => {
+      a.addEventListener("click", e => {
+        e.preventDefault();
+        const target = document.getElementById(a.dataset.target);
+        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+
+    // ── Smooth scroll when picking from the mobile dropdown
+    if (select) {
+      select.addEventListener("change", e => {
+        const target = document.getElementById(e.target.value);
+        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+  </script>
+</body>
+</html>
