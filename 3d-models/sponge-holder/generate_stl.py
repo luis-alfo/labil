@@ -66,7 +66,10 @@ PINCH_ARM_L          = 14.0   # vertical extent of the prongs (chosen after the
 PINCH_LEN_Y          = 55.0   # along sponge top edge
 PINCH_NUM_PRONGS     = 2      # only the extremes — middle of the sponge is
                               # left exposed to air for drying
-PINCH_PRONG_Y_RATIO  = 0.35   # ~9.6 mm per end prong, ~35.7 mm air gap
+PINCH_PRONG_Y_RATIO  = 0.14   # ~3.85 mm per end prong (kept thin so insertion
+                              # stays easy; with 14 mm arm the cantilever
+                              # stiffness is 8× higher than at 28 mm, so
+                              # widening per prong stacks too much resistance)
 PINCH_WALL_T         = 3.0    # thinner than WALL_T so the prongs flex
 
 ARC_SEG              = 96
