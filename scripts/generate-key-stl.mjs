@@ -33,7 +33,8 @@ function slug(s) {
 
 const args = parseArgs(process.argv.slice(2))
 const text = String(args.text ?? 'Room 26')
-const textSize = parseFloat(args.size ?? '11')
+const textSize = parseFloat(args.size ?? '7')
+const lineSpacingFactor = parseFloat(args['line-spacing'] ?? '1.15')
 const recessDepth = parseFloat(args.depth ?? '0.6')
 const face = args.face ?? 'back'
 const layout = args.layout ?? 'vertical' // 'vertical' = lines along long axis; 'horizontal' = along short axis
@@ -62,7 +63,7 @@ const font = new Font(fontData)
 
 // --- 3. Build extruded text geometry from one or more lines ---
 const lines = text.split(/\|/).flatMap((l) => l.split(/\\n|\n/))
-const lineSpacing = textSize * 1.4
+const lineSpacing = textSize * lineSpacingFactor
 const totalExtrude = recessDepth + 0.6 // generous overshoot for a clean boolean
 
 const validLines = lines.map((l) => l.trim()).filter(Boolean)
@@ -149,6 +150,14 @@ if (face === 'back') {
   } else {
     textGeom.scale(-1, 1, 1)
     reverseWinding(textGeom)
+  }
+  textGeom.computeBoundingBox()
+  const fb = textGeom.boundingBox
+  console.log(`Text after orient: X span ${(fb.max.x - fb.min.x).toFixed(1)}mm, Y span ${(fb.max.y - fb.min.y).toFixed(1)}mm`)
+  const keyXSpan = kb.max.x - kb.min.x
+  const keyYSpan = kb.max.y - kb.min.y
+  if (fb.max.x - fb.min.x > keyXSpan * 0.85 || fb.max.y - fb.min.y > keyYSpan * 0.85) {
+    console.warn('⚠  Text is larger than 85% of the key on at least one axis. Consider lowering --size.')
   }
   // Text now sits in z ∈ [0, totalExtrude] still (Z untouched). Move it so
   // its top face is recessDepth below the back surface and its bottom pokes
