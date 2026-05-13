@@ -72,7 +72,7 @@ validLines.forEach((line, idx) => {
   const g = new TextGeometry(line, {
     font,
     size: textSize,
-    depth: totalExtrude,
+    height: totalExtrude, // three 0.160 TextGeometry reads `height` and writes it to ExtrudeGeometry's `depth`; passing `depth` is silently ignored.
     bevelEnabled: false,
     curveSegments: 8,
   })
