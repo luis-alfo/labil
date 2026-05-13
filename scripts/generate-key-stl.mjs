@@ -36,10 +36,11 @@ const text = String(args.text ?? 'Room 26')
 const textSize = parseFloat(args.size ?? '11')
 const recessDepth = parseFloat(args.depth ?? '0.6')
 const face = args.face ?? 'back'
+const layout = args.layout ?? 'vertical' // 'vertical' = lines along long axis; 'horizontal' = along short axis
 const inputStl = args.in ?? 'public/models/key.stl'
 const outputStl = args.out ?? `public/models/key-${slug(text)}.stl`
 const fontPath =
-  args.font ?? 'node_modules/three/examples/fonts/helvetiker_bold.typeface.json'
+  args.font ?? 'node_modules/three/examples/fonts/droid/droid_serif_bold.typeface.json'
 
 // --- 1. Load key STL ---
 const stlBuf = fs.readFileSync(inputStl)
@@ -64,11 +65,10 @@ const lines = text.split(/\|/).flatMap((l) => l.split(/\\n|\n/))
 const lineSpacing = textSize * 1.4
 const totalExtrude = recessDepth + 0.6 // generous overshoot for a clean boolean
 
+const validLines = lines.map((l) => l.trim()).filter(Boolean)
 const lineGeoms = []
-lines.forEach((line, idx) => {
-  const trimmed = line.trim()
-  if (!trimmed) return
-  const g = new TextGeometry(trimmed, {
+validLines.forEach((line, idx) => {
+  const g = new TextGeometry(line, {
     font,
     size: textSize,
     depth: totalExtrude,
@@ -78,9 +78,10 @@ lines.forEach((line, idx) => {
   g.computeBoundingBox()
   const bb = g.boundingBox
   const cx = (bb.min.x + bb.max.x) / 2
-  // Stack lines top-down: line 0 highest, line N lowest. Place each line so its
-  // own top sits at -(idx * spacing) and its center X is 0.
-  g.translate(-cx, -(idx * lineSpacing) - bb.max.y, -bb.min.z)
+  // idx=0 placed at the highest Y. After the rotation/mirror below, idx=0
+  // ends up at the LOW X end of the keychain (next to the hole), which is
+  // the natural "top" when the keychain is held by the ring.
+  g.translate(-cx, -idx * lineSpacing - bb.max.y, -bb.min.z)
   lineGeoms.push(g)
 })
 if (lineGeoms.length === 0) {
@@ -99,20 +100,66 @@ const tCx = (tb.min.x + tb.max.x) / 2
 const tCy = (tb.min.y + tb.max.y) / 2
 // Center the whole text block at XY=(0,0) and Z starting at 0
 textGeom.translate(-tCx, -tCy, -tb.min.z)
-textGeom.computeBoundingBox()
-console.log(`Text bbox: width=${(textGeom.boundingBox.max.x - textGeom.boundingBox.min.x).toFixed(1)}mm height=${(textGeom.boundingBox.max.y - textGeom.boundingBox.min.y).toFixed(1)}mm`)
 
-// --- 4. Position text on chosen face ---
+// --- 4. Orient & place text on chosen face ---
+//
+// Target in STL frame (looking at the back face from outside, ring held UP):
+//   - line stacking → along the long X axis, idx=0 next to the ring (low X)
+//   - reading direction within each line → along the short Y axis
+//   - each letter standing upright with its top pointing toward the ring
+//
+// TextGeometry's native frame: letters read +X with their tops at +Y, lines
+// stacked along Y. For the BACK face we additionally need to mirror the
+// geometry so it reads correctly when seen from -Z (otherwise the user reads
+// it backwards once the keychain is flipped to look at the engraved side).
+//
+// For VERTICAL layout, this is achieved with:
+//   - scale(-1, 1, 1)   ← mirror X for back-face readability
+//   - rotateZ(+π/2)     ← lines now stack along X, letters read in Y
+// The composite has determinant -1 (a reflection), so triangle winding must
+// be reversed afterwards to keep a valid manifold mesh for CSG.
+
+function reverseWinding(geom) {
+  if (geom.index) {
+    const arr = geom.index.array
+    for (let i = 0; i < arr.length; i += 3) {
+      const tmp = arr[i + 1]
+      arr[i + 1] = arr[i + 2]
+      arr[i + 2] = tmp
+    }
+    geom.index.needsUpdate = true
+  } else {
+    const pos = geom.attributes.position.array
+    for (let i = 0; i < pos.length; i += 9) {
+      for (let j = 0; j < 3; j++) {
+        const tmp = pos[i + 3 + j]
+        pos[i + 3 + j] = pos[i + 6 + j]
+        pos[i + 6 + j] = tmp
+      }
+    }
+    geom.attributes.position.needsUpdate = true
+  }
+}
+
 if (face === 'back') {
-  // Mirror so it reads correctly when viewed from -Z (outside the back face).
-  // Rotate 180° around Y axis: flips X and Z. Text now extrudes toward -Z.
-  textGeom.rotateY(Math.PI)
-  // After rotation, z range = [-totalExtrude, 0]. We want
+  if (layout === 'vertical') {
+    textGeom.scale(-1, 1, 1)
+    reverseWinding(textGeom)
+    textGeom.rotateZ(Math.PI / 2)
+  } else {
+    textGeom.scale(-1, 1, 1)
+    reverseWinding(textGeom)
+  }
+  // Text now sits in z ∈ [0, totalExtrude] still (Z untouched). Move it so
+  // its top face is recessDepth below the back surface and its bottom pokes
+  // 0.6 mm outside (clean overshoot for the boolean):
   //   z ∈ [kb.min.z - 0.6, kb.min.z + recessDepth]
-  // so translate by (kb.min.z + recessDepth).
-  textGeom.translate(center.x, center.y, kb.min.z + recessDepth)
+  textGeom.translate(center.x, center.y, kb.min.z - 0.6)
 } else if (face === 'front') {
-  // Reads correctly from +Z already. z range [0, totalExtrude]; we want
+  if (layout === 'vertical') {
+    textGeom.rotateZ(Math.PI / 2)
+  }
+  // Text reads correctly from +Z without mirroring. Translate to
   //   z ∈ [kb.max.z - recessDepth, kb.max.z + 0.6]
   textGeom.translate(center.x, center.y, kb.max.z - recessDepth)
 } else {
