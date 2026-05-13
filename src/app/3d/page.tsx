@@ -22,9 +22,14 @@ const VersionThumbnail = dynamic(
   { ssr: false, loading: () => <div className="h-full w-full bg-surface-solid/40" /> }
 )
 
-const MODEL_URL = '/models/key.stl'
+const MODELS: { id: string; label: string; url: string }[] = [
+  { id: 'plain', label: 'Liso', url: '/models/key.stl' },
+  { id: 'room-26', label: 'Room 26', url: '/models/key-room-26.stl' },
+]
 
 export default function ThreeDPage() {
+  const [modelId, setModelId] = useState(MODELS[1].id)
+  const modelUrl = MODELS.find((m) => m.id === modelId)?.url ?? MODELS[0].url
   const [primary, setPrimary] = useState(versions[0].primary)
   const [secondary, setSecondary] = useState(versions[0].secondary)
   const [activeVersion, setActiveVersion] = useState<string | null>(versions[0].name)
@@ -54,7 +59,7 @@ export default function ThreeDPage() {
         <section className="relative">
           <div className="rounded-xl overflow-hidden bg-gradient-to-b from-surface-solid to-bg border border-border h-[60vh] lg:h-[78vh]">
             <STLViewer
-              url={MODEL_URL}
+              url={modelUrl}
               primary={primary}
               secondary={secondary}
               blendMode={blendMode}
@@ -120,6 +125,25 @@ export default function ThreeDPage() {
         {/* Right panel: versions + custom pickers */}
         <aside className="space-y-6">
           <div>
+            <h2 className="text-sm font-semibold mb-3">Modelo</h2>
+            <div className="flex gap-2">
+              {MODELS.map((m) => (
+                <button
+                  key={m.id}
+                  onClick={() => setModelId(m.id)}
+                  className={`text-xs px-3 py-1.5 rounded-md border transition ${
+                    modelId === m.id
+                      ? 'bg-text text-bg border-text'
+                      : 'border-border hover:border-text-tertiary'
+                  }`}
+                >
+                  {m.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
             <h2 className="text-sm font-semibold mb-3">Versiones</h2>
             <div className="grid grid-cols-2 gap-3">
               {versions.map((v) => {
@@ -142,7 +166,7 @@ export default function ThreeDPage() {
                     >
                       <div className="h-full w-full opacity-90">
                         <VersionThumbnail
-                          url={MODEL_URL}
+                          url={modelUrl}
                           primary={v.primary}
                           secondary={v.secondary}
                         />
