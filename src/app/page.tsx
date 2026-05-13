@@ -1,6 +1,7 @@
 'use client'
 
 import dynamic from 'next/dynamic'
+import Link from 'next/link'
 import { Panels } from '@/components/Panels'
 import { UserMenu } from '@/components/Auth'
 import { useProjectStore } from '@/stores/project'
@@ -34,8 +35,14 @@ export default function Home() {
           labil
         </span>
 
-        {/* User menu - right aligned */}
-        <div className="pointer-events-auto">
+        {/* User menu + 3D link - right aligned */}
+        <div className="pointer-events-auto flex items-center gap-2">
+          <Link
+            href="/3d"
+            className="text-xs px-3 py-1.5 rounded-md bg-surface-solid/70 hover:bg-surface-hover border border-border transition"
+          >
+            3D
+          </Link>
           <UserMenu />
         </div>
       </div>
