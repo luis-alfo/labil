@@ -37,5 +37,13 @@
   3. *Módulos* (reutilizables): cuerpo del cajón en medidas de una rejilla fija, frente/tirador como pieza aparte, separadores interiores.
   - Uniones candidatas: cola de milano deslizante (estructural, sin tornillos), tornillo M3 + inserto roscado de calor (desmontable muchas veces), clips (rápidos pero se fatigan).
   - Rejilla candidata: *Gridfinity* (estándar abierto de 42 mm, con miles de organizadores ya diseñados). En un hueco de 130 mm caben justo 3 unidades por dentro (≈125,8 mm útiles con pared de 1,6 y holgura de 0,5); hay que verificarlo.
+- **El mueble (foto de Luis, 2026-10-13)**: columna estrecha de 6 huecos apilados en el extremo de la isla, con estantes fijos, interior de tablero melaminado blanco y fondo cerrado. **Fondo útil: 35 cm.** Luis no sabe si pondrá cajón en todos. **Frente enrasado** (para ahorrar material).
+  - El melamina es más estable que la madera maciza (apenas se hincha) y el PLA desliza bien sobre él, así que 0,5 mm por lado es razonable e incluso podría bajar.
+  - El *marco de prueba* sirve también de **galga**: probarlo en los 6 huecos dice en 2 minutos si todos miden lo mismo.
+- **Consecuencias de los 35 cm de fondo**
+  - Un cajón entero no cabe en la cama de casi ninguna impresora (lo normal es 220–256 mm), así que hay que **partirlo en tramos**. Eso encaja con la modularidad: *frente + N tramos de cuerpo + uniones*. Al mudarse, con otro fondo se quitan o se añaden tramos.
+  - Con frente enrasado hace falta un tope: el fondo del hueco hace de tope si el cajón mide 35 cm menos la holgura (hay que medir el fondo exacto).
+  - Material aproximado por cajón (pared 1,6 mm): caja completa de 134 mm de alto ≈ 340 g de PLA; *bandeja* (frente completo + laterales de 60 mm) ≈ 220 g. Con fondo perforado se ahorra otro ~15–20 %.
+  - *Patines*: dos carriles de ~1 mm bajo el cajón reducen el rozamiento y el polvo que frena, y fijan la holgura de abajo.
 - **Herramienta**: los modelos se generan con scripts Python paramétricos (`manifold3d` + `trimesh`) para poder iterar cambiando solo números.
-- **Estado**: paso 1 hecho (marco de prueba 129 × 134 × 10 mm, ≈ 11 g). Pendiente: resultado de la prueba de encaje de Luis → fijar holgura → definir la interfaz estándar (capa 2) → diseñar el cajón. Datos que faltan: profundidad del hueco, material de la estantería, cuántos huecos hay, frente enrasado o superpuesto.
+- **Estado**: paso 1 hecho (marco de prueba 129 × 134 × 10 mm, ≈ 11 g). Pendiente: resultado de la prueba de encaje de Luis → fijar holgura → definir la interfaz estándar (capa 2) → diseñar el cajón. Datos que faltan: modelo de impresora (tamaño de cama), qué se va a guardar (altura de las cosas → caja o bandeja), fondo exacto del hueco y si los 6 huecos miden igual.
