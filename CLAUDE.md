@@ -54,6 +54,15 @@
     - *Sinergia*: el suelo del cajón **es** la base Gridfinity (baseplate), una rejilla de celdas abiertas que ya es "fondo perforado" y gasta menos que los hexágonos. Como los cubos quedan anclados en la base, los laterales pueden bajar a un simple reborde (~20 mm). Estimación: frente + base + reborde ≈ 150 g por cajón, más los cubos.
     - *Contra*: con celdas abiertas, las cosas sueltas se caen; todo tiene que ir en cubos (o la base lleva suelo macizo, que gasta más).
     - *Encaje con la modularidad*: los cubos Gridfinity son la capa 3 más portable que existe (sirven en cajones, escritorios, cualquier casa), y hay miles de diseños gratuitos.
+  - **Concepto Gridfinity modelado** (`cajones-isla/concepto_gridfinity.png`, script en `cajones-isla/conceptos/`): 3 × 8 unidades, base de celdas abiertas, reborde de 20 mm y laterales de 1,2 mm. Tramo 1 con frente de 176 mm y tramo 2 de 172 mm (la unión cae en la rejilla). **Cajón con frente gola ≈ 125 g de PLA** (sin contar los cubos).
+    - El perfil de la base está aproximado a la especificación de Gridfinity (0,7 + 1,8 + 2,15 mm). Antes de imprimir el cajón hay que validarlo con un cubo Gridfinity real.
+  - **Propuestas de "puerta"** (= frente enrasado; imagen `cajones-isla/propuestas_frente.png`):
+    1. *Muesca*: semicírculo arriba, ≈ 45 g.
+    2. *Gola*: el tercio superior va retranqueado 18 mm y los dedos entran por delante. Encaja con los muebles sin tirador de la cocina de Luis. ≈ 48 g.
+    3. *Agujero de dedo*: óvalo a media altura, ≈ 42 g.
+    4. *Ranura*: línea horizontal cerca del borde superior, ≈ 41 g.
+    5. *Calado*: panal hexagonal, se ve el contenido, ≈ 27 g.
+  - **Cuidado estructural**: con reborde bajo y frente alto, tirar desde arriba hace palanca sobre la unión frente–base. Por eso llevan nervios traseros, y cuanto más bajo está el tirador, menos esfuerzo. El *calado* va sin nervios y sería el más flojo.
   - *Tirador*: una muesca semicircular arriba del frente, que no gasta material extra y no sobresale.
   - *Patines*: dos carriles de ~1 mm bajo el cajón reducen el rozamiento y el polvo que frena, y fijan la holgura de abajo.
 - **Herramienta**: los modelos se generan con scripts Python paramétricos (`manifold3d` + `trimesh`) para poder iterar cambiando solo números.
