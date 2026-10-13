@@ -1,10 +1,11 @@
 """Cajón modular Gridfinity para el hueco de la isla (130 × 135 × 350 mm).
 
 Piezas:  frente (intercambiable)  +  tramo 1  +  tramo 2
-Uniones: "cola de milano a caída". Bajo la base corren dos patines; en cada
-         junta, la pieza de delante saca una lengüeta en cola de milano y la de
-         detrás tiene el hueco abierto por abajo: se monta bajando la pieza de
-         detrás sobre la lengüeta. Tirar del cajón no la puede soltar.
+Uniones: "llave de mariposa" bajo los patines. Todas las piezas llevan el mismo
+         alojamiento hembra en cada extremo; una llave suelta (doble cola de
+         milano) cruza la junta. Se montan boca abajo metiendo las llaves; al
+         poner el cajón en el hueco, el estante las encierra. Cualquier tramo
+         se une con cualquier otro, en cualquier orden.
 """
 import math
 import numpy as np
@@ -26,7 +27,8 @@ Y_SPLIT = Y0 + 4 * G                      # junta tramo 1 / tramo 2
 Z_R = 3.0                                 # alto de los patines (la base va encima)
 RAIL_W = 6.0                              # ancho del patín (bajo el nervio de la base)
 RAIL_X = (-G / 2, G / 2)                  # bajo los nervios longitudinales de la base
-DT_NECK, DT_HEAD, DT_LEN = 7.0, 11.0, 8.0 # cola de milano: cuello, cabeza, largo
+DT_NECK, DT_HEAD, DT_LEN = 7.0, 11.0, 7.0 # cada mitad de la llave: cuello, cabeza, largo
+KEY_T, SOCK_D = 2.4, 2.6                  # grueso de la llave y profundidad del alojamiento (techo 0,4)
 DT_PAD = 17.0                             # ensanche del patín alrededor de la unión
 HOLGURA_DT = 0.2                          # juego por lado en la cola de milano
 FL_D = 10.0                               # fondo de la pestaña inferior del frente
@@ -70,10 +72,27 @@ def corte(cs, prof, chaflan=0.0):
     return m.rotate((90, 0, 0)).translate((0, prof, 0))
 
 
-def cola_milano(holgura=0.0, largo=DT_LEN, alto=Z_R):
-    n, h = DT_NECK / 2 + holgura, DT_HEAD / 2 + holgura
-    pts = [(-n, -0.01 - holgura), (n, -0.01 - holgura), (h, largo + holgura), (-h, largo + holgura)]
+def mitad(holgura=0.0, lado=1, alto=KEY_T):
+    """Media llave (cola de milano) desde la junta (y=0) hacia lado·Y."""
+    n, h, l = DT_NECK / 2 + holgura, DT_HEAD / 2 + holgura, DT_LEN + holgura
+    pts = [(-n, -0.01), (n, -0.01), (h, l), (-h, l)]
+    if lado < 0:
+        pts = [(x, -y) for x, y in reversed(pts)]
     return CrossSection([pts]).extrude(alto)
+
+
+def llave():
+    """Llave de mariposa: dos colas de milano unidas por el cuello."""
+    return mitad(lado=1) + mitad(lado=-1)
+
+
+def alojamiento(y, lado):
+    """Ensanche del patín con media mortaja abierta por abajo, en la junta y hacia lado·Y."""
+    largo = DT_LEN + 4
+    y0 = y if lado > 0 else y - largo
+    pad = Manifold.batch_boolean([box(x - DT_PAD / 2, y0, 0, DT_PAD, largo, Z_R) for x in RAIL_X], OpType.Add)
+    hueco = Manifold.batch_boolean([mitad(HOLGURA_DT, lado, SOCK_D + 0.01).translate((x, y, -0.01)) for x in RAIL_X], OpType.Add)
+    return pad, hueco
 
 
 # --- base Gridfinity -------------------------------------------------------
@@ -107,34 +126,22 @@ def patines(y_a, y_b):
     return Manifold.batch_boolean([box(x - RAIL_W / 2, y_a, 0, RAIL_W, y_b - y_a, Z_R + 0.01) for x in RAIL_X], OpType.Add)
 
 
-def macho(y):
-    """Lengüetas que salen hacia +Y desde y (con su ensanche de raíz)."""
-    m = Manifold()
-    for x in RAIL_X:
-        m += cola_milano().translate((x, y, 0))
-        m += box(x - DT_PAD / 2, y - 12, 0, DT_PAD, 12, Z_R)
+# --- piezas ----------------------------------------------------------------
+def tramo(y_a, y_b, y_base, trasera=False):
+    """Tramo de 4 filas con alojamientos en los dos extremos (intercambiable)."""
+    m = bandeja(y_a, y_b, 4, y_base, trasera) + patines(y_a if y_a > FL_D else FL_D, y_b)
+    for y, lado in ((max(y_a, FL_D), 1), (y_b, -1)):
+        pad, hueco = alojamiento(y, lado)
+        m = m + pad - hueco
     return m
 
 
-def hembra(y):
-    """Ensanche con hueco abierto por abajo, a partir de y hacia +Y."""
-    pad = Manifold.batch_boolean([box(x - DT_PAD / 2, y, 0, DT_PAD, DT_LEN + 5, Z_R) for x in RAIL_X], OpType.Add)
-    hueco = Manifold.batch_boolean([cola_milano(HOLGURA_DT, alto=Z_R + 0.2).translate((x, y, -0.01)) for x in RAIL_X], OpType.Add)
-    return pad, hueco
-
-
-# --- piezas ----------------------------------------------------------------
 def tramo1():
-    m = bandeja(TF, Y_SPLIT, 4, Y0) + patines(FL_D, Y_SPLIT)
-    m += macho(Y_SPLIT)
-    pad, hueco = hembra(FL_D)                       # recibe las lengüetas del frente
-    return m + pad - hueco
+    return tramo(TF, Y_SPLIT, Y0)
 
 
 def tramo2():
-    m = bandeja(Y_SPLIT, L, 4, Y_SPLIT, trasera=True) + patines(Y_SPLIT, L)
-    pad, hueco = hembra(Y_SPLIT)
-    return m + pad - hueco
+    return tramo(Y_SPLIT, L, Y_SPLIT, trasera=True)
 
 
 ESTILOS = {
@@ -149,7 +156,30 @@ ESTILOS = {
     "volta":    dict(radio=2.0, chaflan=1.0, abertura=("volta", 66, 22, 92)),
     # revoltons: tres voltes entre "vigas", como el techo visto desde abajo
     "revoltons": dict(radio=2.0, chaflan=1.0, abertura=("revoltons", 24, 18, 94)),
+    # revoltons sin columnas: una sola abertura cuyo techo son varias voltes seguidas
+    "revoltons3": dict(radio=2.0, chaflan=1.0, abertura=("arcos", 78, 20, 93, 3)),
+    "revoltons2": dict(radio=2.0, chaflan=1.0, abertura=("arcos", 72, 22, 93, 2)),
+    "revoltons4": dict(radio=2.0, chaflan=1.0, abertura=("arcos", 84, 18, 94, 4)),
 }
+
+
+def arcos(ancho, alto, z0, n, flecha_rel=0.2, r=2.0, r_valle=1.5):
+    """Abertura de base recta y techo formado por n voltes seguidas (sin vigas)."""
+    luz = ancho / n
+    f = flecha_rel * luz
+    arr = alto - f
+    R = (luz ** 2 / 4 + f ** 2) / (2 * f)
+    a0 = math.asin((luz / 2) / R)
+    pts = [(-ancho / 2, z0), (ancho / 2, z0)]
+    for k in reversed(range(n)):
+        cx = -ancho / 2 + luz / 2 + k * luz
+        cz = z0 + arr + f - R
+        for i in range(25):
+            a = a0 - 2 * a0 * i / 24
+            pts.append((cx + R * math.sin(a), cz + R * math.cos(a)))
+    cs = CrossSection([pts])
+    cs = cs.offset(-r, JoinType.Round, circular_segments=16).offset(r, JoinType.Round, circular_segments=16)
+    return cs.offset(r_valle, JoinType.Round, circular_segments=16).offset(-r_valle, JoinType.Round, circular_segments=16)
 
 
 def arco(luz, alto, z0, flecha_rel=0.2, r=2.0):
@@ -169,7 +199,7 @@ def arco(luz, alto, z0, flecha_rel=0.2, r=2.0):
 
 def frente(estilo="actual", nervios_hasta=None):
     e = ESTILOS[estilo]
-    tipo, aw, ah, zc = e["abertura"]
+    tipo, aw, ah, zc = e["abertura"][:4]
     perfil = rrect(W, H, e["radio"]).translate((0, H / 2))
     if tipo == "onda":
         perfil -= CrossSection.circle(1, 96).scale((aw / 2 + 6, ah + 5)).translate((0, H + 5))
@@ -178,6 +208,8 @@ def frente(estilo="actual", nervios_hasta=None):
         f -= corte(rrect(aw, ah, ah / 2).translate((0, zc)), TF, e["chaflan"])
     elif tipo == "volta":
         f -= corte(arco(aw, ah, zc - ah / 2), TF, e["chaflan"])
+    elif tipo == "arcos":
+        f -= corte(arcos(aw, ah, zc - ah / 2, e["abertura"][4]), TF, e["chaflan"])
     elif tipo == "revoltons":
         viga = 5.0
         for k in (-1, 0, 1):
@@ -188,10 +220,10 @@ def frente(estilo="actual", nervios_hasta=None):
         f = f + caja - hueco
     # pestaña inferior y nervios: transmiten el tirón a las lengüetas
     f += box(-W / 2 + 1.5, 0, 0, W - 3, FL_D, Z_R)
-    top = nervios_hasta or (zc - ah / 2 - 6 if tipo in ("ovalo", "volta", "revoltons") else 76)
+    top = nervios_hasta or (zc - ah / 2 - 6 if tipo in ("ovalo", "volta", "revoltons", "arcos") else 76)
     for x in RAIL_X:
         f += box(x - 0.8, TF, Z_R, 1.6, RIB, top - Z_R)
-        f += cola_milano().translate((x, FL_D, 0))
+    f -= Manifold.batch_boolean([mitad(HOLGURA_DT, -1, SOCK_D + 0.01).translate((x, FL_D, -0.01)) for x in RAIL_X], OpType.Add)
     return f
 
 
@@ -200,16 +232,21 @@ def gramos(m):
 
 
 def prueba_union():
-    """Probeta de tolerancias: 3 parejas macho/hembra con juego 0,1 / 0,2 / 0,3 mm.
-    Las muescas del costado indican cuál es cuál (1, 2 o 3)."""
-    piezas = Manifold()
+    """Probeta: 3 juntas (juego 0,1 / 0,2 / 0,3 mm, marcadas con 1, 2 o 3 muescas),
+    cada una con dos tacos hembra y su llave."""
+    global HOLGURA_DT
+    original, piezas = HOLGURA_DT, Manifold()
     for i, juego in enumerate((0.1, 0.2, 0.3)):
-        x0 = i * 30.0
-        m = box(-DT_PAD / 2, -12, 0, DT_PAD, 12, Z_R) + cola_milano()
-        h = box(-DT_PAD / 2, 0, 0, DT_PAD, DT_LEN + 5, Z_R + 1.2) - cola_milano(juego, alto=Z_R + 0.2).translate((0, 0, -0.01))
-        for k in range(i + 1):                     # muescas identificativas
-            n = box(-DT_PAD / 2 - 0.5, -10 + k * 3, -0.5, 1.5, 1.2, Z_R + 2)
-            m -= n
-            h -= n.translate((0, 12, 0))
-        piezas += m.translate((x0, 0, 0)) + h.translate((x0, 14, 0))   # separadas 6 mm
+        HOLGURA_DT = juego
+        x0 = i * 28.0
+        a = box(-DT_PAD / 2, -(DT_LEN + 4), 0, DT_PAD, DT_LEN + 4, Z_R) - mitad(juego, -1, SOCK_D + 0.01).translate((0, 0, -0.01))
+        b = box(-DT_PAD / 2, 0, 0, DT_PAD, DT_LEN + 4, Z_R) - mitad(juego, 1, SOCK_D + 0.01).translate((0, 0, -0.01))
+        for k in range(i + 1):
+            n = box(-DT_PAD / 2 - 0.5, -9 + k * 3, -0.5, 1.5, 1.2, Z_R + 2)
+            a -= n
+            b -= n.translate((0, 12, 0))
+        # tacos con el alojamiento contra la cama, igual que en los tramos (la primera
+        # capa estrecha un poco la boca: así la prueba es fiel)
+        piezas += a.translate((x0, -2, 0)) + b.translate((x0, 2, 0)) + llave().rotate((0, 0, 90)).translate((x0, 30, 0))
+    HOLGURA_DT = original
     return piezas
