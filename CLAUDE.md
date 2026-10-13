@@ -68,6 +68,18 @@
     - Cubos Gridfinity (pared y suelo de 1,2 mm, pie hueco): 1×1×3u 7 g · 1×1×6u 12 g · 2×1×6u 20 g · 3×1×3u 18 g · 3×1×6u 28 g · 2×2×6u 32 g · 3×2×4u 35 g · 1×2×12u 35 g. El juego de ejemplo de la imagen pesa ≈ 159 g ≈ 3,19 €.
     - Pruebas: marco 11 g / 0,22 € · muestra (frente gola + 1 fila de base) 56,5 g / 1,13 €.
   - **Frente elegido para ver en detalle: agujero de dedo** (imagen `cajones-isla/cajon_agujero.png`, despiece y montado sin cubos): frente 42 g + tramo 1 32 g + tramo 2 45 g = **≈ 119 g ≈ 2,38 €** por cajón.
+  - **Uniones diseñadas: "cola de milano a caída"** (`cajones-isla/uniones.png`, modelo en `cajones-isla/conceptos/cajon.py`):
+    - Bajo la base corren **2 patines** de 6 × 3 mm, colocados justo bajo los nervios longitudinales de la base (x = ±21), para que la carga baje recta. Sirven a la vez de patines de deslizamiento y de larguero que rigidiza la rejilla.
+    - En cada junta, la pieza de delante saca dos lengüetas en cola de milano (cuello 7, cabeza 11, largo 8 mm) y la de detrás tiene el hueco **abierto por abajo**. Se monta *bajando* cada pieza sobre la anterior: frente → tramo 1 → tramo 2. Tirar del cajón no las puede separar; solo se sueltan levantando.
+    - El frente lleva una pestaña inferior de 10 mm con las lengüetas y 2 nervios alineados con los patines: el tirón va del frente a los nervios, de ahí a las lengüetas y a los patines.
+    - Juego por defecto: 0,2 mm por lado. **Probeta** `cajones-isla/prueba_union_cola_milano.stl` con 3 parejas (0,1 / 0,2 / 0,3 mm, marcadas con 1, 2 o 3 muescas), ≈ 6 g / 0,11 €.
+    - Coste: los patines y ensanches suman ~30 g. Cajón completo ≈ **149 g ≈ 2,99 €** (frente ≈ 46 g, tramo 1 ≈ 45 g, tramo 2 ≈ 59 g).
+    - Mejora opcional: un pasador de filamento de 1,75 mm atravesando cada unión impediría que se levante.
+  - **Orientación de impresión**: el frente se imprime **boca abajo** (la cara vista sobre la cama de PEI texturizada de la A1 sale mate y uniforme). Así la tracción del tirón va entre capas, pero los esfuerzos son mínimos (un cajón se abre con 10–20 N). Los tramos se imprimen con la base sobre la cama. Ninguna pieza necesita soportes.
+  - **Estética de la puerta** (`cajones-isla/puertas_estetica.png`):
+    - *Línea de sombra*: radio de 2 mm en las esquinas y chaflán de 1 mm en las aristas de la cara y de la abertura. Hace que la rendija con el hueco parezca intencionada; es el truco que más mejora por menos. Es mejor chaflán que redondeo porque, boca abajo, el redondeo en la cara de la cama no se imprime bien.
+    - Aberturas: óvalo, píldora fina, bolsillo (cajita trasera de 6,8 mm; no se ve el interior), onda superior, círculo, **volta** y **revoltons**.
+  - **El piso de Luis tiene voltes catalanes** (techo de bóveda tabicada). Lo usamos como lenguaje de diseño: la *volta* es un arco rebajado (flecha ≈ 1/5 de la luz) sobre arranques rectos; los *revoltons* son tres voltes pequeñas separadas por "vigas", como el techo visto desde abajo.
   - **Cuidado estructural**: con reborde bajo y frente alto, tirar desde arriba hace palanca sobre la unión frente–base. Por eso llevan nervios traseros, y cuanto más bajo está el tirador, menos esfuerzo. El *calado* va sin nervios y sería el más flojo.
   - *Tirador*: una muesca semicircular arriba del frente, que no gasta material extra y no sobresale.
   - *Patines*: dos carriles de ~1 mm bajo el cajón reducen el rozamiento y el polvo que frena, y fijan la holgura de abajo.
