@@ -47,6 +47,13 @@
   - **Fondo confirmado: 35 cm exactos** → el cajón mide 348 mm con el frente incluido (2 mm de aire atrás).
   - **Impresora de Luis: Bambu Lab A1** (cama de 256 × 256 × 256 mm). 348 mm no caben, así que van **2 tramos de ~174 mm**, que encajan de sobra.
   - *Bandeja con fondo perforado* (explicado a Luis, imagen en `cajones-isla/concepto_cajon_variantes.png`): el frente es completo, a la altura del hueco, para que desde fuera se vea igual que una caja. Detrás, los laterales son bajos (~60 mm) y el fondo lleva agujeros hexagonales que dejan una rejilla de nervios de unos 2,4 mm. Los hexágonos se imprimen sin soportes y rigidizan como un panal. Gasto medido: caja completa 352 g, bandeja 232 g, bandeja perforada 184 g de PLA. Cosas pequeñas (tornillos, pilas, gomas) se colarían por los agujeros de 14 mm.
+  - **¿Están adaptados los conceptos a Gridfinity? No** (pregunta de Luis). Las 3 variantes se dimensionaron solo por el hueco. Así quedaría la versión Gridfinity:
+    - *Ancho*: los cubos (bins) de 3 unidades ocupan 3 × 42 − 0,5 = 125,5 mm. Con pared de 1,6 mm el interior es de 125,8 mm (0,15 mm por lado: demasiado justo para la tolerancia de la impresora). Solución: laterales de 1,2 mm → interior de 126,6 mm (0,55 mm por lado), manteniendo la holgura de 0,5 con el hueco.
+    - *Fondo*: interior ≈ 344 mm → caben **8 unidades (336 mm)**, y sobran ~8 mm para uniones. Cada tramo lleva 4 unidades (168 mm), así que la junta entre tramos coincide con la rejilla.
+    - *Alto*: caben cubos de hasta ~17 unidades de altura (≈ 12 cm con el labio de apilado).
+    - *Sinergia*: el suelo del cajón **es** la base Gridfinity (baseplate), una rejilla de celdas abiertas que ya es "fondo perforado" y gasta menos que los hexágonos. Como los cubos quedan anclados en la base, los laterales pueden bajar a un simple reborde (~20 mm). Estimación: frente + base + reborde ≈ 150 g por cajón, más los cubos.
+    - *Contra*: con celdas abiertas, las cosas sueltas se caen; todo tiene que ir en cubos (o la base lleva suelo macizo, que gasta más).
+    - *Encaje con la modularidad*: los cubos Gridfinity son la capa 3 más portable que existe (sirven en cajones, escritorios, cualquier casa), y hay miles de diseños gratuitos.
   - *Tirador*: una muesca semicircular arriba del frente, que no gasta material extra y no sobresale.
   - *Patines*: dos carriles de ~1 mm bajo el cajón reducen el rozamiento y el polvo que frena, y fijan la holgura de abajo.
 - **Herramienta**: los modelos se generan con scripts Python paramétricos (`manifold3d` + `trimesh`) para poder iterar cambiando solo números.
