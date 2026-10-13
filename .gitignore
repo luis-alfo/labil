@@ -56,3 +56,6 @@ logs/
 # Cache
 .cache/
 .turbo/
+
+# python
+__pycache__/
