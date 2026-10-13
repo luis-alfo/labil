@@ -62,6 +62,11 @@
     3. *Agujero de dedo*: óvalo a media altura, ≈ 42 g.
     4. *Ranura*: línea horizontal cerca del borde superior, ≈ 41 g.
     5. *Calado*: panal hexagonal, se ve el contenido, ≈ 27 g.
+  - **Despiece y coste** (PLA a 20 €/kg = 0,02 €/g; gramos del modelo, el laminador suele sumar un 5–10 %):
+    - Por cajón: tramo 1 (4 filas + reborde) 32,5 g / 0,65 € · tramo 2 (4 filas + reborde + tope) 44,8 g / 0,90 € · frente (pieza aparte, intercambiable): muesca 44,6 g / 0,89 €, gola 48,1 g / 0,96 €, agujero 41,7 g / 0,83 €, ranura 41,3 g / 0,83 €, calado 26,5 g / 0,53 € · uniones de cola de milano integradas en los tramos (sin modelar, ~2–3 g).
+    - **Cajón con gola ≈ 125 g ≈ 2,51 €; los 6 cajones ≈ 752 g ≈ 15 €.**
+    - Cubos Gridfinity (pared y suelo de 1,2 mm, pie hueco): 1×1×3u 7 g · 1×1×6u 12 g · 2×1×6u 20 g · 3×1×3u 18 g · 3×1×6u 28 g · 2×2×6u 32 g · 3×2×4u 35 g · 1×2×12u 35 g. El juego de ejemplo de la imagen pesa ≈ 159 g ≈ 3,19 €.
+    - Pruebas: marco 11 g / 0,22 € · muestra (frente gola + 1 fila de base) 56,5 g / 1,13 €.
   - **Cuidado estructural**: con reborde bajo y frente alto, tirar desde arriba hace palanca sobre la unión frente–base. Por eso llevan nervios traseros, y cuanto más bajo está el tirador, menos esfuerzo. El *calado* va sin nervios y sería el más flojo.
   - *Tirador*: una muesca semicircular arriba del frente, que no gasta material extra y no sobresale.
   - *Patines*: dos carriles de ~1 mm bajo el cajón reducen el rozamiento y el polvo que frena, y fijan la holgura de abajo.

@@ -86,10 +86,19 @@ def frente(tipo):
 
 def cubo(nx, ny, u, x, y):
     w, d, h = nx * G - 0.5, ny * G - 0.5, 7 * u
-    pie = rrect(w - 5.7, d - 5.7, 0.8).extrude(4.4, scale_top=((w - 0.6) / (w - 5.7), (d - 0.6) / (d - 5.7)))
+    # pie por celda, hueco por debajo como los cubos reales (pared y suelo de 1,2 mm)
+    pies = []
+    for ix in range(nx):
+        for iy in range(ny):
+            cx, cy = (ix - (nx - 1) / 2) * G, (iy - (ny - 1) / 2) * G
+            ext = rrect(41.5 - 5.7, 41.5 - 5.7, 0.8).extrude(4.4, scale_top=(40.9 / 35.8, 40.9 / 35.8))
+            inn = rrect(41.5 - 5.7 - 2.4, 41.5 - 5.7 - 2.4, 0.5).extrude(4.4 + 0.01, scale_top=(38.5 / 33.4, 38.5 / 33.4))
+            pies.append((ext - inn.translate((0, 0, -0.005))).translate((cx, cy, 0)))
+    pie = Manifold.batch_boolean(pies, OpType.Add)
+    suelo = rrect(w, d, 3.75).extrude(1.2).translate((0, 0, 4.4))
     caja = rrect(w, d, 3.75).extrude(h - 4.4).translate((0, 0, 4.4))
-    hueco = rrect(w - 2.4, d - 2.4, 2.6).extrude(h).translate((0, 0, 6))
-    return (pie + caja - hueco).translate((x, y, 0.3))
+    hueco = rrect(w - 2.4, d - 2.4, 2.6).extrude(h).translate((0, 0, 5.6))
+    return (pie + suelo + caja - hueco).translate((x, y, 0.3))
 
 def tm(m):
     me = m.to_mesh()
