@@ -67,6 +67,7 @@
     - **Cajón con gola ≈ 125 g ≈ 2,51 €; los 6 cajones ≈ 752 g ≈ 15 €.**
     - Cubos Gridfinity (pared y suelo de 1,2 mm, pie hueco): 1×1×3u 7 g · 1×1×6u 12 g · 2×1×6u 20 g · 3×1×3u 18 g · 3×1×6u 28 g · 2×2×6u 32 g · 3×2×4u 35 g · 1×2×12u 35 g. El juego de ejemplo de la imagen pesa ≈ 159 g ≈ 3,19 €.
     - Pruebas: marco 11 g / 0,22 € · muestra (frente gola + 1 fila de base) 56,5 g / 1,13 €.
+  - **Frente elegido para ver en detalle: agujero de dedo** (imagen `cajones-isla/cajon_agujero.png`, despiece y montado sin cubos): frente 42 g + tramo 1 32 g + tramo 2 45 g = **≈ 119 g ≈ 2,38 €** por cajón.
   - **Cuidado estructural**: con reborde bajo y frente alto, tirar desde arriba hace palanca sobre la unión frente–base. Por eso llevan nervios traseros, y cuanto más bajo está el tirador, menos esfuerzo. El *calado* va sin nervios y sería el más flojo.
   - *Tirador*: una muesca semicircular arriba del frente, que no gasta material extra y no sobresale.
   - *Patines*: dos carriles de ~1 mm bajo el cajón reducen el rozamiento y el polvo que frena, y fijan la holgura de abajo.
