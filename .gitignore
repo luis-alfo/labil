@@ -59,3 +59,6 @@ logs/
 
 # python
 __pycache__/
+
+# mallas derivadas de Clickfinity (CC BY-NC-SA, uso personal; se generan con conceptos/cajon_click.py)
+cajones-isla/clickfinity_local/

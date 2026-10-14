@@ -36,3 +36,36 @@ pip install manifold3d trimesh
 python3 marco_prueba.py --holgura 0.8 --profundidad 15 --salida marco_h08.stl
 python3 marco_prueba.py --help   # todos los parámetros
 ```
+
+## Paso 2 — Cajón con base Clickfinity (v1 para imprimir)
+
+![Cajón Clickfinity](cajon_clickfinity.png)
+
+**Piezas propias** (`stl/`, PLA):
+
+| Pieza | Cantidad | Cómo imprimir |
+|---|---|---|
+| `frente_revoltons3.stl` | 1 | Boca abajo (la cara vista sobre la cama) |
+| `tramo_A.stl` | 1 | Tal cual, patines contra la cama |
+| `tramo_B.stl` | 1 | Tal cual |
+| `llave_mariposa.stl` | 4 | Tal cual |
+
+**Piezas Clickfinity** (PETG, como pide su autor):
+
+- Base: "Gridfinity Clickfinity Baseplate" de NoWarrenty (remix de las ClickPlates de jerrymk), licencia CC BY-NC-SA 4.0. No se incluyen aquí.
+- Se generan desde el ZIP original con `python3 conceptos/cajon_click.py <ruta del zip>`, en `clickfinity_local/` (carpeta ignorada por git).
+- Se recortan los medios nervios exteriores y las orejas laterales: sin recortar, una placa de 3 columnas mide 131,7 mm y el hueco mide 130 mm.
+
+| Pieza | Cantidad |
+|---|---|
+| `placa_3x4_recortada.stl` | 1 |
+| `placa_3x3_recortada.stl` | 1 |
+| `conector_entero_a/b.stl` | 2 |
+| `conector_exterior_izq/der_recortado.stl` | 1 + 1 |
+
+Ajustes del autor para las piezas Clickfinity: boquilla de 0,4, 2 paredes, relleno del 15–30 %, 1 capa inferior y 2 superiores, y compensación de pata de elefante de 0,2 mm (en Bambu Studio, *Elephant foot compensation*). Antes, prueba a montar dos conectores con un trozo de placa: deben entrar con un "clic" a mano, sin martillo.
+
+**Montaje**
+1. Bandeja boca abajo: mete las 4 llaves en sus alojamientos (frente + tramo A, tramo A + tramo B).
+2. Dale la vuelta y coloca la placa 3x4 delante y la 3x3 detrás.
+3. Cierra la fila libre del medio con los 4 conectores.

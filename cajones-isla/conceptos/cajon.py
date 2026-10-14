@@ -197,7 +197,7 @@ def arco(luz, alto, z0, flecha_rel=0.2, r=2.0):
     return cs.offset(-r, JoinType.Round, circular_segments=16).offset(r, JoinType.Round, circular_segments=16)
 
 
-def frente(estilo="actual", nervios_hasta=None):
+def frente(estilo="actual", nervios_hasta=None, nervios_desde=None, nervios_fondo=None):
     e = ESTILOS[estilo]
     tipo, aw, ah, zc = e["abertura"][:4]
     perfil = rrect(W, H, e["radio"]).translate((0, H / 2))
@@ -221,8 +221,10 @@ def frente(estilo="actual", nervios_hasta=None):
     # pestaña inferior y nervios: transmiten el tirón a las lengüetas
     f += box(-W / 2 + 1.5, 0, 0, W - 3, FL_D, Z_R)
     top = nervios_hasta or (zc - ah / 2 - 6 if tipo in ("ovalo", "volta", "revoltons", "arcos") else 76)
+    z0 = Z_R if nervios_desde is None else nervios_desde
+    fondo = RIB if nervios_fondo is None else nervios_fondo
     for x in RAIL_X:
-        f += box(x - 0.8, TF, Z_R, 1.6, RIB, top - Z_R)
+        f += box(x - 0.8, TF, z0, 1.6, fondo, top - z0)
     f -= Manifold.batch_boolean([mitad(HOLGURA_DT, -1, SOCK_D + 0.01).translate((x, FL_D, -0.01)) for x in RAIL_X], OpType.Add)
     return f
 
