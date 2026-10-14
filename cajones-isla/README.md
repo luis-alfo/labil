@@ -69,3 +69,9 @@ Ajustes del autor para las piezas Clickfinity: boquilla de 0,4, 2 paredes, relle
 1. Bandeja boca abajo: mete las 4 llaves en sus alojamientos (frente + tramo A, tramo A + tramo B).
 2. Dale la vuelta y coloca la placa 3x4 delante y la 3x3 detrás.
 3. Cierra la fila libre del medio con los 4 conectores.
+
+## Tapa autónoma (prueba de puerta y tapa para huecos sin cajón)
+
+![Tapas](tapas.png)
+
+`stl/tapa_revoltons3_pasante.stl` o `stl/tapa_revoltons3_bolsillo.stl`: puerta de 3 voltes con un faldón de 12 mm que entra en el hueco y 6 costillas que aprietan 0,3 mm por lado. Se imprime boca abajo, sin soportes. Si aprieta demasiado, rebaja las costillas con un cúter. Para tapar huecos, mejor la de bolsillo (no se ve el interior).

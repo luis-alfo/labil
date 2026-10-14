@@ -104,6 +104,12 @@
     - Frente `revoltons3` con línea de sombra; los nervios traseros empiezan por encima de la placa (z ≥ 8,6) y tienen 3 mm de fondo para no tocar sus orejas.
     - Peso: frente 43 g + tramo A 30 g + tramo B 35 g + llaves 1,5 g ≈ **109 g de PLA (2,19 €)** + Clickfinity ≈ **35 g de PETG (0,69 €)** ≈ **2,9 € por cajón**.
     - Comprobado en el modelo: ninguna pieza choca con otra (incluidas placas, conectores y llaves) y todas caben en la A1.
+  - **Tapa autónoma** (pedida por Luis, 2026-10-14; `cajones-isla/stl/tapa_revoltons3_{pasante,bolsillo}.stl`, imagen `tapas.png`, modelo `conceptos/tapa.py`). Tiene dos usos: **probar la puerta de 3 voltes** antes del cajón y **tapar los huecos de abajo que no llevarán cajón**.
+    - Es el frente `revoltons3` (129 × 134, línea de sombra) más un **faldón de 12 mm** por detrás que entra en el hueco, con pared de 1,6 mm.
+    - Sujeción por **costillas aplastables**: 6 costillas verticales (3 por costado) que sobresalen 0,8 mm. Con la holgura de 0,5 mm aprietan 0,3 mm por lado y llevan rampa de entrada. Si aprieta demasiado, se rebajan con un cúter; si queda floja, se sube `COSTILLA`. Se descartaron las lengüetas elásticas: al imprimir boca abajo, o quedan en el aire o se doblan entre capas y se parten.
+    - Variantes: *pasante* (los dedos enganchan por detrás del frente, ≈ 51 g / 1,03 €) y *bolsillo* (cajita cerrada que sube 8 mm sobre el arco: la yema engancha y **no se ve el interior**, ≈ 57 g / 1,14 €). Para tapar los huecos, mejor *bolsillo*.
+    - Se imprime boca abajo, sin soportes. El bolsillo cierra con un puente corto.
+    - Malla: frente y faldón se modelan como un solo bloque vaciado. Si se unen dos piezas con caras coincidentes, el STL sale con aristas no-manifold.
   - **Orientación de impresión**: el frente se imprime **boca abajo** (la cara vista sobre la cama de PEI texturizada de la A1 sale mate y uniforme). Así la tracción del tirón va entre capas, pero los esfuerzos son mínimos (un cajón se abre con 10–20 N). Los tramos se imprimen con la base sobre la cama. Ninguna pieza necesita soportes.
   - **Estética de la puerta** (`cajones-isla/puertas_estetica.png`):
     - *Línea de sombra*: radio de 2 mm en las esquinas y chaflán de 1 mm en las aristas de la cara y de la abertura. Hace que la rendija con el hueco parezca intencionada; es el truco que más mejora por menos. Es mejor chaflán que redondeo porque, boca abajo, el redondeo en la cara de la cama no se imprime bien.
