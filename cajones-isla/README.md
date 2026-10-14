@@ -50,7 +50,7 @@ python3 marco_prueba.py --help   # todos los parámetros
 | `tramo_B.stl` | 1 | Tal cual |
 | `llave_mariposa.stl` | 4 | Tal cual |
 
-**Piezas Clickfinity** (PETG, como pide su autor):
+**Piezas Clickfinity** (el autor pide PETG; en PLA también sirven: con el tiempo los brazos pierden algo de agarre, pero la placa sigue centrando y sujetando los cubos como una base Gridfinity normal):
 
 - Base: "Gridfinity Clickfinity Baseplate" de NoWarrenty (remix de las ClickPlates de jerrymk), licencia CC BY-NC-SA 4.0. No se incluyen aquí.
 - Se generan desde el ZIP original con `python3 conceptos/cajon_click.py <ruta del zip>`, en `clickfinity_local/` (carpeta ignorada por git).
