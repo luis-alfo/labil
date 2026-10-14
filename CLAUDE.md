@@ -89,6 +89,11 @@
     - Reparto de las 8 filas: **placa 3x4 + fila de conectores + placa 3x3** (ninguna pieza supera los 256 mm de la A1). Los 4 conectores van en la fila libre; los 2 exteriores, recortados igual que las placas.
     - **El autor pide PETG/ABS/ASA, no PLA**: el PLA cede con carga constante (*creep*) y los brazos pierden agarre. → Placas y conectores en PETG; bandeja y frente pueden ir en PLA.
     - Las mallas derivadas de Clickfinity **no se suben al repo** (licencia): se generan con `conceptos/cajon_click.py <zip>` en `cajones-isla/clickfinity_local/` (ignorada por git).
+  - **Fondo máximo de una placa Clickfinity en la A1 (pregunta de Luis: evitar conectores)**: la placa 3×n mide 42·n + 6 mm con sus orejas W.
+    - Tal cual: **5 filas = 216 mm**. Con 6 filas son 258 mm y no caben, ni siquiera en diagonal.
+    - Recortando también los extremos: **6 filas = 252,2 mm**. Cabe, pero a 2 mm del borde de la cama.
+    - En ningún caso llega a las 8 filas del cajón (336 mm) en una sola pieza.
+    - **Truco para no necesitar conectores**: recortar cada placa por los 4 bordes en la línea de la rejilla (medio nervio fuera, igual que ya se hace en los laterales). Así dos placas quedan **a tope** sin solaparse (comprobado: solape 0, junta de 0,2 mm) y entre las dos reconstruyen el nervio completo con sus brazos. La bandeja las mantiene en su sitio. Propuesta: **2 placas 3x4 recortadas (16 g de PETG cada una)**, sin conectores.
   - **Cajón v1 para imprimir** (`cajones-isla/stl/`, imagen `cajon_clickfinity.png`, modelo `conceptos/cajon_click.py`):
     - Bandeja propia: suelo de tiras de 6 × 1,2 mm bajo todas las líneas de la rejilla (las placas apoyan sus nervios), patines y llaves de mariposa como antes, reborde de 20 mm, laterales de 1,0 mm. Tramo A de 192 mm y tramo B de 154 mm: la junta va en mitad de la fila de conectores (y = 194,3).
     - Frente `revoltons3` con línea de sombra; los nervios traseros empiezan por encima de la placa (z ≥ 8,6) y tienen 3 mm de fondo para no tocar sus orejas.
