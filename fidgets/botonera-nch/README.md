@@ -11,7 +11,13 @@ lengüeta de la tapa recortada en U, que flexa al pulsar y recupera sola.
 | `generar.py` | Modelo paramétrico (regenera STL y 3MF) |
 | `preview.png` | Vista previa |
 
-## v3: botón que baja entero (recomendada) — `botonera_nch_v3_color.3mf`
+## v4: mecanismo oculto (recomendada) — `botonera_nch_v4_color.3mf`
+58 × 58 × 18 mm. Igual que la v3 pero con resorte compacto (3 brazos) y cada
+forma del logo es una **tecla de 20 mm que tapa todo el mecanismo**. La tecla
+se une al disco por un vástago con cono a ~55° por debajo: sin soportes.
+Prueba de un botón: `prueba_boton_v4.3mf`. Ajustes en `generar_v4.py`.
+
+## v3: botón que baja entero — `botonera_nch_v3_color.3mf`
 58 × 58 × 12 mm. Cada forma va sobre un disco unido a la tapa por **4 brazos en
 espiral**: al pulsar, el disco baja recto y paralelo (sin bisagra) y recupera solo.
 Dos cuchillas con diente bajo el disco dan el clic al bajar y al soltar.
