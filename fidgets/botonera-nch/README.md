@@ -11,6 +11,14 @@ lengüeta de la tapa recortada en U, que flexa al pulsar y recupera sola.
 | `generar.py` | Modelo paramétrico (regenera STL y 3MF) |
 | `preview.png` | Vista previa |
 
+## v2: clic real (`botonera_nch_v2.3mf`)
+Bajo el borde libre de cada lengüeta hay una cuchilla vertical impresa con un
+diente en cuña (0,5 mm de solape). Al pulsar, la lengüeta empuja el diente, la
+cuchilla cede y vuelve de golpe: **clic al bajar y otro al soltar**.
+Sigue siendo una sola pieza, sin muelles ni piezas extra.
+Ajustes en `generar_v2.py`: `SOLAPE` (fuerza del clic), `CUCHILLA` (dureza),
+`HUECO_Z` (holgura vertical; súbela a 0,6 si el diente se pega a la lengüeta).
+
 ## Imprimir en Bambu Lab A1 (PLA)
 - Capa 0,2 mm, 2 paredes, relleno 15 %, **sin soportes** (los techos son puentes cortos de ~22 mm).
 - Base en la cama, botones hacia arriba (orientación del archivo).
