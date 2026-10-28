@@ -47,7 +47,6 @@ def construir():
 if __name__ == "__main__":
     m = construir()
     t = a_trimesh(m)
-    t.merge_vertices()
     assert m.status().name == "NoError" and t.is_watertight
     t.export("botonera_nch_v2.stl")
     t.export("botonera_nch_v2.3mf")

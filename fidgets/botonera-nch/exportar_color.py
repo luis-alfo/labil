@@ -26,7 +26,6 @@ def piezas():
 
 def malla_xml(m):
     t = v1.a_trimesh(m)
-    t.merge_vertices()
     assert t.is_watertight
     v = "".join(f'<vertex x="{x:.4f}" y="{y:.4f}" z="{z:.4f}"/>' for x, y, z in t.vertices)
     f = "".join(f'<triangle v1="{a}" v2="{b}" v3="{c}"/>' for a, b, c in t.faces)

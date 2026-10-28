@@ -11,6 +11,13 @@ lengüeta de la tapa recortada en U, que flexa al pulsar y recupera sola.
 | `generar.py` | Modelo paramétrico (regenera STL y 3MF) |
 | `preview.png` | Vista previa |
 
+## v3: botón que baja entero (recomendada) — `botonera_nch_v3_color.3mf`
+58 × 58 × 12 mm. Cada forma va sobre un disco unido a la tapa por **4 brazos en
+espiral**: al pulsar, el disco baja recto y paralelo (sin bisagra) y recupera solo.
+Dos cuchillas con diente bajo el disco dan el clic al bajar y al soltar.
+Ajustes en `generar_v3.py`: `BRAZO` / `ARCO_BRAZO` (dureza del resorte),
+`SOLAPE` (fuerza del clic), `HOLGURA`.
+
 ## v2: clic real (`botonera_nch_v2.3mf`)
 Bajo el borde libre de cada lengüeta hay una cuchilla vertical impresa con un
 diente en cuña (0,5 mm de solape). Al pulsar, la lengüeta empuja el diente, la

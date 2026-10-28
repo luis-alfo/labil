@@ -89,14 +89,13 @@ def construir():
 
 def a_trimesh(m):
     mesh = m.to_mesh()
-    return trimesh.Trimesh(np.asarray(mesh.vert_properties)[:, :3], np.asarray(mesh.tri_verts), process=True, merge_tex=True, merge_norm=True)
+    return trimesh.Trimesh(np.asarray(mesh.vert_properties)[:, :3], np.asarray(mesh.tri_verts), process=False)
 
 
 if __name__ == "__main__":
     m = construir()
     print("manifold genus:", m.genus(), "status:", m.status())
     t = a_trimesh(m)
-    t.merge_vertices()
     assert t.is_watertight
     t.export("botonera_nch.stl")
     t.export("botonera_nch.3mf")
