@@ -13,7 +13,7 @@ lengüeta de la tapa recortada en U, que flexa al pulsar y recupera sola.
 
 ## v5: 3 piezas que encajan (en prueba) — `boton_v5_piezas.3mf`
 Tras romperse los brazos de la v4. Un botón de prueba en 3 piezas impresas:
-- **Resorte**: plano sobre la cama, 3 brazos en espiral de 240° (largos = poca tensión). PETG recomendado.
+- **Resorte**: plano sobre la cama, 3 brazos en espiral de 300° (largos = poca tensión), pensado para PLA.
 - **Carcasa** y **tecla**: boca abajo; la tecla tiene una valona a 45° que la retiene bajo la tapa.
 Montaje: mete la tecla por debajo de la carcasa, luego encaja el resorte a presión
 (brazos hacia la tecla) haciendo entrar el pivote en el agujero del buje.

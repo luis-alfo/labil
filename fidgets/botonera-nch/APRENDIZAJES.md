@@ -54,3 +54,7 @@ Con brazos de 1,0 mm en PLA: ~0,9 N y 0,56 %.
 3. **Fatiga**: 1.000 pulsaciones (a mano o con un servo) y repetir el ensayo 1. Si la fuerza
    cae > 10 % o aparecen marcas blancas en los brazos → el material se está cansando.
 4. Repetir con 3 unidades (dispersión de impresión) y en PLA y PETG.
+
+## Decisión material (2026-10-28)
+Luis imprime **solo en PLA**. Se alargan las espirales a 300° (brazo 1,2 mm):
+fuerza ~1,1 N, deformación 0,47 % → margen ×2,1 sobre el 1 % supuesto para PLA.

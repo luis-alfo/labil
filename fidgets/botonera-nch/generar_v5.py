@@ -31,7 +31,7 @@ ALTO_MARCO = 3.2                  # el marco apoya en la mesa
 GROSOR_BRAZO = 1.2                # brazos y buje (cara superior una vez montado)
 ANCHO_BRAZO = 1.6
 N_BRAZOS = 3
-GIRO_BRAZO = 240                  # grados que recorre cada espiral (más = más blando)
+GIRO_BRAZO = 300                  # grados de cada espiral (más = más blando y menos tensión; PLA)
 R_BUJE = 4.5
 R_AGUJERO = 2.0                   # agujero del buje para el pivote
 R_LIBRE = HUECO / 2 - 1.6         # radio útil dentro del marco
