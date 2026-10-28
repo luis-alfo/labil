@@ -37,3 +37,20 @@ Brazo modelado como viga guiada en ambos extremos: deformación máxima ε ≈ 3
 El PLA impreso rompe en torno al 2–4 %; para miles de pulsaciones conviene < 1 %.
 Fuerza estimada v5: ~1 N (~100 g), del orden de una tecla de teclado (0,5–0,7 N).
 Es una aproximación: la espiral también se retuerce, lo que la hace algo más blanda.
+
+## Evaluación de resistencia (v5)
+### Cálculo (`analisis_resorte.py`, vigas con flexión + torsión)
+| Material | Fuerza botón | Deformación máx | Admisible orientativo* | Margen |
+|---|---|---|---|---|
+| PLA | 1,6 N (~160 g) | 0,67 % | 1 % | ×1,5 |
+| PETG | 1,0 N (~100 g) | 0,67 % | 2 % | ×3 |
+*No hay un valor publicado de deformación admisible en fatiga para flexuras impresas;
+son supuestos prudentes. Hay que validarlos con ensayo.
+Con brazos de 1,0 mm en PLA: ~0,9 N y 0,56 %.
+
+### Ensayos caseros propuestos
+1. **Fuerza–recorrido** con báscula de cocina: anotar gramos a 0,5 / 1 / 1,5 mm. Compara con el cálculo.
+2. **Rotura estática**: pulsar más allá del recorrido (hasta que toque fondo) y comprobar que no cede.
+3. **Fatiga**: 1.000 pulsaciones (a mano o con un servo) y repetir el ensayo 1. Si la fuerza
+   cae > 10 % o aparecen marcas blancas en los brazos → el material se está cansando.
+4. Repetir con 3 unidades (dispersión de impresión) y en PLA y PETG.
