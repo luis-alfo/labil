@@ -26,3 +26,14 @@
 ## Decisión (2026-10-28)
 Luis elige la opción de **piezas impresas que encajan** (v5). Primero se valida resorte + guía
 de la tecla con un botón; el clic se añade después, cambiando una sola cosa cada vez.
+
+## Por qué la v5 debería aguantar (cálculo aproximado)
+Brazo modelado como viga guiada en ambos extremos: deformación máxima ε ≈ 3·t·δ / L²
+(t = grosor que se dobla, δ = recorrido, L = largo del brazo).
+| | t | δ | L | ε |
+|---|---|---|---|---|
+| v4 (rota) | 1,2 mm | 1,5 mm | ~10 mm | **~5 %** |
+| v5 | 1,2 mm | 1,5 mm | ~33 mm | **~0,5 %** |
+El PLA impreso rompe en torno al 2–4 %; para miles de pulsaciones conviene < 1 %.
+Fuerza estimada v5: ~1 N (~100 g), del orden de una tecla de teclado (0,5–0,7 N).
+Es una aproximación: la espiral también se retuerce, lo que la hace algo más blanda.
