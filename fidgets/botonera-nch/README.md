@@ -11,7 +11,15 @@ lengüeta de la tapa recortada en U, que flexa al pulsar y recupera sola.
 | `generar.py` | Modelo paramétrico (regenera STL y 3MF) |
 | `preview.png` | Vista previa |
 
-## v4: mecanismo oculto (recomendada) — `botonera_nch_v4_color.3mf`
+## v5: 3 piezas que encajan (en prueba) — `boton_v5_piezas.3mf`
+Tras romperse los brazos de la v4. Un botón de prueba en 3 piezas impresas:
+- **Resorte**: plano sobre la cama, 3 brazos en espiral de 240° (largos = poca tensión). PETG recomendado.
+- **Carcasa** y **tecla**: boca abajo; la tecla tiene una valona a 45° que la retiene bajo la tapa.
+Montaje: mete la tecla por debajo de la carcasa, luego encaja el resorte a presión
+(brazos hacia la tecla) haciendo entrar el pivote en el agujero del buje.
+Ajustes en `generar_v5.py`: `GIRO_BRAZO`, `ANCHO_BRAZO`, `GROSOR_BRAZO` (dureza), `AJUSTE` (encaje).
+
+## v4: mecanismo oculto (descartada: brazos rotos) — `botonera_nch_v4_color.3mf`
 58 × 58 × 18 mm. Igual que la v3 pero con resorte compacto (3 brazos) y cada
 forma del logo es una **tecla de 20 mm que tapa todo el mecanismo**. La tecla
 se une al disco por un vástago con cono a ~55° por debajo: sin soportes.

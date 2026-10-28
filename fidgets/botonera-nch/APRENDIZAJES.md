@@ -1,7 +1,7 @@
 # Aprendizajes — botonera NocodeHackers
 
 ## Prueba v4 (2026-10-28): la tecla se rompe al primer clic
-Causas probables (pendiente de confirmar dónde partió):
+**Confirmado: se rompieron los brazos en espiral.** Causas probables:
 - Brazos del resorte de 1,2 × 1,2 mm impresos **como puente** (en el aire): capas mal
   pegadas → frágiles.
 - Brazos cortos (3 × 95°, radio ~6 mm): mucha deformación para 1–1,5 mm de recorrido.
@@ -22,3 +22,7 @@ Causas probables (pendiente de confirmar dónde partió):
 - Print-in-place fidget button: https://makerworld.com/en/models/498205
 - Clicker satisfactorio: https://printables.com/model/370915-satisfying-clicking-fidget-button
 - Orientación de capa y fatiga en PLA: https://pmc.ncbi.nlm.nih.gov/articles/PMC6926899/
+
+## Decisión (2026-10-28)
+Luis elige la opción de **piezas impresas que encajan** (v5). Primero se valida resorte + guía
+de la tecla con un botón; el clic se añade después, cambiando una sola cosa cada vez.
