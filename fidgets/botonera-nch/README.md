@@ -11,6 +11,11 @@ lengüeta de la tapa recortada en U, que flexa al pulsar y recupera sola.
 | `generar.py` | Modelo paramétrico (regenera STL y 3MF) |
 | `preview.png` | Vista previa |
 
+## Botonera 2×2 v6 — `botonera_v6_2x2.3mf`
+46 × 46 × 9,4 mm. Una carcasa de 4 celdas + 4 teclas (casa, círculo, círculo,
+cuadrado cortado) + 4 resortes v6. Todo en una placa, ya orientado. ~19 g de PLA.
+Montaje igual que el botón v6, celda por celda. Generador: `generar_v6_2x2.py`.
+
 ## v6: compacta 24 mm, 2 mm de recorrido (en prueba) — `boton_v6_piezas.3mf`
 Igual que la v5 (✅ probada) pero 24 × 24 mm (2×2 ≈ 48 mm) y tecla de 15 mm.
 Resorte de 2 brazos de 1,0 mm que dan ~1,4 vueltas: 2 mm de recorrido con la misma
