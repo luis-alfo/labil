@@ -11,7 +11,12 @@ lengüeta de la tapa recortada en U, que flexa al pulsar y recupera sola.
 | `generar.py` | Modelo paramétrico (regenera STL y 3MF) |
 | `preview.png` | Vista previa |
 
-## v5: 3 piezas que encajan (en prueba) — `boton_v5_piezas.3mf`
+## v6: compacta 24 mm, 2 mm de recorrido (en prueba) — `boton_v6_piezas.3mf`
+Igual que la v5 (✅ probada) pero 24 × 24 mm (2×2 ≈ 48 mm) y tecla de 15 mm.
+Resorte de 2 brazos de 1,0 mm que dan ~1,4 vueltas: 2 mm de recorrido con la misma
+tensión que la v5 (0,5 %). Ajustes en `generar_v6.py`.
+
+## v5: 3 piezas que encajan (✅ probada) — `boton_v5_piezas.3mf`
 Tras romperse los brazos de la v4. Un botón de prueba en 3 piezas impresas:
 - **Resorte**: plano sobre la cama, 3 brazos en espiral de 300° (largos = poca tensión), pensado para PLA.
 - **Carcasa** y **tecla**: boca abajo; la tecla tiene una valona a 45° que la retiene bajo la tapa.

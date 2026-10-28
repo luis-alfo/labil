@@ -58,3 +58,13 @@ Con brazos de 1,0 mm en PLA: ~0,9 N y 0,56 %.
 ## Decisión material (2026-10-28)
 Luis imprime **solo en PLA**. Se alargan las espirales a 300° (brazo 1,2 mm):
 fuerza ~1,1 N, deformación 0,47 % → margen ×2,1 sobre el 1 % supuesto para PLA.
+
+## Prueba v5 impresa (2026-10-28): ✅ funciona
+Luis: funciona bien. Pide **más recorrido** y **más pequeño** (2×2 de 30 mm queda grande).
+Compromiso tamaño / recorrido / tensión (PLA, calculado):
+| Botón | Recorrido | Deformación | Fuerza |
+|---|---|---|---|
+| v5: 30 mm | 1,5 mm | 0,47 % (probado ✅) | 1,1 N |
+| v6: 24 mm, 2 brazos de 510°, ancho 1,0 | 2,0 mm | 0,50 % | 0,5 N |
+| 24 mm con 2,5 mm de recorrido | 2,5 mm | 0,63 % | 0,6 N (más riesgo) |
+Regla: a igual tensión, menos tamaño ⇒ menos recorrido; se compensa con más vueltas y brazos más finos.
