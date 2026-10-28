@@ -19,6 +19,13 @@ Sigue siendo una sola pieza, sin muelles ni piezas extra.
 Ajustes en `generar_v2.py`: `SOLAPE` (fuerza del clic), `CUCHILLA` (dureza),
 `HUECO_Z` (holgura vertical; súbela a 0,6 si el diente se pega a la lengüeta).
 
+## Bicolor (`botonera_nch_v2_color.3mf`)
+Dos piezas ya asignadas: **fondo → filamento 1**, **logo → filamento 2**.
+- Con AMS lite: abre y lamina, los colores ya están puestos.
+- Sin AMS: el logo solo está por encima de 9 mm, así que basta un cambio de
+  filamento en esa capa (clic derecho en la barra de capas → *Añadir cambio de filamento*).
+Colores en `exportar_color.py` (`COLOR_BASE`, `COLOR_LOGO`).
+
 ## Imprimir en Bambu Lab A1 (PLA)
 - Capa 0,2 mm, 2 paredes, relleno 15 %, **sin soportes** (los techos son puentes cortos de ~22 mm).
 - Base en la cama, botones hacia arriba (orientación del archivo).
