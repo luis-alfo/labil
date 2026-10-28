@@ -19,6 +19,7 @@ RANURA = 0.8        # hueco alrededor de la lengüeta (holgura print-in-place)
 LENGUA = 19.0       # lado de la lengüeta
 FORMA = 16.0        # tamaño de cada forma del logo
 ALTO_FORMA = 3.0    # relieve del botón
+RADIO = 2.5         # redondeo de las esquinas de las formas
 LADO = 2 * CELDA + PARED
 
 
@@ -29,7 +30,7 @@ def poligono(pts):
 def casa(s):  # arriba-izq: pentágono tipo "casa"
     h = s / 2
     return poligono([(-h, -h), (h, -h), (h, h * 0.15), (0, h), (-h, h * 0.15)]).offset(
-        -1, JoinType.Round).offset(1, JoinType.Round)
+        -RADIO, JoinType.Round).offset(RADIO, JoinType.Round)
 
 
 def circulo(s):
@@ -39,7 +40,7 @@ def circulo(s):
 def cuadrado_cortado(s):  # abajo-der: cuadrado con esquina inf-izq achaflanada
     h = s / 2
     return poligono([(-h * 0.1, -h), (h, -h), (h, h), (-h, h), (-h, -h * 0.1)]).offset(
-        -1, JoinType.Round).offset(1, JoinType.Round)
+        -RADIO, JoinType.Round).offset(RADIO, JoinType.Round)
 
 
 # (forma, centro, lado de la bisagra)
