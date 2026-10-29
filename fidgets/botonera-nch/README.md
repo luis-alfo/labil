@@ -15,9 +15,10 @@ lengüeta de la tapa recortada en U, que flexa al pulsar y recupera sola.
 46 × 46 × 9,4 mm. Una carcasa de 4 celdas + 4 teclas (casa, círculo, círculo,
 cuadrado cortado) + 4 resortes v6. Todo en una placa, ya orientado. ~19 g de PLA.
 Montaje igual que el botón v6, celda por celda. Generador: `generar_v6_2x2.py`.
-**Tapa trasera**: los 4 resortes apoyan en ella (misma altura) y no se salen al pulsar en
-el aire. Engancha a presión con un cordón en una ranura de la carcasa; se saca tirando
-de la **pestaña**. Ajustes: `RANURA_P`, `HOLGURA_TAPA`, `PESTANA_*`.
+**Tapa trasera**: placa que entra en un rebaje de la carcasa y queda **a ras**, sin sobresalir.
+Los 4 resortes apoyan en ella (misma altura) y no se salen al pulsar en el aire. Engancha con
+un cordón en una ranura interior; para sacarla, mete la uña en la muesca de un lateral y
+haz palanca sobre la pestaña. Altura total 11 mm. Ajustes: `CORDON`, `HOLGURA_TAPA`, `UNA_*`.
 
 ## v6: compacta 24 mm, 2 mm de recorrido (en prueba) — `boton_v6_piezas.3mf`
 Igual que la v5 (✅ probada) pero 24 × 24 mm (2×2 ≈ 48 mm) y tecla de 15 mm.
