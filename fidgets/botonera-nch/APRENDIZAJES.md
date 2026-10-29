@@ -68,3 +68,16 @@ Compromiso tamaño / recorrido / tensión (PLA, calculado):
 | v6: 24 mm, 2 brazos de 510°, ancho 1,0 | 2,0 mm | 0,50 % | 0,5 N |
 | 24 mm con 2,5 mm de recorrido | 2,5 mm | 0,63 % | 0,6 N (más riesgo) |
 Regla: a igual tensión, menos tamaño ⇒ menos recorrido; se compensa con más vueltas y brazos más finos.
+
+## Revisión de la tapa trasera (2026-10-29) — diseño actual NO válido
+Luis pregunta si se probó el encaje. **No**: solo se comprobó que las piezas no se solapan.
+Fallos del diseño actual (cordón perimetral de 0,3 mm):
+- Ninguna pieza puede doblarse: pared de 2 mm y placa de 1,6 mm rígidas → o no entra o rompe.
+- Holgura de 0,15 mm: por debajo de lo recomendado en FDM (0,2–0,4 mm).
+Cómo se hace bien (snap-fit):
+- El enganche lo da un **brazo en voladizo** que se dobla; deformación ε ≈ 1,5·h·y / L²
+  (h grosor raíz, y interferencia, L largo). Brazo de 5–15 mm, **redondeo en la raíz**.
+- El brazo se imprime **en el plano XY**, nunca vertical (en Z las capas se separan; admisible ÷2).
+- PLA es frágil en flexión repetida: mantener ε bajo y pocas aperturas.
+- **Antes de la pieza final, imprimir una probeta de tolerancias** (0,2 / 0,3 / 0,4 mm).
+Fuentes: Fictiv (snap fits), Core77, guías Qidi/Sovol de holguras.
