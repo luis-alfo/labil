@@ -213,6 +213,30 @@
       font-style: italic;
     }
 
+    .toggle {
+      display: inline-flex;
+      gap: 0.2rem;
+      margin-bottom: 0.7rem;
+      padding: 0.2rem;
+      background: rgba(220, 208, 181, 0.45);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+    }
+    .toggle button {
+      font-family: inherit;
+      font-size: 0.9rem;
+      color: var(--muted);
+      background: none;
+      border: 0;
+      border-radius: 999px;
+      padding: 0.35rem 0.9rem;
+      cursor: pointer;
+    }
+    .toggle button[aria-pressed="true"] {
+      color: var(--accent);
+      background: var(--bg);
+    }
+    .toggle button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
     .build-stamp {
       text-align: right;
       color: var(--muted);
@@ -237,7 +261,9 @@
       labil<span class="brand-sub">— modelos 3D</span>
     </div>
     <nav class="tabs" aria-label="Modelos">
-      <a href="#bar-a"  data-target="bar-a"  class="active">A · Hilo</a>
+      <a href="#v3"       data-target="v3"       class="active">Estropajo V3</a>
+      <a href="#v3-placa" data-target="v3-placa">V3 · placa A1</a>
+      <a href="#bar-a"  data-target="bar-a">A · Hilo</a>
       <a href="#bar-b"  data-target="bar-b">B · Carril</a>
       <a href="#bar-c"  data-target="bar-c">C · Rama</a>
       <a href="#full"   data-target="full">Esponja</a>
@@ -250,13 +276,17 @@
       <a href="#pinch-compare" data-target="pinch-compare">Comparar largos</a>
     </nav>
     <select class="tabs-mobile" aria-label="Modelos">
+      <optgroup label="Soporte de estropajo V3">
+        <option value="v3">Montado</option>
+        <option value="v3-placa">Placa A1</option>
+      </optgroup>
       <optgroup label="Barra modular">
         <option value="bar-a">A · Hilo</option>
         <option value="bar-b">B · Carril</option>
         <option value="bar-c">C · Rama</option>
       </optgroup>
       <optgroup label="Sponge holder">
-        <option value="full">Esponja completa</option>
+        <option value="full">Esponja completa (V1)</option>
         <option value="faucet">Abrazadera</option>
         <option value="sponge">Pinza original</option>
       </optgroup>
@@ -271,6 +301,73 @@
   </header>
 
   <main id="snap-root">
+    <section id="v3">
+      <div class="section-inner">
+        <div class="eyebrow">Soporte de estropajo · V3 · para PLA</div>
+        <h2>Bandeja de rejilla que se levanta</h2>
+        <p class="lede">
+          Brazo a ras de la encimera y bandeja de rejilla 7 cm por debajo.
+          La bandeja se levanta para fregar y se queda sola a 95°.
+        </p>
+        <div class="toggle" role="group" aria-label="Posición de la bandeja">
+          <button type="button" aria-pressed="true"  data-glb="models/estropajero_v3_abajo.glb">Abajo</button>
+          <button type="button" aria-pressed="false" data-glb="models/estropajero_v3_levantada.glb">Levantada</button>
+        </div>
+        <model-viewer
+          id="v3-viewer"
+          data-src="models/estropajero_v3_abajo.glb"
+          alt="Soporte de estropajo V3 montado en el grifo"
+          auto-rotate
+          camera-controls
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          shadow-intensity="0.7"
+          shadow-softness="0.8"
+          exposure="1.05"
+          camera-orbit="65deg 68deg auto">
+        </model-viewer>
+        <p class="ar-pill">📱 En AR se ve a tamaño real</p>
+        <dl class="meta">
+          <dt>Piezas</dt><dd>A pinza + brazo · B bastidor en "A" · C bandeja rejilla</dd>
+          <dt>Montaje</dt><dd>espiga de B desde arriba en el brazo · bandeja vertical y bajarla por los ojos</dd>
+          <dt>Bandeja</dt><dd>100 × 65 mm, 7 cm bajo la encimera · sale poniéndola vertical</dd>
+          <dt>Medir antes</dt><dd>Ø columna y embellecedor, distancia al canto, Ø del fregadero</dd>
+          <dt>Diseño</dt><dd><a href="files/estropajero-v3/estropajero_v3.scad">OpenSCAD paramétrico</a> · <a href="files/estropajero-v3/APRENDIZAJES.md">aprendizajes</a></dd>
+        </dl>
+      </div>
+    </section>
+
+    <section id="v3-placa">
+      <div class="section-inner">
+        <div class="eyebrow">Soporte de estropajo · V3 · Bambu Lab A1</div>
+        <h2>Una placa, sin soportes</h2>
+        <p class="lede">
+          Las tres piezas orientadas para imprimir en PLA. El bastidor va de
+          pie, en el centro y con la "A" en el eje en que se mueve la cama;
+          lleva dos orejetas de 0,4 mm que se arrancan al terminar.
+        </p>
+        <model-viewer
+          data-src="models/estropajero_v3_placa.glb"
+          alt="Placa de la A1 con las tres piezas del soporte V3"
+          auto-rotate
+          camera-controls
+          shadow-intensity="0.7"
+          shadow-softness="0.8"
+          exposure="1.05"
+          camera-orbit="20deg 55deg auto">
+        </model-viewer>
+        <dl class="meta">
+          <dt>Perfil</dt><dd>A1 0.4 · 0.20mm Standard · PLA Basic · sin soportes ni brim</dd>
+          <dt>Paredes / relleno</dt><dd>A 4 / 15 % · B 4 / 25 % · C 3 / 15 %</dd>
+          <dt>Filamento</dt><dd>~48 g (A 15 g · B 15 g · C 18 g)</dd>
+          <dt>Tiempo</dt><dd>~2 h 03 min + calibración inicial (estimado)</dd>
+          <dt>Coste</dt><dd>~1,0–1,5 € (filamento ~1 €, luz ~0,05 €)</dd>
+          <dt>3MF</dt><dd><a href="files/estropajero-v3/estropajero_v3_A1.3mf" download>placa para Bambu Studio</a></dd>
+          <dt>STL</dt><dd><a href="files/estropajero-v3/pieza_A.stl" download>A</a> · <a href="files/estropajero-v3/pieza_B_bastidor.stl" download>B</a> · <a href="files/estropajero-v3/pieza_C_bandeja.stl" download>C</a></dd>
+        </dl>
+      </div>
+    </section>
+
     <section id="bar-a">
       <div class="section-inner">
         <div class="eyebrow">Barra modular · propuesta A</div>
@@ -373,7 +470,7 @@
 
     <section id="full">
       <div class="section-inner">
-        <div class="eyebrow">Sponge holder · pieza definitiva</div>
+        <div class="eyebrow">Sponge holder · V1 · sustituida por la V3</div>
         <h2>Pieza completa — robusta con prongs triangulares</h2>
         <p class="lede">
           Versión reforzada tras feedback de fragilidad. Prongs ahora
@@ -652,12 +749,23 @@
         const r = await fetch("models/version.txt?_=" + Date.now(), { cache: "no-store" });
         v = (await r.text()).trim();
       } catch (_) { v = String(Date.now()); }
+      window.modelVersion = v;
       document.querySelectorAll("model-viewer[data-src]").forEach(el => {
         el.src = el.dataset.src + "?v=" + v;
       });
       const tag = document.getElementById("build-stamp");
       if (tag && v) tag.textContent = "build " + v;
     })();
+
+    // ── V3: cambiar entre bandeja abajo y levantada
+    document.querySelectorAll(".toggle button").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const viewer = document.getElementById("v3-viewer");
+        btn.parentElement.querySelectorAll("button")
+          .forEach(b => b.setAttribute("aria-pressed", String(b === btn)));
+        viewer.src = btn.dataset.glb + "?v=" + (window.modelVersion || Date.now());
+      });
+    });
 
     // ── Active-tab tracking via IntersectionObserver inside <main>
     const sections = document.querySelectorAll("main section");

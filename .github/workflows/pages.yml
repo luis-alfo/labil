@@ -35,6 +35,10 @@ jobs:
         # scipy: trimesh's convex_hull (used by the triangular prongs)
         run: pip install trimesh shapely manifold3d numpy-stl networkx lxml scipy
 
+      - name: Install OpenSCAD
+        # estropajero-v3 se modela en OpenSCAD; su generate_stl.py lo necesita
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq openscad
+
       - name: Regenerate STL + GLB for every design
         run: |
           set -euo pipefail
