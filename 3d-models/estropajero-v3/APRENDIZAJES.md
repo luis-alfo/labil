@@ -59,3 +59,12 @@
   - Luz: unos 0,2 kWh, es decir, 3–5 céntimos.
   - Total: 1,0–1,5 €, contando el desgaste de la máquina.
 - Desde esta sesión no se puede descargar Bambu Studio porque GitHub está bloqueado. Por eso el 3MF solo lleva la geometría, y los ajustes de cada pieza hay que ponerlos a mano.
+
+## Dónde se publica el visor (31 oct 2026)
+- Web para el móvil: https://luis-alfo.github.io/labil/ . La V3 es la primera pestaña, con un selector Abajo / Levantada, y la segunda pestaña muestra la placa de la A1.
+- Se publica desde la rama `claude/3d-model-generation-IEA7l` (PR #1, en borrador). El workflow `.github/workflows/pages.yml` se lanza en cada push que toque `3d-models/` o `docs/`:
+  - regenera todos los diseños;
+  - publica la carpeta `docs/`.
+- Para cambiar una medida basta con editar `estropajero_v3.scad` y hacer push. CI instala OpenSCAD y vuelve a generar los STL, los GLB, la placa 3MF y las descargas.
+- Las descargas tienen que estar dentro de `docs/`. Los enlaces `../3d-models/...` de los diseños antiguos dan 404 en la web publicada.
+- Los GLB de la V3 van en metros y con el eje Y hacia arriba, para que el AR del móvil los muestre a tamaño real.
