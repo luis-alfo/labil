@@ -12,7 +12,7 @@
 ## V2: decisiones de diseño
 - Son dos piezas y ninguna necesita soportes al imprimir.
   - A: aro en C escalonado (abraza el embellecedor por abajo y la columna por arriba) y brazo plano de 5 mm.
-  - B: bandeja y pata. Encaja desde arriba en una ranura con avellanado de 45° y queda enrasada con el brazo. Si se levanta la bandeja, sale, así que se puede quitar para lavarla.
+  - B: bandeja y pata. Encaja en una ranura con avellanado de 45° y queda enrasada con el brazo. (En la V3 la unión A–B cambió el 1 nov 2026: ver más abajo.)
 - La pata no toca el fregadero: queda a 6 mm del canto arriba y a 10 mm abajo. Un tope apoya en el canto de la encimera y evita que la bandeja gire.
 - Las cotas del grifo son estimaciones sacadas de las fotos. Todavía no está probado en el grifo real.
 
@@ -38,7 +38,7 @@
 ## Luis imprime en PLA: cómo encaja cada pieza (29 oct 2026)
 - El PLA aguanta poco cuando se dobla en la dirección que separa las capas. Antes de dar por buena una unión, hay que mirar hacia dónde se dobla respecto a las capas.
 - Pinza en C: se dobla en el plano de las capas (la pieza se imprime plana) y deforma entre el 0,3 y el 0,5 %. Con PLA va bien.
-- Espiga en el brazo: entra desde arriba sin doblar nada y queda enrasada.
+- Espiga en el brazo: dije que entraba desde arriba y era falso. Ver la sección del 1 nov 2026.
 - Bisagra: abrir la "A" para meter pivotes en ojos cerrados doblaría los brazos (impresos de pie) contra las capas. Con PLA eso es arriesgado.
 - Solución, la bayoneta:
   - El ojo tiene una ranura abierta por arriba y el pivote entra desde arriba.
@@ -51,9 +51,9 @@
 - Las tres piezas caben en una sola placa de 256 × 256 mm.
 - El bastidor va en el centro, con la "A" alineada con el eje Y, que es por donde se mueve la cama. En una impresora de cama móvil, las piezas altas tienen que ir así.
 - El bastidor lleva orejetas de 0,4 mm modeladas en la propia pieza, para no depender de que haya que activar el brim.
-- Estimación con un perfil parecido al de A1 0.20mm Standard + PLA Basic: 48 g en total.
-  - Por pieza: A 15 g, B 15 g, C 18 g.
-  - Tiempo de la placa: unas 2 h 03 min, más unos 5–7 min de calibración inicial.
+- Estimación con un perfil parecido al de A1 0.20mm Standard + PLA Basic: unos 50 g en total.
+  - Por pieza: A 16 g, B 15 g, C 18 g.
+  - Tiempo de la placa: unas 2 h 04 min, más unos 5–7 min de calibración inicial.
 - Coste aproximado:
   - Filamento a unos 20 €/kg: alrededor de 1 €.
   - Luz: unos 0,2 kWh, es decir, 3–5 céntimos.
@@ -68,3 +68,16 @@
 - Para cambiar una medida basta con editar `estropajero_v3.scad` y hacer push. CI instala OpenSCAD y vuelve a generar los STL, los GLB, la placa 3MF y las descargas.
 - Las descargas tienen que estar dentro de `docs/`. Los enlaces `../3d-models/...` de los diseños antiguos dan 404 en la web publicada.
 - Los GLB de la V3 van en metros y con el eje Y hacia arriba, para que el AR del móvil los muestre a tamaño real.
+
+## Error de montaje entre A y B, y su corrección (1 nov 2026)
+- Luis vio que era físicamente imposible meter el bastidor (B) en el brazo (A) siendo PLA. Tenía razón:
+  - la cabeza de la espiga (17 mm) es más ancha que la ranura (14,5 mm);
+  - todo el bastidor cuelga por debajo del brazo;
+  - desde abajo no pasa sin deformar el PLA, y desde arriba habría que pasar el bastidor entero por la ranura.
+- Lección: antes de dar por bueno un encaje, hay que simular el camino de montaje completo, no solo la posición final. Para cada pieza, comprobar por dónde entra y en qué orden se montan las piezas.
+- Corrección, solo en la pieza A:
+  - La ranura queda abierta por un lado del brazo (-y). B entra deslizándolo de lado bajo la punta, con la cabeza 0,5 mm alta, y al llegar al fondo cae 0,5 mm en su asiento.
+  - Para sacarlo hay que levantarlo esos 0,5 mm, así que en uso no se sale de lado.
+  - La punta del brazo se ensancha hacia el lado cerrado (+y) para que la pared que sujeta la cabeza no quede débil.
+  - La pieza B no cambia: sirve la ya impresa.
+- Simulado: la entrada no toca nada (holgura de 0,1 mm entre el cuerpo de B y la cara de abajo del brazo). Una vez asentado, B choca si se intenta mover de lado o hacia delante o atrás.

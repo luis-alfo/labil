@@ -2,7 +2,8 @@
 //  Soporte de estropajo para grifo — V3
 //  Tres piezas, todas se imprimen SIN soportes:
 //    A = pinza (abraza embellecedor + columna) + brazo plano a ras de encimera
-//    B = bastidor en "A" calado: espiga arriba, dos pivotes abajo
+//    B = bastidor en "A" calado: espiga arriba, dos pivotes abajo. Entra de lado
+//        bajo la punta del brazo y cae 0,5 mm en su asiento (sin forzar nada)
 //    C = bandeja de rejilla con bisagra de bayoneta: entra desde arriba sin
 //        forzar nada (apto PLA), se levanta y se queda pasada de la vertical
 //
@@ -72,6 +73,9 @@ tenon_w   = 14;
 leg_t     = 5;    // fondo de la espiga
 joint_clr = 0.25;
 cs        = 1.5;
+lock_h    = 0.5;  // escalón del asiento: hay que levantar B esto para sacarlo de lado
+nose_wall = 6;    // pared del brazo por delante de la ranura
+nose_off  = 8;    // la punta se ensancha hacia +y (lado cerrado de la ranura)
 
 $fn = 64;
 eps = 0.01;
@@ -81,7 +85,7 @@ x_col    = -edge_dist;
 r_flange = flange_d / 2 + flange_clr;
 r_col    = col_d / 2 + col_clr;
 r_out    = r_flange + collar_wall;
-x_nose   = gap_top + leg_t + joint_clr + cs + 3.5;
+x_nose   = gap_top + leg_t + joint_clr + cs + nose_wall;
 zb       = -drop - floor_t;              // base de la bandeja
 z_ax     = zb + axis_h;                  // eje de la bisagra
 y_eye0   = tray_W / 2 + side_clr;        // cara interior de los ojos
@@ -101,6 +105,14 @@ module rrect4(x0, x1, y0, y1, rb, rf) {   // radio distinto atrás / delante
     }
 }
 // =========================== PIEZA A =================================
+// avellanado a 45° solo en x (paredes verticales en y), elevado dz
+module countersink_y(sx0, sx1, y0, y1, dz) {
+    hull() {
+        translate([sx0, y0, arm_t - cs + dz]) cube([sx1 - sx0, y1 - y0, eps]);
+        translate([sx0 - cs - 1, y0, arm_t + 1 + dz]) cube([sx1 - sx0 + 2 * cs + 2, y1 - y0, eps]);
+    }
+}
+
 module part_A() {
     difference() {
         union() {
@@ -108,6 +120,7 @@ module part_A() {
             linear_extrude(arm_t) hull() {
                 translate([x_col, -arm_w / 2]) square([eps, arm_w]);
                 translate([x_nose - arm_w / 2, 0]) circle(d = arm_w);
+                translate([x_nose - arm_w / 2, nose_off]) circle(d = arm_w);
             }
         }
         translate([x_col, 0, 0]) {
@@ -120,13 +133,14 @@ module part_A() {
                          [-2 * r_out,  2 * r_out * tan(opening_angle / 2)],
                          [-2 * r_out, -2 * r_out * tan(opening_angle / 2)]]);
         }
+        // Unión con B: ranura abierta hacia -y. B entra de lado con la cabeza
+        // 0,5 mm alta (canal de entrada) y al llegar al fondo cae en el asiento.
         sx0 = gap_top - joint_clr; sx1 = gap_top + leg_t + joint_clr;
-        sy  = tenon_w / 2 + joint_clr;
-        translate([sx0, -sy, -1]) cube([sx1 - sx0, 2 * sy, arm_t + 2]);
-        hull() {
-            translate([sx0, -sy, arm_t - cs]) cube([sx1 - sx0, 2 * sy, eps]);
-            translate([sx0 - cs, -sy - cs, arm_t]) cube([sx1 - sx0 + 2 * cs, 2 * sy + 2 * cs, 1]);
-        }
+        sy  = tenon_w / 2 + joint_clr;                    // fondo de la ranura (+y)
+        sy_seat = tenon_w / 2 + cs + 2 * joint_clr;      // asiento: largo de la cabeza
+        translate([sx0, -4 * arm_w, -1]) cube([sx1 - sx0, 4 * arm_w + sy, arm_t + 2]);
+        countersink_y(sx0, sx1, -sy_seat, sy_seat, 0);
+        countersink_y(sx0, sx1, -4 * arm_w, 0, lock_h);
     }
     z_up = flange_h + r_flange - r_col;
     for (s = [-1, 1], seg = [[r_flange, 0, z_up], [r_col, z_up, collar_h - z_up]]) {
