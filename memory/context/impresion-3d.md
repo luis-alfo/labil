@@ -78,3 +78,9 @@ Luis vio llaveros botella combados y despegados durante la impresión en la A1. 
 - **Sin borde (brim).** El perfil no lo fuerza para PLA; las orejas en la punta del cuello y las esquinas ayudan.
 - Una vez combada, la boquilla choca con la esquina levantada y arranca la pieza.
 - La cama ya está a 65 °C (perfil de PLA Basic en placa texturizada); el ventilador entra al 60 % desde la capa 2.
+- **Confirmado (1 nov 2026):** había una ventana abierta con viento cerca, la placa no estaba bien limpia y se levantó sobre todo la punta del cuello.
+
+## Más relleno en una zona que en el resto (Bambu Studio)
+- **Modificador:** en el objeto, clic derecho → «Añadir modificador» → caja. Colocarla sobre la zona (cuello y tapón) y, en sus ajustes, poner la densidad de relleno al 100 %. El resto usa la densidad global (p. ej. 20 %). Un proyecto `.3mf` puede traer el modificador ya colocado: es una pieza `modifier_part` con su propio `sparse_infill_density`.
+- **Truco de paredes:** con 4 perímetros (~1,8 mm por lado), una pared de menos de ~3,5 mm entre dos bordes sale maciza solo con perímetros, sea cual sea el relleno. En el llavero botella, las paredes del ojal (2,6 mm) y encima del ojal (2,4 mm) ya salen macizas; el modificador hace falta para la raíz del cuello (8,7 mm de ancho).
+- El «rango de altura» no sirve para esto: cambia ajustes por capas (eje Z), no por zonas de la pieza.
