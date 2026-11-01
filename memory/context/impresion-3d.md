@@ -35,3 +35,15 @@
 | Sacarlo del bolsillo | 2–10 N |
 | Enganchón fuerte | 20–50 N (sobre todo doblando) |
 | Golpe de llaves al caer | 30–150 N de pico |
+
+## Costes de impresión multicolor (estimaciones, nov 2026)
+Supuesto: PLA Basic a ~25 €/kg (1 g ≈ 2,5 céntimos). Cifras aproximadas: las exactas las da Bambu Studio al laminar.
+
+- **El coste lo marcan los cambios de color, no la pieza.** Cada cambio en la A1 con AMS lite purga ~0,2–0,75 g (de negro a blanco es el peor caso, ~600 mm³) y tarda ~1–1,5 min.
+- **Llavero botella ST26** (propuesta con ojal): pieza ~7 g (~0,18 €).
+  - Solo blanco: ~7 cambios, ~3,6 g de purga, ~10 min.
+  - Blanco + naranja: ~15 cambios, ~7 g de purga, ~20 min.
+- La purga se hace por cambio, no por pieza: **imprimir en tandas** reparte la purga. Con 10 llaveros en la placa, cada uno lleva ~0,4 g en vez de ~3,6 g.
+- Un relieve negro (la cápsula) en las mismas capas que las letras blancas obliga a cambiar de color en cada capa. Un relieve del color de la base no cuesta purga si no coincide en altura con otro color.
+- Bajar de 4 a 3 capas de incrustación no ahorra cambios (se alterna igual). Con 2 capas sí, pero el negro se transparenta.
+- Relleno: el cuerpo de la botella al 20 % (con modificador al 100 % en cuello y tapón) ahorra ~2,3 g sin tocar la zona que carga.
