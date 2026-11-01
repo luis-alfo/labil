@@ -47,3 +47,19 @@ Supuesto: PLA Basic a ~25 €/kg (1 g ≈ 2,5 céntimos). Cifras aproximadas: la
 - Un relieve negro (la cápsula) en las mismas capas que las letras blancas obliga a cambiar de color en cada capa. Un relieve del color de la base no cuesta purga si no coincide en altura con otro color.
 - Bajar de 4 a 3 capas de incrustación no ahorra cambios (se alterna igual). Con 2 capas sí, pero el negro se transparenta.
 - Relleno: el cuerpo de la botella al 20 % (con modificador al 100 % en cuello y tapón) ahorra ~2,3 g sin tocar la zona que carga.
+
+### Datos reales de Bambu Studio (1 nov 2026)
+Proyecto `ST26_llavero_botella_A1_blanco_naranja` laminado por Luis en la A1, 1 llavero por placa:
+
+| Concepto | Valor |
+|----------|-------|
+| Modelo | 6,89 g |
+| Purga | 5,95 g |
+| Torre de purga | 1,59 g |
+| **Total** | **14,43 g · 0,36 €** (Bambu Studio usa ~25 €/kg) |
+| Cambios de filamento | 16 |
+| Tiempo | 43 min 45 s de impresión, 51 min 36 s en total |
+
+- La purga y la torre (7,5 g) pesan más que el propio llavero: el 52 % del filamento se tira.
+- Las estimaciones previas acertaron: se calcularon ~15 cambios y ~7 g de purga.
+- El proyecto `.3mf` generado a mano se abrió y laminó bien en Bambu Studio con la A1, los tres filamentos y los ajustes asignados.
