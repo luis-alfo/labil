@@ -63,3 +63,8 @@ Proyecto `ST26_llavero_botella_A1_blanco_naranja` laminado por Luis en la A1, 1 
 - La purga y la torre (7,5 g) pesan más que el propio llavero: el 52 % del filamento se tira.
 - Las estimaciones previas acertaron: se calcularon ~15 cambios y ~7 g de purga.
 - El proyecto `.3mf` generado a mano se abrió y laminó bien en Bambu Studio con la A1, los tres filamentos y los ajustes asignados.
+
+### Cuántos caben en la placa de la A1
+- Llavero botella (20,2 × 75,9 mm): **28–29 por placa** (3 filas × 10 columnas, menos el hueco de la torre de purga; 3–5 mm de separación).
+- Rendimiento decreciente: la purga ya queda repartida con ~10. Estimación con datos reales: 1 → 0,36 €/u y 52 min/u; 10 → ~0,19 €/u y ~28 min/u; 29 → ~0,18 €/u y ~26 min/u (placa de ~12,5 h).
+- Una placa larga arriesga más: si falla, se pierden todas. Para las primeras tiradas, 10–15 por placa.
