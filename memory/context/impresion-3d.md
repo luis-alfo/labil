@@ -84,3 +84,8 @@ Luis vio llaveros botella combados y despegados durante la impresión en la A1. 
 - **Modificador:** en el objeto, clic derecho → «Añadir modificador» → caja. Colocarla sobre la zona (cuello y tapón) y, en sus ajustes, poner la densidad de relleno al 100 %. El resto usa la densidad global (p. ej. 20 %). Un proyecto `.3mf` puede traer el modificador ya colocado: es una pieza `modifier_part` con su propio `sparse_infill_density`.
 - **Truco de paredes:** con 4 perímetros (~1,8 mm por lado), una pared de menos de ~3,5 mm entre dos bordes sale maciza solo con perímetros, sea cual sea el relleno. En el llavero botella, las paredes del ojal (2,6 mm) y encima del ojal (2,4 mm) ya salen macizas; el modificador hace falta para la raíz del cuello (8,7 mm de ancho).
 - El «rango de altura» no sirve para esto: cambia ajustes por capas (eje Z), no por zonas de la pieza.
+
+## Brim en multicolor (Bambu Studio)
+- El **brim** es una franja de una sola capa alrededor de la pieza para que no se levante. Se quita con la mano al terminar.
+- Bambu Studio lo imprime con el **primer filamento de la primera capa**. En automático empieza por el de menos superficie, que en el llavero ST26 es el naranja del «26», y por eso el brim salía naranja.
+- Arreglo: fijar el orden de la primera capa en la placa («First layer filament sequence» → Customize, negro primero). En el `.3mf` va como `first_layer_print_sequence` = `1 2 3` en la placa de `model_settings.config`.
