@@ -261,8 +261,8 @@
       labil<span class="brand-sub">— modelos 3D</span>
     </div>
     <nav class="tabs" aria-label="Modelos">
-      <a href="#v3"       data-target="v3"       class="active">Estropajo V3</a>
-      <a href="#v3-placa" data-target="v3-placa">V3 · placa A1</a>
+      <a href="#v4"       data-target="v4"       class="active">Estropajo V4</a>
+      <a href="#v4-placa" data-target="v4-placa">V4 · placa A1</a>
       <a href="#bar-a"  data-target="bar-a">A · Hilo</a>
       <a href="#bar-b"  data-target="bar-b">B · Carril</a>
       <a href="#bar-c"  data-target="bar-c">C · Rama</a>
@@ -276,9 +276,9 @@
       <a href="#pinch-compare" data-target="pinch-compare">Comparar largos</a>
     </nav>
     <select class="tabs-mobile" aria-label="Modelos">
-      <optgroup label="Soporte de estropajo V3">
-        <option value="v3">Montado</option>
-        <option value="v3-placa">Placa A1</option>
+      <optgroup label="Soporte de estropajo V4">
+        <option value="v4">Montado</option>
+        <option value="v4-placa">Placa A1</option>
       </optgroup>
       <optgroup label="Barra modular">
         <option value="bar-a">A · Hilo</option>
@@ -301,22 +301,23 @@
   </header>
 
   <main id="snap-root">
-    <section id="v3">
+    <section id="v4">
       <div class="section-inner">
-        <div class="eyebrow">Soporte de estropajo · V3 · para PLA</div>
-        <h2>Bandeja de rejilla que se levanta</h2>
+        <div class="eyebrow">Soporte de estropajo · V4 · PLA</div>
+        <h2>Cuelga del brazo y apoya en el fregadero</h2>
         <p class="lede">
-          Brazo a ras de la encimera y bandeja de rejilla 7 cm por debajo.
-          La bandeja se levanta para fregar y se queda sola a 95°.
+          El colgador apoya abajo en la pared del fregadero: el peso de la
+          bandeja se aguanta con 77 mm de palanca en vez de 8, y todas las
+          fuerzas bajan diez veces. La bandeja se levanta y se queda sola.
         </p>
         <div class="toggle" role="group" aria-label="Posición de la bandeja">
-          <button type="button" aria-pressed="true"  data-glb="models/estropajero_v3_abajo.glb">Abajo</button>
-          <button type="button" aria-pressed="false" data-glb="models/estropajero_v3_levantada.glb">Levantada</button>
+          <button type="button" aria-pressed="true"  data-glb="models/estropajero_v4_abajo.glb">Abajo</button>
+          <button type="button" aria-pressed="false" data-glb="models/estropajero_v4_levantada.glb">Levantada</button>
         </div>
         <model-viewer
-          id="v3-viewer"
-          data-src="models/estropajero_v3_abajo.glb"
-          alt="Soporte de estropajo V3 montado en el grifo"
+          id="tray-viewer"
+          data-src="models/estropajero_v4_abajo.glb"
+          alt="Soporte de estropajo V4 montado en el grifo"
           auto-rotate
           camera-controls
           ar
@@ -328,27 +329,26 @@
         </model-viewer>
         <p class="ar-pill">📱 En AR se ve a tamaño real</p>
         <dl class="meta">
-          <dt>Piezas</dt><dd>A pinza + brazo · B bastidor en "A" · C bandeja rejilla</dd>
-          <dt>Montaje</dt><dd>B entra de lado bajo la punta del brazo y cae 0,5 mm en su asiento · la bandeja, vertical, baja por los ojos</dd>
-          <dt>Bandeja</dt><dd>100 × 65 mm, 7 cm bajo la encimera · sale poniéndola vertical</dd>
-          <dt>Medir antes</dt><dd>Ø columna y embellecedor, distancia al canto, Ø del fregadero</dd>
-          <dt>Diseño</dt><dd><a href="files/estropajero-v3/estropajero_v3.scad">OpenSCAD paramétrico</a> · <a href="files/estropajero-v3/APRENDIZAJES.md">aprendizajes</a></dd>
+          <dt>Piezas</dt><dd>A brazo · K llave · B colgador · C bandeja rejilla</dd>
+          <dt>Montaje</dt><dd>1 · A desliza hasta abrazar el grifo · 2 · K baja por detrás · 3 · B inclinado, diente en la punta, y dejarlo caer vertical · 4 · bandeja vertical, bajarla por el gancho</dd>
+          <dt>Resistencia</dt><dd>con 20 N en el borde nada pasa de 11 MPa, y todo trabaja en el plano de capa</dd>
+          <dt>Medir antes</dt><dd>Ø columna y embellecedor, distancia al canto y, sobre todo, dónde queda la pared del fregadero a 8 cm de profundidad</dd>
+          <dt>Diseño</dt><dd><a href="files/estropajero-v4/estropajero_v4.scad">OpenSCAD paramétrico</a> · <a href="files/estropajero-v4/APRENDIZAJES.md">revisión y aprendizajes</a></dd>
         </dl>
       </div>
     </section>
 
-    <section id="v3-placa">
+    <section id="v4-placa">
       <div class="section-inner">
-        <div class="eyebrow">Soporte de estropajo · V3 · Bambu Lab A1</div>
+        <div class="eyebrow">Soporte de estropajo · V4 · Bambu Lab A1</div>
         <h2>Una placa, sin soportes</h2>
         <p class="lede">
-          Las tres piezas orientadas para imprimir en PLA. El bastidor va de
-          pie, en el centro y con la "A" en el eje en que se mueve la cama;
-          lleva dos orejetas de 0,4 mm que se arrancan al terminar.
+          Cuatro piezas planas. El colgador se imprime tumbado para que todo
+          el esfuerzo vaya en el plano de las capas, que es donde el PLA aguanta.
         </p>
         <model-viewer
-          data-src="models/estropajero_v3_placa.glb"
-          alt="Placa de la A1 con las tres piezas del soporte V3"
+          data-src="models/estropajero_v4_placa.glb"
+          alt="Placa de la A1 con las cuatro piezas del soporte V4"
           auto-rotate
           camera-controls
           shadow-intensity="0.7"
@@ -357,13 +357,13 @@
           camera-orbit="20deg 55deg auto">
         </model-viewer>
         <dl class="meta">
-          <dt>Perfil</dt><dd>A1 0.4 · 0.20mm Standard · PLA Basic · sin soportes ni brim</dd>
-          <dt>Paredes / relleno</dt><dd>A 4 / 15 % · B 4 / 25 % · C 3 / 15 %</dd>
-          <dt>Filamento</dt><dd>~50 g (A 16 g · B 15 g · C 18 g)</dd>
-          <dt>Tiempo</dt><dd>~2 h 04 min + calibración inicial (estimado)</dd>
-          <dt>Coste</dt><dd>~1,0–1,5 € (filamento ~1 €, luz ~0,05 €)</dd>
-          <dt>3MF</dt><dd><a href="files/estropajero-v3/estropajero_v3_A1.3mf" download>placa para Bambu Studio</a></dd>
-          <dt>STL</dt><dd><a href="files/estropajero-v3/pieza_A.stl" download>A</a> · <a href="files/estropajero-v3/pieza_B_bastidor.stl" download>B</a> · <a href="files/estropajero-v3/pieza_C_bandeja.stl" download>C</a></dd>
+          <dt>Perfil</dt><dd>A1 0.4 · 0.20mm Standard · PLA Basic · sin soportes</dd>
+          <dt>Paredes / relleno</dt><dd>A 4 / 15 % · K 4 · B 4 / 25 % · C 3 / 15 %</dd>
+          <dt>Filamento</dt><dd>~45 g (A 17 · K 2 · B 9 · C 18)</dd>
+          <dt>Tiempo</dt><dd>~1 h 30 min + calibración (estimado)</dd>
+          <dt>Coste</dt><dd>~1 € de filamento</dd>
+          <dt>3MF</dt><dd><a href="files/estropajero-v4/estropajero_v4_A1.3mf" download>placa para Bambu Studio</a></dd>
+          <dt>STL</dt><dd><a href="files/estropajero-v4/pieza_A_brazo.stl" download>A</a> · <a href="files/estropajero-v4/pieza_K_llave.stl" download>K</a> · <a href="files/estropajero-v4/pieza_B_colgador.stl" download>B</a> · <a href="files/estropajero-v4/pieza_C_bandeja.stl" download>C</a></dd>
         </dl>
       </div>
     </section>
@@ -470,7 +470,7 @@
 
     <section id="full">
       <div class="section-inner">
-        <div class="eyebrow">Sponge holder · V1 · sustituida por la V3</div>
+        <div class="eyebrow">Sponge holder · V1 · sustituida por la V4</div>
         <h2>Pieza completa — robusta con prongs triangulares</h2>
         <p class="lede">
           Versión reforzada tras feedback de fragilidad. Prongs ahora
@@ -757,10 +757,10 @@
       if (tag && v) tag.textContent = "build " + v;
     })();
 
-    // ── V3: cambiar entre bandeja abajo y levantada
+    // ── Estropajo: cambiar entre bandeja abajo y levantada
     document.querySelectorAll(".toggle button").forEach(btn => {
       btn.addEventListener("click", () => {
-        const viewer = document.getElementById("v3-viewer");
+        const viewer = document.getElementById("tray-viewer");
         btn.parentElement.querySelectorAll("button")
           .forEach(b => b.setAttribute("aria-pressed", String(b === btn)));
         viewer.src = btn.dataset.glb + "?v=" + (window.modelVersion || Date.now());
