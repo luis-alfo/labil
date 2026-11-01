@@ -68,3 +68,13 @@ Proyecto `ST26_llavero_botella_A1_blanco_naranja` laminado por Luis en la A1, 1 
 - Llavero botella (20,2 × 75,9 mm): **28–29 por placa** (3 filas × 10 columnas, menos el hueco de la torre de purga; 3–5 mm de separación).
 - Rendimiento decreciente: la purga ya queda repartida con ~10. Estimación con datos reales: 1 → 0,36 €/u y 52 min/u; 10 → ~0,19 €/u y ~28 min/u; 29 → ~0,18 €/u y ~26 min/u (placa de ~12,5 h).
 - Una placa larga arriesga más: si falla, se pierden todas. Para las primeras tiradas, 10–15 por placa.
+
+## Piezas combadas o despegadas (1 nov 2026, causas probables sin confirmar)
+Luis vio llaveros botella combados y despegados durante la impresión en la A1. Causas probables, de más a menos:
+- **Poca superficie en la cama en la punta del cuello.** El bisel de la boca y el avellanado del ojal por la cara de la cama dejan solo ~1,6 mm de apoyo a cada lado del ojal. Quitar el bisel de la cara de la cama solo baja la inclinación de la anilla de 55° a 52°, que sigue por encima de una llave.
+- **Relleno al 100 % en una pieza plana y larga (76 mm).** Al enfriarse, el PLA macizo encoge más y tira de las esquinas hacia arriba.
+- **Placa sucia.** Huellas o grasa: lavar con agua y jabón de platos, no solo alcohol.
+- **Corrientes de aire o habitación fría.** La A1 es abierta; los extremos de las piezas largas se levantan.
+- **Sin borde (brim).** El perfil no lo fuerza para PLA; las orejas en la punta del cuello y las esquinas ayudan.
+- Una vez combada, la boquilla choca con la esquina levantada y arranca la pieza.
+- La cama ya está a 65 °C (perfil de PLA Basic en placa texturizada); el ventilador entra al 60 % desde la capa 2.
