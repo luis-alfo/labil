@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    .bg{fill:#F3F2EE}.edge{stroke:#1A1919}
+    @media (prefers-color-scheme: dark){.bg{fill:#1A1919}.edge{stroke:#FAFAFA}}
+  </style>
+  <rect class="bg" width="32" height="32" rx="8"/>
+  <path class="edge" d="M11 14 V22 H17" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="5" y="5" width="12" height="9" rx="2.5" fill="#6BCB77"/>
+  <path d="M23 16 L28.5 22 L23 28 L17.5 22 Z" fill="#8B5CF6"/>
+</svg>
