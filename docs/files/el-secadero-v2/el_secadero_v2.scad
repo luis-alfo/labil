@@ -1,5 +1,5 @@
 // =====================================================================
-//  EL SECADERO — soporte de estropajo para grifo — V5
+//  EL SECADERO — soporte de estropajo para grifo — V2
 //
 //  Cuatro piezas en PLA, sin soportes y sin doblar nada al montar:
 //    A = brazo: abrazadera en U (faldón fino alrededor del embellecedor,
@@ -75,7 +75,7 @@ tr_h     = 3.6;
 corner   = 7;       // radio de las esquinas de la cuna
 
 /* [Estética] */
-label       = "EL SECADERO | V5 | 161126";   // grabado en el anillo
+label       = "EL SECADERO | V2 | 161126";   // grabado en el anillo
 label_size  = 3.0;    // altura de las mayúsculas (JetBrains Mono Bold)
 label_depth = 0.6;
 zs0    = 6.5;         // el anillo se estrecha en curva entre estas dos alturas

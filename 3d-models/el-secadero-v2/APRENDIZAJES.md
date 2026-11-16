@@ -1,4 +1,14 @@
-# El Secadero (soporte de estropajo V5): datos, decisiones y comprobaciones
+# El Secadero V2: datos, decisiones y comprobaciones
+
+## Cómo se numeran las versiones (decisión de Luis, 16 nov 2026)
+- Solo cuenta como versión lo que se imprime.
+- **V1** es la única impresa hasta ahora (`3d-models/sponge-holder/`).
+- **V2** es este diseño.
+- Todo lo que hubo entre medias fueron borradores de diseño, no versiones.
+  - En la conversación y en commits antiguos se les llamó «V2» a «V5».
+  - Dos de ellos siguen en `3d-models/estropajero-v3/` y `3d-models/estropajero-v4/`.
+  - En estas notas se les llama «el borrador anterior» o «los borradores».
+- El grabado y la web usan la numeración de Luis: «EL SECADERO | V2 | 161126».
 
 Estado: diseñado y simulado el 16 nov 2026. Sin imprimir.
 
@@ -12,19 +22,19 @@ Estado: diseñado y simulado el 16 nov 2026. Sin imprimir.
 | Fregadero | Ø 400, pared a ras del canto | Supuesto, sin medir |
 | Espacio detrás del grifo | hacen falta unos 12 mm | Sin comprobar |
 
-- Las versiones V2 a V4 usaban 46 / 54 × 8 / 68 mm, que eran suposiciones mías. La distancia al canto estaba 9 mm larga.
+- Los borradores usaban 46 / 54 × 8 / 68 mm, que eran suposiciones mías. La distancia al canto estaba 9 mm larga.
 - Lección: los datos de la V1 llevaban en el repo desde el principio (`3d-models/sponge-holder/`). Antes de suponer una medida hay que mirar lo que ya se imprimió y funcionó.
 
 ## Decisiones de Luis
 - El soporte puede apoyarse en la pared interior del fregadero.
 - El estropajo va de canto, apoyado en el lado largo, que es como mejor se seca.
 
-## Cómo es la V5
+## Cómo es la V2
 - **A, brazo:**
   - Abrazadera en U con un faldón fino que rodea el embellecedor con holgura (vale hasta Ø 59 × 6,5) y agarra en la columna.
   - Brazo de 3 mm a ras de la encimera.
   - La punta engrosa a 5 mm para alojar el marco enrasado.
-- **K, cuña:** entra desde arriba por detrás de la columna. Al bajarla aprieta la U contra el grifo y se queda bloqueada sola (12°). Sustituye a la llave suelta de la V4, que no apretaba.
+- **K, cuña:** entra desde arriba por detrás de la columna. Al bajarla aprieta la U contra el grifo y se queda bloqueada sola (12°). Sustituye a la llave suelta del borrador anterior, que no apretaba.
 - **B, marco:**
   - Bastidor plano con forma de percha, impreso tumbado.
   - Cabalga sobre la punta del brazo: entra de frente 3,3 mm alto y cae en una ranura.
@@ -35,8 +45,8 @@ Estado: diseñado y simulado el 16 nov 2026. Sin imprimir.
   - Abajo descansa sobre dos tetones, con 10 mm de palanca.
   - Levantada pasa entre las patas del marco, se apoya en la pared del fregadero a unos 102° y se queda sola.
 
-## Qué resuelve de la crítica a la V4
-| Problema de la V4 | V5 |
+## Qué resuelve de la crítica al borrador anterior
+| Problema del borrador anterior | V2 |
 |---|---|
 | El estropajo no cabía | Cuna a su medida; comprobado con un bloque de 95 × 70 × 45 |
 | Se ladeaba (apoyo de 10 mm) | Apoyo de 116 mm en la pared; el estropajo solo puede descentrarse 3 mm |
@@ -76,7 +86,7 @@ Estado: diseñado y simulado el 16 nov 2026. Sin imprimir.
 | C cuna | 11,2 g | 23 min |
 | **Total** | **~44 g** | **~1 h 30 min** |
 
-  La V4 eran ~45 g y ~1 h 30 min. Antes del rediseño estético la V5 eran ~39 g: las formas redondeadas y los refuerzos para no perder resistencia cuestan unos 5 g.
+  El borrador anterior eran ~45 g y ~1 h 30 min. Antes del rediseño estético este diseño eran ~39 g: las formas redondeadas y los refuerzos para no perder resistencia cuestan unos 5 g.
 
 ## Lo que la simulación no cubre
 - Las holguras reales de impresión: el muñón de 3,6 mm en la ranura de 4,2 y la cuña.
@@ -102,7 +112,7 @@ Cada paso valida un encaje antes de gastar más.
 ## Estética: lo que pidió Luis (16 nov 2026)
 - La abrazadera le parecía poco estética y todo demasiado cuadrado.
 - Quiere un objeto bonito, no solo funcional, que se integre en la cocina de forma elegante. Pidió repensar todas las esquinas.
-- Quiere un grabado en hendidura con el texto «EL SECADERO | V5 | 161126» en JetBrains Mono: nombre del objeto, versión y fecha (ddmmaa). Le vale en la abrazadera o en el brazo.
+- Quiere un grabado en hendidura con el texto «EL SECADERO | V2 | 161126» en JetBrains Mono: nombre del objeto, versión y fecha (ddmmaa). Le vale en la abrazadera o en el brazo. Primero pidió «V5»; después lo corrigió a «V2» por la regla de numeración de arriba.
 - El objeto se llama **El Secadero**. El grabado lleva la versión y la fecha, así que hay que actualizarlo en cada versión (parámetro `label` del `.scad`).
 
 ### Nombres de las piezas

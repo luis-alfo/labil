@@ -1,14 +1,14 @@
-"""Soporte de estropajo V5: regenera piezas, placa 3MF para la A1 y los GLB del visor.
+"""Soporte de estropajo V2: regenera piezas, placa 3MF para la A1 y los GLB del visor.
 
-La fuente de verdad del modelo es `estropajero_v5.scad` (paramétrico). Este
+La fuente de verdad del modelo es `el_secadero_v2.scad` (paramétrico). Este
 script lo pasa por OpenSCAD y prepara todo lo demás:
 
   - pieza_A_brazo.stl, pieza_K_cuna_apriete.stl, pieza_B_marco.stl, pieza_C_cuna.stl
     (orientación de impresión)
-  - docs/models/estropajero_v5_abajo.glb       montado, cuna abajo
-  - docs/models/estropajero_v5_levantada.glb   montado, cuna levantada
-  - docs/models/estropajero_v5_placa.glb       las 4 piezas en la placa de la A1
-  - docs/files/estropajero-v5/                 descargas (STL, 3MF A1, SCAD, notas)
+  - docs/models/el_secadero_v2_abajo.glb       montado, cuna abajo
+  - docs/models/el_secadero_v2_levantada.glb   montado, cuna levantada
+  - docs/models/el_secadero_v2_placa.glb       las 4 piezas en la placa de la A1
+  - docs/files/el-secadero-v2/                 descargas (STL, 3MF A1, SCAD, notas)
 
 Si OpenSCAD no está instalado no regenera nada y deja los ficheros como están.
 """
@@ -26,10 +26,10 @@ import trimesh
 from trimesh.transformations import rotation_matrix
 
 HERE = Path(__file__).resolve().parent
-SCAD = HERE / "estropajero_v5.scad"
+SCAD = HERE / "el_secadero_v2.scad"
 REPO = HERE.parents[1]
 WEB_DIR = REPO / "docs" / "models"
-FILES_DIR = REPO / "docs" / "files" / "estropajero-v5"
+FILES_DIR = REPO / "docs" / "files" / "el-secadero-v2"
 
 # Deben coincidir con el .scad: eje de la bisagra y ángulo al que se apoya levantada
 X_AXIS, Z_AXIS, FOLD_REST = 28.24, -79.2, 103.0
@@ -136,7 +136,7 @@ def write_3mf(path):
     model = ('<?xml version="1.0" encoding="UTF-8"?>\n'
              '<model unit="millimeter" xml:lang="es-ES" '
              'xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02">\n'
-             '<metadata name="Title">Soporte estropajo V5</metadata>\n'
+             '<metadata name="Title">Soporte estropajo V2</metadata>\n'
              f'<resources>\n{chr(10).join(objs)}\n</resources>\n'
              f'<build>\n{chr(10).join(items)}\n</build>\n</model>')
     content_types = ('<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -172,14 +172,14 @@ def main():
     c_up.apply_transform(rotation_matrix(np.radians(-FOLD_REST), [0, 1, 0], [X_AXIS, 0, Z_AXIS]))
     env = context()
     fixed = [painted(use[k], k) for k in "AKB"]
-    export_glb(env + fixed + [painted(use["C"], "C"), sponge], "estropajero_v5_abajo.glb")
-    export_glb(env + fixed + [painted(c_up, "C")], "estropajero_v5_levantada.glb")
+    export_glb(env + fixed + [painted(use["C"], "C"), sponge], "el_secadero_v2_abajo.glb")
+    export_glb(env + fixed + [painted(c_up, "C")], "el_secadero_v2_levantada.glb")
 
     bed = trimesh.creation.box(bounds=[[0, 0, -1.5], [256, 256, 0]])
     export_glb([painted(bed, "placa", roughness=0.8)]
-               + [painted(m, k) for m, k in zip(plate_layout(), "ABCK")], "estropajero_v5_placa.glb")
+               + [painted(m, k) for m, k in zip(plate_layout(), "ABCK")], "el_secadero_v2_placa.glb")
 
-    write_3mf(FILES_DIR / "estropajero_v5_A1.3mf")
+    write_3mf(FILES_DIR / "el_secadero_v2_A1.3mf")
     for f in [*PRINT_PARTS.values(), SCAD.name, "APRENDIZAJES.md"]:
         shutil.copy(HERE / f, FILES_DIR / f)
 

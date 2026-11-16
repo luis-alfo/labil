@@ -261,8 +261,8 @@
       labil<span class="brand-sub">— modelos 3D</span>
     </div>
     <nav class="tabs" aria-label="Modelos">
-      <a href="#v5"       data-target="v5"       class="active">Estropajo V5</a>
-      <a href="#v5-placa" data-target="v5-placa">V5 · placa A1</a>
+      <a href="#v2"       data-target="v2"       class="active">El Secadero V2</a>
+      <a href="#v2-placa" data-target="v2-placa">V2 · placa A1</a>
       <a href="#bar-a"  data-target="bar-a">A · Hilo</a>
       <a href="#bar-b"  data-target="bar-b">B · Carril</a>
       <a href="#bar-c"  data-target="bar-c">C · Rama</a>
@@ -276,9 +276,9 @@
       <a href="#pinch-compare" data-target="pinch-compare">Comparar largos</a>
     </nav>
     <select class="tabs-mobile" aria-label="Modelos">
-      <optgroup label="Soporte de estropajo V5">
-        <option value="v5">Montado</option>
-        <option value="v5-placa">Placa A1</option>
+      <optgroup label="El Secadero V2">
+        <option value="v2">Montado</option>
+        <option value="v2-placa">Placa A1</option>
       </optgroup>
       <optgroup label="Barra modular">
         <option value="bar-a">A · Hilo</option>
@@ -286,7 +286,7 @@
         <option value="bar-c">C · Rama</option>
       </optgroup>
       <optgroup label="Sponge holder">
-        <option value="full">Esponja completa (V1)</option>
+        <option value="full">V1 impresa</option>
         <option value="faucet">Abrazadera</option>
         <option value="sponge">Pinza original</option>
       </optgroup>
@@ -301,9 +301,9 @@
   </header>
 
   <main id="snap-root">
-    <section id="v5">
+    <section id="v2">
       <div class="section-inner">
-        <div class="eyebrow">Soporte de estropajo · V5 · PLA · sin imprimir aún</div>
+        <div class="eyebrow">Soporte de estropajo · V2 · PLA · sin imprimir aún</div>
         <h2>El Secadero</h2>
         <p class="lede">
           El estropajo se seca de canto y al aire, en una cuna a su medida
@@ -312,13 +312,13 @@
           cuna se levanta y se queda sola.
         </p>
         <div class="toggle" role="group" aria-label="Posición de la cuna">
-          <button type="button" aria-pressed="true"  data-glb="models/estropajero_v5_abajo.glb">Abajo</button>
-          <button type="button" aria-pressed="false" data-glb="models/estropajero_v5_levantada.glb">Levantada</button>
+          <button type="button" aria-pressed="true"  data-glb="models/el_secadero_v2_abajo.glb">Abajo</button>
+          <button type="button" aria-pressed="false" data-glb="models/el_secadero_v2_levantada.glb">Levantada</button>
         </div>
         <model-viewer
           id="tray-viewer"
-          data-src="models/estropajero_v5_abajo.glb"
-          alt="Soporte de estropajo V5 montado en el grifo"
+          data-src="models/el_secadero_v2_abajo.glb"
+          alt="El Secadero V2 montado en el grifo"
           auto-rotate
           camera-controls
           ar
@@ -331,18 +331,18 @@
         <p class="ar-pill">📱 En AR se ve a tamaño real</p>
         <dl class="meta">
           <dt>Piezas</dt><dd>A anillo y brazo · K cuña · B marco · C cuna</dd>
-          <dt>Grabado</dt><dd>«EL SECADERO | V5 | 161126» en JetBrains Mono, en el anillo</dd>
+          <dt>Grabado</dt><dd>«EL SECADERO | V2 | 161126» en JetBrains Mono, en el anillo</dd>
           <dt>Montaje</dt><dd>1 · A desliza hasta abrazar el grifo · 2 · la cuña baja por detrás y aprieta · 3 · el marco entra de frente sobre la punta y cae en su ranura · 4 · la cuna entra inclinada a 60° y se baja</dd>
           <dt>Sobresale</dt><dd>68 mm del canto abajo · 32 mm levantada</dd>
           <dt>Medidas</dt><dd>columna Ø 45 y 59 mm al canto (de la V1, que encajó) · embellecedor estimado en fotos · pared del fregadero supuesta</dd>
-          <dt>Diseño</dt><dd><a href="files/estropajero-v5/estropajero_v5.scad">OpenSCAD paramétrico</a> · <a href="files/estropajero-v5/APRENDIZAJES.md">datos y comprobaciones</a></dd>
+          <dt>Diseño</dt><dd><a href="files/el-secadero-v2/el_secadero_v2.scad">OpenSCAD paramétrico</a> · <a href="files/el-secadero-v2/APRENDIZAJES.md">datos y comprobaciones</a></dd>
         </dl>
       </div>
     </section>
 
-    <section id="v5-placa">
+    <section id="v2-placa">
       <div class="section-inner">
-        <div class="eyebrow">Soporte de estropajo · V5 · Bambu Lab A1</div>
+        <div class="eyebrow">Soporte de estropajo · V2 · Bambu Lab A1</div>
         <h2>Una placa, sin soportes</h2>
         <p class="lede">
           Cuatro piezas planas. Mejor imprimirlas por orden y probar cada
@@ -350,8 +350,8 @@
           la cuna.
         </p>
         <model-viewer
-          data-src="models/estropajero_v5_placa.glb"
-          alt="Placa de la A1 con las cuatro piezas del soporte V5"
+          data-src="models/el_secadero_v2_placa.glb"
+          alt="Placa de la A1 con las cuatro piezas de El Secadero V2"
           auto-rotate
           camera-controls
           shadow-intensity="0.7"
@@ -365,8 +365,8 @@
           <dt>Filamento</dt><dd>~44 g (A 16 · K 3 · B 15 · C 11)</dd>
           <dt>Tiempo</dt><dd>~1 h 30 min + calibración (estimado)</dd>
           <dt>Coste</dt><dd>~0,90 € de filamento</dd>
-          <dt>3MF</dt><dd><a href="files/estropajero-v5/estropajero_v5_A1.3mf" download>placa para Bambu Studio</a></dd>
-          <dt>STL</dt><dd><a href="files/estropajero-v5/pieza_A_brazo.stl" download>A</a> · <a href="files/estropajero-v5/pieza_K_cuna_apriete.stl" download>K</a> · <a href="files/estropajero-v5/pieza_B_marco.stl" download>B</a> · <a href="files/estropajero-v5/pieza_C_cuna.stl" download>C</a></dd>
+          <dt>3MF</dt><dd><a href="files/el-secadero-v2/el_secadero_v2_A1.3mf" download>placa para Bambu Studio</a></dd>
+          <dt>STL</dt><dd><a href="files/el-secadero-v2/pieza_A_brazo.stl" download>A</a> · <a href="files/el-secadero-v2/pieza_K_cuna_apriete.stl" download>K</a> · <a href="files/el-secadero-v2/pieza_B_marco.stl" download>B</a> · <a href="files/el-secadero-v2/pieza_C_cuna.stl" download>C</a></dd>
         </dl>
       </div>
     </section>
@@ -473,7 +473,7 @@
 
     <section id="full">
       <div class="section-inner">
-        <div class="eyebrow">Sponge holder · V1 · sustituida por la V5</div>
+        <div class="eyebrow">Sponge holder · V1 · la única impresa hasta ahora</div>
         <h2>Pieza completa — robusta con prongs triangulares</h2>
         <p class="lede">
           Versión reforzada tras feedback de fragilidad. Prongs ahora
