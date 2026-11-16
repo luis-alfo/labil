@@ -99,3 +99,4 @@ Registro vivo de explicaciones, decisiones y convenciones acordadas.
 - **Cifras (16 nov 2026)**: imprimir todo el archivo ≈ 722 g ≈ 14,46 €. El Secadero v2 ≈ 43 g ≈ 0,86 €.
 - **Respuestas de Luis (16 nov 2026)**: la web se publica **solo desde `main`**. De los cajones
   de la isla y de la barra de baño **no se ha impreso nada**: siguen como borradores y pruebas sin imprimir.
+- El **llavero «habitación 26»** (tipo motel, «Room 26» grabado detrás, mayo 2026) **se imprimió**.
