@@ -1230,9 +1230,20 @@
       {
        "tema": "método",
        "texto": "Se mantiene lo bueno del nativo: se usa con el pulgar (filas de 52 px), con el teclado (flechas, Inicio, Fin, Intro, Esc) y lo anuncia el lector de pantalla como lista de opciones."
+      },
+      {
+       "tema": "método",
+       "texto": "La captura de Luis mostró la web vieja después de fusionar: GitHub Pages tarda unos 3 min en publicar y el móvil guarda app.js hasta 10 min. Desde ahora, cada publicación pone la versión en app.js y app.css (?v=…) para que el móvil los descargue de nuevo."
       }
      ],
-     "descargas": []
+     "descargas": [],
+     "proceso": [
+      {
+       "de": "proceso/labil-web/2026-11-16-desplegable-del-sistema-en-el-iphone-de-luis.jpg",
+       "pie": "captura de Luis en su iPhone a las 12:50: todavía salía el desplegable del sistema, blanco, redondeado y con otra letra. La web nueva aún se estaba publicando y el móvil guardaba la anterior hasta 10 min",
+       "fecha": "2026-11-16"
+      }
+     ]
     }
    ]
   }

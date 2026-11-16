@@ -11,6 +11,8 @@ así el coste de los diseños que se regeneran siempre está al día.
 from __future__ import annotations
 
 import json
+import os
+import re
 import shutil
 import subprocess
 import sys
@@ -138,6 +140,18 @@ def main() -> None:
         salida["objetos"].append(o)
     SALIDA.parent.mkdir(parents=True, exist_ok=True)
     SALIDA.write_text(json.dumps(salida, ensure_ascii=False, indent=1) + "\n")
+    sellar_index()
+
+
+def sellar_index() -> None:
+    """En CI, añade ?v=<commit> a app.js y app.css: el móvil guarda la web hasta 10 min
+    (cache de GitHub Pages) y sin esto seguiría enseñando la versión anterior."""
+    sha = os.environ.get("GITHUB_SHA", "")[:8]
+    if not sha:
+        return
+    index = DOCS / "index.html"
+    html = re.sub(r'(app\.(?:js|css))(\?v=[0-9a-f]+)?"', rf'\1?v={sha}"', index.read_text())
+    index.write_text(html)
 
 
 if __name__ == "__main__":
