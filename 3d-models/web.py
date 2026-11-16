@@ -144,14 +144,11 @@ def main() -> None:
 
 
 def sellar_index() -> None:
-    """En CI, añade ?v=<commit> a app.js y app.css: el móvil guarda la web hasta 10 min
-    (cache de GitHub Pages) y sin esto seguiría enseñando la versión anterior."""
-    sha = os.environ.get("GITHUB_SHA", "")[:8]
-    if not sha:
-        return
-    index = DOCS / "index.html"
-    html = re.sub(r'(app\.(?:js|css))(\?v=[0-9a-f]+)?"', rf'\1?v={sha}"', index.read_text())
-    index.write_text(html)
+    """Escribe docs/version.json con el commit (en CI) o la hora (en local).
+    index.html lo pide sin caché al abrir y carga app.js y app.css con ?v=<versión>:
+    así ningún navegador se queda con una versión vieja (Pages deja cachear 10 min)."""
+    v = os.environ.get("GITHUB_SHA", "")[:8] or datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
+    (DOCS / "version.json").write_text(json.dumps({"v": v}) + "\n")
 
 
 if __name__ == "__main__":
