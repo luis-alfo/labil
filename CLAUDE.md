@@ -23,6 +23,27 @@ This repo has two distinct concerns:
 If the user's request is unrelated to 3D-printable design (e.g. they ask
 about the Next.js app), you can ignore the rest of this file.
 
+## La web (GitHub Pages, `docs/`) — v2 desde el 16 nov 2026
+
+Labil es parte de **Lagu** y la web usa el design system **LG Señal** (oscuro, fósforo
+`#24e824`, JetBrains Mono, minúsculas, rejilla de 4 px). Una página por objeto; dentro,
+sus estados en orden: versiones impresas, pruebas y borradores.
+
+| Archivo | Qué es |
+| --- | --- |
+| `3d-models/objetos.json` | **Fuente de la web.** Objetos y estados (`version` = impresa, `prueba`, `borrador`; `por_imprimir`), textos, piezas, modelos, imágenes y descargas. Al añadir un diseño o un estado, se añade aquí. |
+| `3d-models/web.py` | Genera `docs/data/objetos.json`, los GLB que faltan (`docs/models/archivo/`) y copia descargas a `docs/files/<objeto>/<estado>/`. Corre en CI después de los `generate_stl.py`. |
+| `3d-models/costes.py` | Gramos y euros de cada pieza (laminador simplificado, perfil A1, **20 €/kg**). `--calibrar` lo compara con los gramos del laminador real (error medio 4 %, máx. 9 %). |
+| `docs/index.html`, `app.js`, `app.css` | La web v2 (rutas `#/`, `#/<objeto>/<estado>`, `#/historial`). Sin compilación. |
+| `docs/v1/` | **Archivo**: la web anterior congelada, con copia de sus modelos. No se toca. |
+
+Los borradores **sí se publican** en la web v2 (lo pidió Luis): se ven en la página de su objeto
+marcados como borrador. Siguen sin numerarse como versiones.
+
+Objetos que vienen de otras ramas (unidos el 16 nov 2026 con su historia): `fidgets/botonera-nch/`
+(`claude/brave-darwin-9hqz7q`), `cajones-isla/` (`claude/nice-goodall-9jt9q8`) y
+`llaveros/habitacion-26/` (copiado de `claude/add-3d-color-combinations-xTKbo`).
+
 ## Versiones y carpetas de los diseños 3D (regla de Luis)
 
 **Solo cuenta como versión lo que se ha impreso.** Todo lo demás son borradores.
@@ -32,7 +53,7 @@ about the Next.js app), you can ignore the rest of this file.
 | `3d-models/sponge-holder/` | **V1**. Impresa. Con sus piezas de prueba `test_*`. |
 | `3d-models/el-secadero-v2/` | **V2**, «El Secadero». Diseño actual, sin imprimir. Fuente: `el_secadero_v2.scad`. |
 | `3d-models/bathroom-bar-{a,b,c}/` | Otro proyecto (barra de baño). |
-| `3d-models/_borradores/` | Archivo de borradores (`estropajero-v3`, `estropajero-v4`). **No son versiones** y no se publican. Se conservan por sus `APRENDIZAJES.md`. |
+| `3d-models/_borradores/` | Archivo de borradores (`estropajero-v3`, `estropajero-v4`). **No son versiones**. Sus `generate_stl.py` no corren en CI, pero la web v2 los enseña como borradores (vía `objetos.json`). |
 | `3d-models/perfiles/` | Perfil de laminador para estimar tiempos (A1 + PLA). |
 
 - Cada diseño tiene su `APRENDIZAJES.md` (datos, decisiones, comprobaciones). Léelo antes de tocarlo.

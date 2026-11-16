@@ -70,3 +70,30 @@ Registro vivo de explicaciones, decisiones y convenciones acordadas.
 - Activo en `src/app/icon.svg` (pestaña) y `src/app/apple-icon.png` (180px, iOS).
   Next.js App Router genera los `<link>` automáticamente; no hace falta tocar `layout.tsx`.
 - Las alternativas siguen en `public/favicon-options/` como referencia.
+
+## 2026-11-16 · Web v2: una página por objeto (LG Señal)
+
+- **Qué pidió Luis**: pasar la web a LG Señal sin perder lo anterior; guardar la web actual
+  como archivo y tener el histórico; que cada objeto tenga su página con sus versiones y
+  borradores; pensar el paso entre borradores en el móvil; y el coste de cada uno a 20 €/kg.
+- **Dónde estaba "el site"**: GitHub Pages sale de `docs/` y lo despliega
+  `.github/workflows/pages.yml` en cada push a `main` o a `claude/**` que toque esas carpetas.
+  **El último push gana**: si otra sesión empuja una rama con la web vieja, la pisa.
+  Lo seguro es fusionar a `main` y desplegar solo desde `main`.
+- **El histórico**: el trabajo estaba repartido en ramas. Se unieron (merge, con su historia):
+  estropajero + barra de baño, botonera NCH y cajones de la isla. El llavero de la habitación 26
+  se copió (su rama tocaba la app Next.js). La web anterior queda en `docs/v1/`.
+- **Vocabulario de la web**: *objeto* (el secadero, la botonera…) → *estados* en orden.
+  Tipos: **impresa** (versión, verde fósforo), **por imprimir** (versión aún no impresa, ámbar),
+  **prueba** (pieza para validar un encaje), **borrador** (diseño sin imprimir, cuadro hueco).
+- **Móvil, entre un borrador y otro**: un estado por pantalla. Arriba, un raíl con todos los
+  estados (el actual en fósforo, centrado). Abajo, en la zona del pulgar, «← anterior · n/N ·
+  siguiente →» con el nombre del vecino. Se puede deslizar sobre la ficha, no sobre el visor
+  (ahí el dedo gira el modelo). Cada estado dice qué cambia en gramos y euros respecto al anterior.
+- **Coste (cómo se calcula)**: los 3MF del repo solo traen geometría (sin datos del laminador),
+  así que `3d-models/costes.py` corta cada pieza en capas de 0,2 mm y suma pared, techos/suelos
+  macizos y relleno al 15 % (PLA 1,26 g/cm³). Con la pared de 2 perímetros salía un 25 % corto;
+  con una pared efectiva de 4 líneas coincide con el laminador real: **error medio 4 %, máximo 9 %**
+  en 8 piezas. Contrastes: cajón 102 g (notas: 109), botonera 2×2 20 g (≈19), marco 11 g (11).
+  **No incluye la purga** de los cambios de color (en el llavero ST26 fue el 52 % del filamento).
+- **Cifras (16 nov 2026)**: imprimir todo el archivo ≈ 722 g ≈ 14,46 €. El Secadero v2 ≈ 43 g ≈ 0,86 €.

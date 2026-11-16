@@ -1,0 +1,1063 @@
+{
+ "generado": "2026-11-16T10:52Z",
+ "euros_kg": 20.0,
+ "perfil": "A1 · capa 0.2 mm · relleno 15% · PLA 1.26 g/cm³",
+ "objetos": [
+  {
+   "id": "el-secadero",
+   "nombre": "el secadero",
+   "que": "soporte de estropajo que abraza el grifo de la cocina",
+   "estado": "v2 por imprimir",
+   "aprendizajes": "files/el-secadero/notas/APRENDIZAJES.md",
+   "estados": [
+    {
+     "id": "pruebas-agarre",
+     "tipo": "prueba",
+     "nombre": "abrazadera y pinza",
+     "fecha": "2026-05-01",
+     "texto": "Dos piezas mínimas para probar el agarre antes de imprimir el soporte entero: la abrazadera al grifo de 45 mm y la pinza de la esponja.",
+     "modelos": [
+      {
+       "nombre": "abrazadera",
+       "src": "models/test_faucet_clip.glb"
+      },
+      {
+       "nombre": "pinza",
+       "src": "models/test_sponge_clip.glb"
+      }
+     ],
+     "imagenes": [],
+     "descargas": [
+      "files/sponge-holder/test_faucet_clip.stl",
+      "files/sponge-holder/test_sponge_clip.stl"
+     ],
+     "piezas": [
+      {
+       "nombre": "abrazadera del grifo",
+       "cantidad": 1,
+       "gramos": 10.4,
+       "euros": 0.21,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "pinza de esponja",
+       "cantidad": 1,
+       "gramos": 6.4,
+       "euros": 0.13,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 16.8,
+      "euros": 0.34,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-16"
+    },
+    {
+     "id": "pruebas-pinza",
+     "tipo": "prueba",
+     "nombre": "tres pinzas",
+     "fecha": "2026-05-02",
+     "texto": "Tres formas de pellizcar la esponja para comparar en la mano: C casi cerrada a 300°, anillo a 340° y paredes rectas.",
+     "modelos": [
+      {
+       "nombre": "300°",
+       "src": "models/test_sponge_v_300deg.glb"
+      },
+      {
+       "nombre": "340°",
+       "src": "models/test_sponge_v_340deg.glb"
+      },
+      {
+       "nombre": "recta",
+       "src": "models/test_sponge_v_parallel.glb"
+      }
+     ],
+     "imagenes": [],
+     "descargas": [
+      "files/sponge-holder/test_sponge_v_300deg.stl",
+      "files/sponge-holder/test_sponge_v_340deg.stl",
+      "files/sponge-holder/test_sponge_v_parallel.stl"
+     ],
+     "piezas": [
+      {
+       "nombre": "pinza 300°",
+       "cantidad": 1,
+       "gramos": 7.0,
+       "euros": 0.14,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "pinza 340°",
+       "cantidad": 1,
+       "gramos": 7.8,
+       "euros": 0.16,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "pinza recta",
+       "cantidad": 1,
+       "gramos": 25.1,
+       "euros": 0.5,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 39.9,
+      "euros": 0.8,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-16"
+    },
+    {
+     "id": "pruebas-tenedor",
+     "tipo": "prueba",
+     "nombre": "pinza tenedor",
+     "fecha": "2026-05-03",
+     "texto": "La pinza en tenedor, con puntas finas y arco curvo, y una pieza que compara el brazo de 20 mm con el de 14 mm.",
+     "modelos": [
+      {
+       "nombre": "tenedor",
+       "src": "models/test_sponge_v_fork.glb"
+      },
+      {
+       "nombre": "20 vs 14 mm",
+       "src": "models/test_sponge_v_fork_compare.glb"
+      }
+     ],
+     "imagenes": [],
+     "descargas": [
+      "files/sponge-holder/test_sponge_v_fork.3mf",
+      "files/sponge-holder/test_sponge_v_fork_compare.3mf"
+     ],
+     "piezas": [
+      {
+       "nombre": "pinza tenedor",
+       "cantidad": 1,
+       "gramos": 5.8,
+       "euros": 0.12,
+       "fuente": "3mf"
+      },
+      {
+       "nombre": "comparar largos",
+       "cantidad": 1,
+       "gramos": 12.1,
+       "euros": 0.24,
+       "fuente": "3mf"
+      }
+     ],
+     "coste": {
+      "gramos": 17.9,
+      "euros": 0.36,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-16"
+    },
+    {
+     "id": "v1",
+     "tipo": "version",
+     "nombre": "v1",
+     "fecha": "2026-05-03",
+     "texto": "La primera impresa. Abrazadera al grifo, brazo por detrás con giro de 90° y pinza tenedor corta (14 mm) con dos puntas triangulares.",
+     "modelos": [
+      {
+       "nombre": "pieza",
+       "src": "models/sponge_holder.glb"
+      }
+     ],
+     "imagenes": [],
+     "descargas": [
+      "files/sponge-holder/sponge_holder.3mf",
+      "files/sponge-holder/sponge_holder.stl",
+      "files/sponge-holder/print_settings.md"
+     ],
+     "piezas": [
+      {
+       "nombre": "soporte completo",
+       "cantidad": 1,
+       "gramos": 20.9,
+       "euros": 0.42,
+       "fuente": "3mf"
+      }
+     ],
+     "coste": {
+      "gramos": 20.9,
+      "euros": 0.42,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-16"
+    },
+    {
+     "id": "borrador-bastidor",
+     "tipo": "borrador",
+     "nombre": "bastidor",
+     "archivo": "estropajero-v3",
+     "fecha": "2026-10-31",
+     "texto": "Brazo, bastidor y bandeja que se levanta. El bastidor entra de lado en el brazo para poder montarlo en PLA. Las medidas eran supuestas: una salió 9 mm larga.",
+     "modelos": [
+      {
+       "nombre": "piezas",
+       "src": "models/archivo/el-secadero-borrador-bastidor-0.glb"
+      }
+     ],
+     "imagenes": [
+      {
+       "src": "files/el-secadero/borrador-bastidor/preview.png",
+       "pie": "montado"
+      },
+      {
+       "src": "files/el-secadero/borrador-bastidor/montaje_A_B.png",
+       "pie": "montaje de A y B"
+      }
+     ],
+     "descargas": [
+      "files/el-secadero/borrador-bastidor/APRENDIZAJES.md",
+      "files/el-secadero/borrador-bastidor/estropajero_v3.scad"
+     ],
+     "piezas": [
+      {
+       "nombre": "A brazo",
+       "cantidad": 1,
+       "gramos": 15.8,
+       "euros": 0.32,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "B bastidor",
+       "cantidad": 1,
+       "gramos": 12.0,
+       "euros": 0.24,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "C bandeja",
+       "cantidad": 1,
+       "gramos": 19.4,
+       "euros": 0.39,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 47.2,
+      "euros": 0.94,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-16"
+    },
+    {
+     "id": "borrador-colgador",
+     "tipo": "borrador",
+     "nombre": "colgador",
+     "archivo": "estropajero-v4",
+     "fecha": "2026-11-01",
+     "texto": "Rediseño por resistencia: brazo, colgador, bandeja y una llave suelta. Todo trabaja en el plano de capa, pero la llave de 2 g se cae al fregadero y de lado es inestable.",
+     "modelos": [
+      {
+       "nombre": "piezas",
+       "src": "models/archivo/el-secadero-borrador-colgador-0.glb"
+      }
+     ],
+     "imagenes": [
+      {
+       "src": "files/el-secadero/borrador-colgador/preview.png",
+       "pie": "montado"
+      }
+     ],
+     "descargas": [
+      "files/el-secadero/borrador-colgador/APRENDIZAJES.md",
+      "files/el-secadero/borrador-colgador/estropajero_v4.scad"
+     ],
+     "piezas": [
+      {
+       "nombre": "A brazo",
+       "cantidad": 1,
+       "gramos": 16.9,
+       "euros": 0.34,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "B colgador",
+       "cantidad": 1,
+       "gramos": 8.3,
+       "euros": 0.17,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "C bandeja",
+       "cantidad": 1,
+       "gramos": 18.7,
+       "euros": 0.37,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "K llave",
+       "cantidad": 1,
+       "gramos": 1.7,
+       "euros": 0.03,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 45.6,
+      "euros": 0.91,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-16"
+    },
+    {
+     "id": "v2",
+     "tipo": "version",
+     "nombre": "v2",
+     "fecha": "2026-11-16",
+     "por_imprimir": true,
+     "texto": "El Secadero. Cuna para el estropajo de canto, marco percha que se engancha por forma y cuña de apriete. Formas redondeadas y grabado en JetBrains Mono. Medida antes de modelar.",
+     "modelos": [
+      {
+       "nombre": "abajo",
+       "src": "models/el_secadero_v2_abajo.glb"
+      },
+      {
+       "nombre": "levantada",
+       "src": "models/el_secadero_v2_levantada.glb"
+      },
+      {
+       "nombre": "placa a1",
+       "src": "models/el_secadero_v2_placa.glb"
+      }
+     ],
+     "imagenes": [
+      {
+       "src": "files/el-secadero/v2/grabado.png",
+       "pie": "grabado"
+      }
+     ],
+     "descargas": [
+      "files/el-secadero-v2/el_secadero_v2_A1.3mf",
+      "files/el-secadero-v2/pieza_A_brazo.stl",
+      "files/el-secadero-v2/pieza_B_marco.stl",
+      "files/el-secadero-v2/pieza_C_cuna.stl",
+      "files/el-secadero-v2/pieza_K_cuna_apriete.stl",
+      "files/el-secadero-v2/el_secadero_v2.scad",
+      "files/el-secadero-v2/APRENDIZAJES.md"
+     ],
+     "piezas": [
+      {
+       "nombre": "A brazo",
+       "cantidad": 1,
+       "gramos": 15.4,
+       "euros": 0.31,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "B marco",
+       "cantidad": 1,
+       "gramos": 13.1,
+       "euros": 0.26,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "C cuna",
+       "cantidad": 1,
+       "gramos": 12.1,
+       "euros": 0.24,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "K cuña",
+       "cantidad": 1,
+       "gramos": 2.5,
+       "euros": 0.05,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 43.1,
+      "euros": 0.86,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-16"
+    }
+   ]
+  },
+  {
+   "id": "botonera-nch",
+   "nombre": "botonera nch",
+   "que": "fidget con las cuatro formas del icono de nocodehackers como botones",
+   "estado": "2×2 en prueba",
+   "aprendizajes": "files/botonera-nch/notas/APRENDIZAJES.md",
+   "estados": [
+    {
+     "id": "lengueta",
+     "tipo": "borrador",
+     "nombre": "lengüetas",
+     "archivo": "botonera_nch",
+     "fecha": "2026-10-28",
+     "texto": "Una sola pieza de 50 × 50 × 12 mm. Cada botón va sobre una lengüeta de la tapa recortada en U que flexa al pulsar.",
+     "modelos": [
+      {
+       "nombre": "pieza",
+       "src": "models/archivo/botonera-nch-lengueta-0.glb"
+      }
+     ],
+     "imagenes": [
+      {
+       "src": "files/botonera-nch/lengueta/preview.png",
+       "pie": "vista previa"
+      }
+     ],
+     "descargas": [
+      "files/botonera-nch/lengueta/botonera_nch.3mf"
+     ],
+     "piezas": [
+      {
+       "nombre": "botonera",
+       "cantidad": 1,
+       "gramos": 14.5,
+       "euros": 0.29,
+       "fuente": "3mf"
+      }
+     ],
+     "coste": {
+      "gramos": 14.5,
+      "euros": 0.29,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-10-28"
+    },
+    {
+     "id": "clic",
+     "tipo": "borrador",
+     "nombre": "clic",
+     "archivo": "botonera_nch_v2",
+     "fecha": "2026-10-28",
+     "texto": "Bajo cada lengüeta, una cuchilla con diente en cuña: clic al bajar y otro al soltar. Sigue siendo una pieza. Versión bicolor para el AMS lite.",
+     "modelos": [
+      {
+       "nombre": "pieza",
+       "src": "models/archivo/botonera-nch-clic-0.glb"
+      }
+     ],
+     "imagenes": [],
+     "descargas": [
+      "files/botonera-nch/clic/botonera_nch_v2.3mf",
+      "files/botonera-nch/clic/botonera_nch_v2_color.3mf"
+     ],
+     "piezas": [
+      {
+       "nombre": "botonera",
+       "cantidad": 1,
+       "gramos": 14.7,
+       "euros": 0.29,
+       "fuente": "3mf"
+      }
+     ],
+     "coste": {
+      "gramos": 14.7,
+      "euros": 0.29,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-10-28"
+    },
+    {
+     "id": "espiral",
+     "tipo": "borrador",
+     "nombre": "espiral",
+     "archivo": "botonera_nch_v3",
+     "fecha": "2026-10-28",
+     "texto": "Cada forma va sobre un disco con 4 brazos en espiral: baja recto y paralelo, sin bisagra. Con su botón de prueba suelto.",
+     "modelos": [
+      {
+       "nombre": "botonera",
+       "src": "models/archivo/botonera-nch-espiral-0.glb"
+      },
+      {
+       "nombre": "botón de prueba",
+       "src": "models/archivo/botonera-nch-espiral-1.glb"
+      }
+     ],
+     "imagenes": [],
+     "descargas": [
+      "files/botonera-nch/espiral/botonera_nch_v3.3mf",
+      "files/botonera-nch/espiral/botonera_nch_v3_color.3mf",
+      "files/botonera-nch/espiral/prueba_boton_v3.3mf"
+     ],
+     "piezas": [
+      {
+       "nombre": "botonera",
+       "cantidad": 1,
+       "gramos": 17.8,
+       "euros": 0.36,
+       "fuente": "3mf"
+      }
+     ],
+     "coste": {
+      "gramos": 17.8,
+      "euros": 0.36,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-10-28"
+    },
+    {
+     "id": "tecla-oculta",
+     "tipo": "prueba",
+     "nombre": "tecla oculta",
+     "archivo": "botonera_nch_v4",
+     "fecha": "2026-10-28",
+     "texto": "Teclas con la forma del logo que tapan el mecanismo. Se imprimió el botón de prueba y la tecla se rompió al primer clic: los brazos del resorte iban en puente.",
+     "modelos": [
+      {
+       "nombre": "botón de prueba",
+       "src": "models/archivo/botonera-nch-tecla-oculta-0.glb"
+      },
+      {
+       "nombre": "botonera",
+       "src": "models/archivo/botonera-nch-tecla-oculta-1.glb"
+      }
+     ],
+     "imagenes": [],
+     "descargas": [
+      "files/botonera-nch/tecla-oculta/prueba_boton_v4.3mf",
+      "files/botonera-nch/tecla-oculta/botonera_nch_v4.3mf",
+      "files/botonera-nch/tecla-oculta/botonera_nch_v4_color.3mf"
+     ],
+     "piezas": [
+      {
+       "nombre": "botón de prueba",
+       "cantidad": 1,
+       "gramos": 5.9,
+       "euros": 0.12,
+       "fuente": "3mf"
+      }
+     ],
+     "coste": {
+      "gramos": 5.9,
+      "euros": 0.12,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-10-28"
+    },
+    {
+     "id": "tres-piezas",
+     "tipo": "version",
+     "nombre": "botón en 3 piezas",
+     "archivo": "boton_v5",
+     "fecha": "2026-10-28",
+     "texto": "Resorte plano con espirales de 300°, carcasa y tecla que encajan. Impreso y funciona. Luis pide más recorrido y menos tamaño.",
+     "modelos": [
+      {
+       "nombre": "piezas",
+       "src": "models/archivo/botonera-nch-tres-piezas-0.glb"
+      }
+     ],
+     "imagenes": [],
+     "descargas": [
+      "files/botonera-nch/tres-piezas/boton_v5_piezas.3mf"
+     ],
+     "piezas": [
+      {
+       "nombre": "botón (3 piezas)",
+       "cantidad": 1,
+       "gramos": 6.3,
+       "euros": 0.13,
+       "fuente": "3mf"
+      }
+     ],
+     "coste": {
+      "gramos": 6.3,
+      "euros": 0.13,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-10-28"
+    },
+    {
+     "id": "compacto",
+     "tipo": "borrador",
+     "nombre": "botón compacto",
+     "archivo": "boton_v6",
+     "fecha": "2026-10-28",
+     "texto": "24 × 24 mm y 2 mm de recorrido con la misma tensión: resorte de 2 brazos de 1,0 mm que dan casi vuelta y media.",
+     "modelos": [
+      {
+       "nombre": "piezas",
+       "src": "models/archivo/botonera-nch-compacto-0.glb"
+      }
+     ],
+     "imagenes": [],
+     "descargas": [
+      "files/botonera-nch/compacto/boton_v6_piezas.3mf"
+     ],
+     "piezas": [
+      {
+       "nombre": "botón (3 piezas)",
+       "cantidad": 1,
+       "gramos": 4.6,
+       "euros": 0.09,
+       "fuente": "3mf"
+      }
+     ],
+     "coste": {
+      "gramos": 4.6,
+      "euros": 0.09,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-10-28"
+    },
+    {
+     "id": "dos-por-dos",
+     "tipo": "borrador",
+     "nombre": "botonera 2×2",
+     "archivo": "botonera_v6_2x2",
+     "fecha": "2026-10-29",
+     "texto": "46 × 46 mm: carcasa de 4 celdas, 4 teclas y 4 resortes compactos en una placa. La tapa trasera a ras no es válida: ninguna pieza puede doblarse para encajar. Falta una probeta de holguras.",
+     "modelos": [
+      {
+       "nombre": "placa",
+       "src": "models/archivo/botonera-nch-dos-por-dos-0.glb"
+      }
+     ],
+     "imagenes": [],
+     "descargas": [
+      "files/botonera-nch/dos-por-dos/botonera_v6_2x2.3mf",
+      "files/botonera-nch/dos-por-dos/README.md",
+      "files/botonera-nch/dos-por-dos/APRENDIZAJES.md"
+     ],
+     "piezas": [
+      {
+       "nombre": "botonera 2×2",
+       "cantidad": 1,
+       "gramos": 20.3,
+       "euros": 0.41,
+       "fuente": "3mf"
+      }
+     ],
+     "coste": {
+      "gramos": 20.3,
+      "euros": 0.41,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-10-29"
+    }
+   ]
+  },
+  {
+   "id": "cajones-isla",
+   "nombre": "cajones de la isla",
+   "que": "cajones modulares para los huecos de 130 × 135 mm de la isla de la cocina",
+   "estado": "pendiente de probar el encaje",
+   "aprendizajes": "files/cajones-isla/notas/APRENDIZAJES.md",
+   "estados": [
+    {
+     "id": "marco",
+     "tipo": "prueba",
+     "nombre": "marco de prueba",
+     "fecha": "2026-10-13",
+     "texto": "Solo el contorno del cajón, 10 mm de fondo, para probar el encaje en los 6 huecos gastando lo mínimo. Hace de galga.",
+     "modelos": [
+      {
+       "nombre": "marco",
+       "src": "models/archivo/cajones-isla-marco-0.glb"
+      }
+     ],
+     "imagenes": [
+      {
+       "src": "files/cajones-isla/marco/marco_prueba_preview.png",
+       "pie": "marco"
+      }
+     ],
+     "descargas": [
+      "files/cajones-isla/marco/marco_prueba_130x135.stl",
+      "files/cajones-isla/marco/README.md"
+     ],
+     "piezas": [
+      {
+       "nombre": "marco",
+       "cantidad": 1,
+       "gramos": 11.4,
+       "euros": 0.23,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 11.4,
+      "euros": 0.23,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-10-14"
+    },
+    {
+     "id": "conceptos",
+     "tipo": "borrador",
+     "nombre": "conceptos",
+     "fecha": "2026-10-13",
+     "texto": "Caja, bandeja y bandeja perforada; la versión Gridfinity; cinco frentes; la estética de la puerta con línea de sombra y los revoltons, el techo de bóveda catalana de la casa de Luis.",
+     "modelos": [],
+     "imagenes": [
+      {
+       "src": "files/cajones-isla/conceptos/concepto_cajon_variantes.png",
+       "pie": "caja, bandeja, perforada"
+      },
+      {
+       "src": "files/cajones-isla/conceptos/concepto_gridfinity.png",
+       "pie": "gridfinity"
+      },
+      {
+       "src": "files/cajones-isla/conceptos/propuestas_frente.png",
+       "pie": "cinco frentes"
+      },
+      {
+       "src": "files/cajones-isla/conceptos/puertas_estetica.png",
+       "pie": "estética de la puerta"
+      },
+      {
+       "src": "files/cajones-isla/conceptos/revoltons.png",
+       "pie": "revoltons"
+      },
+      {
+       "src": "files/cajones-isla/conceptos/cajon_agujero.png",
+       "pie": "agujero de dedo"
+      }
+     ],
+     "descargas": [],
+     "piezas": [],
+     "cambiado": null
+    },
+    {
+     "id": "llave",
+     "tipo": "prueba",
+     "nombre": "probeta de la llave",
+     "fecha": "2026-10-13",
+     "texto": "Tres juntas con llave de mariposa (juego de 0,1, 0,2 y 0,3 mm, marcadas con 1, 2 o 3 muescas) para elegir el ajuste antes del cajón.",
+     "modelos": [
+      {
+       "nombre": "probeta",
+       "src": "models/archivo/cajones-isla-llave-0.glb"
+      }
+     ],
+     "imagenes": [
+      {
+       "src": "files/cajones-isla/llave/uniones.png",
+       "pie": "uniones"
+      }
+     ],
+     "descargas": [
+      "files/cajones-isla/llave/prueba_union_llave_mariposa.stl"
+     ],
+     "piezas": [
+      {
+       "nombre": "probeta",
+       "cantidad": 1,
+       "gramos": 3.9,
+       "euros": 0.08,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 3.9,
+      "euros": 0.08,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-10-13"
+    },
+    {
+     "id": "cajon",
+     "tipo": "borrador",
+     "nombre": "cajón clickfinity",
+     "fecha": "2026-10-14",
+     "texto": "Dos tramos con base Clickfinity, frente de 3 voltes y 4 llaves de mariposa. Las placas Clickfinity no están en el repo por su licencia (CC BY-NC-SA) y no entran en el coste.",
+     "modelos": [
+      {
+       "nombre": "piezas",
+       "src": "models/archivo/cajones-isla-cajon-0.glb"
+      }
+     ],
+     "imagenes": [
+      {
+       "src": "files/cajones-isla/cajon/cajon_clickfinity.png",
+       "pie": "cajón"
+      }
+     ],
+     "descargas": [
+      "files/cajones-isla/cajon/frente_revoltons3.stl",
+      "files/cajones-isla/cajon/tramo_A.stl",
+      "files/cajones-isla/cajon/tramo_B.stl",
+      "files/cajones-isla/cajon/llave_mariposa.stl"
+     ],
+     "piezas": [
+      {
+       "nombre": "frente 3 voltes",
+       "cantidad": 1,
+       "gramos": 38.3,
+       "euros": 0.77,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "tramo A",
+       "cantidad": 1,
+       "gramos": 28.3,
+       "euros": 0.57,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "tramo B",
+       "cantidad": 1,
+       "gramos": 34.5,
+       "euros": 0.69,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "llave de mariposa",
+       "cantidad": 4,
+       "gramos": 1.4,
+       "euros": 0.03,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 102.5,
+      "euros": 2.05,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-10-14"
+    },
+    {
+     "id": "tapa-pasante",
+     "tipo": "borrador",
+     "nombre": "tapa pasante",
+     "fecha": "2026-10-14",
+     "texto": "El frente de 3 voltes con un faldón de 12 mm y costillas aplastables. Sirve para probar la puerta y para tapar los huecos sin cajón. Los dedos enganchan por detrás.",
+     "modelos": [
+      {
+       "nombre": "tapa",
+       "src": "models/archivo/cajones-isla-tapa-pasante-0.glb"
+      }
+     ],
+     "imagenes": [
+      {
+       "src": "files/cajones-isla/tapa-pasante/tapas.png",
+       "pie": "las dos tapas"
+      }
+     ],
+     "descargas": [
+      "files/cajones-isla/tapa-pasante/tapa_revoltons3_pasante.stl"
+     ],
+     "piezas": [
+      {
+       "nombre": "tapa",
+       "cantidad": 1,
+       "gramos": 47.3,
+       "euros": 0.95,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 47.3,
+      "euros": 0.95,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-10-14"
+    },
+    {
+     "id": "tapa-bolsillo",
+     "tipo": "borrador",
+     "nombre": "tapa bolsillo",
+     "fecha": "2026-10-14",
+     "texto": "Igual que la pasante, pero con una cajita cerrada detrás del arco: la yema engancha y no se ve el interior. La mejor para tapar huecos.",
+     "modelos": [
+      {
+       "nombre": "tapa",
+       "src": "models/archivo/cajones-isla-tapa-bolsillo-0.glb"
+      }
+     ],
+     "imagenes": [],
+     "descargas": [
+      "files/cajones-isla/tapa-bolsillo/tapa_revoltons3_bolsillo.stl",
+      "files/cajones-isla/tapa-bolsillo/APRENDIZAJES.md"
+     ],
+     "piezas": [
+      {
+       "nombre": "tapa",
+       "cantidad": 1,
+       "gramos": 53.4,
+       "euros": 1.07,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 53.4,
+      "euros": 1.07,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-16"
+    }
+   ]
+  },
+  {
+   "id": "barra-bano",
+   "nombre": "barra de baño",
+   "que": "barra modular para el baño, junto al grifo",
+   "estado": "tres propuestas",
+   "estados": [
+    {
+     "id": "hilo",
+     "tipo": "borrador",
+     "nombre": "hilo",
+     "fecha": "2026-05-01",
+     "texto": "Varilla de aluminio y clamps que encajan a presión.",
+     "modelos": [
+      {
+       "nombre": "barra",
+       "src": "models/bathroom_bar_a.glb"
+      }
+     ],
+     "imagenes": [],
+     "descargas": [
+      "files/bathroom-bar-a/bathroom_bar_a.stl"
+     ],
+     "piezas": [
+      {
+       "nombre": "barra y clamps",
+       "cantidad": 1,
+       "gramos": 15.9,
+       "euros": 0.32,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 15.9,
+      "euros": 0.32,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-16"
+    },
+    {
+     "id": "carril",
+     "tipo": "borrador",
+     "nombre": "carril",
+     "fecha": "2026-05-01",
+     "texto": "Perfil de PLA con canal en T por el que corren los accesorios.",
+     "modelos": [
+      {
+       "nombre": "barra",
+       "src": "models/bathroom_bar_b.glb"
+      }
+     ],
+     "imagenes": [],
+     "descargas": [
+      "files/bathroom-bar-b/bathroom_bar_b.stl"
+     ],
+     "piezas": [
+      {
+       "nombre": "carril",
+       "cantidad": 1,
+       "gramos": 88.9,
+       "euros": 1.78,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 88.9,
+      "euros": 1.78,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-16"
+    },
+    {
+     "id": "rama",
+     "tipo": "borrador",
+     "nombre": "rama",
+     "fecha": "2026-05-01",
+     "texto": "Brazo curvo de una pieza.",
+     "modelos": [
+      {
+       "nombre": "barra",
+       "src": "models/bathroom_bar_c.glb"
+      }
+     ],
+     "imagenes": [],
+     "descargas": [
+      "files/bathroom-bar-c/bathroom_bar_c.stl"
+     ],
+     "piezas": [
+      {
+       "nombre": "rama",
+       "cantidad": 1,
+       "gramos": 62.0,
+       "euros": 1.24,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 62.0,
+      "euros": 1.24,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-16"
+    }
+   ]
+  },
+  {
+   "id": "llaveros",
+   "nombre": "llaveros",
+   "que": "llaveros con texto grabado o en relieve",
+   "estado": "st26 impreso",
+   "estados": [
+    {
+     "id": "habitacion-26",
+     "tipo": "borrador",
+     "nombre": "habitación 26",
+     "fecha": "2026-05-13",
+     "texto": "Llavero con el número de habitación grabado a 0,4 mm (2 capas), en letra con serifa y en vertical.",
+     "modelos": [
+      {
+       "nombre": "llavero",
+       "src": "models/archivo/llaveros-habitacion-26-0.glb"
+      }
+     ],
+     "imagenes": [],
+     "descargas": [
+      "files/llaveros/habitacion-26/key-room-26.stl",
+      "files/llaveros/habitacion-26/generate-key-stl.mjs"
+     ],
+     "piezas": [
+      {
+       "nombre": "llavero",
+       "cantidad": 1,
+       "gramos": 6.6,
+       "euros": 0.13,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 6.6,
+      "euros": 0.13,
+      "origen": "estimado"
+     },
+     "cambiado": null
+    },
+    {
+     "id": "st26-botella",
+     "tipo": "version",
+     "nombre": "st26 botella",
+     "fecha": "2026-11-01",
+     "texto": "Llavero en forma de botella, blanco y naranja, con ojal. Laminado e impreso en la A1. La purga de los cambios de color pesa más que el propio llavero. Sin archivos en este repo.",
+     "real": {
+      "gramos": 14.43,
+      "pieza_g": 6.89,
+      "fuente": "bambu studio, 1 llavero por placa, con purga y torre"
+     },
+     "modelos": [],
+     "imagenes": [],
+     "descargas": [],
+     "piezas": [],
+     "coste": {
+      "gramos": 14.43,
+      "euros": 0.29,
+      "origen": "laminador"
+     },
+     "cambiado": null
+    }
+   ]
+  }
+ ]
+}
