@@ -45,8 +45,20 @@ Registro vivo de explicaciones, decisiones y convenciones acordadas.
   («la Señal cambia», «ruido que se ordena»).
 - **Lo que el código ya demuestra**: `mermaidToFlow` / `flowToMermaid` hacen
   texto ⇄ objeto en ambos sentidos. Ese ida y vuelta es el núcleo; el canvas es una vista.
-- **Implicaciones abiertas** (pendiente de decidir con Luis):
+- **Respuestas de Luis (2026-11-16)**:
+  - **Objeto** = *descripciones digitales que crean objetos reales*. La escritura genera
+    una descripción (modelo, plano, fichero de fabricación) y esa descripción se fabrica.
+  - **Quién escribe**: Luis. Labil es su herramienta/taller, no (de momento) un producto para terceros.
+  - **Labil es parte de Lagu** → usa **LG Señal** entero (oscuro, fósforo, píxel, JetBrains Mono, minúsculas).
+- **Cadena de Labil**: `letra (lo que escribe Luis) → descripción digital (la IA la genera) → objeto real`.
+  Hoy la "descripción" es Mermaid y el "objeto" un diagrama; mañana la descripción puede ser
+  un modelo paramétrico (p. ej. OpenSCAD/CadQuery) o un plano de corte (SVG) y el objeto, una pieza.
+- **Implicaciones** (iniciales):
   - La fuente de verdad es el texto; el objeto se regenera y se puede volver a escribir.
   - "Objeto" hoy = diagrama. ¿Mañana: documentos, interfaces, piezas físicas?
   - Gesto de marca: una letra que se reordena hasta ser forma (animación de descifrado).
-  - El favicon debería mostrar esa transición (letra → objeto), no una letra ni un nodo sueltos.
+  - El favicon muestra la transición letra → objeto. Propuestas actuales (LG Señal, 8×8 píxeles):
+    - **A · Extrusión**: la «l» en fósforo gana volumen (extrusión en `ink-faint`): la letra se vuelve sólido.
+    - **B · Capa a capa**: arriba, renglones de escritura; abajo, el objeto fabricándose por capas (impresión 3D).
+    - **C · Ruido que se ordena**: píxeles sueltos (letras) que se compactan en un bloque de fósforo.
+  - Las rondas anteriores (Warm Clarity y LG Señal "diagrama") quedan en el historial de git.
