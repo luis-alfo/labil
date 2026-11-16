@@ -136,3 +136,14 @@ Registro vivo de explicaciones, decisiones y convenciones acordadas.
 - Una imagen que Luis pegó en la conversación (su captura de la v2) no llegó como archivo al repositorio.
   Se rehízo la misma captura y el pie lo dice. Si vuelve a pasar, se le avisa.
 - **Autonomía (16 nov 2026)**: Luis autorizó a fusionar en `main` yo mismo cuando esté todo listo.
+
+## 2026-11-16 · Desplegable de versiones con la marca
+
+- **Por qué**: el `<select>` nativo abría el selector del sistema (iOS/Android), fuera de LG Señal.
+  Luis lo marcó: los controles de la web tienen que ser de la marca, no del sistema.
+- **Cómo es**: botón abajo a la izquierda (estado, nombre, «7/7», flecha de píxeles). Al tocarlo
+  sube una lista con cada versión: cuadro de estado, nombre, tipo · fecha y precio. La elegida va
+  en fósforo, con esquinas rectas. Los nombres se descifran al abrir.
+- **Lo que no se pierde del nativo**: filas de 52 px para el pulgar; teclado (↑ ↓, Inicio, Fin,
+  Intro, Esc); se cierra tocando fuera; el lector de pantalla lo anuncia como lista de opciones (`listbox`).
+- **Norma aplicada**: el cambio entra como estado nuevo de «labil · la web», con su captura y su memoria.

@@ -150,8 +150,15 @@ function vistaObjeto(oid, eid, abrirDetalles = false) {
            exposure="1.05" ar ar-modes="webxr scene-viewer quick-look"></model-viewer>`
       : `<img id="im" class="lienzo-img" src="${primera.src}" alt="${esc(primera.nombre)}">`;
 
-  const opciones = o.estados.map((x) =>
-    `<option value="${x.id}" ${x === e ? "selected" : ""}>${esc(x.nombre)} · ${tipoDe(x, o).txt} · ${fecha(x.fecha)}</option>`).join("");
+  // desplegable propio (LG Señal), no el del sistema: abre hacia arriba, en orden cronológico
+  const opciones = o.estados.map((x, k) => {
+    const tx = tipoDe(x, o);
+    return `<li role="option" id="op-${x.id}" data-id="${x.id}" tabindex="-1" aria-selected="${x === e}">
+      <span class="status ${tx.cls}"></span>
+      <span class="op-texto"><span class="control op-nombre">${esc(x.nombre)}</span>
+        <span class="caption">${tx.txt} · ${fecha(x.fecha)}</span></span>
+      <span class="caption op-precio">${x.coste ? eur(x.coste.euros) : ""}</span></li>`;
+  }).join("");
 
   // detalles
   const previo = o.estados.slice(0, i).reverse().find((x) => x.coste);
@@ -194,11 +201,15 @@ function vistaObjeto(oid, eid, abrirDetalles = false) {
     </header>
 
     <div class="hud hud-abajo">
-      <label class="versiones">
-        <span class="sr">versión</span>
-        <span class="versiones-cara"><span class="status ${t.cls}"></span><span class="control">${esc(e.nombre)}</span><span class="flecha" aria-hidden="true">⌄</span></span>
-        <select id="versiones">${opciones}</select>
-      </label>
+      <div class="versiones" id="versiones">
+        <ul class="versiones-lista" id="versiones-lista" role="listbox" aria-label="versiones de ${esc(o.nombre)}"
+            aria-activedescendant="op-${e.id}" hidden>${opciones}</ul>
+        <button class="versiones-cara" id="versiones-boton" aria-haspopup="listbox" aria-expanded="false"
+            aria-controls="versiones-lista" aria-label="versión: ${esc(e.nombre)}, ${i + 1} de ${o.estados.length}">
+          <span class="status ${t.cls}"></span><span class="control">${esc(e.nombre)}</span>
+          <span class="caption">${i + 1}/${o.estados.length}</span><span class="flecha" aria-hidden="true"></span>
+        </button>
+      </div>
       ${posiciones.length > 1 ? `<div class="posiciones${posiciones.length > 3 ? " compactas" : ""}" role="group" aria-label="posiciones">
         ${posiciones.length > 3 ? `<span class="pos-nombre caption" id="pos-nombre">${esc(posiciones[0].nombre)}</span>` : ""}
         <div class="pos-lista">${posiciones.map((p, k) =>
@@ -231,10 +242,39 @@ function vistaObjeto(oid, eid, abrirDetalles = false) {
   document.title = `labil · ${o.nombre} · ${e.nombre}`;
   descifra(document.getElementById("titulo"));
 
-  // versiones
-  document.getElementById("versiones").addEventListener("change", (ev) => {
-    location.hash = `#/${o.id}/${ev.target.value}`;
+  // versiones: botón + lista (patrón listbox: flechas, Inicio/Fin, Intro, Esc)
+  const vBoton = document.getElementById("versiones-boton");
+  const vLista = document.getElementById("versiones-lista");
+  const vOps = [...vLista.querySelectorAll('[role="option"]')];
+  const vAbierta = () => !vLista.hidden;
+  const vFoco = (op) => { op.focus({ preventScroll: true }); op.scrollIntoView({ block: "nearest" }); vLista.setAttribute("aria-activedescendant", op.id); };
+  const vAbrir = (si) => {
+    vLista.hidden = !si;
+    vBoton.setAttribute("aria-expanded", si);
+    document.getElementById("versiones").classList.toggle("abierta", si);
+    if (si) {
+      const actual = vOps.find((op) => op.getAttribute("aria-selected") === "true") || vOps[vOps.length - 1];
+      vFoco(actual);
+      vLista.querySelectorAll(".op-nombre").forEach((n) => descifra(n));
+    }
+  };
+  const vElegir = (op) => { vAbrir(false); vBoton.focus(); if (op.dataset.id !== e.id) location.hash = `#/${o.id}/${op.dataset.id}`; };
+  vBoton.addEventListener("click", () => vAbrir(!vAbierta()));
+  vBoton.addEventListener("keydown", (ev) => {
+    if (["ArrowUp", "ArrowDown"].includes(ev.key)) { ev.preventDefault(); vAbrir(true); }
   });
+  vOps.forEach((op) => op.addEventListener("click", () => vElegir(op)));
+  vLista.addEventListener("keydown", (ev) => {
+    const k = vOps.indexOf(document.activeElement);
+    const ir = (n) => { ev.preventDefault(); vFoco(vOps[Math.max(0, Math.min(vOps.length - 1, n))]); };
+    if (ev.key === "ArrowDown") ir(k + 1);
+    else if (ev.key === "ArrowUp") ir(k - 1);
+    else if (ev.key === "Home") ir(0);
+    else if (ev.key === "End") ir(vOps.length - 1);
+    else if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); if (k >= 0) vElegir(vOps[k]); }
+    else if (ev.key === "Escape" || ev.key === "Tab") { ev.preventDefault(); vAbrir(false); vBoton.focus(); }
+  });
+  tocarFuera = (ev) => { if (vAbierta() && !ev.target.closest("#versiones")) vAbrir(false); };
 
   // posiciones
   document.querySelectorAll(".pos").forEach((b) => b.addEventListener("click", () => {
@@ -270,14 +310,16 @@ function vistaObjeto(oid, eid, abrirDetalles = false) {
 
   const ir = (x) => x && (location.hash = enlace(x));
   teclas = (ev) => {
-    if (ev.target.closest("model-viewer, input, textarea, select")) return;
+    if (ev.target.closest("model-viewer, input, textarea, select, #versiones")) return;
     if (ev.key === "Escape") abrir(false);
     if (ev.key === "ArrowLeft") ir(ant);
     if (ev.key === "ArrowRight") ir(sig);
   };
 }
 let teclas = null;
+let tocarFuera = null;
 document.addEventListener("keydown", (ev) => teclas && teclas(ev));
+document.addEventListener("pointerdown", (ev) => tocarFuera && tocarFuera(ev));
 
 // ── memoria y proceso ────────────────────────────────────────────────────────
 function memoriaHTML(e) {
@@ -340,6 +382,7 @@ function vistaHistorial() {
 // ── rutas ────────────────────────────────────────────────────────────────────
 function ruta() {
   teclas = null;
+  tocarFuera = null;
   document.body.classList.remove("en-escena");
   const partes = location.hash.replace(/^#\/?/, "").split("/").filter(Boolean).map(decodeURIComponent);
   if (!partes.length) vistaInicio();
