@@ -62,3 +62,11 @@ Registro vivo de explicaciones, decisiones y convenciones acordadas.
     - **B · Capa a capa**: arriba, renglones de escritura; abajo, el objeto fabricándose por capas (impresión 3D).
     - **C · Ruido que se ordena**: píxeles sueltos (letras) que se compactan en un bloque de fósforo.
   - Las rondas anteriores (Warm Clarity y LG Señal "diagrama") quedan en el historial de git.
+
+## 2026-11-16 · Favicon elegido
+
+- **Luis eligió C · Ruido que se ordena**: píxeles sueltos (letras) que se compactan en un
+  bloque de fósforo `#24e824`. Es el gesto de LG Señal aplicado a «de la letra al objeto».
+- Activo en `src/app/icon.svg` (pestaña) y `src/app/apple-icon.png` (180px, iOS).
+  Next.js App Router genera los `<link>` automáticamente; no hace falta tocar `layout.tsx`.
+- Las alternativas siguen en `public/favicon-options/` como referencia.
