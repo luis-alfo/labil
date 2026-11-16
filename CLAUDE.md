@@ -35,7 +35,7 @@ sus estados en orden: versiones impresas, pruebas y borradores.
 | `proceso/` | Imágenes del proceso que sube Luis, por objeto. `proceso/guardar.py` las prepara. |
 | `3d-models/web.py` | Genera `docs/data/objetos.json`, los GLB que faltan (`docs/models/archivo/`) y copia descargas a `docs/files/<objeto>/<estado>/`. Corre en CI después de los `generate_stl.py`. |
 | `3d-models/costes.py` | Gramos y euros de cada pieza (laminador simplificado, perfil A1, **20 €/kg**). `--calibrar` lo compara con los gramos del laminador real (error medio 4 %, máx. 9 %). |
-| `docs/index.html`, `app.js`, `app.css` | La web v2 (rutas `#/`, `#/<objeto>/<estado>`, `#/historial`). Sin compilación. Página de objeto: modelo a pantalla completa; icono→inicio, nombre y precio arriba; versiones (desplegable) y posiciones (vistas `modelos`) abajo; banda «detalles» con la hoja. |
+| `docs/index.html`, `app.js`, `app.css` | La web v2 (rutas `#/`, `#/<objeto>/<estado>`, `#/historial`). Sin compilación. Portada animada (de la letra al objeto) y debajo las tarjetas. Página de objeto: modelo a pantalla completa; icono→inicio, nombre y precio arriba; burbujas a la derecha; versiones (desplegable propio: solo versiones, borradores plegados entre ellas) y posiciones abajo; banda «detalles». `index.html` carga `app.js`/`app.css` con la versión de `version.json` (sin caché). |
 | `docs/v1/` | **Archivo**: la web anterior congelada, con copia de sus modelos. No se toca. |
 
 Los borradores **sí se publican** en la web v2 (lo pidió Luis): se ven en la página de su objeto
@@ -64,9 +64,12 @@ La web no enseña solo el resultado: enseña **el proceso de diseño** y **por q
    `impresión`, `estética`, `coste` o `método`. Con números cuando los hay (MPa, %, g, mm) y
    con lo que dijo Luis tal cual cuando es una decisión suya. Se escribe al crear el estado,
    no al final.
-3. La memoria se lee en la hoja de detalles («qué cambia y por qué») y entera en
-   `#/<objeto>/memoria`.
-4. **La propia web es un objeto** (`labil-web`): sus versiones, capturas (`labil-web/capturas/`) y
+3. Cada estado lleva también, para las **burbujas** del visor, `cambio` (qué cambió, que quepa
+   en dos líneas) y, si lo hubo, `feedback` con `feedback_de` (`luis`, `revisión`…). La burbuja
+   «nos llevó a» enlaza sola con el estado siguiente.
+4. La memoria se lee en la hoja de detalles («qué cambia y por qué») y entera en
+   `#/<objeto>/memoria`, como línea de tiempo de lo más reciente a lo más antiguo.
+5. **La propia web es un objeto** (`labil-web`): sus versiones, capturas (`labil-web/capturas/`) y
    bocetos van igual que los de cualquier pieza. Para ella, «versión» se dice «publicada».
 
 ## Versiones y carpetas de los diseños 3D (regla de Luis)

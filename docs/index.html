@@ -11,12 +11,25 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app.css">
   <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
 </head>
 <body>
   <div id="app"><p class="caption" style="padding:16px">cargando…</p></div>
   <noscript><p style="padding:16px">Esta web necesita JavaScript. <a href="v1/">Archivo v1</a>.</p></noscript>
-  <script src="app.js" defer></script>
+  <script>
+    // Carga app.js y app.css con la versión publicada (version.json, sin caché).
+    // GitHub Pages deja guardar los archivos 10 min: sin esto, Chrome o Safari
+    // pueden seguir enseñando la web anterior después de publicar.
+    (function () {
+      function cargar(v) {
+        var q = v ? "?v=" + v : "";
+        var l = document.createElement("link"); l.rel = "stylesheet"; l.href = "app.css" + q; document.head.appendChild(l);
+        var s = document.createElement("script"); s.src = "app.js" + q; document.body.appendChild(s);
+      }
+      fetch("version.json?_=" + Date.now(), { cache: "no-store" })
+        .then(function (r) { return r.json(); })
+        .then(function (j) { cargar(j.v); }, function () { cargar(""); });
+    })();
+  </script>
 </body>
 </html>

@@ -151,3 +151,18 @@ Registro vivo de explicaciones, decisiones y convenciones acordadas.
   sistema. Había dos motivos: la publicación tarda unos 3 min y GitHub Pages deja que el móvil guarde
   `app.js` y `app.css` hasta 10 min. Arreglo: `web.py` añade `?v=<commit>` a esos dos archivos en cada
   publicación. `index.html` puede tardar hasta 10 min en refrescarse; si corre prisa, se recarga la página.
+
+## 2026-11-16 · Portada, burbujas y versiones plegadas
+
+- **Safari sí, Chrome no**: el mismo motor lo pintaba bien. Era la caché: Pages deja guardar los
+  archivos 10 min y Chrome seguía con el `index.html` viejo. Arreglo de raíz: `index.html` pide
+  `version.json` sin caché y carga `app.js`/`app.css` con esa versión. Lo escribe `web.py` en cada publicación.
+- **Desplegable**: solo versiones a la vista. Los borradores y las pruebas entre dos versiones van
+  plegados en una línea («2 borradores · 31 oct – 1 nov»). Un objeto sin versiones los enseña todos.
+- **Burbujas** (vocabulario): *qué cambió* · *feedback* (de Luis o de una *revisión*) · *nos llevó a*
+  (el estado siguiente). Dos líneas como mucho, entran por la derecha y se cierran con la ×.
+- **Memoria**: línea de tiempo de lo más reciente a lo más antiguo, con flecha grande para volver.
+- **Portada**: explica qué es labil, sin precio total. Animación en píxeles: escribes → la IA modela →
+  calcula resistencias → evalúa el montaje → prototipa → se imprime. El historial pasa al pie.
+- **Realidad aumentada**: en Android aparecía el botón del visor como un círculo blanco. Ahora es
+  «ver en tu espacio», con la marca.

@@ -47,7 +47,8 @@
        "tema": "medidas",
        "texto": "Columna del grifo de Ø 45 mm, con 0,4 mm de holgura para PLA."
       }
-     ]
+     ],
+     "cambio": "probar el agarre al grifo y a la esponja por separado, antes de la pieza entera"
     },
     {
      "id": "pruebas-pinza",
@@ -93,7 +94,10 @@
        "tema": "uso",
        "texto": "Tres maneras de pellizcar la esponja para decidir en la mano, no en la pantalla."
       }
-     ]
+     ],
+     "cambio": "tres formas de pellizcar la esponja para comparar en la mano",
+     "feedback": "pidió otra forma: un tenedor con puntas finas",
+     "feedback_de": "luis"
     },
     {
      "id": "pruebas-tenedor",
@@ -134,7 +138,10 @@
        "tema": "método",
        "texto": "El brazo bajó de 28 a 20 mm, y una sola pieza compara 20 con 14 mm: una impresión decide entre las dos."
       }
-     ]
+     ],
+     "cambio": "pinza en tenedor y una pieza que compara el brazo de 20 y de 14 mm",
+     "feedback": "de la comparación salió el brazo corto, de 14 mm",
+     "feedback_de": "resultado"
     },
     {
      "id": "v1",
@@ -172,7 +179,10 @@
        "tema": "uso",
        "texto": "Lo que falló, según Luis (29 oct): la pinza chocaba con el borde del fregadero y acabó rompiéndose; el brazo quedaba unos mm por encima de la encimera, porque el aro apoyaba en el embellecedor; meter el estropajo desde abajo era incómodo."
       }
-     ]
+     ],
+     "cambio": "el soporte completo, con el tenedor corto y puntas triangulares",
+     "feedback": "la pinza chocaba con el fregadero y se rompió; el brazo quedaba alto",
+     "feedback_de": "luis"
     },
     {
      "id": "borrador-bastidor",
@@ -236,7 +246,10 @@
        "tema": "montaje",
        "texto": "Luis vio que el bastidor no podía entrar en el brazo siendo PLA: la cabeza de 17 mm no pasaba por la ranura de 14,5. Se abrió la ranura por un lado. Lección: simular el camino de montaje, no solo la posición final."
       }
-     ]
+     ],
+     "cambio": "una bandeja colgada que se levanta, sobre un bastidor en A",
+     "feedback": "el bastidor no podía entrar en el brazo siendo PLA",
+     "feedback_de": "luis"
     },
     {
      "id": "borrador-colgador",
@@ -301,7 +314,10 @@
        "tema": "medidas",
        "texto": "Un error de medida ahora solo inclina un poco: 2 mm son 1,5°."
       }
-     ]
+     ],
+     "cambio": "un colgador en péndulo que apoya en el fregadero: fuerzas 10 veces menores",
+     "feedback": "el estropajo no cabía, se ladeaba y la llave suelta caía al fregadero",
+     "feedback_de": "revisión"
     },
     {
      "id": "v2",
@@ -378,7 +394,8 @@
        "tema": "estética",
        "texto": "Formas redondeadas y grabado en JetBrains Mono. Redondear quitaba resistencia: se recuperó con unos 5 g más."
       }
-     ]
+     ],
+     "cambio": "medidas de la v1, cuna a medida del estropajo y cuña que aprieta sola"
     }
    ]
   },
@@ -424,7 +441,10 @@
        "tema": "diseño",
        "texto": "Una botonera 100 % impresa, sin muelles ni imanes: cada botón va sobre una lengüeta recortada en U que flexa."
       }
-     ]
+     ],
+     "cambio": "botones sobre lengüetas en U, todo en una pieza",
+     "feedback": "flexaba, pero no hacía clic",
+     "feedback_de": "revisión"
     },
     {
      "id": "clic",
@@ -460,7 +480,10 @@
        "tema": "impresión",
        "texto": "Versión bicolor, fondo y logo, para el AMS lite."
       }
-     ]
+     ],
+     "cambio": "una cuchilla con diente: clic al bajar y otro al soltar",
+     "feedback": "la lengüeta bajaba inclinada, como una bisagra",
+     "feedback_de": "revisión"
     },
     {
      "id": "espiral",
@@ -503,7 +526,8 @@
        "tema": "clic",
        "texto": "Dos cuchillas con diente bajo el disco."
       }
-     ]
+     ],
+     "cambio": "disco con 4 brazos en espiral: el botón baja recto"
     },
     {
      "id": "tecla-oculta",
@@ -546,7 +570,10 @@
        "tema": "resistencia",
        "texto": "Se imprimió el botón de prueba y la tecla se rompió al primer clic. Los brazos del resorte, de 1,2 mm, iban impresos en puente (capas mal pegadas) y se deformaban un ~5 %, cuando el PLA rompe entre el 2 y el 4 %. Regla: un resorte no se imprime en puente."
       }
-     ]
+     ],
+     "cambio": "teclas con la forma del logo que tapan el mecanismo",
+     "feedback": "impreso: la tecla se rompió al primer clic",
+     "feedback_de": "luis"
     },
     {
      "id": "tres-piezas",
@@ -585,7 +612,10 @@
        "tema": "uso",
        "texto": "Impreso: funciona. Luis pide más recorrido y que sea más pequeño."
       }
-     ]
+     ],
+     "cambio": "resorte, carcasa y tecla impresos por separado que encajan",
+     "feedback": "funciona bien; pide más recorrido y más pequeño",
+     "feedback_de": "luis"
     },
     {
      "id": "compacto",
@@ -620,7 +650,8 @@
        "tema": "clic",
        "texto": "Dos brazos de 1,0 mm que dan casi vuelta y media: 2 mm de recorrido con la misma deformación (0,50 %) y 0,5 N. Regla: con la misma tensión, más pequeño es menos recorrido, y se compensa con más vueltas y brazos más finos."
       }
-     ]
+     ],
+     "cambio": "24 mm y 2 mm de recorrido con la misma tensión"
     },
     {
      "id": "dos-por-dos",
@@ -657,7 +688,10 @@
        "tema": "montaje",
        "texto": "La tapa trasera a ras no es válida: ninguna pieza puede doblarse para encajar, y la holgura de 0,15 mm es menor que los 0,2–0,4 mm recomendados. Un enganche bien hecho es un brazo en voladizo impreso en el plano, con la raíz redondeada. Antes, una probeta de holguras."
       }
-     ]
+     ],
+     "cambio": "cuatro botones compactos en 46 mm con tapa trasera",
+     "feedback": "¿se probó el encaje de la tapa? no: no era válido",
+     "feedback_de": "luis"
     }
    ]
   },
@@ -707,7 +741,8 @@
        "tema": "coste",
        "texto": "11 g que sirven de galga: en 2 minutos dice si los 6 huecos miden lo mismo."
       }
-     ]
+     ],
+     "cambio": "solo el contorno del cajón, para probar el encaje con 11 g"
     },
     {
      "id": "conceptos",
@@ -754,7 +789,10 @@
        "tema": "estética",
        "texto": "Línea de sombra en el frente y revoltons: el techo de bóveda catalana de la casa de Luis como lenguaje."
       }
-     ]
+     ],
+     "cambio": "caja, bandeja y gridfinity; cinco frentes; revoltons",
+     "feedback": "¿están adaptados a gridfinity? no: se rehicieron",
+     "feedback_de": "luis"
     },
     {
      "id": "llave",
@@ -794,7 +832,10 @@
        "tema": "medidas",
        "texto": "Juego de 0,1, 0,2 y 0,3 mm para elegir con la probeta."
       }
-     ]
+     ],
+     "cambio": "una llave de mariposa suelta une tramos en cualquier orden",
+     "feedback": "base clickfinity real, «para que no inventes nada»",
+     "feedback_de": "luis"
     },
     {
      "id": "cajon",
@@ -857,7 +898,10 @@
        "tema": "coste",
        "texto": "Unos 2,9 € por cajón."
       }
-     ]
+     ],
+     "cambio": "dos tramos con base clickfinity y frente de 3 voltes",
+     "feedback": "no tiene PETG: todo en PLA",
+     "feedback_de": "luis"
     },
     {
      "id": "tapa-pasante",
@@ -897,7 +941,8 @@
        "tema": "montaje",
        "texto": "Costillas aplastables de 0,8 mm. Se descartaron las lengüetas elásticas: impresas boca abajo, se parten entre capas."
       }
-     ]
+     ],
+     "cambio": "el frente con faldón y costillas, para probar la puerta"
     },
     {
      "id": "tapa-bolsillo",
@@ -928,7 +973,8 @@
        "tema": "uso",
        "texto": "Con una cajita detrás del arco: la yema engancha y no se ve el interior. Es la mejor para tapar huecos."
       }
-     ]
+     ],
+     "cambio": "con una cajita detrás: no se ve el interior"
     }
    ]
   },
@@ -1077,7 +1123,10 @@
        "tema": "diseño",
        "texto": "Reglas que salieron: trazo mínimo de 0,9 mm en las letras y hueco mínimo de 0,5 mm."
       }
-     ]
+     ],
+     "cambio": "botella blanca y naranja con ojal, impresa en la A1",
+     "feedback": "se combaron y despegaron: viento y placa sucia",
+     "feedback_de": "luis"
     }
    ]
   },
@@ -1085,7 +1134,7 @@
    "id": "labil-web",
    "nombre": "labil · la web",
    "que": "la propia web donde se ven los objetos: también se diseña por versiones",
-   "estado": "desplegable de marca publicado",
+   "estado": "portada y burbujas publicadas",
    "palabras": {
     "version": "publicada",
     "pendiente": "por publicar"
@@ -1109,7 +1158,10 @@
        "texto": "Un solo HTML para todo lo imprimible, con pestañas arriba y una sección por modelo."
       }
      ],
-     "descargas": []
+     "descargas": [],
+     "cambio": "un visor único con pestañas para todo lo imprimible",
+     "feedback": "es un scroll infinito de cosas sin relación",
+     "feedback_de": "luis"
     },
     {
      "id": "v2",
@@ -1157,7 +1209,10 @@
        "texto": "La v1 queda archivada en /v1 y el trabajo de todas las ramas se une con su historia."
       }
      ],
-     "descargas": []
+     "descargas": [],
+     "cambio": "una página por objeto, en lg señal, con el coste de cada estado",
+     "feedback": "quiero limpiar la ui (boceto en la pizarra)",
+     "feedback_de": "luis"
     },
     {
      "id": "limpia",
@@ -1196,7 +1251,10 @@
        "texto": "Se dibujó primero en la pizarra y se construyó tal cual el boceto."
       }
      ],
-     "descargas": []
+     "descargas": [],
+     "cambio": "modelo a pantalla completa; versiones y posiciones abajo",
+     "feedback": "el desplegable es el del sistema, no de la marca",
+     "feedback_de": "luis"
     },
     {
      "id": "desplegable",
@@ -1243,7 +1301,59 @@
        "pie": "captura de Luis en su iPhone a las 12:50: todavía salía el desplegable del sistema, blanco, redondeado y con otra letra. La web nueva aún se estaba publicando y el móvil guardaba la anterior hasta 10 min",
        "fecha": "2026-11-16"
       }
-     ]
+     ],
+     "cambio": "desplegable propio con estado, fecha y precio",
+     "feedback": "en chrome no se ve; solo versiones, borradores plegados",
+     "feedback_de": "luis"
+    },
+    {
+     "id": "portada",
+     "tipo": "version",
+     "nombre": "portada y burbujas",
+     "fecha": "2026-11-16",
+     "texto": "La portada explica qué es labil con una animación: de la frase escrita al objeto impreso. El desplegable solo enseña versiones, unas burbujas cuentan cómo se llegó a cada estado y la memoria es una línea de tiempo.",
+     "cambio": "portada animada, versiones con borradores plegados, burbujas y memoria en línea de tiempo",
+     "imagenes": [
+      {
+       "de": "labil-web/capturas/2026-11-16-web-portada-animada.png",
+       "pie": "portada"
+      },
+      {
+       "de": "labil-web/capturas/2026-11-16-web-burbujas.png",
+       "pie": "burbujas"
+      },
+      {
+       "de": "labil-web/capturas/2026-11-16-web-desplegable-con-borradores-plegados.png",
+       "pie": "borradores plegados"
+      },
+      {
+       "de": "labil-web/capturas/2026-11-16-web-memoria-timeline.png",
+       "pie": "memoria"
+      }
+     ],
+     "memoria": [
+      {
+       "tema": "uso",
+       "texto": "Luis: en el desplegable, los borradores «se queden como toggle entre una versión y otra, y así solo se vean las versiones». Entre dos versiones va una línea plegada («2 borradores · 31 oct – 1 nov») que se abre al tocarla; si estás en un borrador, su grupo ya sale abierto."
+      },
+      {
+       "tema": "diseño",
+       "texto": "Burbujas de chat que entran por la derecha, de dos líneas como mucho: qué cambió, el feedback (de Luis o de una revisión) y a qué paso nos llevó. Se cierran con la ×. Así se entiende cómo un borrador lleva al siguiente sin abrir los detalles."
+      },
+      {
+       "tema": "diseño",
+       "texto": "La memoria completa es una línea de tiempo hacia abajo, de lo más reciente a lo más antiguo, con un nodo del color de cada tipo. Para volver, una flecha grande en vez de «← objetos»."
+      },
+      {
+       "tema": "uso",
+       "texto": "La portada ya no enseña el precio total: explica qué es labil. La animación va en píxeles y a saltos: se escribe la frase, sus letras se ordenan en la pieza, se calculan las tensiones, se evalúa el montaje, se prototipa la abrazadera y se imprime capa a capa. Debajo, las tarjetas de los objetos. El historial pasa al pie."
+      },
+      {
+       "tema": "método",
+       "texto": "Luis lo veía bien en Safari pero no en Chrome. El motor de Chrome lo pinta igual (probado en un Android simulado); era la caché. Ahora index.html pide version.json sin caché y carga app.js y app.css con esa versión. En Android, el botón de realidad aumentada salía como un círculo blanco: ahora es «ver en tu espacio», con la marca."
+      }
+     ],
+     "descargas": []
     }
    ]
   }
