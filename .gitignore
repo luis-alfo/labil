@@ -45,9 +45,7 @@ yarn-error.log*
 *.swp
 *.swo
 
-# OS
-.DS_Store
-Thumbs.db
+# OS (.DS_Store y Thumbs.db ya están arriba)
 
 # Logs
 logs/
@@ -56,3 +54,7 @@ logs/
 # Cache
 .cache/
 .turbo/
+
+# Python (generadores de 3d-models)
+__pycache__/
+*.pyc
