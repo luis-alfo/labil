@@ -70,13 +70,13 @@ Estado: diseñado y simulado el 16 nov 2026. Sin imprimir.
 
 | Pieza | Filamento | Tiempo |
 |---|---|---|
-| A brazo | 14,5 g | 25 min |
+| A brazo | 15,6 g | 26 min |
 | K cuña | 2,5 g | 6 min |
-| B marco | 14,0 g | 31 min |
-| C cuna | 11,2 g | 22 min |
-| **Total** | **~42 g** | **~1 h 25 min** |
+| B marco | 14,7 g | 33 min |
+| C cuna | 11,2 g | 23 min |
+| **Total** | **~44 g** | **~1 h 30 min** |
 
-  La V4 eran ~45 g y ~1 h 30 min. Antes del rediseño estético la V5 eran ~39 g: las formas redondeadas cuestan unos 3 g.
+  La V4 eran ~45 g y ~1 h 30 min. Antes del rediseño estético la V5 eran ~39 g: las formas redondeadas y los refuerzos para no perder resistencia cuestan unos 5 g.
 
 ## Lo que la simulación no cubre
 - Las holguras reales de impresión: el muñón de 3,6 mm en la ranura de 4,2 y la cuña.
@@ -86,14 +86,14 @@ Estado: diseñado y simulado el 16 nov 2026. Sin imprimir.
 
 ## Orden de impresión recomendado
 Cada paso valida un encaje antes de gastar más.
-1. A y K (17 g, 31 min).
+1. A y K (18 g, 32 min).
    - [ ] El faldón rodea el embellecedor sin tocarlo.
    - [ ] La cuña baja y aprieta, y queda más o menos enrasada.
    - [ ] La ranura de la punta queda justo por fuera del canto.
-2. B (14 g, 31 min).
+2. B (15 g, 33 min).
    - [ ] Entra de frente y cae en la ranura.
    - [ ] Cuelga vertical, con las dos esquinas tocando la pared.
-3. C (11 g, 22 min).
+3. C (11 g, 23 min).
    - [ ] Entra a 60°.
    - [ ] Abajo queda horizontal.
    - [ ] Levantada se queda sola.
@@ -123,7 +123,7 @@ Cada paso valida un encaje antes de gastar más.
   - Nace del anillo con un cuello curvo de radio 8.
   - Tiene el canto matado.
   - Sube a la punta con una rampa larga.
-  - Se quitó la cartela triangular.
+  - La cartela triangular se sustituyó por un cuello en media caña (ver «Resistencia tras el rediseño»).
 - Cuña: lleva una visera curva que, vista desde arriba, cierra el contorno por detrás y sirve de uñero.
 - Marco: rincones con radio 4, esquinas con radio 2 y canto delantero matado.
 - Cuna:
@@ -132,3 +132,29 @@ Cada paso valida un encaje antes de gastar más.
   - Borde trasero en arco.
 - La fuente va en `fonts/` para que el grabado salga igual en cualquier máquina y en CI.
 - Lección: probar el aspecto con capturas del visor antes de darlo por bueno. Un primer nervio «redondeado» salió facetado y hubo que quitarlo.
+
+## Resistencia tras el rediseño (aviso de Luis: «que no pierda resistencia»)
+Se compararon secciones cortando las mallas de antes y de después del rediseño. W es el módulo resistente: a igual carga, más W es menos tensión.
+
+| Sección | Antes | Primer rediseño | Corregido |
+|---|---|---|---|
+| Brazo junto al anillo (W) | 52,0 mm³ | 38,1 (−27 %) | 53,9 |
+| Brazo a media longitud (W) | 33,0 | 36,0 | 36,0 |
+| Brazo sobre el canto (W) | 49,3 | 67,6 | 67,6 |
+| Unión brazo–anillo (área) | 146 mm² | 186 | 186 |
+| Frente del anillo a 5 mm de altura (área) | 74 mm² | 69 (−7 %) | 90 |
+| Pata del marco, fuera de plano (W) | 33,0 mm³ | 29,8 (−10 %) | 34,0 |
+| Aleta junto al marco (W) | 206 mm³ | igual | 232 |
+| Puente del marco y sección de la cuna | igual | igual | igual |
+| Pared del anillo bajo el grabado | 2,6 mm | 2,0 | 2,6 |
+
+- El primer rediseño perdía resistencia en tres sitios:
+  - la unión del brazo con el anillo, al quitar la cartela;
+  - las patas del marco, por el canto matado;
+  - la banda del anillo, por el grabado.
+- Correcciones:
+  - Cuello en media caña de radio 7 entre el brazo y el anillo, con forma de mango de cuchara.
+  - Patas y aletas de 6,2 mm en vez de 5,5.
+  - Banda del anillo de 3,2 mm, para que queden 2,6 bajo las letras.
+- Lección: redondear y matar cantos quita material justo en la fibra más cargada. Después de un cambio estético hay que volver a medir las secciones, no darlas por iguales.
+- Son comparaciones de sección sobre mallas ideales, no ensayos.

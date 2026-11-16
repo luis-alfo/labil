@@ -32,7 +32,7 @@ WEB_DIR = REPO / "docs" / "models"
 FILES_DIR = REPO / "docs" / "files" / "estropajero-v5"
 
 # Deben coincidir con el .scad: eje de la bisagra y ángulo al que se apoya levantada
-X_AXIS, Z_AXIS, FOLD_REST = 28.02, -79.2, 102.0
+X_AXIS, Z_AXIS, FOLD_REST = 28.24, -79.2, 103.0
 SINK_R, SINK_WALL_X = 200.0, 0.0
 
 PRINT_PARTS = {          # part= del .scad -> STL de impresión

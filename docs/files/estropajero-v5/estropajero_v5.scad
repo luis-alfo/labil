@@ -35,7 +35,7 @@ sponge = [45, 95, 70];  // grosor, largo, alto (de canto, apoyado en el lado lar
 /* [Abrazadera y cuña] */
 col_clr    = 0.3;
 skirt_wall = 2;
-shell_t    = 2.6;
+shell_t    = 3.2;     // 2,6 mm de pared por debajo del grabado
 collar_h   = 22;
 key_ang    = 12;    // cuña autoblocante
 key_h      = 8;
@@ -55,7 +55,7 @@ stub_l = 4.2;       // testa por delante del marco
 frame_t = 6;        // grosor (x): se imprime tumbado sobre esta cara
 leg_w   = 6.5;     // brazos inclinados de la percha
 sh_out  = 15.5;     // semiancho de los hombros
-fin_t   = 5.5;      // aletas con la bisagra
+fin_t   = 6.2;      // aletas con la bisagra (y ancho de las patas)
 fin_clr = 0.5;
 pocket_r = 4.0;
 slot_w   = 4.2;
@@ -82,6 +82,7 @@ zs0    = 6.5;         // el anillo se estrecha en curva entre estas dos alturas
 zs1    = 15.5;
 top_r  = 1.5;         // canto superior redondeado
 tail_r = 3;
+neck_r = 7;           // cuello en media caña entre el brazo y el anillo
 
 $fn = 72;
 eps = 0.01;
@@ -133,6 +134,17 @@ module ring_plan(z) {   // planta en herradura, con las colas redondeadas
     hull() {
         circle(r = Rz(z), $fn = 120);
         for (s = [-1, 1]) translate([-back + tail_r, s * (Wz(z) - tail_r)]) circle(r = tail_r, $fn = 24);
+    }
+}
+// cuello: el brazo sube hasta el anillo como el mango de una cuchara. Sustituye
+// a la cartela: reparte la flexión de la unión en 7 mm de altura.
+function neck_f(z) = neck_r - sqrt(max(0, neck_r * neck_r - pow(neck_r - (z - arm_t), 2)));
+function neck_w(z) = 10 - 7 * (z - arm_t) / neck_r;
+neck_zs = [for (i = [0 : 20]) arm_t - 0.3 + i * (neck_r + 0.3) / 20];
+module neck_plan(z) {
+    hull() {
+        circle(r = Rz(z) - 0.5, $fn = 120);
+        translate([Rz(z) + neck_f(max(z, arm_t)) - neck_w(max(z, arm_t)), 0]) circle(r = neck_w(max(z, arm_t)), $fn = 48);
     }
 }
 // redondea en 2D: primero los rincones (radio ri), después las esquinas (radio ro)
@@ -189,6 +201,10 @@ module part_A() {
                 translate([nose_x0 + 2, -arm_w / 2, 0]) cube([gx1 - nose_x0 - 2, arm_w, nose_t]);
             }
             linear_extrude(nose_t) rrect(gx1 - 3, nose_x1, -web_w / 2 + 0.4, web_w / 2 - 0.4, 2.5);   // testa
+            translate([x_col, 0, 0]) for (i = [0 : len(neck_zs) - 2]) hull() {                        // cuello
+                translate([0, 0, neck_zs[i]]) linear_extrude(eps) neck_plan(neck_zs[i]);
+                translate([0, 0, neck_zs[i + 1]]) linear_extrude(eps) neck_plan(neck_zs[i + 1]);
+            }
         }
         translate([x_col, 0, 0]) {
             // canal escalonado abierto por detrás: embellecedor abajo, columna arriba
