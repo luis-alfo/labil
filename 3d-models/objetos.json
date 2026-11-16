@@ -1134,7 +1134,7 @@
    "id": "labil-web",
    "nombre": "labil · la web",
    "que": "la propia web donde se ven los objetos: también se diseña por versiones",
-   "estado": "portada y burbujas publicadas",
+   "estado": "portada en movimiento publicada",
    "palabras": {
     "version": "publicada",
     "pendiente": "por publicar"
@@ -1351,6 +1351,53 @@
       {
        "tema": "método",
        "texto": "Luis lo veía bien en Safari pero no en Chrome. El motor de Chrome lo pinta igual (probado en un Android simulado); era la caché. Ahora index.html pide version.json sin caché y carga app.js y app.css con esa versión. En Android, el botón de realidad aumentada salía como un círculo blanco: ahora es «ver en tu espacio», con la marca."
+      }
+     ],
+     "descargas": [],
+     "feedback": "demasiado texto: más motion graphics, de la escritura al objeto impreso",
+     "feedback_de": "luis"
+    },
+    {
+     "id": "portada-motion",
+     "tipo": "version",
+     "nombre": "portada en movimiento",
+     "fecha": "2026-11-16",
+     "texto": "La portada casi sin texto: una frase se escribe, sus letras se ordenan en el diseño sobre la rejilla y una impresora 3D lo imprime capa a capa hasta dejar el objeto.",
+     "cambio": "menos texto: frase → diseño en la rejilla → impresora 3D → objeto",
+     "imagenes": [
+      {
+       "de": "labil-web/capturas/2026-11-16-portada-motion-escribes.png",
+       "pie": "escribes"
+      },
+      {
+       "de": "labil-web/capturas/2026-11-16-portada-motion-se-disena.png",
+       "pie": "se diseña"
+      },
+      {
+       "de": "labil-web/capturas/2026-11-16-portada-motion-se-imprime.png",
+       "pie": "se imprime"
+      },
+      {
+       "de": "labil-web/capturas/2026-11-16-portada-motion-objeto.png",
+       "pie": "objeto"
+      }
+     ],
+     "memoria": [
+      {
+       "tema": "uso",
+       "texto": "Luis: «veo demasiado texto en esta hero». Fuera el titular, el párrafo, la lista de pasos y los datos: queda la marca y una palabra por fase (escribes, se diseña, se calcula, se imprime, objeto) con cinco rayas de progreso."
+      },
+      {
+       "tema": "diseño",
+       "texto": "La rejilla solo aparece donde tiene sentido: cuando la escritura se convierte en diseño. Después, el diseño se funde con una impresora 3D que imprime la placa real de El Secadero v2 (su GLB) capa a capa. La capa que se imprime brilla en fósforo y el cabezal la recorre. Al final la impresora se desvanece y queda el objeto."
+      },
+      {
+       "tema": "método",
+       "texto": "La impresora usa three.js 0.160 (fijado), cargado solo en la portada. Un plano de corte sube por la pieza y una copia en verde marca la capa. Si el navegador no tiene WebGL o falla la carga, la impresión se hace en la rejilla. Con «reducir movimiento» se ve el objeto terminado."
+      },
+      {
+       "tema": "método",
+       "texto": "El GLB sale de trimesh sin normales y en three.js las caras se veían negras: se calculan al cargarlo. La cámara ajusta la distancia al ancho de la pantalla, para que la placa quepa en un móvil en vertical."
       }
      ],
      "descargas": []

@@ -166,3 +166,14 @@ Registro vivo de explicaciones, decisiones y convenciones acordadas.
   calcula resistencias → evalúa el montaje → prototipa → se imprime. El historial pasa al pie.
 - **Realidad aumentada**: en Android aparecía el botón del visor como un círculo blanco. Ahora es
   «ver en tu espacio», con la marca.
+
+## 2026-11-16 · Portada en movimiento (menos texto)
+
+- **Luis: «demasiado texto»** en la portada. Ahora solo quedan la marca, una palabra por fase y la flecha.
+- **Secuencia** (unos 14 s, en bucle): *escribes* (la frase) → *se diseña* (las letras se ordenan
+  en la pieza, en la rejilla de píxeles) → *se calcula* (mapa de tensiones) → *se imprime* (impresora 3D
+  con la placa real de El Secadero v2) → *objeto*.
+- **Librería**: three.js 0.160, con versión fija y cargada solo en la portada (importmap en `index.html`).
+  La impresión es un plano de corte que sube, y la capa activa es una copia en verde.
+- **Lección técnica**: los GLB de trimesh no traen normales; en three.js hay que calcularlas
+  (`computeVertexNormals`) o las caras salen negras. model-viewer las calcula solo.

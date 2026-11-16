@@ -83,15 +83,21 @@ function pie() {
   </footer>`;
 }
 
-// ── inicio: qué es labil (portada animada) y, debajo, los objetos ───────────
-const PASOS_IA = [
-  { id: "escribir", txt: "escribes", dato: "«un soporte para el estropajo que abrace el grifo»" },
-  { id: "modelar", txt: "la ia modela", dato: "openscad paramétrico · 4 piezas · sin soportes" },
-  { id: "calcular", txt: "calcula resistencias", dato: "20 N en el borde → 17 MPa · admisible 20 ✓" },
-  { id: "evaluar", txt: "evalúa el montaje", dato: "montaje simulado contra grifo, encimera y fregadero ✓" },
-  { id: "prototipar", txt: "prototipa", dato: "pieza de prueba: abrazadera · 15 min · 0,34 €" },
-  { id: "imprimir", txt: "se imprime", dato: "a1 · pla · capas de 0,2 mm · 43 g · 0,86 €" },
+// ── inicio: de la letra al objeto (motion graphics) y, debajo, los objetos ────
+// Casi sin texto: la marca y una palabra por fase.
+//   1 escribes   · una frase se escribe
+//   2 se diseña  · sus letras se ordenan en la pieza, en la rejilla de píxeles
+//   3 se calcula · mapa de tensiones (rápido)
+//   4 se imprime · una impresora 3D imprime la placa real de el secadero v2, capa a capa
+//   5 objeto     · la impresora desaparece y queda el objeto
+const FASES = [
+  { palabra: "escribes", ms: 2400 },
+  { palabra: "se diseña", ms: 1900 },
+  { palabra: "se calcula", ms: 1100 },
+  { palabra: "se imprime", ms: 6200 },
+  { palabra: "objeto", ms: 2600 },
 ];
+const FRASE = "un soporte para el estropajo";
 
 function vistaInicio() {
   const filas = DATOS.objetos.map((o) => {
@@ -105,19 +111,15 @@ function vistaInicio() {
       <p class="caption">${o.estados.length} estados · ${impresas} ${((o.palabras && o.palabras.version) || "impresa") + (impresas === 1 ? "" : "s")} · ${esc(o.estado)} · ${fecha(ultimo.fecha)}</p>
     </a></li>`;
   }).join("");
-  app.innerHTML = `<section class="portada" aria-labelledby="titulo">
+  app.innerHTML = `<section class="portada">
+      <h1 class="sr">labil: de la letra al objeto</h1>
+      <div class="escenario" aria-hidden="true"><canvas id="lienzo-3d"></canvas><canvas id="lienzo-portada"></canvas></div>
       <header class="portada-cab"><img src="icon.svg" alt=""><span class="label">l a b i l</span></header>
-      <div class="portada-texto">
-        <p class="label">de la letra al objeto</p>
-        <h1 class="display" id="titulo">escribes. la ia lo modela, lo calcula y lo prueba. sale impreso.</h1>
-        <p class="body muted">labil es el taller de luis en lagu: descripciones digitales que se convierten en objetos reales, con cada paso a la vista.</p>
+      <div class="portada-pie">
+        <p class="fase-palabra" id="fase-palabra" aria-hidden="true"></p>
+        <ol class="fases" aria-hidden="true">${FASES.map(() => "<li></li>").join("")}</ol>
+        <button class="bajar" id="bajar" aria-label="ver los objetos"><span aria-hidden="true">↓</span></button>
       </div>
-      <canvas id="lienzo-portada" aria-hidden="true"></canvas>
-      <div class="portada-pasos">
-        <ol class="pasos-ia" id="pasos-ia">${PASOS_IA.map((p, k) => `<li data-k="${k}"><i></i><span class="caption">${p.txt}</span></li>`).join("")}</ol>
-        <p class="caption paso-dato" id="paso-dato" aria-live="polite"></p>
-      </div>
-      <button class="bajar" id="bajar"><span class="label">objetos</span><span aria-hidden="true">↓</span></button>
     </section>
     <main id="objetos">
       <h2 class="label titulo-objetos">objetos</h2>
@@ -134,128 +136,216 @@ function vistaInicio() {
   animarPortada();
 }
 
-// ── portada: de la letra al objeto impreso, en una rejilla de píxeles ────────
-// fases: escribir → los píxeles del texto se ordenan en la pieza (modelar) →
-// mapa de tensiones (calcular) → barrido de comprobación (evaluar) →
-// solo la abrazadera (prototipar) → capa a capa (imprimir) → objeto.
-const C = { fondo: "#2b312b", apagado: "rgba(201,225,201,0.07)", tinta: "#f3fbf1", muda: "#c9e1c9",
-  tenue: "#86a08a", senal: "#24e824", aviso: "#f2a516" };
-// pieza en rejilla de 40 × 26: abrazadera, brazo, pata y cuna (el secadero, de perfil)
+const C = { apagado: "rgba(201,225,201,0.07)", tinta: "#f3fbf1", muda: "#c9e1c9", tenue: "#86a08a",
+  senal: "#24e824", aviso: "#f2a516" };
+// la pieza en la rejilla (40 × 26): el secadero de perfil — abrazadera, brazo, pata y cuna
 function piezaPortada() {
   const W = 40, H = 26, on = new Set();
   const rect = (x0, y0, x1, y1) => { for (let x = x0; x <= x1; x++) for (let y = y0; y <= y1; y++) on.add(x + "," + y); };
-  rect(3, 0, 13, 1); rect(3, 0, 4, 7); rect(12, 0, 13, 7);   // abrazadera (rodea la columna)
-  rect(3, 6, 31, 8);                                          // brazo a ras de la encimera
-  rect(28, 6, 30, 23);                                        // pata del marco
-  rect(21, 22, 38, 24); rect(21, 15, 22, 24); rect(37, 15, 38, 24); // cuna
-  const celdas = [...on].map((k) => k.split(",").map(Number));
-  const prueba = new Set(celdas.filter(([x, y]) => x <= 14 && y <= 8).map(([x, y]) => x + "," + y));
-  return { W, H, celdas, prueba };
+  rect(3, 0, 13, 1); rect(3, 0, 4, 7); rect(12, 0, 13, 7);
+  rect(3, 6, 31, 8); rect(28, 6, 30, 23);
+  rect(21, 22, 38, 24); rect(21, 15, 22, 24); rect(37, 15, 38, 24);
+  return { W, H, celdas: [...on].map((k) => k.split(",").map(Number)) };
 }
+
 let animacion = 0;
 function animarPortada() {
-  const lienzo = document.getElementById("lienzo-portada");
-  if (!lienzo) return;
-  const ctx = lienzo.getContext("2d");
-  const pasos = [...document.querySelectorAll("#pasos-ia li")];
-  const dato = document.getElementById("paso-dato");
+  const plano = document.getElementById("lienzo-portada");
+  const lienzo3d = document.getElementById("lienzo-3d");
+  if (!plano) return;
+  const ctx = plano.getContext("2d");
+  const palabra = document.getElementById("fase-palabra");
+  const marcas = [...document.querySelectorAll(".fases li")];
   const pieza = piezaPortada();
-  const DUR = [2600, 2200, 1800, 1600, 1600, 3000, 1800]; // la última: objeto terminado
-  const INICIO = DUR.reduce((acc, d, k) => (acc.push((acc[k - 1] || 0) + (k ? DUR[k - 1] : 0)), acc), []);
-  const TOTAL = DUR.reduce((a, b) => a + b, 0);
+  const INICIO = FASES.map((_, k) => FASES.slice(0, k).reduce((a, f) => a + f.ms, 0));
+  const TOTAL = FASES.reduce((a, f) => a + f.ms, 0);
   const id = ++animacion;
-  let dims = null, origen = [], pasoActual = -1;
+  let dims = null, origen = [], faseVista = -1, impresora = null;
 
-  const FRASE = PASOS_IA[0].dato.replace(/[«»]/g, "");
-  // tamaño de letra que deja la frase dentro del lienzo (JetBrains Mono: ~0,6 em por carácter)
-  const tamFrase = (w) => Math.max(10, Math.min(Math.floor(w / 22), Math.floor((w * 0.92) / (FRASE.length * 0.6))));
+  const tamFrase = (w) => Math.max(12, Math.min(Math.floor(w / 14), Math.floor((w * 0.86) / (FRASE.length * 0.6))));
   function medir() {
-    const r = lienzo.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1);
-    lienzo.width = Math.round(r.width * dpr); lienzo.height = Math.round(r.height * dpr);
-    const cel = Math.max(4, Math.floor(Math.min(r.width / (pieza.W + 4), r.height / (pieza.H + 6))));
-    const ox = Math.floor((r.width - pieza.W * cel) / 2), oy = Math.floor((r.height - pieza.H * cel) / 2) + cel;
-    dims = { w: r.width, h: r.height, dpr, cel, ox, oy };
-    // píxeles del texto escrito: se muestrean para que «vuelen» a la pieza
+    const r = plano.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1);
+    plano.width = Math.round(r.width * dpr); plano.height = Math.round(r.height * dpr);
+    const cel = Math.max(4, Math.floor(Math.min((r.width * 0.86) / pieza.W, (r.height * 0.5) / pieza.H)));
+    dims = { w: r.width, h: r.height, dpr, cel, ox: Math.floor((r.width - pieza.W * cel) / 2), oy: Math.floor((r.height - pieza.H * cel) / 2) };
+    // píxeles de la frase: de aquí salen los píxeles que forman la pieza
     const t = document.createElement("canvas"); t.width = Math.ceil(r.width); t.height = Math.ceil(r.height);
-    const tc = t.getContext("2d"); tc.fillStyle = "#fff";
+    const tc = t.getContext("2d"); tc.fillStyle = "#fff"; tc.textAlign = "center"; tc.textBaseline = "middle";
     tc.font = `500 ${tamFrase(r.width)}px "JetBrains Mono", monospace`;
-    tc.textAlign = "center"; tc.textBaseline = "middle";
     tc.fillText(FRASE, r.width / 2, r.height / 2);
-    const px = tc.getImageData(0, 0, t.width, t.height).data, paso = Math.max(3, Math.floor(cel / 2));
+    const px = tc.getImageData(0, 0, t.width, t.height).data, paso = 3;
     origen = [];
     for (let y = 0; y < t.height; y += paso) for (let x = 0; x < t.width; x += paso)
       if (px[(y * t.width + x) * 4 + 3] > 128) origen.push([x, y]);
     if (!origen.length) origen = [[r.width / 2, r.height / 2]];
+    if (impresora) impresora.medir();
   }
   medir();
   addEventListener("resize", () => id === animacion && medir());
 
-  const celda = (x, y, color, s = 1) => {
-    const { cel, ox, oy, dpr } = dims, m = Math.max(1, Math.floor(cel * 0.12));
+  const celda = (x, y, color) => {
+    const { cel, ox, oy, dpr } = dims, m = Math.max(1, Math.floor(cel * 0.14));
     ctx.fillStyle = color;
-    ctx.fillRect((ox + x * cel + m) * dpr, (oy + y * cel + m) * dpr, (cel * s - 2 * m) * dpr, (cel * s - 2 * m) * dpr);
+    ctx.fillRect((ox + x * cel + m) * dpr, (oy + y * cel + m) * dpr, (cel - 2 * m) * dpr, (cel - 2 * m) * dpr);
   };
-  const escalon = (t, n = 6) => Math.floor(Math.min(1, Math.max(0, t)) * n) / n; // a saltos, no en curvas
+  const escalon = (t, n) => Math.floor(Math.min(1, Math.max(0, t)) * n) / n; // a saltos, no en curvas
 
-  function marcarPaso(k) {
-    if (k === pasoActual) return;
-    pasoActual = k;
-    pasos.forEach((li, j) => { li.classList.toggle("hecho", j < k); li.classList.toggle("ahora", j === k); });
-    if (dato) { dato.textContent = k < PASOS_IA.length ? PASOS_IA[k].dato : "impreso ✓ · de la letra al objeto"; descifra(dato); }
+  function mostrarFase(k) {
+    if (k === faseVista) return;
+    faseVista = k;
+    palabra.textContent = FASES[k].palabra; descifra(palabra);
+    marcas.forEach((m, j) => { m.classList.toggle("hecha", j < k); m.classList.toggle("ahora", j === k); });
   }
+
+  // la impresora 3D (three.js) se carga aparte; si no se puede, la impresión se hace en la rejilla
+  cargarImpresora(lienzo3d).then((imp) => { if (id === animacion) impresora = imp; }).catch(() => {});
 
   function dibujar(ms) {
-    if (id !== animacion || !document.body.contains(lienzo)) return;
-    const { w, h, dpr, cel, ox, oy } = dims;
-    ctx.clearRect(0, 0, w * dpr, h * dpr);
-    // rejilla de píxeles apagados
-    for (let x = 0; x < pieza.W; x++) for (let y = 0; y < pieza.H; y++) celda(x, y, C.apagado);
+    if (id !== animacion || !document.body.contains(plano)) return;
+    const { w, h, dpr } = dims;
     const t = reducido ? TOTAL - 1 : ms % TOTAL;
-    let fase = INICIO.findIndex((ini, k) => t >= ini && t < ini + DUR[k]);
-    const f = (t - INICIO[fase]) / DUR[fase];
-    marcarPaso(Math.min(fase, PASOS_IA.length));
+    const k = INICIO.findIndex((ini, j) => t >= ini && t < ini + FASES[j].ms);
+    const f = (t - INICIO[k]) / FASES[k].ms;
+    mostrarFase(k);
+    ctx.clearRect(0, 0, w * dpr, h * dpr);
 
-    if (fase === 0) { // escribir: el texto aparece letra a letra
-      const txt = FRASE;
-      const n = Math.floor(txt.length * Math.min(1, f * 1.3));
+    // capas visibles: la rejilla hasta «se imprime»; la impresora desde ahí
+    const con3d = impresora && k >= 3;
+    const fundido = con3d && k === 3 ? Math.min(1, f * 5) : con3d ? 1 : 0;
+    plano.style.opacity = String(1 - fundido);
+    lienzo3d.style.opacity = String(fundido);
+
+    if (k === 0) { // escribes
+      const n = Math.floor(FRASE.length * Math.min(1, f * 1.25));
       ctx.fillStyle = C.tinta; ctx.textAlign = "left"; ctx.textBaseline = "middle";
       ctx.font = `500 ${tamFrase(w) * dpr}px "JetBrains Mono", monospace`;
-      const x0 = (w * dpr - ctx.measureText(txt).width) / 2; // crece hacia la derecha desde donde acabará
-      ctx.fillText(txt.slice(0, n) + (Math.floor(ms / 400) % 2 ? "▌" : " "), x0, (h / 2) * dpr);
-    } else if (fase === 1) { // modelar: los píxeles del texto se ordenan en la pieza
-      const k = escalon(f * 1.15, 8);
-      pieza.celdas.forEach(([x, y], i) => {
-        const [sx, sy] = origen[(i * 7) % origen.length];
-        const tx = ox + x * cel, ty = oy + y * cel;
-        const px = sx + (tx - sx) * k, py = sy + (ty - sy) * k;
-        ctx.fillStyle = k < 1 ? C.tinta : C.muda;
-        ctx.fillRect(px * dpr, py * dpr, (cel - 2) * dpr, (cel - 2) * dpr);
-      });
-    } else if (fase === 2) { // calcular: tensiones, más altas en la unión brazo-pata
-      const barrido = escalon(f, 10) * pieza.W;
-      pieza.celdas.forEach(([x, y]) => {
-        if (x > barrido) return celda(x, y, C.muda);
-        const d = Math.hypot(x - 29, y - 7);
-        celda(x, y, d < 3 ? C.aviso : d < 7 ? C.senal : C.tenue);
-      });
-    } else if (fase === 3) { // evaluar: una línea recorre la pieza comprobando
-      const fila = Math.floor(escalon(f, 13) * pieza.H);
-      pieza.celdas.forEach(([x, y]) => celda(x, y, y === fila ? C.senal : y < fila ? C.muda : C.tenue));
-    } else if (fase === 4) { // prototipar: primero solo la abrazadera
-      pieza.celdas.forEach(([x, y]) => celda(x, y, pieza.prueba.has(x + "," + y) ? C.senal : C.apagado.replace("0.07", "0.22")));
-    } else { // imprimir capa a capa (y el objeto terminado)
-      const capas = fase === 5 ? Math.floor(escalon(f, pieza.H) * pieza.H) : pieza.H;
-      const nivel = pieza.H - capas; // de abajo arriba
-      pieza.celdas.forEach(([x, y]) => celda(x, y, y >= nivel ? C.senal : C.apagado.replace("0.07", "0.18")));
-      if (fase === 5 && capas < pieza.H) { // la boquilla recorre la capa actual
-        const fila = pieza.celdas.filter(([, y]) => y === nivel - 1).map(([x]) => x);
-        if (fila.length) celda(fila[Math.floor(ms / 60) % fila.length], nivel - 1, C.tinta);
+      const x0 = (w * dpr - ctx.measureText(FRASE).width) / 2;
+      ctx.fillText(FRASE.slice(0, n) + (Math.floor(ms / 380) % 2 ? "▌" : ""), x0, (h / 2) * dpr);
+    } else {
+      for (let x = 0; x < pieza.W; x++) for (let y = 0; y < pieza.H; y++) celda(x, y, C.apagado);
+      if (k === 1) { // se diseña: las letras se ordenan en la pieza
+        const s = escalon(f * 1.2, 8), { cel, ox, oy } = dims;
+        pieza.celdas.forEach(([x, y], i) => {
+          const [sx, sy] = origen[(i * 7) % origen.length];
+          const px = sx + (ox + x * cel - sx) * s, py = sy + (oy + y * cel - sy) * s;
+          ctx.fillStyle = s < 1 ? C.tinta : C.muda;
+          ctx.fillRect(px * dpr, py * dpr, (cel - 2) * dpr, (cel - 2) * dpr);
+        });
+      } else if (k === 2) { // se calcula: tensiones, más altas en la unión brazo-pata
+        const barrido = escalon(f * 1.4, 10) * pieza.W;
+        pieza.celdas.forEach(([x, y]) => {
+          if (x > barrido) return celda(x, y, C.muda);
+          const d = Math.hypot(x - 29, y - 7);
+          celda(x, y, d < 3 ? C.aviso : d < 7 ? C.senal : C.tenue);
+        });
+      } else if (!impresora) { // sin 3d: se imprime en la rejilla, capa a capa
+        const capas = k === 3 ? Math.floor(escalon(f, pieza.H) * pieza.H) : pieza.H, nivel = pieza.H - capas;
+        pieza.celdas.forEach(([x, y]) => celda(x, y, y >= nivel ? C.senal : "rgba(201,225,201,0.18)"));
+      } else {
+        pieza.celdas.forEach(([x, y]) => celda(x, y, C.muda));
       }
     }
+    if (impresora && k >= 3) impresora.pintar(ms, k === 3 ? f : 1, k === 4 ? f : 0);
     if (!reducido) requestAnimationFrame(dibujar);
   }
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { medir(); requestAnimationFrame(dibujar); });
-  else requestAnimationFrame(dibujar);
+  const arrancar = () => { medir(); requestAnimationFrame(dibujar); };
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(arrancar); else arrancar();
+}
+
+// ── impresora 3D: imprime la placa real de el secadero v2 (docs/models) ──────
+// Un plano de corte sube capa a capa; en el corte brilla la capa que se está
+// imprimiendo y el cabezal la recorre. Al final la impresora se desvanece.
+let impresoraCache = null;
+async function cargarImpresora(lienzo) {
+  if (reducido) throw new Error("sin movimiento");
+  const THREE = await import("three");
+  const { GLTFLoader } = await import("three/addons/loaders/GLTFLoader.js");
+  const gltf = await new GLTFLoader().loadAsync(conVer("models/el_secadero_v2_placa.glb"));
+  const renderer = new THREE.WebGLRenderer({ canvas: lienzo, antialias: true, alpha: true });
+  renderer.localClippingEnabled = true;
+  renderer.setPixelRatio(Math.min(2, devicePixelRatio || 1));
+  const escena = new THREE.Scene();
+  const camara = new THREE.PerspectiveCamera(32, 1, 0.01, 10);
+  escena.add(new THREE.HemisphereLight(0xf3fbf1, 0x2b312b, 2.2));
+  escena.add(new THREE.AmbientLight(0xffffff, 0.4));
+  const sol = new THREE.DirectionalLight(0xffffff, 1.6); sol.position.set(0.3, 0.6, 0.4); escena.add(sol);
+
+  // separar la cama de las piezas y centrar la placa
+  const raiz = gltf.scene;
+  raiz.updateMatrixWorld(true);
+  const caja = new THREE.Box3().setFromObject(raiz), centro = caja.getCenter(new THREE.Vector3());
+  raiz.position.sub(new THREE.Vector3(centro.x, caja.min.y, centro.z));
+  escena.add(raiz); raiz.updateMatrixWorld(true);
+  const mallas = []; raiz.traverse((n) => n.isMesh && mallas.push(n));
+  // el GLB sale de trimesh sin normales: sin ellas las caras no reciben luz y se ven negras
+  mallas.forEach((m) => { if (!m.geometry.attributes.normal) m.geometry.computeVertexNormals(); });
+  const esCama = (m) => new THREE.Box3().setFromObject(m).getSize(new THREE.Vector3()).x > 0.2;
+  const piezas = mallas.filter((m) => !esCama(m));
+  mallas.filter(esCama).forEach((m) => { m.material = new THREE.MeshStandardMaterial({ color: 0x333a33, roughness: 0.9 }); });
+  const cajaPiezas = new THREE.Box3(); piezas.forEach((m) => cajaPiezas.expandByObject(m));
+  const y0 = cajaPiezas.min.y, y1 = cajaPiezas.max.y, banda = 0.0012;
+
+  const corte = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0);      // deja lo que está por debajo de la capa
+  const bajoBanda = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);   // y lo que está por encima de capa − banda
+  const plastico = new THREE.MeshStandardMaterial({ color: 0xc9e1c9, roughness: 0.55, clippingPlanes: [corte] });
+  const brillo = new THREE.MeshBasicMaterial({ color: 0x24e824, clippingPlanes: [corte, bajoBanda] });
+  piezas.forEach((m) => {
+    m.material = plastico;
+    const capa = new THREE.Mesh(m.geometry, brillo);
+    capa.position.copy(m.position); capa.quaternion.copy(m.quaternion); capa.scale.copy(m.scale);
+    m.parent.add(capa);
+  });
+
+  // la impresora: dos columnas, el puente que sube con la capa y el cabezal
+  const marco = new THREE.MeshStandardMaterial({ color: 0x86a08a, roughness: 0.6, transparent: true });
+  const metal = new THREE.MeshStandardMaterial({ color: 0xf3fbf1, roughness: 0.4, transparent: true });
+  const ancho = 0.32, alto = 0.16;
+  const impresora = new THREE.Group();
+  for (const sx of [-1, 1]) {
+    const col = new THREE.Mesh(new THREE.BoxGeometry(0.012, alto, 0.012), marco);
+    col.position.set((sx * ancho) / 2, alto / 2, -0.06); impresora.add(col);
+  }
+  const techo = new THREE.Mesh(new THREE.BoxGeometry(ancho + 0.012, 0.012, 0.012), marco);
+  techo.position.set(0, alto, -0.06); impresora.add(techo);
+  const puente = new THREE.Mesh(new THREE.BoxGeometry(ancho, 0.01, 0.014), marco); impresora.add(puente);
+  const cabezal = new THREE.Group();
+  const cuerpo = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.034, 0.03), metal); cuerpo.position.y = 0.024; cabezal.add(cuerpo);
+  const boquilla = new THREE.Mesh(new THREE.ConeGeometry(0.004, 0.008, 12), new THREE.MeshBasicMaterial({ color: 0x24e824 }));
+  boquilla.rotation.x = Math.PI; boquilla.position.y = 0.004; cabezal.add(boquilla);
+  impresora.add(cabezal);
+  escena.add(impresora);
+
+  function medir() {
+    const r = lienzo.getBoundingClientRect();
+    renderer.setSize(r.width, r.height, false);
+    camara.aspect = r.width / Math.max(1, r.height);
+    camara.updateProjectionMatrix();
+  }
+  medir();
+
+  function pintar(ms, imprimir, final) {
+    const h = y0 + (y1 - y0) * imprimir;
+    corte.constant = imprimir >= 1 ? 1 : h;
+    bajoBanda.constant = -(h - banda);
+    brillo.visible = imprimir < 1;
+    // cabezal: recorre la capa en zigzag (rápido en x, lento en z)
+    const x = Math.sin(ms / 90) * 0.11, z = Math.sin(ms / 1300) * 0.1 + 0.01;
+    puente.position.set(0, h + 0.03, z);
+    cabezal.position.set(x, h, z);
+    const opac = 1 - Math.min(1, final * 2.5);
+    marco.opacity = metal.opacity = opac; boquilla.visible = puente.visible = opac > 0.02;
+    impresora.visible = opac > 0.02;
+    // cámara: gira despacio alrededor de la placa; la distancia hace que quepa a lo ancho
+    // (en un móvil en vertical el campo horizontal es estrecho); al final se acerca
+    const hfov = 2 * Math.atan(Math.tan((camara.fov * Math.PI) / 360) * camara.aspect);
+    const cabe = Math.max(0.42, 0.2 / Math.tan(hfov / 2));
+    const ang = ms / 9000, dist = cabe * (1 - final * 0.22);
+    camara.position.set(Math.sin(ang) * dist, dist * (0.55 - final * 0.12), Math.cos(ang) * dist);
+    camara.lookAt(0, 0.012, 0);
+    renderer.render(escena, camara);
+  }
+  impresoraCache = { medir, pintar };
+  return impresoraCache;
 }
 
 // ── objeto: el modelo a pantalla completa y, encima, solo lo imprescindible ───
