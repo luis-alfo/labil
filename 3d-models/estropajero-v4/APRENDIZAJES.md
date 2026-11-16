@@ -79,3 +79,49 @@ Cargas usadas en todos los cálculos:
 - Ø de la columna, Ø y altura del embellecedor, y distancia del eje del grifo al canto. Igual que antes.
 - `sink_wall_x`: a ~8 cm de profundidad, cuánto entra o sale la pared del fregadero respecto al canto de la encimera. Es la medida nueva y la que más importa.
 - Que detrás del grifo quede sitio para meter la llave: unos 15 mm.
+
+## Crítica de la V4 frente a los principios de Luis (16 nov 2026)
+Luis pidió repensar el modelo y criticarlo según sus principios: resistencia, ahorro de material, montaje y estética, además de que sirva para dejar el estropajo. Comprobado sobre las mallas de la V4; nada está impreso todavía.
+
+### Función
+- El estropajo no cabe tumbado. El interior del marco mide 95 × 58 mm y la bisagra central ocupa una franja de 23 mm de ancho hasta 11 mm dentro de la bandeja: en el centro quedan 47 mm de fondo.
+- Nunca se preguntó el tamaño del estropajo. La bandeja se fue encogiendo (V2: 100 × 75 interior) para librar el fregadero redondo sin volver a comprobarlo.
+
+### Resistencia
+- El cálculo solo cubre la carga hacia delante. Ahí la V4 va sobrada (11 MPa con 20 N).
+- De lado es inestable: el colgador apoya en 10 mm de ancho. Con un estropajo de 100 g descentrado 20 mm se ladea ~9° (8 mm de caída en la esquina), hasta que el diente hace tope en la ranura.
+- Nada está bloqueado:
+  - bastan ~0,1 N para separar el colgador de la pared, porque es un péndulo;
+  - el movimiento de montaje (inclinar 12° y levantar 4 mm) es el mismo que lo desengancha;
+  - la abrazadera no aprieta, así que el conjunto gira alrededor del grifo: 5° son 10 mm de desplazamiento lateral de la bandeja.
+- Todo el reparto de fuerzas depende de dónde está la pared del fregadero a 8 cm de profundidad, que no está medida.
+- Los números son fórmulas de mano con palancas supuestas y un admisible supuesto. No son ensayos.
+
+### Material
+- De los 18,4 cm³ del brazo, 13,1 son la abrazadera, y 9,3 son un anillo de 7 mm de grosor por encima del embellecedor que no hace falta.
+- La rejilla tiene 3 mm de grosor: 9,6 de los 16,4 cm³ de la bandeja.
+- El mayor gasto no está en las piezas: son cuatro versiones diseñadas sobre medidas supuestas. Una pieza de prueba de 3 g habría ahorrado más que cualquier calado.
+
+### Montaje
+- Cumple lo de no doblar el PLA.
+- La llave es una pieza suelta de 2 g que se cae al fregadero, y necesita ~15 mm libres detrás del grifo, sin comprobar.
+- La varilla de la bisagra se imprime como puente redondo de 11 mm: la cara de abajo saldrá deformada y la holgura con el gancho es de 0,25 mm.
+
+### Estética
+- El brazo a ras se cumple, pero mide 5 mm de alto y 22 de ancho.
+- La abrazadera es un bloque en U de 18 mm de alto con dos colas cuadradas detrás del grifo.
+- En la punta del brazo, el sitio más visible, hay una ranura con el remate del colgador embutido y juntas de 0,3 mm.
+- El colgador parece una escuadra, y la bisagra es un bulto de 17 mm en medio de la bandeja.
+- Con el estropajo descentrado la bandeja queda ladeada, que es el defecto estético que más se nota.
+
+### Proceso (causa de fondo)
+- La guía del repo (CLAUDE.md) pide preguntar medidas y material antes de modelar, e imprimir piezas de prueba de cada encaje. No se hizo ninguna de las dos cosas.
+- Cada versión arregló el fallo de la anterior añadiendo piezas: de una pieza (V1) a cuatro (V4).
+- "Verificado" significó que las mallas ideales no se solapan en posiciones sueltas, sin tolerancias de impresión.
+
+### Qué cambiar en la siguiente versión
+1. Medir antes de dibujar: grifo, canto, pared del fregadero y estropajo. Después, imprimir una prueba de la abrazadera y otra del colgador.
+2. Bandeja a la medida del estropajo, con la bisagra en los laterales o por debajo del fondo.
+3. Colgador con apoyo ancho arriba y dos topes separados en la pared, y enganche con bloqueo.
+4. Abrazadera baja, solo alrededor del embellecedor, con una llave en cuña que apriete. Brazo de 3 mm.
+5. Rejilla de 2 mm.
