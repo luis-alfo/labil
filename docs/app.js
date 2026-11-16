@@ -10,7 +10,14 @@ const TIPO = {
   prueba: { txt: "prueba", cls: "prueba" },
   borrador: { txt: "borrador", cls: "borrador" },
 };
-const tipoDe = (e) => (e.tipo === "version" && e.por_imprimir ? TIPO.pendiente : TIPO[e.tipo]);
+// el objeto puede cambiar las palabras (la web se «publica», no se «imprime»)
+const tipoDe = (e, o) => {
+  const t = e.tipo === "version" && e.por_imprimir ? TIPO.pendiente : TIPO[e.tipo];
+  const p = (o && o.palabras) || {};
+  if (t === TIPO.version && p.version) return { ...t, txt: p.version };
+  if (t === TIPO.pendiente && p.pendiente) return { ...t, txt: p.pendiente };
+  return t;
+};
 
 const MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
 const fecha = (iso) => { const [a, m, d] = iso.split("-").map(Number); return `${d} ${MESES[m - 1]}`; };
@@ -92,8 +99,8 @@ function vistaInicio() {
       <div class="obj-cab"><h2 class="title">${esc(o.nombre)}</h2>
         ${ultimo.coste ? `<span class="strong signal">${eur(ultimo.coste.euros)}</span>` : ""}</div>
       <p class="body muted">${esc(o.que)}</p>
-      <div class="ticks" aria-hidden="true">${o.estados.map((e) => `<i class="${tipoDe(e).cls}"></i>`).join("")}</div>
-      <p class="caption">${o.estados.length} estados · ${impresas} ${impresas === 1 ? "impresa" : "impresas"} · ${esc(o.estado)} · ${fecha(ultimo.fecha)}</p>
+      <div class="ticks" aria-hidden="true">${o.estados.map((e) => `<i class="${tipoDe(e, o).cls}"></i>`).join("")}</div>
+      <p class="caption">${o.estados.length} estados · ${impresas} ${((o.palabras && o.palabras.version) || "impresa") + (impresas === 1 ? "" : "s")} · ${esc(o.estado)} · ${fecha(ultimo.fecha)}</p>
     </a></li>`;
   }).join("");
   app.innerHTML = cabecera("objetos") + `<main>
@@ -115,8 +122,11 @@ function vistaInicio() {
   document.title = "labil · objetos";
 }
 
-// ── objeto: un estado a la vez, con raíl arriba y pasos abajo ────────────────
-function vistaObjeto(oid, eid) {
+// ── objeto: el modelo a pantalla completa y, encima, solo lo imprescindible ───
+//   arriba:  icono (→ inicio) · nombre del objeto · precio
+//   abajo:   versiones (desplegable) a la izquierda · posiciones a la derecha
+//   banda:   «detalles», que sube una hoja con todo lo demás
+function vistaObjeto(oid, eid, abrirDetalles = false) {
   const o = DATOS.objetos.find((x) => x.id === oid);
   if (!o) return (location.hash = "#/");
   let i = o.estados.findIndex((e) => e.id === eid);
@@ -124,59 +134,48 @@ function vistaObjeto(oid, eid) {
   const e = o.estados[i];
   const ant = o.estados[i - 1];
   const sig = o.estados[i + 1];
-  const t = tipoDe(e);
+  const t = tipoDe(e, o);
   const enlace = (x) => `#/${o.id}/${x.id}`;
 
-  const rail = o.estados.map((x) => `<a class="chip" href="${enlace(x)}" ${x === e ? 'aria-current="true"' : ""}>
-      <span class="status ${tipoDe(x).cls}">${tipoDe(x).txt}</span>
-      <span class="control">${esc(x.nombre)}</span>
-      <span class="caption">${fecha(x.fecha)}</span></a>`).join("");
+  // posiciones: las vistas del modelo; si no hay modelo, las imágenes
+  const posiciones = e.modelos.length
+    ? e.modelos.map((m) => ({ nombre: m.nombre, src: conVer(m.src), tipo: "modelo" }))
+    : e.imagenes.map((im) => ({ nombre: im.pie, src: im.src, tipo: "imagen" }));
+  const primera = posiciones[0];
+  const lienzo = !primera
+    ? `<div class="vacio-lienzo caption">sin modelo 3D en el repositorio</div>`
+    : primera.tipo === "modelo"
+      ? `<model-viewer id="mv" src="${primera.src}" alt="${esc(o.nombre)} · ${esc(e.nombre)}"
+           camera-controls touch-action="none" interaction-prompt="none" shadow-intensity="0"
+           exposure="1.05" ar ar-modes="webxr scene-viewer quick-look"></model-viewer>`
+      : `<img id="im" class="lienzo-img" src="${primera.src}" alt="${esc(primera.nombre)}">`;
 
-  const visor = e.modelos.length
-    ? `<model-viewer id="mv" src="${conVer(e.modelos[0].src)}" alt="${esc(o.nombre)} · ${esc(e.nombre)}"
-         camera-controls touch-action="pan-y" interaction-prompt="none" shadow-intensity="0"
-         exposure="1.05" ar ar-modes="webxr scene-viewer quick-look"></model-viewer>
-       ${e.modelos.length > 1 ? `<div class="vistas" role="group" aria-label="vistas">${e.modelos.map((m, k) =>
-         `<button class="seg control" data-src="${conVer(m.src)}" aria-pressed="${k === 0}">${esc(m.nombre)}</button>`).join("")}</div>` : ""}
-       <p class="caption ayuda">arrastra para girar · pellizca para acercar</p>`
-    : e.imagenes.length
-      ? `<img src="${e.imagenes[0].src}" alt="${esc(e.imagenes[0].pie)}" style="width:100%;display:block;background:#f3f2ee">`
-      : `<div class="sin-modelo caption">sin modelo 3D en el repositorio</div>`;
+  const opciones = o.estados.map((x) =>
+    `<option value="${x.id}" ${x === e ? "selected" : ""}>${esc(x.nombre)} · ${tipoDe(x, o).txt} · ${fecha(x.fecha)}</option>`).join("");
 
-  // qué cambia respecto al estado anterior con coste
+  // detalles
   const previo = o.estados.slice(0, i).reverse().find((x) => x.coste);
   const delta = e.coste && previo
-    ? (() => {
-        const dg = e.coste.gramos - previo.coste.gramos;
-        const de = e.coste.euros - previo.coste.euros;
-        const cls = dg > 0 ? "mas" : "menos";
-        return `<div class="delta"><p class="caption">respecto a «${esc(previo.nombre)}»</p>
-          <p class="body strong ${cls}">${firma(dg, gr)} · ${firma(de, eur)}</p></div>`;
-      })()
+    ? `<div class="delta"><p class="caption">respecto a «${esc(previo.nombre)}»</p>
+        <p class="body strong ${e.coste.gramos > previo.coste.gramos ? "mas" : "menos"}">${firma(e.coste.gramos - previo.coste.gramos, gr)} · ${firma(e.coste.euros - previo.coste.euros, eur)}</p></div>`
     : "";
-
   const piezas = e.piezas.length
     ? `<section class="seccion"><h3 class="label">piezas</h3><ul class="flujo">
-        ${e.piezas.map((p) => `<li><span>${esc(p.nombre)}${p.cantidad > 1 ? ` × ${p.cantidad}` : ""}
-          <span class="caption"> · ${esc(p.fuente)}</span></span>
+        ${e.piezas.map((p) => `<li><span>${esc(p.nombre)}${p.cantidad > 1 ? ` × ${p.cantidad}` : ""}<span class="caption"> · ${esc(p.fuente)}</span></span>
           <span class="num muted">${gr(p.gramos)}</span><span class="num strong">${eur(p.euros)}</span></li>`).join("")}
         ${e.piezas.length > 1 ? `<li class="total"><span class="caption">total</span><span class="num muted">${gr(e.coste.gramos)}</span><span class="num strong signal">${eur(e.coste.euros)}</span></li>` : ""}
       </ul></section>`
     : "";
-
   const coste = e.coste
     ? `<div class="coste">${bitEur(e.coste.euros, "lg")}
-        <p class="caption">${gr(e.coste.gramos)} de plástico · ${e.coste.origen === "laminador" ? "dato del laminador real" : "estimado"}</p></div>`
+        <p class="caption">${gr(e.coste.gramos)} de plástico · ${e.coste.origen === "laminador" ? "dato del laminador real" : `estimado a ${DATOS.euros_kg} €/kg`}</p></div>`
     : "";
-
   const imagenes = e.imagenes.length && e.modelos.length
     ? `<section class="seccion"><h3 class="label">imágenes</h3><div class="imagenes">${e.imagenes.map((im) =>
         `<figure><a href="${im.src}"><img src="${im.src}" alt="${esc(im.pie)}" loading="lazy"></a><figcaption class="caption">${esc(im.pie)}</figcaption></figure>`).join("")}</div></section>`
-    : e.imagenes.length > 1
-      ? `<section class="seccion"><h3 class="label">imágenes</h3><div class="imagenes">${e.imagenes.slice(1).map((im) =>
-          `<figure><a href="${im.src}"><img src="${im.src}" alt="${esc(im.pie)}" loading="lazy"></a><figcaption class="caption">${esc(im.pie)}</figcaption></figure>`).join("")}</div></section>`
-      : "";
-
+    : "";
+  const memoria = memoriaHTML(e);
+  const proceso = procesoHTML(e);
   const descargas = e.descargas.length
     ? `<section class="seccion"><h3 class="label">descargas</h3><ul class="descargas">${e.descargas.map((d) => {
         const nombre = d.split("/").pop();
@@ -184,62 +183,134 @@ function vistaObjeto(oid, eid) {
       }).join("")}</ul></section>`
     : "";
 
-  app.innerHTML = cabecera("objetos", o.nombre) + `<main>
-    <section class="obj-head">
-      <p class="body muted">${esc(o.que)}</p>
-      <p class="caption">${o.estados.length} estados · ${esc(o.estado)}${o.aprendizajes ? ` · <a class="enlace" href="${o.aprendizajes}">aprendizajes</a>` : ""}</p>
-    </section>
-    <nav class="rail" id="rail" aria-label="versiones y borradores">${rail}</nav>
-    <article class="estado" id="estado">
-      <div class="panel visor">${visor}</div>
-      <div class="ficha" id="ficha">
+  document.body.classList.add("en-escena");
+  app.innerHTML = `<div class="escena">
+    <div class="lienzo">${lienzo}</div>
+
+    <header class="hud hud-arriba">
+      <a class="ir-inicio" href="#/" aria-label="objetos"><img src="icon.svg" alt=""></a>
+      <h1 class="hud-titulo title" id="titulo">${esc(o.nombre)}</h1>
+      <span class="hud-precio">${e.coste ? bitEur(e.coste.euros, "sm") : ""}</span>
+    </header>
+
+    <div class="hud hud-abajo">
+      <label class="versiones">
+        <span class="sr">versión</span>
+        <span class="versiones-cara"><span class="status ${t.cls}"></span><span class="control">${esc(e.nombre)}</span><span class="flecha" aria-hidden="true">⌄</span></span>
+        <select id="versiones">${opciones}</select>
+      </label>
+      ${posiciones.length > 1 ? `<div class="posiciones${posiciones.length > 3 ? " compactas" : ""}" role="group" aria-label="posiciones">
+        ${posiciones.length > 3 ? `<span class="pos-nombre caption" id="pos-nombre">${esc(posiciones[0].nombre)}</span>` : ""}
+        <div class="pos-lista">${posiciones.map((p, k) =>
+          `<button class="pos control" data-k="${k}" aria-pressed="${k === 0}" aria-label="${esc(p.nombre)}">${posiciones.length > 3 ? k + 1 : esc(p.nombre)}</button>`).join("")}</div></div>` : ""}
+    </div>
+
+    <button class="banda" id="banda" aria-controls="hoja" aria-expanded="false">
+      <span aria-hidden="true">↑</span><span class="label">detalles</span></button>
+
+    <div class="velo" id="velo" hidden></div>
+    <section class="hoja" id="hoja" aria-label="detalles" aria-hidden="true">
+      <button class="hoja-asa" id="cerrar" aria-label="cerrar detalles"><span></span></button>
+      <div class="hoja-cuerpo">
         <div class="ficha-cab"><span class="status ${t.cls} control">${t.txt}</span>
-          <span class="caption">${fechaLarga(e.fecha)}${e.archivo ? ` · archivo: ${esc(e.archivo)}` : ""}</span></div>
-        <h1 class="display" id="titulo">${esc(e.nombre)}</h1>
+          <span class="caption">${fechaLarga(e.fecha)} · ${i + 1} / ${o.estados.length}${e.archivo ? ` · archivo: ${esc(e.archivo)}` : ""}</span></div>
+        <h2 class="display">${esc(e.nombre)}</h2>
         <p class="body">${esc(e.texto)}</p>
-        ${coste}${delta}${piezas}${imagenes}${descargas}
+        ${coste}${delta}${memoria}${proceso}${piezas}${imagenes}${descargas}
+        <section class="seccion"><h3 class="label">el objeto</h3>
+          <p class="body muted">${esc(o.que)} · ${esc(o.estado)}</p>
+          <p><a class="enlace" href="#/${o.id}/memoria">memoria completa →</a>${o.aprendizajes ? ` · <a class="enlace" href="${o.aprendizajes}">aprendizajes</a>` : ""}</p></section>
+        <nav class="hoja-pasos">
+          ${ant ? `<a href="${enlace(ant)}" rel="prev"><span class="caption">← anterior</span><span class="control">${esc(ant.nombre)}</span></a>` : "<span></span>"}
+          ${sig ? `<a class="sig" href="${enlace(sig)}" rel="next"><span class="caption">siguiente →</span><span class="control">${esc(sig.nombre)}</span></a>` : "<span></span>"}
+        </nav>
       </div>
-    </article>
-    <nav class="pasos" id="pasos" aria-label="anterior y siguiente">
-      ${ant ? `<a class="ant" href="${enlace(ant)}" rel="prev"><span class="caption">← anterior</span><span class="control">${esc(ant.nombre)}</span></a>` : `<span class="vacio"></span>`}
-      <span class="donde caption">${i + 1} / ${o.estados.length}</span>
-      ${sig ? `<a class="sig" href="${enlace(sig)}" rel="next"><span class="caption">siguiente →</span><span class="control">${esc(sig.nombre)}</span></a>` : `<span class="vacio"></span>`}
-    </nav>
-    ${pie()}
-  </main>`;
+    </section>
+  </div>`;
 
   document.title = `labil · ${o.nombre} · ${e.nombre}`;
   descifra(document.getElementById("titulo"));
-  document.getElementById("ficha").classList.add("llega");
-  const actual = document.querySelector('.chip[aria-current="true"]');
-  if (actual) actual.scrollIntoView({ block: "nearest", inline: "center", behavior: reducido ? "auto" : "smooth" });
 
-  // vistas del visor
-  document.querySelectorAll(".seg").forEach((b) => b.addEventListener("click", () => {
-    document.querySelectorAll(".seg").forEach((x) => x.setAttribute("aria-pressed", x === b));
-    document.getElementById("mv").src = b.dataset.src;
+  // versiones
+  document.getElementById("versiones").addEventListener("change", (ev) => {
+    location.hash = `#/${o.id}/${ev.target.value}`;
+  });
+
+  // posiciones
+  document.querySelectorAll(".pos").forEach((b) => b.addEventListener("click", () => {
+    document.querySelectorAll(".pos").forEach((x) => x.setAttribute("aria-pressed", x === b));
+    const p = posiciones[+b.dataset.k];
+    const destino = document.getElementById(p.tipo === "modelo" ? "mv" : "im");
+    destino.src = p.src;
+    if (p.tipo === "imagen") destino.alt = p.nombre;
+    const rotulo = document.getElementById("pos-nombre");
+    if (rotulo) { rotulo.textContent = p.nombre; descifra(rotulo); }
   }));
 
-  // deslizar en la ficha o en la barra de pasos (no en el visor, que gira el modelo)
+  // hoja de detalles
+  const hoja = document.getElementById("hoja"), banda = document.getElementById("banda"), velo = document.getElementById("velo");
+  const abrir = (si) => {
+    hoja.classList.toggle("abierta", si);
+    hoja.setAttribute("aria-hidden", !si);
+    banda.setAttribute("aria-expanded", si);
+    velo.hidden = !si;
+    if (si) hoja.querySelector(".hoja-cuerpo").scrollTop = 0;
+  };
+  banda.addEventListener("click", () => abrir(true));
+  document.getElementById("cerrar").addEventListener("click", () => abrir(false));
+  velo.addEventListener("click", () => abrir(false));
+  // deslizar la banda hacia arriba abre; la hoja hacia abajo (desde arriba del todo) cierra
+  let y0 = null;
+  banda.addEventListener("touchstart", (ev) => { y0 = ev.touches[0].clientY; }, { passive: true });
+  banda.addEventListener("touchend", (ev) => { if (y0 !== null && y0 - ev.changedTouches[0].clientY > 24) abrir(true); y0 = null; }, { passive: true });
+  const cuerpo = hoja.querySelector(".hoja-cuerpo");
+  hoja.addEventListener("touchstart", (ev) => { y0 = cuerpo.scrollTop <= 0 ? ev.touches[0].clientY : null; }, { passive: true });
+  hoja.addEventListener("touchend", (ev) => { if (y0 !== null && ev.changedTouches[0].clientY - y0 > 80) abrir(false); y0 = null; }, { passive: true });
+  if (abrirDetalles) abrir(true);
+
   const ir = (x) => x && (location.hash = enlace(x));
-  for (const zona of [document.getElementById("ficha"), document.getElementById("pasos")]) {
-    let x0 = null, y0 = null;
-    zona.addEventListener("touchstart", (ev) => { x0 = ev.touches[0].clientX; y0 = ev.touches[0].clientY; }, { passive: true });
-    zona.addEventListener("touchend", (ev) => {
-      if (x0 === null) return;
-      const dx = ev.changedTouches[0].clientX - x0, dy = ev.changedTouches[0].clientY - y0;
-      x0 = null;
-      if (Math.abs(dx) > 64 && Math.abs(dy) < 40) ir(dx < 0 ? sig : ant);
-    }, { passive: true });
-  }
   teclas = (ev) => {
-    if (ev.target.closest("model-viewer, input, textarea")) return;
+    if (ev.target.closest("model-viewer, input, textarea, select")) return;
+    if (ev.key === "Escape") abrir(false);
     if (ev.key === "ArrowLeft") ir(ant);
     if (ev.key === "ArrowRight") ir(sig);
   };
 }
 let teclas = null;
 document.addEventListener("keydown", (ev) => teclas && teclas(ev));
+
+// ── memoria y proceso ────────────────────────────────────────────────────────
+function memoriaHTML(e) {
+  if (!e.memoria || !e.memoria.length) return "";
+  return `<section class="seccion"><h3 class="label">qué cambia y por qué</h3><ul class="memoria">
+    ${e.memoria.map((m) => `<li><span class="tema">${esc(m.tema)}</span><p class="body">${esc(m.texto)}</p></li>`).join("")}</ul></section>`;
+}
+function procesoHTML(e) {
+  if (!e.proceso || !e.proceso.length) return "";
+  return `<section class="seccion"><h3 class="label">proceso</h3><div class="imagenes proceso">${e.proceso.map((im) =>
+    `<figure><a href="${im.src}"><img src="${im.src}" alt="${esc(im.pie)}" loading="lazy"></a>
+      <figcaption class="caption">${fecha(im.fecha)} · ${esc(im.pie)}</figcaption></figure>`).join("")}</div></section>`;
+}
+
+// ── memoria de un objeto: cómo cambia de un estado a otro y por qué ──────────
+function vistaMemoria(o) {
+  const filas = o.estados.map((e, i) => {
+    const t = tipoDe(e, o);
+    return `<article class="mem-estado">
+      <div class="ficha-cab"><span class="status ${t.cls} control">${t.txt}</span>
+        <span class="caption">${fechaLarga(e.fecha)} · ${i + 1} / ${o.estados.length}${e.coste ? ` · ${eur(e.coste.euros)} · ${gr(e.coste.gramos)}` : ""}</span></div>
+      <h2 class="title"><a href="#/${o.id}/${e.id}">${esc(e.nombre)} <span class="signal">→</span></a></h2>
+      <p class="body muted">${esc(e.texto)}</p>
+      ${memoriaHTML(e)}${procesoHTML(e)}
+    </article>`;
+  }).join("");
+  app.innerHTML = cabecera("objetos", o.nombre) + `<main class="memoria-pag">
+    <section class="hero"><p class="label">memoria</p><h1 class="display" id="titulo">${esc(o.nombre)}</h1>
+      <p class="body muted">${esc(o.que)}. Cómo cambia de un estado a otro y por qué: diseño, uso, resistencia, montaje, material, coste.</p></section>
+    ${filas}${pie()}</main>`;
+  descifra(document.getElementById("titulo"));
+  document.title = `labil · ${o.nombre} · memoria`;
+}
 
 // ── historial: todo lo hecho, por meses ──────────────────────────────────────
 function vistaHistorial() {
@@ -254,7 +325,7 @@ function vistaHistorial() {
       ${fs.map(({ o, e }) => `<li><a href="#/${o.id}/${e.id}">
         <span class="caption">${fecha(e.fecha)}</span>
         <span class="que"><span class="control">${esc(o.nombre)} · ${esc(e.nombre)}</span>
-          <span class="status ${tipoDe(e).cls} caption">${tipoDe(e).txt}</span></span>
+          <span class="status ${tipoDe(e, o).cls} caption">${tipoDe(e, o).txt}</span></span>
         <span class="strong">${e.coste ? eur(e.coste.euros) : "—"}</span></a></li>`).join("")}
     </ol></section>`;
   }).join("");
@@ -269,10 +340,14 @@ function vistaHistorial() {
 // ── rutas ────────────────────────────────────────────────────────────────────
 function ruta() {
   teclas = null;
+  document.body.classList.remove("en-escena");
   const partes = location.hash.replace(/^#\/?/, "").split("/").filter(Boolean).map(decodeURIComponent);
   if (!partes.length) vistaInicio();
   else if (partes[0] === "historial") vistaHistorial();
-  else vistaObjeto(partes[0], partes[1]);
+  else if (partes[1] === "memoria") {
+    const o = DATOS.objetos.find((x) => x.id === partes[0]);
+    o ? vistaMemoria(o) : (location.hash = "#/");
+  } else vistaObjeto(partes[0], partes[1]);
   window.scrollTo(0, 0);
 }
 

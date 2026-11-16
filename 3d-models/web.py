@@ -101,7 +101,7 @@ def main() -> None:
         o["estados"] = []
         for est in obj["estados"]:
             e = {k: v for k, v in est.items()
-                 if k not in ("modelos", "imagenes", "piezas", "descargas")}
+                 if k not in ("modelos", "imagenes", "proceso", "piezas", "descargas")}
             e["modelos"] = []
             for i, mod in enumerate(est.get("modelos", [])):
                 src = (web(RAIZ / mod["glb"]) if "glb" in mod
@@ -109,6 +109,8 @@ def main() -> None:
                 e["modelos"].append({"nombre": mod["nombre"], "src": src})
             e["imagenes"] = [{"src": publicar(im["de"], obj["id"], est["id"]), "pie": im["pie"]}
                              for im in est.get("imagenes", [])]
+            e["proceso"] = [{"src": publicar(im["de"], obj["id"], est["id"]), "pie": im["pie"],
+                             "fecha": im.get("fecha", est["fecha"])} for im in est.get("proceso", [])]
             e["descargas"] = [publicar(d, obj["id"], est["id"]) for d in est.get("descargas", [])]
             piezas = []
             for p in est.get("piezas", []):

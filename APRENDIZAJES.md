@@ -103,3 +103,36 @@ Registro vivo de explicaciones, decisiones y convenciones acordadas.
 - **Prueba en CI (16 nov 2026)**: la generación entera pasa en GitHub, incluido el paso de la web v2.
   El paso de publicar falló en 3 s y GitHub no guarda su registro. Lo más probable es que el entorno
   `github-pages` solo deje publicar desde ciertas ramas, sin confirmar. La web v2 sale al fusionar en `main`.
+
+## 2026-11-16 · Página de objeto limpia (boceto de Luis en la pizarra)
+
+- **El modelo ocupa toda la pantalla** y encima solo va lo imprescindible:
+  - **arriba a la izquierda**, el icono de labil, que lleva al inicio con el listado de objetos;
+  - **arriba en el centro**, el nombre del objeto;
+  - **arriba a la derecha**, el precio del estado que se ve, en bitmap y sin tarjeta;
+  - **abajo a la izquierda (fijo)**, el desplegable de **versiones**. Es un `<select>` nativo:
+    en el móvil abre el selector del sistema, el más cómodo con el pulgar;
+  - **abajo a la derecha (fijo)**, las **posiciones**: las vistas del modelo (abajo, levantada,
+    placa a1…) o, si el estado solo tiene imágenes, las imágenes. Con más de 3 se compactan en
+    cuadros numerados con el nombre de la activa encima;
+  - **una banda abajo, «↑ detalles»**, que sube una hoja con el resto: tipo, fecha, texto, coste,
+    diferencia con el anterior, piezas, imágenes, descargas y anterior/siguiente.
+    Se abre tocando o deslizando hacia arriba, y se cierra hacia abajo, tocando fuera o con Esc.
+- En escritorio, la hoja de detalles se abre como panel lateral.
+- **Vocabulario**: *posición* = una vista o colocación del mismo estado (no es otra versión).
+
+## 2026-11-16 · Proceso y memoria en la web
+
+- **Qué pidió Luis**: que la web enseñe también su **proceso de diseño** (las imágenes que sube:
+  bocetos, pizarras, capturas) y una **memoria** de cómo cambia de una versión a otra, con las
+  razones (diseño, resistencia del clic, montaje…). Quedó como norma en `CLAUDE.md`.
+- **Dónde**: imágenes en `proceso/<objeto>/` (con `proceso/guardar.py`, que reduce y quita el GPS).
+  La memoria va en cada estado de `3d-models/objetos.json`. En la web, la hoja de detalles muestra
+  «qué cambia y por qué» y «proceso», y `#/<objeto>/memoria` lo cuenta todo seguido.
+- **Vocabulario**: *proceso* = el camino (lo que dibuja o fotografía Luis); *imágenes* = el resultado
+  (renders, capturas finales); *memoria* = el porqué de cada cambio, por temas.
+- **La web es un objeto más** (`labil-web`): v1 beige → v2 LG Señal → página limpia (boceto de la pizarra).
+  Para la web, «versión» se dice «publicada».
+- Una imagen que Luis pegó en la conversación (su captura de la v2) no llegó como archivo al repositorio.
+  Se rehízo la misma captura y el pie lo dice. Si vuelve a pasar, se le avisa.
+- **Autonomía (16 nov 2026)**: Luis autorizó a fusionar en `main` yo mismo cuando esté todo listo.
