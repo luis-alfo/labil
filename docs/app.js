@@ -96,7 +96,7 @@ const FASES = [
   { palabra: "diseño", ms: 1900 },
   { palabra: "cálculo", ms: 3800 },
   { palabra: "impresión", ms: 5600 },
-  { palabra: "montaje", ms: 4600 },
+  { palabra: "montaje", ms: 7200 },
 ];
 const FRASE = "un soporte para el estropajo";
 
@@ -189,11 +189,13 @@ function animarPortada() {
     ctx.fillStyle = color;
     ctx.fillRect((ox + x * cel + m) * dpr, (oy + y * cel + m) * dpr, (cel - 2 * m) * dpr, (cel - 2 * m) * dpr);
   };
-  const escalon = (t, n) => Math.floor(Math.min(1, Math.max(0, t)) * n) / n; // a saltos, no en curvas
+  const escalon = (t, n) => Math.floor(Math.min(1, Math.max(0, t)) * n) / n; // a saltos (solo en la rejilla)
+  const curva = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x));       // transiciones suaves
 
   function mostrarFase(k) {
     if (k === faseVista) return;
     faseVista = k;
+    palabra.classList.remove("entra"); void palabra.offsetWidth; palabra.classList.add("entra");
     palabra.textContent = FASES[k].palabra; descifra(palabra);
     marcas.forEach((m, j) => { m.classList.toggle("hecha", j < k); m.classList.toggle("ahora", j === k); });
   }
@@ -223,7 +225,7 @@ function animarPortada() {
   function dibujarCalculo(f) {
     const { cel, ox, oy, dpr } = dims;
     // 1) la fuerza: una flecha de píxeles que baja hasta el fondo de la cuna (33, 22)
-    const baja = escalon(Math.min(1, f / 0.18), 4);
+    const baja = curva(f / 0.18);
     const punta = oy + 21.6 * cel - (1 - baja) * cel * 3, fx = ox + 33.5 * cel, p = cel * 0.6;
     ctx.fillStyle = C.tinta;
     for (let i = 1; i <= 4; i++) ctx.fillRect((fx - p / 2) * dpr, (punta - p * (i + 1.2)) * dpr, p * dpr, p * 0.8 * dpr);
@@ -231,7 +233,7 @@ function animarPortada() {
     ctx.fillRect((fx - p / 2) * dpr, (punta - p * 0.6) * dpr, p * dpr, p * 0.6 * dpr);
     texto("20 N", fx, punta - p * 6.5, C.tinta, 12, "center");
     // 2) la tensión recorre la estructura desde la carga y se colorea según su valor
-    const frente = escalon((f - 0.15) / 0.5, 12) * maxPaso;
+    const frente = curva((f - 0.15) / 0.5) * maxPaso;
     pieza.celdas.forEach(([x, y]) => {
       const kk = x + "," + y;
       if (pasos.get(kk) > frente) return celda(x, y, C.muda);
@@ -240,7 +242,7 @@ function animarPortada() {
     });
     // 3) el valor: 17 MPa en la unión, frente al límite de 20
     if (f > 0.62) {
-      const g = escalon((f - 0.62) / 0.3, 10);
+      const g = curva((f - 0.62) / 0.3);
       const hx = ox + 29.5 * cel, hy = oy + 7.5 * cel;
       ctx.strokeStyle = C.aviso; ctx.lineWidth = dpr;
       ctx.beginPath(); ctx.moveTo(hx * dpr, hy * dpr); ctx.lineTo((hx + cel * 3) * dpr, (hy - cel * 4) * dpr); ctx.stroke();
@@ -264,9 +266,12 @@ function animarPortada() {
     ctx.clearRect(0, 0, w * dpr, h * dpr);
 
     // capas visibles: la rejilla hasta «se imprime»; la impresora desde ahí
+    // fundidos: la rejilla se funde con la impresora (1,3 s) y, al final del montaje,
+    // todo se apaga despacio antes de volver a escribir
     const con3d = impresora && k >= 3;
-    const fundido = con3d && k === 3 ? Math.min(1, f * 5) : con3d ? 1 : 0;
-    plano.style.opacity = String(1 - fundido);
+    let fundido = con3d && k === 3 ? curva(f / 0.24) : con3d ? 1 : 0;
+    if (con3d && k === 4) fundido = 1 - curva((f - 0.93) / 0.07);
+    plano.style.opacity = String(con3d ? 1 - (k === 3 ? curva(f / 0.24) : 1) : k === 0 ? curva(f / 0.15) : 1);
     lienzo3d.style.opacity = String(fundido);
 
     if (k === 0) { // escribes
@@ -278,7 +283,7 @@ function animarPortada() {
     } else {
       for (let x = 0; x < pieza.W; x++) for (let y = 0; y < pieza.H; y++) celda(x, y, C.apagado);
       if (k === 1) { // se diseña: las letras se ordenan en la pieza
-        const s = escalon(f * 1.2, 8), { cel, ox, oy } = dims;
+        const s = curva(f * 1.15), { cel, ox, oy } = dims;
         pieza.celdas.forEach(([x, y], i) => {
           const [sx, sy] = origen[(i * 7) % origen.length];
           const px = sx + (ox + x * cel - sx) * s, py = sy + (oy + y * cel - sy) * s;
@@ -354,6 +359,8 @@ async function cargarImpresora(lienzo) {
 
   // montaje: transformaciones placa → objeto montado (3d-models/montaje.py) y el contexto
   // (grifo, encimera, fregadero, estropajo) del modelo montado
+  const suave = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x));
+  const I = new THREE.Quaternion(), CERO = new THREE.Vector3(), UNO = new THREE.Vector3(1, 1, 1);
   let montaje = null;
   try {
     const [datos, abajo] = await Promise.all([
@@ -361,28 +368,49 @@ async function cargarImpresora(lienzo) {
       new GLTFLoader().loadAsync(conVer("models/el_secadero_v2_abajo.glb")),
     ]);
     const D = new THREE.Matrix4().fromArray(datos.desplazamiento);
+    const V = (a) => new THREE.Vector3(...a);
+    // movimiento real de montaje en el sistema del objeto montado (mm, z arriba):
+    // s = 0 → posición de entrada; s = 1 → montada (identidad)
+    const movimiento = (mv) => (s) => {
+      const M = new THREE.Matrix4();
+      if (!mv) return M;
+      if (mv.tipo === "desliza") return M.makeTranslation(...V(mv.desde).multiplyScalar(1 - suave(s)).toArray());
+      // gira: primero entra (inclinada) por su ranura y luego gira sobre su eje hasta su sitio
+      const entra = suave(s / 0.45), gira = suave((s - 0.45) / 0.55);
+      const ang = THREE.MathUtils.degToRad(mv.angulo) * (1 - gira);
+      const pt = V(mv.punto);
+      M.makeTranslation(...V(mv.entrada).multiplyScalar(1 - entra).toArray())
+        .multiply(new THREE.Matrix4().makeTranslation(pt.x, pt.y, pt.z))
+        .multiply(new THREE.Matrix4().makeRotationY(ang))
+        .multiply(new THREE.Matrix4().makeTranslation(-pt.x, -pt.y, -pt.z));
+      return M;
+    };
     const mov = [];
     datos.orden.forEach((clave, i) => {
       const pz = datos.piezas[clave];
       const m = piezas.find((x) => igual(x.userData.rgb, pz.color));
       if (!m) return;
       m.updateMatrix();
-      const base = m.matrix.clone();
-      const fin = D.clone().multiply(new THREE.Matrix4().fromArray(pz.matriz));
+      const base = m.matrix.clone(), T = new THREE.Matrix4().fromArray(pz.matriz);
+      const real = movimiento(datos.movimientos && datos.movimientos[clave]);
+      // tramo 1: de la placa a la posición de entrada (en arco); tramo 2: el movimiento real
+      const entrada = D.clone().multiply(real(0)).multiply(T);
       const pos = new THREE.Vector3(), quat = new THREE.Quaternion(), esc = new THREE.Vector3();
-      fin.decompose(pos, quat, esc);
+      entrada.decompose(pos, quat, esc);
       [m, m.userData.capa].forEach((x) => { x.matrixAutoUpdate = false; x.matrix.copy(base); });
-      mov.push({ m, base, pos, quat, i });
+      mov.push({ m, base, pos, quat, T, real, i });
     });
     const ref = mov[0];
     const contexto = [];
+    let cajaEstropajo = null;
     abajo.scene.traverse((n) => {
       if (!n.isMesh) return;
       const rgb = srgb(n.material), c = datos.contexto.find((x) => igual(x.color, rgb));
       if (!c) return;
+      if (c.nombre === "estropajo") { n.geometry.computeBoundingBox(); cajaEstropajo = n.geometry.boundingBox.clone(); return; }
       if (!n.geometry.attributes.normal) n.geometry.computeVertexNormals();
       const mat = new THREE.MeshStandardMaterial({
-        color: { cromo: 0xd1d6de, encimera: 0x86a08a, fregadero: 0x222722, estropajo: 0xf2a516 }[c.nombre],
+        color: { cromo: 0xd1d6de, encimera: 0x86a08a, fregadero: 0x222722 }[c.nombre],
         roughness: c.nombre === "cromo" ? 0.3 : 0.8, metalness: c.nombre === "cromo" ? 0.6 : 0, transparent: true, opacity: 0 });
       const malla = new THREE.Mesh(n.geometry, mat);
       malla.matrixAutoUpdate = false;
@@ -390,13 +418,39 @@ async function cargarImpresora(lienzo) {
       ref.m.parent.add(malla);
       contexto.push({ malla, nombre: c.nombre });
     });
+    // estropajo salvauñas de verdad: espuma amarilla porosa + capa verde de fibra, cantos redondeados
+    let estropajo = null;
+    if (cajaEstropajo) {
+      const { RoundedBoxGeometry } = await import("three/addons/geometries/RoundedBoxGeometry.js");
+      const tam = cajaEstropajo.getSize(new THREE.Vector3()), centro = cajaEstropajo.getCenter(new THREE.Vector3());
+      const ruido = (fondo, puntos, n, r) => { // textura de poros/fibras dibujada en un lienzo
+        const c = document.createElement("canvas"); c.width = c.height = 256; const g = c.getContext("2d");
+        g.fillStyle = fondo; g.fillRect(0, 0, 256, 256);
+        for (let i = 0; i < n; i++) { g.fillStyle = puntos[i % puntos.length]; g.beginPath(); g.arc(Math.random() * 256, Math.random() * 256, Math.random() * r + 0.6, 0, 7); g.fill(); }
+        const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(2, 2); return t;
+      };
+      const espumaT = ruido("#e8c14a", ["#c99f2c", "#f3d873", "#b88a1f"], 1800, 2.2);
+      const fibraT = ruido("#2f6b35", ["#1f4f26", "#4a8c4a", "#3b7a3c"], 3000, 1.4);
+      const grupo = new THREE.Group();
+      const fibra = Math.min(10, tam.x * 0.22), espuma = tam.x - fibra;
+      const cuerpo = new THREE.Mesh(new RoundedBoxGeometry(espuma, tam.y, tam.z, 4, Math.min(8, espuma / 3)),
+        new THREE.MeshStandardMaterial({ map: espumaT, bumpMap: espumaT, bumpScale: 1.5, roughness: 1, transparent: true }));
+      cuerpo.position.x = -fibra / 2;
+      const capa = new THREE.Mesh(new RoundedBoxGeometry(fibra, tam.y - 2, tam.z - 2, 3, 2),
+        new THREE.MeshStandardMaterial({ map: fibraT, bumpMap: fibraT, bumpScale: 2, roughness: 1, transparent: true }));
+      capa.position.x = espuma / 2;
+      grupo.add(cuerpo, capa);
+      grupo.matrixAutoUpdate = false;
+      ref.m.parent.add(grupo);
+      estropajo = { grupo, centro, materiales: [cuerpo.material, capa.material], real: movimiento(datos.movimientos && datos.movimientos.estropajo) };
+    }
     // centro del objeto montado (para la cámara)
-    mov.forEach(({ m, base, pos, quat }) => m.matrix.copy(base).multiply(new THREE.Matrix4().compose(pos, quat, new THREE.Vector3(1, 1, 1))));
+    mov.forEach(({ m, base, T }) => m.matrix.copy(base).multiply(D).multiply(T));
     raiz.updateMatrixWorld(true);
     const cajaMontaje = new THREE.Box3(); mov.forEach(({ m }) => cajaMontaje.expandByObject(m));
     mov.forEach(({ m, base }) => m.matrix.copy(base));
-    montaje = { mov, contexto, centro: cajaMontaje.getCenter(new THREE.Vector3()), tam: cajaMontaje.getSize(new THREE.Vector3()).length() };
-  } catch (_) { montaje = null; } // sin montaje: la placa impresa gira y ya
+    montaje = { D, mov, contexto, estropajo, centro: cajaMontaje.getCenter(new THREE.Vector3()), tam: cajaMontaje.getSize(new THREE.Vector3()).length() };
+  } catch (err) { console.warn("sin montaje", err); montaje = null; } // sin montaje: la placa impresa gira y ya
 
   // la impresora: dos columnas, el puente que sube con la capa y el cabezal
   const marco = new THREE.MeshStandardMaterial({ color: 0x86a08a, roughness: 0.6, transparent: true });
@@ -425,25 +479,38 @@ async function cargarImpresora(lienzo) {
   }
   medir();
 
-  const suave = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x));
-  const I = new THREE.Quaternion(), CERO = new THREE.Vector3(), UNO = new THREE.Vector3(1, 1, 1);
+  // ventanas del montaje: cada pieza sale de la placa (tramo 1) y hace su movimiento real (tramo 2)
+  const VUELO = 0.1, REAL = 0.1, HUECO = 0.19;
   function montar(f) {
     if (!montaje) return 0;
-    for (const { m, base, pos, quat, i } of montaje.mov) {
-      const t = suave((f - 0.1 - i * 0.14) / 0.3);
-      const p = CERO.clone().lerp(pos, t); p.z += 60 * Math.sin(Math.PI * t); // sale de la placa en arco (mm, z arriba)
-      const q = I.clone().slerp(quat, t);
-      const M = base.clone().multiply(new THREE.Matrix4().compose(p, q, UNO));
+    for (const { m, base, pos, quat, T, real, i } of montaje.mov) {
+      const ini = 0.06 + i * HUECO;
+      const t1 = suave((f - ini) / VUELO), t2 = (f - ini - VUELO) / REAL;
+      let M;
+      if (t2 <= 0) { // tramo 1: de la placa a la entrada, en arco
+        const p = CERO.clone().lerp(pos, t1); p.z += 70 * Math.sin(Math.PI * t1);
+        M = base.clone().multiply(new THREE.Matrix4().compose(p, I.clone().slerp(quat, t1), UNO));
+      } else { // tramo 2: el movimiento real de montaje
+        M = base.clone().multiply(montaje.D).multiply(real(Math.min(1, t2))).multiply(T);
+      }
       m.matrix.copy(M); m.userData.capa.matrix.copy(M);
     }
     for (const { malla, nombre } of montaje.contexto) {
-      const max = { encimera: 0.22, fregadero: 0.35, cromo: 1, estropajo: 1 }[nombre];
-      malla.material.opacity = nombre === "estropajo" ? max * suave((f - 0.72) / 0.1) : max * suave((f - 0.02) / 0.2);
+      const max = { encimera: 0.22, fregadero: 0.35, cromo: 1 }[nombre];
+      malla.material.opacity = max * suave(f / 0.12);
       malla.visible = malla.material.opacity > 0.01;
     }
-    camaMat.opacity = 1 - 0.75 * suave((f - 0.5) / 0.3);
-    return suave(f / 0.6);
+    if (montaje.estropajo) { // el estropajo cae en la cuna al final
+      const e = montaje.estropajo, t = (f - 0.84) / 0.1;
+      e.grupo.visible = t > 0;
+      e.materiales.forEach((m) => { m.opacity = suave(t * 3); });
+      e.grupo.matrix.copy(base0).multiply(montaje.D).multiply(e.real(Math.min(1, Math.max(0, t))))
+        .multiply(new THREE.Matrix4().makeTranslation(e.centro.x, e.centro.y, e.centro.z));
+    }
+    camaMat.opacity = 1 - 0.8 * suave((f - 0.3) / 0.4);
+    return suave(f / 0.14);
   }
+  const base0 = montaje ? montaje.mov[0].base : null;
 
   function pintar(ms, imprimir, final) {
     const h = y0 + (y1 - y0) * imprimir;

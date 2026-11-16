@@ -318,7 +318,7 @@ body.en-escena { overflow: hidden; }
 /* portada: de la letra al objeto, en motion graphics y casi sin texto */
 .portada { position: relative; height: 100dvh; min-height: 520px; overflow: hidden; }
 .escenario { position: absolute; inset: 0; }
-.escenario canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.escenario canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; will-change: opacity; }
 #lienzo-3d { opacity: 0; }
 .portada-cab {
   position: absolute; top: 0; left: 0; right: 0; z-index: 2; display: flex; align-items: center; gap: var(--s2);
@@ -329,9 +329,11 @@ body.en-escena { overflow: hidden; }
   position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: grid; justify-items: center; gap: var(--s3);
   padding: 0 var(--s4) calc(var(--s3) + env(safe-area-inset-bottom));
 }
+.fase-palabra.entra { animation: palabra 450ms ease-out both; }
+@keyframes palabra { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 .fase-palabra { font-size: 20px; line-height: 24px; font-weight: 500; color: var(--signal); min-height: 24px; letter-spacing: 0.02em; }
 .fases { display: flex; gap: var(--s2); }
-.fases li { width: 24px; height: 4px; background: var(--pixel-off); }
+.fases li { width: 24px; height: 4px; background: var(--pixel-off); transition: background 400ms ease; }
 .fases li.hecha { background: var(--ink-faint); }
 .fases li.ahora { background: var(--signal); }
 .bajar { display: grid; place-items: center; width: 44px; height: 44px; color: var(--ink-muted); font-size: 20px; }

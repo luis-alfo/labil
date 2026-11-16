@@ -1134,7 +1134,7 @@
    "id": "labil-web",
    "nombre": "labil · la web",
    "que": "la propia web donde se ven los objetos: también se diseña por versiones",
-   "estado": "cálculo y montaje publicados",
+   "estado": "montaje real publicado",
    "palabras": {
     "version": "publicada",
     "pendiente": "por publicar"
@@ -1445,6 +1445,41 @@
       {
        "tema": "método",
        "texto": "three.js no convierte el color del GLB al leerlo. Para reconocer cada pieza por su color hay que comparar el valor tal cual, sin pasarlo a sRGB."
+      }
+     ],
+     "descargas": [],
+     "feedback": "transiciones más suaves; el estropajo es un bloque amarillo; el marco atraviesa la pieza al montarlo",
+     "feedback_de": "luis"
+    },
+    {
+     "id": "portada-montaje-real",
+     "tipo": "version",
+     "nombre": "montaje real",
+     "fecha": "2026-11-16",
+     "texto": "Cada pieza se monta con su movimiento real y nada atraviesa nada. El estropajo es un salvauñas de verdad y las transiciones entre fases son suaves.",
+     "cambio": "montaje con los movimientos reales, estropajo realista y transiciones suaves",
+     "imagenes": [
+      {
+       "de": "labil-web/capturas/2026-11-16-portada-montaje-real.png",
+       "pie": "la cuna entra a 60° y baja; cae el estropajo"
+      }
+     ],
+     "memoria": [
+      {
+       "tema": "montaje",
+       "texto": "Luis: el marco no puede atravesar la pieza. Cada pieza sale de la placa hasta su punto de entrada y desde ahí hace su movimiento real (APRENDIZAJES de El Secadero v2): el brazo se desliza hacia la pared hasta abrazar la columna; la cuña baja desde arriba; el marco entra inclinado 50° hacia fuera por el enganche y cae a vertical; la cuna entra a 60° por las ranuras y gira sobre su eje hasta quedar horizontal."
+      },
+      {
+       "tema": "método",
+       "texto": "Los puntos de giro (enganche del marco y eje de la cuna) y los ángulos salen de las mismas fórmulas y parámetros del .scad (hk_ang, slot_ang, X_AXIS/Z_AXIS). Si cambia el diseño, la animación cambia con él."
+      },
+      {
+       "tema": "estética",
+       "texto": "El estropajo deja de ser un bloque amarillo: es un salvauñas con espuma amarilla porosa y una capa verde de fibra, con los cantos redondeados y textura de poros. Cae en la cuna al final del montaje."
+      },
+      {
+       "tema": "uso",
+       "texto": "Transiciones más suaves: las piezas de la rejilla se mueven con aceleración en lugar de a saltos, la rejilla se funde con la impresora en 1,3 s, la palabra de cada fase entra con un fundido y, al terminar el montaje, todo se apaga despacio antes de volver a escribir. El montaje dura 7 s."
       }
      ],
      "descargas": []
