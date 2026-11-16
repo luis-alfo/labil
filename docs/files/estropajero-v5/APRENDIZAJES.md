@@ -1,4 +1,4 @@
-# Soporte de estropajo V5: datos, decisiones y comprobaciones
+# El Secadero (soporte de estropajo V5): datos, decisiones y comprobaciones
 
 Estado: diseñado y simulado el 16 nov 2026. Sin imprimir.
 
@@ -70,13 +70,13 @@ Estado: diseñado y simulado el 16 nov 2026. Sin imprimir.
 
 | Pieza | Filamento | Tiempo |
 |---|---|---|
-| A brazo | 12,5 g | 19 min |
-| K cuña | 1,9 g | 4 min |
-| B marco | 14,1 g | 30 min |
-| C cuna | 10,8 g | 22 min |
-| **Total** | **~39 g** | **~1 h 15 min** |
+| A brazo | 14,5 g | 25 min |
+| K cuña | 2,5 g | 6 min |
+| B marco | 14,0 g | 31 min |
+| C cuna | 11,2 g | 22 min |
+| **Total** | **~42 g** | **~1 h 25 min** |
 
-  La V4 eran ~45 g y ~1 h 30 min.
+  La V4 eran ~45 g y ~1 h 30 min. Antes del rediseño estético la V5 eran ~39 g: las formas redondeadas cuestan unos 3 g.
 
 ## Lo que la simulación no cubre
 - Las holguras reales de impresión: el muñón de 3,6 mm en la ranura de 4,2 y la cuña.
@@ -86,11 +86,11 @@ Estado: diseñado y simulado el 16 nov 2026. Sin imprimir.
 
 ## Orden de impresión recomendado
 Cada paso valida un encaje antes de gastar más.
-1. A y K (14 g, 23 min).
+1. A y K (17 g, 31 min).
    - [ ] El faldón rodea el embellecedor sin tocarlo.
    - [ ] La cuña baja y aprieta, y queda más o menos enrasada.
    - [ ] La ranura de la punta queda justo por fuera del canto.
-2. B (14 g, 30 min).
+2. B (14 g, 31 min).
    - [ ] Entra de frente y cae en la ranura.
    - [ ] Cuelga vertical, con las dos esquinas tocando la pared.
 3. C (11 g, 22 min).
@@ -98,3 +98,37 @@ Cada paso valida un encaje antes de gastar más.
    - [ ] Abajo queda horizontal.
    - [ ] Levantada se queda sola.
    - [ ] El estropajo entra de canto.
+
+## Estética: lo que pidió Luis (16 nov 2026)
+- La abrazadera le parecía poco estética y todo demasiado cuadrado.
+- Quiere un objeto bonito, no solo funcional, que se integre en la cocina de forma elegante. Pidió repensar todas las esquinas.
+- Quiere un grabado en hendidura con el texto «EL SECADERO | V5 | 161126» en JetBrains Mono: nombre del objeto, versión y fecha (ddmmaa). Le vale en la abrazadera o en el brazo.
+- El objeto se llama **El Secadero**. El grabado lleva la versión y la fecha, así que hay que actualizarlo en cada versión (parámetro `label` del `.scad`).
+
+### Nombres de las piezas
+- **A, brazo:** una sola pieza con dos zonas, el anillo que abraza el grifo (antes «abrazadera») y el brazo plano que va hasta el fregadero.
+- **K, cuña:** la pieza pequeña que cierra el anillo por detrás.
+- **B, marco:** la percha que cuelga de la punta del brazo.
+- **C, cuna:** donde va el estropajo.
+
+### Qué se cambió
+- Anillo:
+  - Perfil acampanado, como el embellecedor de un grifo: base ancha, curva en S y banda recta arriba, con el canto superior redondeado.
+  - Planta en herradura, con las colas redondeadas.
+- Grabado: va en la banda recta del anillo, mirando al fregadero.
+  - Mayúsculas de 3 mm y 0,6 mm de fondo.
+  - En el brazo no cabe: el texto mide 61 mm y el brazo, 31.
+  - En una cara vertical se imprime más nítido y no acumula agua.
+- Brazo:
+  - Nace del anillo con un cuello curvo de radio 8.
+  - Tiene el canto matado.
+  - Sube a la punta con una rampa larga.
+  - Se quitó la cartela triangular.
+- Cuña: lleva una visera curva que, vista desde arriba, cierra el contorno por detrás y sirve de uñero.
+- Marco: rincones con radio 4, esquinas con radio 2 y canto delantero matado.
+- Cuna:
+  - Esquinas de radio 7.
+  - Ventanas en cápsula en vez de rombos.
+  - Borde trasero en arco.
+- La fuente va en `fonts/` para que el grabado salga igual en cualquier máquina y en CI.
+- Lección: probar el aspecto con capturas del visor antes de darlo por bueno. Un primer nervio «redondeado» salió facetado y hubo que quitarlo.

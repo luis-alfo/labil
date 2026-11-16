@@ -1,5 +1,5 @@
 // =====================================================================
-//  Soporte de estropajo para grifo — V5
+//  EL SECADERO — soporte de estropajo para grifo — V5
 //
 //  Cuatro piezas en PLA, sin soportes y sin doblar nada al montar:
 //    A = brazo: abrazadera en U (faldón fino alrededor del embellecedor,
@@ -34,7 +34,7 @@ sponge = [45, 95, 70];  // grosor, largo, alto (de canto, apoyado en el lado lar
 
 /* [Abrazadera y cuña] */
 col_clr    = 0.3;
-skirt_wall = 1.6;
+skirt_wall = 2;
 shell_t    = 2.6;
 collar_h   = 22;
 key_ang    = 12;    // cuña autoblocante
@@ -69,13 +69,24 @@ wall     = 1.6;
 wall_h   = 15;      // 12 mm por encima de los nervios
 floor_h  = 3;
 back_u   = 12;      // la cuna sobresale esto por detrás del eje
-back_h   = 6;       // por detrás la pared es baja: el respaldo es el propio marco
 pin_u    = 10;      // tetón de tope, por delante del eje
 tr_len   = 7.5;     // muñón: 7,5 × 3,6 con dos caras planas
 tr_h     = 3.6;
+corner   = 7;       // radio de las esquinas de la cuna
+
+/* [Estética] */
+label       = "EL SECADERO | V5 | 161126";   // grabado en el anillo
+label_size  = 3.0;    // altura de las mayúsculas (JetBrains Mono Bold)
+label_depth = 0.6;
+zs0    = 6.5;         // el anillo se estrecha en curva entre estas dos alturas
+zs1    = 15.5;
+top_r  = 1.5;         // canto superior redondeado
+tail_r = 3;
 
 $fn = 72;
 eps = 0.01;
+
+use <fonts/JetBrainsMono-Bold.ttf>
 
 // ---------------------------------------------------------------------
 x_col   = -edge_dist;
@@ -104,7 +115,34 @@ z_c0 = -drop - floor_h;                       // base de la cuna
 z_a  = z_c0 + tr_h / 2;
 u0 = -back_u;                                  // cuna en coordenadas locales (u, v)
 u1 = u0 + in_x + 2 * wall;
-z_k = z_a + u1 + 5;                            // codo de la percha, por encima de la cuna levantada
+z_k = z_a + u1 + 5;
+sweep_r = wall_h - tr_h / 2 - 0.2;             // radio que barre la cuna por detrás del eje                            // codo de la percha, por encima de la cuna levantada
+
+// --- perfil del anillo: base ancha, curva en S y banda recta para el grabado ---
+R_b = r_skirt + skirt_wall;
+R_g = r_grip + shell_t;
+W_g = r_grip + ear_t;
+function sstep(t) = t <= 0 ? 0 : t >= 1 ? 1 : 3 * t * t - 2 * t * t * t;
+function topcut(z) = z <= collar_h - top_r ? 0 : top_r - sqrt(max(0, top_r * top_r - pow(z - collar_h + top_r, 2)));
+function botcut(z) = z >= 0.6 ? 0 : 0.6 - z;
+function Rz(z) = R_b + (R_g - R_b) * sstep((z - zs0) / (zs1 - zs0)) - topcut(z) - botcut(z);
+function Wz(z) = R_b + (W_g - R_b) * sstep((z - zs0) / (zs1 - zs0)) - topcut(z) - botcut(z);
+ring_zs = concat([0, 0.6], [for (z = [1.5 : 1 : collar_h - top_r - 0.01]) z],
+                 [for (i = [0 : 5]) collar_h - top_r + top_r * sin(i * 18)]);
+module ring_plan(z) {   // planta en herradura, con las colas redondeadas
+    hull() {
+        circle(r = Rz(z), $fn = 120);
+        for (s = [-1, 1]) translate([-back + tail_r, s * (Wz(z) - tail_r)]) circle(r = tail_r, $fn = 24);
+    }
+}
+// redondea en 2D: primero los rincones (radio ri), después las esquinas (radio ro)
+module soften(ri, ro) { offset(r = ro) offset(delta = -ro) offset(r = -ri) offset(delta = ri) children(); }
+// extruye con el canto superior matado en dos escalones de 0,4 mm
+module soft_extrude(h) {
+    linear_extrude(h - 0.8) children();
+    translate([0, 0, h - 0.8]) linear_extrude(0.4) offset(delta = -0.4) children();
+    translate([0, 0, h - 0.4]) linear_extrude(0.4) offset(delta = -0.8) children();
+}
 
 module u2d(r, b) { circle(r = r, $fn = 120); translate([-b, -r]) square([b, 2 * r]); }
 module rrect(x0, x1, y0, y1, r) {
@@ -115,30 +153,42 @@ module bar2d(p, q, w) { hull() { translate(p) circle(d = w); translate(q) circle
 module xz(y0, y1) { translate([0, y1, 0]) rotate([90, 0, 0]) linear_extrude(y1 - y0) children(); }
 
 // =========================== A: BRAZO =================================
+module arm2d() {   // planta: el brazo nace del anillo con un cuello curvo y se estrecha
+    xs = x_col + R_b;
+    soften(8, 0.01) {
+        translate([x_col, 0]) ring_plan(1);
+        polygon([[x_col, -13.5], [xs - 2, -13.5], [nose_x0 - 8, -arm_w / 2], [gx0, -arm_w / 2],
+                 [gx0, arm_w / 2], [nose_x0 - 8, arm_w / 2], [xs - 2, 13.5], [x_col, 13.5]]);
+    }
+}
+module label_cut() {   // texto grabado alrededor de la banda recta del anillo
+    n = len(label);
+    adv = 0.814 * label_size;
+    for (i = [0 : n - 1]) {
+        a = (i - (n - 1) / 2) * adv / R_g * 180 / PI;
+        translate([x_col, 0, 0]) rotate([0, 0, a])
+            translate([R_g - label_depth, 0, (zs1 + collar_h - top_r - label_size) / 2])
+                rotate([90, 0, 90]) linear_extrude(label_depth + 2)
+                    if (label[i] == "|") translate([-0.3, 0]) square([0.6, label_size]);
+                    else text(label[i], size = label_size, font = "JetBrains Mono:style=Bold", halign = "center");
+    }
+}
 module part_A() {
+    xs = x_col + R_b;
     difference() {
         union() {
-            translate([x_col, 0, 0]) {
-                linear_extrude(z1) u2d(r_skirt + skirt_wall, back);
-                hull() {
-                    translate([0, 0, z1 - eps]) linear_extrude(eps) u2d(r_skirt + skirt_wall, back);
-                    translate([0, 0, z2]) linear_extrude(eps) u2d(r_grip + shell_t, back);
-                }
-                translate([0, 0, z2]) linear_extrude(collar_h - z2) u2d(r_grip + shell_t, back);
-                // orejas que alojan la cuña
-                for (s = [-1, 1]) translate([-back, s > 0 ? r_grip - 1 : -r_grip - ear_t, zp0 - 2])
-                    cube([back - 19, ear_t + 1, collar_h - zp0 + 2]);
+            // anillo
+            translate([x_col, 0, 0]) for (i = [0 : len(ring_zs) - 2]) hull() {
+                translate([0, 0, ring_zs[i]]) linear_extrude(eps) ring_plan(ring_zs[i]);
+                translate([0, 0, ring_zs[i + 1]]) linear_extrude(eps) ring_plan(ring_zs[i + 1]);
             }
-            // brazo de 3 mm y punta de 5 mm
-            xs = x_col + r_skirt + 0.5;
-            translate([xs, -arm_w / 2, 0]) cube([nose_x0 - xs, arm_w, arm_t]);
-            hull() {
-                translate([nose_x0 - 6, -arm_w / 2, 0]) cube([eps, arm_w, arm_t]);
-                translate([nose_x0, -arm_w / 2, 0]) cube([nose_x1 - nose_x0, arm_w, nose_t]);
+            // brazo de 3 mm con el canto matado; la punta engrosa a 5 mm
+            soft_extrude(arm_t) arm2d();
+            hull() {   // rampa larga y suave hasta el grosor de la punta
+                translate([nose_x0 - 16, -arm_w / 2 + 0.8, 0]) cube([eps, arm_w - 1.6, arm_t]);
+                translate([nose_x0 + 2, -arm_w / 2, 0]) cube([gx1 - nose_x0 - 2, arm_w, nose_t]);
             }
-            // cartela brazo–abrazadera
-            xz(-1.5, 1.5) polygon([[xs - 9, arm_t - eps], [xs + 11, arm_t - eps],
-                                   [x_col + r_grip + shell_t - 0.5, z2 - 0.5]]);
+            linear_extrude(nose_t) rrect(gx1 - 3, nose_x1, -web_w / 2 + 0.4, web_w / 2 - 0.4, 2.5);   // testa
         }
         translate([x_col, 0, 0]) {
             // canal escalonado abierto por detrás: embellecedor abajo, columna arriba
@@ -154,53 +204,69 @@ module part_A() {
                     polygon([[-20, zp0], [xk0, zp0],
                              [xk0 - (collar_h + 1 - zp0) * tan(key_ang), collar_h + 1], [-20, collar_h + 1]]);
         }
+        label_cut();
         // punta: el marco entra de frente por encima de la testa y cae en la ranura
         translate([gx0, -web_w / 2, web_t]) cube([gx1 - gx0, web_w, nose_t]);            // ranura del puente
-        for (s = [-1, 1]) {
-            translate([gx0, s > 0 ? web_w / 2 : -arm_w, -1]) cube([gx1 - gx0, arm_w - web_w / 2, nose_t + 2]);
-            translate([gx1 - eps, s > 0 ? web_w / 2 - 0.4 : -arm_w, -1])
-                cube([stub_l + 1, arm_w - web_w / 2 + 0.4, nose_t + 2]);                  // testa más estrecha
-        }
+        for (s = [-1, 1])
+            translate([gx0, s > 0 ? web_w / 2 : -arm_w, -1]) cube([gx1 - gx0 + eps, arm_w - web_w / 2, nose_t + 2]);
     }
 }
 
 // =========================== K: CUÑA ==================================
+// Cuña + visera curva: desde arriba cierra el contorno del anillo por detrás
+// y sirve de uñero para sacarla.
+vis_t   = 2;
+vis_sag = 3;
 module part_K() {
+    R = col_d / 2;
+    zb = zp0 + 1.5;
+    zt = zb + key_h;
+    hw = r_grip - 0.4;                                   // semiancho de la visera, entre las colas
+    rho = (hw * hw + vis_sag * vis_sag) / (2 * vis_sag);
     translate([x_col, 0, 0]) {
-        zb = zp0 + 1.5;
-        xz(-r_grip - key_tongue, r_grip + key_tongue)
-            polygon([[-col_d / 2, zb], [-col_d / 2 - key_t0, zb],
-                     [-col_d / 2 - key_tt, zb + key_h], [-col_d / 2, zb + key_h]]);
-        translate([-col_d / 2 - 3, -6, zb + key_h - eps]) cube([3, 12, 2.5]);   // tirador
+        intersection() {
+            xz(-40, 40) polygon([[-R, zb], [-R - key_t0, zb], [-R - key_tt, zt], [-R, zt]]);
+            translate([-40, 0, 0]) rotate([90, 0, 90]) linear_extrude(80)
+                rrect(-r_grip - key_tongue, r_grip + key_tongue, zb, zt, 1.5);
+        }
+        translate([0, 0, zt - vis_t]) linear_extrude(vis_t) intersection() {
+            translate([-back - vis_sag - 1, -hw]) square([back + vis_sag + 1 - R - 2.5, 2 * hw]);
+            translate([-back - vis_sag + rho, 0]) circle(r = rho, $fn = 240);
+        }
     }
 }
 
 // =========================== B: MARCO =================================
-module frame2d() {   // en (y, z)
+module frame2d() {   // en (y, z): percha con todos los rincones y esquinas en curva
     difference() {
-        translate([-sh_out, -4]) square([2 * sh_out, nose_t + 4]);
-        translate([-web_w / 2 - 0.3, -5]) square([web_w + 0.6, web_t + 0.1 + 5]);
-    }
-    // patas verticales por fuera de la cuna (al levantarla pasa entre ellas) y
-    // brazos inclinados hasta la punta del brazo
-    for (s = [-1, 1]) {
-        bar2d([s * (sh_out - leg_w / 2), -2.5], [s * (fin_y0 + fin_t / 2), z_k], leg_w);
-        translate([s > 0 ? fin_y0 : -fin_y1, z_a - 8.5]) square([fin_t, z_k - z_a + 8.5]);
+        soften(4, 2) {
+            translate([-sh_out, -4]) square([2 * sh_out, nose_t + 4]);
+            // patas verticales por fuera de la cuna (al levantarla pasa entre ellas)
+            // y brazos inclinados hasta la punta del brazo
+            for (s = [-1, 1]) {
+                bar2d([s * (sh_out - leg_w / 2), -2.5], [s * (fin_y0 + fin_t / 2), z_k], leg_w);
+                translate([s > 0 ? fin_y0 : -fin_y1, z_a - 8.5]) square([fin_t, z_k - z_a + 8.5]);
+            }
+        }
+        translate([-web_w / 2 - 0.3, -8]) square([web_w + 0.6, web_t + 0.1 + 8]);   // hueco del alma
     }
 }
 module fin2d() {     // en (x, z)
     difference() {
         union() {
-            translate([frame_x0, z_a - 8.5]) square([x_a - frame_x0, 15]);
-            translate([x_a, z_a]) circle(r = 6.5);
-            translate([x_a, z_a - 8.5]) square([pin_u + 2.5, 8.5 - tr_h / 2]);   // repisa del tope
+            soften(1.2, 2) {
+                translate([frame_x0, z_a - 8.5]) square([x_a - frame_x0, 15]);
+                translate([x_a, z_a]) circle(r = 6.5);
+                translate([x_a, z_a - 8.5]) square([pin_u + 4, 8.5 - tr_h / 2]);   // repisa del tope
+            }
+            translate([frame_x0, z_a - 8.5]) square([3, 15]);   // la cara que toca la pared queda plana
         }
         translate([x_a, z_a]) circle(r = pocket_r);
         translate([x_a, z_a]) rotate(slot_ang) translate([0, -slot_w / 2]) square([30, slot_w]);
     }
 }
 module part_B() {
-    translate([frame_x0, 0, 0]) rotate([90, 0, 90]) linear_extrude(frame_t) frame2d();
+    translate([frame_x0, 0, 0]) rotate([90, 0, 90]) soft_extrude(frame_t) frame2d();
     translate([frame_x0, -fin_y1, z_a - 4 - tie_h / 2]) cube([tie_t, 2 * fin_y1, tie_h]);   // tirante
     for (s = [-1, 1]) xz(s > 0 ? fin_y0 : -fin_y1, s > 0 ? fin_y1 : -fin_y0) fin2d();
 }
@@ -210,23 +276,24 @@ module part_B() {
 module cradle_local() {
     difference() {
         linear_extrude(wall_h) difference() {
-            rrect(u0, u1, -cr_y, cr_y, 3);
-            rrect(u0 + wall, u1 - wall, -in_y / 2, in_y / 2, 1.4);
+            rrect(u0, u1, -cr_y, cr_y, corner);
+            rrect(u0 + wall, u1 - wall, -in_y / 2, in_y / 2, corner - wall);
         }
-        // por detrás del eje las paredes bajan en pendiente: al girar, nada barre
-        // más allá del radio del borde delantero y la cuna no toca el marco
-        xz(-cr_y - 1, cr_y + 1) polygon([[u0 - 1, back_h + (wall_h - back_h) * (-1) / (-u0)], [0, wall_h],
-                                        [0, wall_h + 5], [u0 - 1, wall_h + 5]]);
-        // ventanas en rombo (se imprimen sin soporte)
-        for (y = [-45 : 10 : 45])
-            translate([u1, y, 9]) rotate([45, 0, 0]) cube([8, 5.4, 5.4], center = true);
-        for (s = [-1, 1], u = [pin_u + 10, pin_u + 20])
-            translate([u, s * cr_y, 9]) rotate([0, 45, 0]) cube([5.4, 8, 5.4], center = true);
+        // por detrás del eje el borde baja siguiendo un arco centrado en la bisagra:
+        // al girar, nada barre más allá de ese radio y la cuna no toca el marco
+        xz(-cr_y - 1, cr_y + 1) polygon(concat(
+            [for (a = [90 : 5 : 180]) [sweep_r * cos(a), tr_h / 2 + sweep_r * sin(a)]],
+            [[u0 - 2, tr_h / 2], [u0 - 2, wall_h + 5], [0, wall_h + 5]]));
+        // ventanas en forma de cápsula
+        for (y = [-40 : 10 : 40]) hull() for (v = [6.5, 10.5])
+            translate([u1, y, v]) rotate([0, 90, 0]) cylinder(r = 2, h = 8, center = true, $fn = 24);
+        for (s = [-1, 1], u = [pin_u + 9, pin_u + 18]) hull() for (v = [6.5, 10.5])
+            translate([u, s * cr_y, v]) rotate([90, 0, 0]) cylinder(r = 2, h = 8, center = true, $fn = 24);
     }
     linear_extrude(floor_h) {
         difference() {                                              // marco del suelo
-            rrect(u0, u1, -cr_y, cr_y, 3);
-            rrect(u0 + 3, u1 - 3, -cr_y + 3, cr_y - 3, 1.4);
+            rrect(u0, u1, -cr_y, cr_y, corner);
+            rrect(u0 + 3, u1 - 3, -cr_y + 3, cr_y - 3, corner - 3);
         }
         for (f = [0.2, 0.5, 0.8])                                   // nervios
             translate([u0 + wall + in_x * f - 1, -cr_y + 1]) square([2, 2 * cr_y - 2]);
