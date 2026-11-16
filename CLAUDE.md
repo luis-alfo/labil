@@ -34,7 +34,7 @@ sus estados en orden: versiones impresas, pruebas y borradores.
 | `3d-models/objetos.json` | **Fuente de la web.** Objetos y estados (`version` = impresa, `prueba`, `borrador`; `por_imprimir`), textos, piezas, modelos, imágenes y descargas. Al añadir un diseño o un estado, se añade aquí. |
 | `3d-models/web.py` | Genera `docs/data/objetos.json`, los GLB que faltan (`docs/models/archivo/`) y copia descargas a `docs/files/<objeto>/<estado>/`. Corre en CI después de los `generate_stl.py`. |
 | `3d-models/costes.py` | Gramos y euros de cada pieza (laminador simplificado, perfil A1, **20 €/kg**). `--calibrar` lo compara con los gramos del laminador real (error medio 4 %, máx. 9 %). |
-| `docs/index.html`, `app.js`, `app.css` | La web v2 (rutas `#/`, `#/<objeto>/<estado>`, `#/historial`). Sin compilación. |
+| `docs/index.html`, `app.js`, `app.css` | La web v2 (rutas `#/`, `#/<objeto>/<estado>`, `#/historial`). Sin compilación. Página de objeto: modelo a pantalla completa; icono→inicio, nombre y precio arriba; versiones (desplegable) y posiciones (vistas `modelos`) abajo; banda «detalles» con la hoja. |
 | `docs/v1/` | **Archivo**: la web anterior congelada, con copia de sus modelos. No se toca. |
 
 Los borradores **sí se publican** en la web v2 (lo pidió Luis): se ven en la página de su objeto

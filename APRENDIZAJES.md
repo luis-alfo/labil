@@ -103,3 +103,20 @@ Registro vivo de explicaciones, decisiones y convenciones acordadas.
 - **Prueba en CI (16 nov 2026)**: la generación entera pasa en GitHub, incluido el paso de la web v2.
   El paso de publicar falló en 3 s y GitHub no guarda su registro. Lo más probable es que el entorno
   `github-pages` solo deje publicar desde ciertas ramas, sin confirmar. La web v2 sale al fusionar en `main`.
+
+## 2026-11-16 · Página de objeto limpia (boceto de Luis en la pizarra)
+
+- **El modelo ocupa toda la pantalla** y encima solo va lo imprescindible:
+  - **arriba a la izquierda**, el icono de labil, que lleva al inicio con el listado de objetos;
+  - **arriba en el centro**, el nombre del objeto;
+  - **arriba a la derecha**, el precio del estado que se ve, en bitmap y sin tarjeta;
+  - **abajo a la izquierda (fijo)**, el desplegable de **versiones**. Es un `<select>` nativo:
+    en el móvil abre el selector del sistema, el más cómodo con el pulgar;
+  - **abajo a la derecha (fijo)**, las **posiciones**: las vistas del modelo (abajo, levantada,
+    placa a1…) o, si el estado solo tiene imágenes, las imágenes. Con más de 3 se compactan en
+    cuadros numerados con el nombre de la activa encima;
+  - **una banda abajo, «↑ detalles»**, que sube una hoja con el resto: tipo, fecha, texto, coste,
+    diferencia con el anterior, piezas, imágenes, descargas y anterior/siguiente.
+    Se abre tocando o deslizando hacia arriba, y se cierra hacia abajo, tocando fuera o con Esc.
+- En escritorio, la hoja de detalles se abre como panel lateral.
+- **Vocabulario**: *posición* = una vista o colocación del mismo estado (no es otra versión).
