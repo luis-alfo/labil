@@ -37,7 +37,7 @@ Estado: diseñado y simulado el 16 nov 2026. Sin imprimir.
 - **K, cuña:** entra desde arriba por detrás de la columna. Al bajarla aprieta la U contra el grifo y se queda bloqueada sola (12°). Sustituye a la llave suelta del borrador anterior, que no apretaba.
 - **B, marco:**
   - Bastidor plano con forma de percha, impreso tumbado.
-  - Cabalga sobre la punta del brazo: entra de frente 3,3 mm alto y cae en una ranura.
+  - Su barra superior se engancha en la punta del brazo: entra inclinada unos 50° y, al quedar vertical, no puede salir (ver «Enganche del marco»).
   - Sus dos esquinas de abajo, separadas 116 mm, apoyan en la pared del fregadero. Eso lo estabiliza de lado y frente al giro.
 - **C, cuna:**
   - A la medida del estropajo (hueco de 49 × 101 mm), con tres nervios y el suelo abierto.
@@ -50,7 +50,7 @@ Estado: diseñado y simulado el 16 nov 2026. Sin imprimir.
 |---|---|
 | El estropajo no cabía | Cuna a su medida; comprobado con un bloque de 95 × 70 × 45 |
 | Se ladeaba (apoyo de 10 mm) | Apoyo de 116 mm en la pared; el estropajo solo puede descentrarse 3 mm |
-| Nada bloqueado | La cuña aprieta; el marco no sale tirando ni basculando (hay que subirlo 3,3 mm); la cuna solo sale a 60° |
+| Nada bloqueado | La cuña aprieta; el marco solo sale inclinado entre 40° y 60°; la cuna solo sale a 60° |
 | Bisagra en medio de la bandeja | Bisagra en los laterales, fuera del hueco |
 | Abrazadera maciza de 13 cm³ | Cáscara de 2–3 mm |
 | Sobresalía 84 mm (36 levantada) | 68 mm abajo y 32 levantada |
@@ -61,7 +61,7 @@ Estado: diseñado y simulado el 16 nov 2026. Sin imprimir.
 - Montaje sin choques:
   - A deslizando hacia la pared;
   - K desde arriba;
-  - B de frente y bajando;
+  - B inclinado 50° por la ranura y dejándolo caer a vertical;
   - C a 60° por las ranuras.
 - La cuna gira libre de 0° a 102°.
   - A −1° ya hace tope.
@@ -80,9 +80,9 @@ Estado: diseñado y simulado el 16 nov 2026. Sin imprimir.
 
 | Pieza | Filamento | Tiempo |
 |---|---|---|
-| A brazo | 15,6 g | 26 min |
+| A brazo | 15,8 g | 27 min |
 | K cuña | 2,5 g | 6 min |
-| B marco | 14,7 g | 33 min |
+| B marco | 14,4 g | 32 min |
 | C cuna | 11,2 g | 23 min |
 | **Total** | **~44 g** | **~1 h 30 min** |
 
@@ -101,7 +101,8 @@ Cada paso valida un encaje antes de gastar más.
    - [ ] La cuña baja y aprieta, y queda más o menos enrasada.
    - [ ] La ranura de la punta queda justo por fuera del canto.
 2. B (15 g, 33 min).
-   - [ ] Entra de frente y cae en la ranura.
+   - [ ] Entra inclinado unos 50° y, al soltarlo, queda vertical.
+   - [ ] Colgando, no sale tirando hacia arriba ni hacia el fregadero.
    - [ ] Cuelga vertical, con las dos esquinas tocando la pared.
 3. C (11 g, 23 min).
    - [ ] Entra a 60°.
@@ -168,3 +169,23 @@ Se compararon secciones cortando las mallas de antes y de después del rediseño
   - Banda del anillo de 3,2 mm, para que queden 2,6 bajo las letras.
 - Lección: redondear y matar cantos quita material justo en la fibra más cargada. Después de un cambio estético hay que volver a medir las secciones, no darlas por iguales.
 - Son comparaciones de sección sobre mallas ideales, no ensayos.
+
+## Enganche del marco (pregunta de Luis, 16 nov 2026)
+Luis preguntó si lo que cuelga solo se apoya en el brazo, y si eso no es frágil o si hace clic.
+
+- Cómo estaba:
+  - El marco descansaba en una ranura de 3 mm en la punta del brazo, sujeto solo por su peso: marco y cuna pesan 26 g (0,25 N).
+  - No se rompía, pero bastaba un golpe hacia arriba de más de 25 g, con 3,3 mm de recorrido, para sacarlo de su sitio. No hacía clic.
+- Por qué no un clic: un clic necesita que algo se doble, y Luis no quiere encajes que fuercen el PLA. Se resolvió por forma, igual que la bisagra de la cuna.
+- Cómo queda:
+  - El marco lleva arriba una barra plana de 3,6 × 1,6 mm.
+  - La punta del brazo tiene un alojamiento redondo de Ø 4,2 con una ranura de 2,1 mm inclinada 50° hacia arriba y hacia fuera.
+  - La barra solo pasa por la ranura cuando el marco está inclinado unos 50° hacia el centro del fregadero. En simulación, la ventana va de 40° a 60°.
+  - Colgando en vertical no sale hacia arriba, ni por la ranura, ni hacia delante ni hacia atrás. Tiene 1,2 mm de juego vertical antes de tocar el techo del alojamiento.
+  - Hacia la pared no puede bascular, porque apoya en ella.
+- Coste: la punta del brazo pasa de 5 a 7,1 mm de grosor. El marco ya no queda enrasado con la punta: queda por debajo, dentro de ella.
+- Resistencia:
+  - El alojamiento está aliviado 0,3 mm en el centro, así que la barra apoya solo cerca de los hombros y no trabaja a flexión. Con 20 N en el borde de la cuna, unos 12 MPa en la barra, como el puente anterior.
+  - El suelo del alojamiento mide 1,6 mm.
+- No es un clic: sigue siendo un encaje con holgura (0,25 mm), así que el marco puede moverse un poco si se le toca. Lo que cambia es que ya no se sale.
+- Lección: «no se sale tirando» no basta. Hay que mirar también cuánta fuerza y recorrido hacen falta para sacar una pieza por el mismo camino por el que entró.

@@ -6,8 +6,9 @@
 //        agarre en la columna) + brazo plano de 3 mm a ras de encimera
 //    K = cuña: cierra la U por detrás de la columna y la aprieta al bajarla
 //    B = marco: bastidor plano con forma de percha (se imprime tumbado, todo trabaja en el
-//        plano de las capas). Cabalga sobre la punta del brazo y apoya sus dos
-//        esquinas de abajo en la pared del fregadero.
+//        plano de las capas). Su barra superior entra inclinada en la punta del
+//        brazo y, al quedar vertical, no puede salir. Apoya sus dos esquinas de
+//        abajo en la pared del fregadero.
 //    C = cuna: el estropajo va de canto sobre nervios. Gira entre las dos
 //        aletas del marco; levantada pasa entre las patas, se apoya en la pared
 //        del fregadero a ~100° y se queda sola.
@@ -46,10 +47,18 @@ ear_t      = 5.8;
 /* [Brazo y punta] */
 arm_w  = 22;
 arm_t  = 3;
-nose_t = 5;         // la punta engrosa para alojar el marco enrasado
-web_w  = 18;        // ancho del alma bajo el puente del marco
-web_t  = 2;
-stub_l = 4.2;       // testa por delante del marco
+web_w  = 18;        // ancho de la cabeza de la punta, entre los hombros del marco
+// enganche del marco: barra plana que gira dentro de un alojamiento redondo
+hk_len   = 3.6;     // barra del marco: largo (x) y alto (z) con el marco vertical
+hk_h     = 1.6;
+hk_ch    = 0.3;     // chaflán de las aristas de la barra
+hk_r     = 2.1;     // radio del alojamiento
+hk_slot  = 2.1;     // ancho de la ranura de entrada
+hk_ang   = 50;      // el marco solo entra y sale inclinado este ángulo hacia fuera
+hk_floor = 1.6;
+hk_roof  = 1.3;
+hk_sink  = 0.55;    // la barra descansa esto por debajo del centro del alojamiento
+nose_t = hk_floor + 2 * hk_r + hk_roof;   // la punta engrosa para alojar el enganche
 
 /* [Marco] */
 frame_t = 6;        // grosor (x): se imprime tumbado sobre esta cara
@@ -107,10 +116,11 @@ fin_y0 = cr_y + fin_clr;
 fin_y1 = fin_y0 + fin_t;
 function sag(y) = sink_d / 2 - sqrt(pow(sink_d / 2, 2) - y * y);
 frame_x0 = max(7, sink_wall_x + sag(fin_y1) + 0.1);  // cara trasera del marco
-gx0 = frame_x0 - 0.2;
-gx1 = frame_x0 + frame_t + 0.2;
+gx0 = frame_x0 - 0.5;                          // el brazo a todo su ancho acaba aquí
+hx  = frame_x0 + hk_len / 2;                   // eje del enganche
+hz  = hk_floor + hk_r;
 nose_x0 = 3;
-nose_x1 = gx1 + stub_l;
+nose_x1 = hx + hk_r + 3.5;
 x_a  = frame_x0 + frame_t + (wall_h - tr_h / 2) + 0.1;  // eje de la bisagra
 z_c0 = -drop - floor_h;                       // base de la cuna
 z_a  = z_c0 + tr_h / 2;
@@ -198,9 +208,13 @@ module part_A() {
             soft_extrude(arm_t) arm2d();
             hull() {   // rampa larga y suave hasta el grosor de la punta
                 translate([nose_x0 - 16, -arm_w / 2 + 0.8, 0]) cube([eps, arm_w - 1.6, arm_t]);
-                translate([nose_x0 + 2, -arm_w / 2, 0]) cube([gx1 - nose_x0 - 2, arm_w, nose_t]);
+                translate([gx0 - 3, -arm_w / 2, 0]) cube([3, arm_w, nose_t - 1]);
+                translate([gx0 - 2, -arm_w / 2 + 1, 0]) cube([2, arm_w - 2, nose_t]);
             }
-            linear_extrude(nose_t) rrect(gx1 - 3, nose_x1, -web_w / 2 + 0.4, web_w / 2 - 0.4, 2.5);   // testa
+            hull() {   // cabeza de la punta, con las aristas de arriba matadas
+                linear_extrude(nose_t - 1) rrect(gx0 - 3, nose_x1, -web_w / 2, web_w / 2, 2.5);
+                linear_extrude(nose_t) rrect(gx0 - 2, nose_x1 - 1, -web_w / 2 + 1, web_w / 2 - 1, 2);
+            }
             translate([x_col, 0, 0]) for (i = [0 : len(neck_zs) - 2]) hull() {                        // cuello
                 translate([0, 0, neck_zs[i]]) linear_extrude(eps) neck_plan(neck_zs[i]);
                 translate([0, 0, neck_zs[i + 1]]) linear_extrude(eps) neck_plan(neck_zs[i + 1]);
@@ -221,10 +235,13 @@ module part_A() {
                              [xk0 - (collar_h + 1 - zp0) * tan(key_ang), collar_h + 1], [-20, collar_h + 1]]);
         }
         label_cut();
-        // punta: el marco entra de frente por encima de la testa y cae en la ranura
-        translate([gx0, -web_w / 2, web_t]) cube([gx1 - gx0, web_w, nose_t]);            // ranura del puente
-        for (s = [-1, 1])
-            translate([gx0, s > 0 ? web_w / 2 : -arm_w, -1]) cube([gx1 - gx0 + eps, arm_w - web_w / 2, nose_t + 2]);
+        // enganche: alojamiento redondo con una ranura inclinada hacia arriba y hacia fuera.
+        // La barra del marco solo pasa por la ranura con el marco inclinado hk_ang.
+        translate([hx, 0, hz]) rotate([90, 0, 0]) cylinder(r = hk_r, h = web_w + 2, center = true, $fn = 48);
+        // alivio en el centro: la barra apoya solo cerca de los hombros y no trabaja a flexión
+        translate([hx, 0, hz]) rotate([90, 0, 0]) cylinder(r = hk_r + 0.3, h = web_w - 6, center = true, $fn = 48);
+        xz(-web_w / 2 - 1, web_w / 2 + 1) translate([hx, hz]) rotate(hk_ang)
+            translate([0, -hk_slot / 2]) square([14, hk_slot]);
     }
 }
 
@@ -256,7 +273,7 @@ module part_K() {
 module frame2d() {   // en (y, z): percha con todos los rincones y esquinas en curva
     difference() {
         soften(4, 2) {
-            translate([-sh_out, -4]) square([2 * sh_out, nose_t + 4]);
+            translate([-sh_out, -4]) square([2 * sh_out, hz - hk_sink + hk_h / 2 + 4]);
             // patas verticales por fuera de la cuna (al levantarla pasa entre ellas)
             // y brazos inclinados hasta la punta del brazo
             for (s = [-1, 1]) {
@@ -264,7 +281,7 @@ module frame2d() {   // en (y, z): percha con todos los rincones y esquinas en c
                 translate([s > 0 ? fin_y0 : -fin_y1, z_a - 8.5]) square([fin_t, z_k - z_a + 8.5]);
             }
         }
-        translate([-web_w / 2 - 0.3, -8]) square([web_w + 0.6, web_t + 0.1 + 8]);   // hueco del alma
+        translate([-web_w / 2 - 0.3, -8]) square([web_w + 0.6, 30]);   // hueco de la cabeza de la punta
     }
 }
 module fin2d() {     // en (x, z)
@@ -283,6 +300,12 @@ module fin2d() {     // en (x, z)
 }
 module part_B() {
     translate([frame_x0, 0, 0]) rotate([90, 0, 90]) soft_extrude(frame_t) frame2d();
+    // barra del enganche, entre los dos hombros, con las aristas a 45°
+    bl = web_w + 0.6 + 4;
+    translate([frame_x0, -bl / 2, hz - hk_sink - hk_h / 2]) hull() {
+        translate([0, 0, hk_ch]) cube([hk_len, bl, hk_h - 2 * hk_ch]);
+        translate([hk_ch, 0, 0]) cube([hk_len - 2 * hk_ch, bl, hk_h]);
+    }
     translate([frame_x0, -fin_y1, z_a - 4 - tie_h / 2]) cube([tie_t, 2 * fin_y1, tie_h]);   // tirante
     for (s = [-1, 1]) xz(s > 0 ? fin_y0 : -fin_y1, s > 0 ? fin_y1 : -fin_y0) fin2d();
 }
