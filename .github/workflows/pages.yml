@@ -36,7 +36,7 @@ jobs:
         run: pip install trimesh shapely manifold3d numpy-stl networkx lxml scipy
 
       - name: Install OpenSCAD
-        # estropajero-v3 se modela en OpenSCAD; su generate_stl.py lo necesita
+        # el-secadero-v2 se modela en OpenSCAD; su generate_stl.py lo necesita
         run: sudo apt-get update -qq && sudo apt-get install -y -qq openscad
 
       - name: Regenerate STL + GLB for every design
@@ -55,6 +55,19 @@ jobs:
             cd "$GITHUB_WORKSPACE"
             echo "::endgroup::"
           done
+
+      - name: Copiar descargas de los diseños antiguos a docs/files
+        # Solo se publica docs/, así que los STL/3MF/MD que enlaza el visor
+        # tienen que estar dentro. el-secadero-v2 ya escribe los suyos.
+        run: |
+          set -euo pipefail
+          for d in bathroom-bar-a bathroom-bar-b bathroom-bar-c; do
+            mkdir -p "docs/files/$d"
+            cp 3d-models/$d/*.stl "docs/files/$d/"
+          done
+          mkdir -p docs/files/sponge-holder
+          cp 3d-models/sponge-holder/*.stl 3d-models/sponge-holder/*.3mf \
+             3d-models/sponge-holder/print_settings.md docs/files/sponge-holder/
 
       - uses: actions/configure-pages@v5
 

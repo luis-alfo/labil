@@ -16,6 +16,23 @@ This repo has two distinct concerns:
 If the user's request is unrelated to 3D-printable design (e.g. they ask
 about the Next.js app), you can ignore the rest of this file.
 
+## Versiones y carpetas de los diseños 3D (regla de Luis)
+
+**Solo cuenta como versión lo que se ha impreso.** Todo lo demás son borradores.
+
+| Carpeta | Qué es |
+| --- | --- |
+| `3d-models/sponge-holder/` | **V1**. Impresa. Con sus piezas de prueba `test_*`. |
+| `3d-models/el-secadero-v2/` | **V2**, «El Secadero». Diseño actual, sin imprimir. Fuente: `el_secadero_v2.scad`. |
+| `3d-models/bathroom-bar-{a,b,c}/` | Otro proyecto (barra de baño). |
+| `3d-models/_borradores/` | Archivo de borradores (`estropajero-v3`, `estropajero-v4`). **No son versiones** y no se publican. Se conservan por sus `APRENDIZAJES.md`. |
+| `3d-models/perfiles/` | Perfil de laminador para estimar tiempos (A1 + PLA). |
+
+- Cada diseño tiene su `APRENDIZAJES.md` (datos, decisiones, comprobaciones). Léelo antes de tocarlo.
+- No numeres un borrador como «V3», «V4»… La siguiente versión será la que se imprima.
+- Un directorio de `3d-models/` solo se ejecuta en CI si tiene `generate_stl.py` en su raíz.
+  Para archivar algo, muévelo a `_borradores/`.
+
 ---
 
 # Designing 3D-printable parts from a photo
@@ -26,6 +43,10 @@ sponge-holder design (`/3d-models/sponge-holder/`). Apply to any new
 printable: clips, brackets, hooks, holders, jigs.
 
 ## Phase 1 — Discovery (do not skip)
+
+Antes de preguntar, **mira lo que ya existe en el repo**: medidas de la V1 impresa
+(`3d-models/sponge-holder/`) y `APRENDIZAJES.md` de cada diseño. Una medida que ya
+funcionó impresa vale más que una estimación nueva.
 
 Before generating any geometry, ask the user. **Hand-drawn dimensions
 on a photo are almost always ambiguous**; assumptions cost a print.
@@ -62,18 +83,22 @@ Always parametric. Hard-coded dimensions waste the user's iteration time.
 
 ### Toolchain
 
-Two parallel files, same parameters, kept in sync:
+Hay dos modos de trabajo según el diseño:
 
-| File | Purpose |
-| --- | --- |
-| `generate_stl.py` | Source of truth. Uses `trimesh` + `shapely` + `manifold3d`. Outputs both STL (printing) and GLB (web preview). |
-| `*.scad` | Human-readable mirror in OpenSCAD for users who prefer that ecosystem. Optional but cheap to maintain. |
+| Modo | Diseños | Fuente de verdad |
+| --- | --- | --- |
+| **OpenSCAD como fuente** (el actual) | `el-secadero-v2` | `*.scad` paramétrico. `generate_stl.py` lo pasa por OpenSCAD, ensambla con `trimesh` y escribe STL, GLB (`docs/models/`) y descargas (`docs/files/<diseño>/`, incluido el 3MF de la placa A1). **No editar el STL a mano**: se regenera. |
+| **Python como fuente** (histórico) | `sponge-holder`, `bathroom-bar-*` | `generate_stl.py` (`trimesh` + `shapely` + `manifold3d`); el `*.scad` de `sponge-holder` es un espejo legible. |
 
-Required Python deps (install from CI or local):
+Diseños nuevos: OpenSCAD como fuente. El workflow instala OpenSCAD en CI, así que
+`generate_stl.py` puede llamarlo.
+
+Required Python deps (install from CI or local; la lista exacta está en `pages.yml`):
 
 ```
-pip install trimesh shapely manifold3d numpy-stl
+pip install trimesh shapely manifold3d numpy-stl networkx lxml scipy
 ```
+Más `openscad` (`apt-get install openscad`) para los diseños con fuente `.scad`.
 
 ### File skeleton
 
@@ -109,6 +134,17 @@ def main():
 | Smooth 90° fillet between two perpendicular straps | Define centerline polyline (two segments + quarter-arc) in XZ; `LineString(pts).buffer(WALL_T/2, cap_style=2, join_style=2)`; `extrude_polygon`; rotate so extrusion is along Y |
 | Booleans must be manifold | `trimesh.boolean.union(parts, engine="manifold")`; check `holder.is_volume` after |
 | Tiny welding overlap so booleans don't crack | `CLIP_OVERLAP = 0.6` mm — every junction overlaps neighbours by this |
+
+### Lecciones de El Secadero V2 (`3d-models/el-secadero-v2/APRENDIZAJES.md`)
+
+1. **Medir antes de modelar.** Las medidas supuestas (46 / 54 × 8 / 68 mm en los
+   borradores) salieron mal; una quedó 9 mm larga. Apunta de dónde sale cada dato y su
+   incertidumbre.
+2. **Mirar lo ya impreso.** Los datos de la V1 llevaban en el repo desde el principio.
+3. **Simular el montaje completo**, no solo cada pieza: piezas contra grifo, encimera,
+   fregadero y estropajo, en las posiciones abajo y levantada.
+4. **Volver a medir las secciones tras un cambio estético.** Un cambio de forma puede
+   quitar resistencia sin que se note a la vista.
 
 ### Verification before declaring done
 
@@ -191,15 +227,18 @@ with AR if they want, **without manually running anything**.
 
 The repo has **a single shared viewer** that lists every printable
 design in the project. New designs always get **added to that viewer
-as a new section + tab**, never their own page.
+as a new section + tab**, never their own page. Los borradores archivados
+en `_borradores/` no aparecen en el visor.
 
 Stack:
 
 ```
 3d-models/
-├── sponge-holder/          # one folder per design
+├── sponge-holder/          # V1 (impresa), una carpeta por diseño
 │   ├── generate_stl.py
 │   └── test_*.py
+├── el-secadero-v2/         # V2: *.scad + generate_stl.py + APRENDIZAJES.md
+├── _borradores/            # archivo, NO se ejecuta en CI
 └── <new-design>/           # new designs go here
     └── generate_stl.py
 
@@ -209,12 +248,17 @@ docs/
     ├── sponge_holder.glb   # one .glb per visible model in the viewer
     ├── <new-design>.glb    # generators write to /docs/models/...
     └── version.txt         # shared cache-buster timestamp
+└── files/<diseño>/         # descargas del visor: STL, 3MF, SCAD, APRENDIZAJES.md
 
-.github/workflows/pages.yml # regenerates ALL GLBs in CI, deploys /docs
+.github/workflows/pages.yml # instala deps + OpenSCAD, regenera todo en CI, deploys /docs
 ```
 
 Key points:
 
+- **Solo se publica `docs/`.** Un enlace `../3d-models/...` en `docs/index.html` da
+  404 en la web. Toda descarga enlazada (STL, 3MF, SCAD, notas) va en
+  `docs/files/<diseño>/` y se enlaza como `files/<diseño>/<archivo>`. Los diseños con
+  OpenSCAD la escriben su `generate_stl.py`; para los antiguos, `pages.yml` copia los STL.
 - Use **GLB** (not STL) for the viewer. trimesh can `.export(*.glb)`
   natively. Smaller, faster, and `<model-viewer>` only accepts GLB/glTF.
 - **Cache-busting**: write a unix timestamp to `models/version.txt` on
@@ -250,9 +294,12 @@ to include the new model. Concretely:
 4. **No JS changes needed.** `IntersectionObserver` discovers new
    sections via `document.querySelectorAll("main section")`, and the
    tab→scroll handler binds to every `.tabs a`.
-5. **No workflow changes needed.** `pages.yml` already globs
-   `3d-models/*/`, so new designs are picked up automatically.
-6. Update the `Modelo NN` numbering on the eyebrow if you want, or
+5. **Descargas**: que el generador escriba STL/3MF/SCAD/`APRENDIZAJES.md` en
+   `docs/files/<design>/` y enlázalos como `files/<design>/...` (nunca `../3d-models/`).
+6. **No workflow changes needed.** `pages.yml` already globs
+   `3d-models/*/` (y OpenSCAD ya está instalado), so new designs are picked up
+   automatically.
+7. Update the `Modelo NN` numbering on the eyebrow if you want, or
    just let the order in `<main>` define it.
 
 Do not create a second HTML file or a second route. The single
@@ -331,8 +378,10 @@ Default answers when something doesn't fit:
 
 ## Reference implementation
 
-`/3d-models/sponge-holder/` is the canonical example of this playbook
-applied end to end:
+`/3d-models/el-secadero-v2/` es el diseño actual y el ejemplo más reciente
+(OpenSCAD como fuente, `APRENDIZAJES.md`, descargas en `docs/files/`).
+`/3d-models/sponge-holder/` (V1) is the canonical example of this playbook
+applied end to end con Python como fuente:
 
 - `generate_stl.py` — main parametric model
 - `test_faucet_clip.py`, `test_sponge_clip.py` — MVP test pieces

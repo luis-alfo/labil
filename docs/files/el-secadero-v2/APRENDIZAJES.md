@@ -6,7 +6,7 @@
 - **V2** es este diseño.
 - Todo lo que hubo entre medias fueron borradores de diseño, no versiones.
   - En la conversación y en commits antiguos se les llamó «V2» a «V5».
-  - Dos de ellos siguen en `3d-models/estropajero-v3/` y `3d-models/estropajero-v4/`.
+  - Dos de ellos están archivados en `3d-models/_borradores/` (`estropajero-v3` y `estropajero-v4`).
   - En estas notas se les llama «el borrador anterior» o «los borradores».
 - El grabado y la web usan la numeración de Luis: «EL SECADERO | V2 | 161126».
 
