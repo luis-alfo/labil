@@ -2,6 +2,13 @@
 
 Project guide auto-loaded by Claude Code on every session in this repo.
 
+## Forma de trabajar con Luis
+
+- Idioma de trabajo: español.
+- Cada vez que Claude explique algo, lo guarda en los aprendizajes del proyecto
+  (`APRENDIZAJES.md` en la raíz para lo general, el `APRENDIZAJES.md` de cada objeto para lo suyo).
+  El objetivo es crear códigos compartidos y entender las realidades de Luis.
+
 ## Project
 
 This repo has two distinct concerns:
