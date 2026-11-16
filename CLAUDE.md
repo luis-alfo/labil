@@ -40,6 +40,8 @@ sus estados en orden: versiones impresas, pruebas y borradores.
 Los borradores **sí se publican** en la web v2 (lo pidió Luis): se ven en la página de su objeto
 marcados como borrador. Siguen sin numerarse como versiones.
 
+**Publicación**: `pages.yml` despliega **solo desde `main`** (decisión de Luis, 16 nov 2026). Una rama `claude/**` no cambia la web hasta que se fusiona; para probar antes, `workflow_dispatch` o abrir `docs/` en local (`python3 -m http.server -d docs`).
+
 Objetos que vienen de otras ramas (unidos el 16 nov 2026 con su historia): `fidgets/botonera-nch/`
 (`claude/brave-darwin-9hqz7q`), `cajones-isla/` (`claude/nice-goodall-9jt9q8`) y
 `llaveros/habitacion-26/` (copiado de `claude/add-3d-color-combinations-xTKbo`).

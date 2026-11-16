@@ -3,8 +3,7 @@ name: Build & deploy 3D viewer
 on:
   push:
     branches:
-      - main
-      - 'claude/**'
+      - main   # solo main: si publicaran también las ramas claude/**, la última en subir pisaría la web
     paths:
       - '3d-models/**'
       - 'docs/**'

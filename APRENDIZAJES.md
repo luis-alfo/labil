@@ -97,3 +97,5 @@ Registro vivo de explicaciones, decisiones y convenciones acordadas.
   en 8 piezas. Contrastes: cajón 102 g (notas: 109), botonera 2×2 20 g (≈19), marco 11 g (11).
   **No incluye la purga** de los cambios de color (en el llavero ST26 fue el 52 % del filamento).
 - **Cifras (16 nov 2026)**: imprimir todo el archivo ≈ 722 g ≈ 14,46 €. El Secadero v2 ≈ 43 g ≈ 0,86 €.
+- **Respuestas de Luis (16 nov 2026)**: la web se publica **solo desde `main`**. De los cajones
+  de la isla y de la barra de baño **no se ha impreso nada**: siguen como borradores y pruebas sin imprimir.
