@@ -15,6 +15,8 @@ from __future__ import annotations
 
 import itertools
 import json
+import math
+import re
 from pathlib import Path
 
 import numpy as np
@@ -63,6 +65,39 @@ def _icp(a: np.ndarray, b: np.ndarray) -> tuple[np.ndarray, float]:
     return mejor
 
 
+SCAD = RAIZ / "3d-models" / "el-secadero-v2" / "el_secadero_v2.scad"
+GENERADOR = RAIZ / "3d-models" / "el-secadero-v2" / "generate_stl.py"
+
+
+def _param(texto: str, nombre: str) -> float:
+    return float(re.search(rf"^\s*{nombre}\s*=\s*([-\d.]+)", texto, re.M).group(1))
+
+
+def movimientos() -> dict:
+    """Movimientos reales del montaje (APRENDIZAJES.md de el-secadero-v2), en mm, z arriba:
+    A se desliza hacia la pared hasta abrazar la columna · K baja desde arriba ·
+    B entra inclinado hk_ang° hacia fuera por el enganche y cae a vertical ·
+    C entra a slot_ang° por las ranuras y baja hasta horizontal · el estropajo cae en la cuna.
+    Los puntos de giro salen de las mismas fórmulas que el .scad."""
+    scad, gen = SCAD.read_text(), GENERADOR.read_text()
+    p = lambda n: _param(scad, n)
+    sponge = [float(v) for v in re.search(r"^\s*sponge\s*=\s*\[([^\]]+)\]", scad, re.M).group(1).split(",")]
+    in_y = sponge[1] + 6
+    cr_y = in_y / 2 + p("wall")
+    fin_y1 = cr_y + p("fin_clr") + p("fin_t")
+    sag = p("sink_d") / 2 - math.sqrt((p("sink_d") / 2) ** 2 - fin_y1 ** 2)
+    frame_x0 = max(7, p("sink_wall_x") + sag + 0.1)
+    hx, hz = frame_x0 + p("hk_len") / 2, p("hk_floor") + p("hk_r")
+    x_axis, z_axis = (float(v) for v in re.search(r"X_AXIS, Z_AXIS, FOLD_REST = ([-\d.]+), ([-\d.]+)", gen).groups())
+    return {
+        "A": {"tipo": "desliza", "desde": [70, 0, 0]},
+        "K": {"tipo": "desliza", "desde": [0, 0, 45]},
+        "B": {"tipo": "gira", "punto": [hx, 0, hz], "angulo": -p("hk_ang"), "entrada": [0, 0, 30]},
+        "C": {"tipo": "gira", "punto": [x_axis, 0, z_axis], "angulo": -p("slot_ang"), "entrada": [0, 0, 30]},
+        "estropajo": {"tipo": "desliza", "desde": [0, 0, 110]},
+    }
+
+
 def main() -> None:
     placa = trimesh.load(MODELOS / "el_secadero_v2_placa.glb")
     abajo = trimesh.load(MODELOS / "el_secadero_v2_abajo.glb")
@@ -85,7 +120,7 @@ def main() -> None:
     d[2, 3] = 40 - caja[:, 2].min()  # 40 mm por encima de la placa: «sale de la placa»
     contexto = [{"nombre": CONTEXTO[_color(g)], "color": list(_color(g))}
                 for g in abajo.geometry.values() if _color(g) in CONTEXTO]
-    salida = {"orden": [k for k in ORDEN if k in piezas], "piezas": piezas,
+    salida = {"orden": [k for k in ORDEN if k in piezas], "piezas": piezas, "movimientos": movimientos(),
               "desplazamiento": d.T.flatten().round(6).tolist(), "contexto": contexto}
     (MODELOS / "el_secadero_v2_montaje.json").write_text(json.dumps(salida) + "\n")
 

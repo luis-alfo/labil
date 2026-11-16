@@ -191,3 +191,13 @@ Registro vivo de explicaciones, decisiones y convenciones acordadas.
 - **Lecciones técnicas**: (1) el mismo número de vértices no significa el mismo orden; para emparejar
   dos mallas hace falta ICP, no el índice. (2) trimesh necesita `rtree` para su ICP; se escribió uno con
   `scipy` para no añadir dependencias. (3) three.js guarda el color del GLB sin convertir: se compara tal cual.
+
+## 2026-11-16 · Portada: montaje real, estropajo y transiciones
+
+- **Montaje con movimientos reales** (Luis: «que no esté atravesando la pieza»). Cada pieza hace dos tramos:
+  sale de la placa hasta su punto de entrada y luego hace su movimiento de montaje. El brazo se desliza
+  hacia la pared, la cuña baja, el marco entra a 50° y cae a vertical, y la cuna entra a 60° y baja girando.
+  Los ejes y ángulos los calcula `3d-models/montaje.py` a partir del `.scad`.
+- **Estropajo realista**: salvauñas con espuma amarilla porosa y una capa verde de fibra, cantos redondeados.
+- **Suavidad**: la rejilla conserva el píxel, pero los movimientos ya no van a saltos. Hay fundidos entre fases
+  y al reiniciar. Regla para la marca: *a saltos* en la UI, *suave* en el movimiento 3D.
