@@ -1085,7 +1085,7 @@
    "id": "labil-web",
    "nombre": "labil · la web",
    "que": "la propia web donde se ven los objetos: también se diseña por versiones",
-   "estado": "página limpia publicada",
+   "estado": "desplegable de marca publicado",
    "palabras": {
     "version": "publicada",
     "pendiente": "por publicar"
@@ -1194,6 +1194,42 @@
       {
        "tema": "método",
        "texto": "Se dibujó primero en la pizarra y se construyó tal cual el boceto."
+      }
+     ],
+     "descargas": []
+    },
+    {
+     "id": "desplegable",
+     "tipo": "version",
+     "nombre": "desplegable de marca",
+     "fecha": "2026-11-16",
+     "texto": "El selector de versiones deja de ser el del sistema: una lista propia que sube desde el botón, con el estado, la fecha y el precio de cada versión.",
+     "imagenes": [
+      {
+       "de": "labil-web/capturas/2026-11-16-web-desplegable-de-marca.png",
+       "pie": "desplegable abierto"
+      },
+      {
+       "de": "labil-web/capturas/2026-11-16-web-desplegable-cerrado.png",
+       "pie": "cerrado"
+      }
+     ],
+     "memoria": [
+      {
+       "tema": "diseño",
+       "texto": "Luis: «el desplegable de versiones usa dropdown de sistema, no de ui de nuestra marca». El selector nativo de iOS o Android rompía el lenguaje de LG Señal justo en el control más usado."
+      },
+      {
+       "tema": "uso",
+       "texto": "Ahora la lista enseña más que el nombre: el tipo (impresa, prueba, borrador), la fecha y el precio. Así se comparan versiones sin abrirlas."
+      },
+      {
+       "tema": "estética",
+       "texto": "Gestos de la marca: la lista sube a saltos, los nombres se descifran al abrir, la versión elegida se rellena de fósforo con esquinas rectas y la flecha es de píxeles."
+      },
+      {
+       "tema": "método",
+       "texto": "Se mantiene lo bueno del nativo: se usa con el pulgar (filas de 52 px), con el teclado (flechas, Inicio, Fin, Intro, Esc) y lo anuncia el lector de pantalla como lista de opciones."
       }
      ],
      "descargas": []
