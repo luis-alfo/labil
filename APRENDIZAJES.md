@@ -100,3 +100,6 @@ Registro vivo de explicaciones, decisiones y convenciones acordadas.
 - **Respuestas de Luis (16 nov 2026)**: la web se publica **solo desde `main`**. De los cajones
   de la isla y de la barra de baño **no se ha impreso nada**: siguen como borradores y pruebas sin imprimir.
 - El **llavero «habitación 26»** (tipo motel, «Room 26» grabado detrás, mayo 2026) **se imprimió**.
+- **Prueba en CI (16 nov 2026)**: la generación entera pasa en GitHub, incluido el paso de la web v2.
+  El paso de publicar falló en 3 s y GitHub no guarda su registro. Lo más probable es que el entorno
+  `github-pages` solo deje publicar desde ciertas ramas, sin confirmar. La web v2 sale al fusionar en `main`.
