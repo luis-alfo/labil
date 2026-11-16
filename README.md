@@ -1,5 +1,18 @@
 # Labil
 
+Este repositorio tiene **dos partes independientes**:
+
+| Parte | Dónde está | De qué va |
+|---|---|---|
+| **Labil** (app Next.js) | `src/`, `e2e/`, `package.json`, `DEPLOYMENT.md`, `ISSUES.md` | Generación de diagramas con IA (el resto de este README). |
+| **Piezas para imprimir en 3D** | `3d-models/`, `docs/`, `.github/workflows/pages.yml`, `CLAUDE.md` | Modelos paramétricos y visor web con descargas: <https://luis-alfo.github.io/labil/> |
+
+Dentro de `3d-models/`: `sponge-holder/` (V1, impresa), `el-secadero-v2/` (V2, diseño actual, sin imprimir),
+`bathroom-bar-a|b|c/` (barra de baño), `_borradores/` (archivo, no se publica) y `perfiles/` (perfil de laminador).
+La guía del flujo 3D está en `CLAUDE.md`.
+
+## Labil (app)
+
 AI-powered diagram generation tool. Create flowcharts, process diagrams, and swimlanes with natural language.
 
 ## Stack

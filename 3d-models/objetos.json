@@ -1,0 +1,823 @@
+{
+ "_leeme": "Fuente de la web (docs/). Cada objeto tiene estados en orden cronológico: 'version' = impresa (regla de Luis), 'prueba' = pieza de prueba, 'borrador' = diseño sin imprimir. Las rutas son desde la raíz del repo. `python3 3d-models/web.py` genera docs/data/objetos.json, los GLB que faltan, las copias de descarga y el coste de cada pieza.",
+ "objetos": [
+  {
+   "id": "el-secadero",
+   "nombre": "el secadero",
+   "que": "soporte de estropajo que abraza el grifo de la cocina",
+   "estado": "v2 por imprimir",
+   "aprendizajes": "3d-models/el-secadero-v2/APRENDIZAJES.md",
+   "estados": [
+    {
+     "id": "pruebas-agarre",
+     "tipo": "prueba",
+     "nombre": "abrazadera y pinza",
+     "fecha": "2026-05-01",
+     "texto": "Dos piezas mínimas para probar el agarre antes de imprimir el soporte entero: la abrazadera al grifo de 45 mm y la pinza de la esponja.",
+     "modelos": [
+      {
+       "nombre": "abrazadera",
+       "glb": "docs/models/test_faucet_clip.glb"
+      },
+      {
+       "nombre": "pinza",
+       "glb": "docs/models/test_sponge_clip.glb"
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "abrazadera del grifo",
+       "de": "3d-models/sponge-holder/test_faucet_clip.stl"
+      },
+      {
+       "nombre": "pinza de esponja",
+       "de": "3d-models/sponge-holder/test_sponge_clip.stl"
+      }
+     ],
+     "descargas": [
+      "docs/files/sponge-holder/test_faucet_clip.stl",
+      "docs/files/sponge-holder/test_sponge_clip.stl"
+     ]
+    },
+    {
+     "id": "pruebas-pinza",
+     "tipo": "prueba",
+     "nombre": "tres pinzas",
+     "fecha": "2026-05-02",
+     "texto": "Tres formas de pellizcar la esponja para comparar en la mano: C casi cerrada a 300°, anillo a 340° y paredes rectas.",
+     "modelos": [
+      {
+       "nombre": "300°",
+       "glb": "docs/models/test_sponge_v_300deg.glb"
+      },
+      {
+       "nombre": "340°",
+       "glb": "docs/models/test_sponge_v_340deg.glb"
+      },
+      {
+       "nombre": "recta",
+       "glb": "docs/models/test_sponge_v_parallel.glb"
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "pinza 300°",
+       "de": "3d-models/sponge-holder/test_sponge_v_300deg.stl"
+      },
+      {
+       "nombre": "pinza 340°",
+       "de": "3d-models/sponge-holder/test_sponge_v_340deg.stl"
+      },
+      {
+       "nombre": "pinza recta",
+       "de": "3d-models/sponge-holder/test_sponge_v_parallel.stl"
+      }
+     ],
+     "descargas": [
+      "docs/files/sponge-holder/test_sponge_v_300deg.stl",
+      "docs/files/sponge-holder/test_sponge_v_340deg.stl",
+      "docs/files/sponge-holder/test_sponge_v_parallel.stl"
+     ]
+    },
+    {
+     "id": "pruebas-tenedor",
+     "tipo": "prueba",
+     "nombre": "pinza tenedor",
+     "fecha": "2026-05-03",
+     "texto": "La pinza en tenedor, con puntas finas y arco curvo, y una pieza que compara el brazo de 20 mm con el de 14 mm.",
+     "modelos": [
+      {
+       "nombre": "tenedor",
+       "glb": "docs/models/test_sponge_v_fork.glb"
+      },
+      {
+       "nombre": "20 vs 14 mm",
+       "glb": "docs/models/test_sponge_v_fork_compare.glb"
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "pinza tenedor",
+       "de": "docs/files/sponge-holder/test_sponge_v_fork.3mf"
+      },
+      {
+       "nombre": "comparar largos",
+       "de": "docs/files/sponge-holder/test_sponge_v_fork_compare.3mf"
+      }
+     ],
+     "descargas": [
+      "docs/files/sponge-holder/test_sponge_v_fork.3mf",
+      "docs/files/sponge-holder/test_sponge_v_fork_compare.3mf"
+     ]
+    },
+    {
+     "id": "v1",
+     "tipo": "version",
+     "nombre": "v1",
+     "fecha": "2026-05-03",
+     "texto": "La primera impresa. Abrazadera al grifo, brazo por detrás con giro de 90° y pinza tenedor corta (14 mm) con dos puntas triangulares.",
+     "modelos": [
+      {
+       "nombre": "pieza",
+       "glb": "docs/models/sponge_holder.glb"
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "soporte completo",
+       "de": "docs/files/sponge-holder/sponge_holder.3mf"
+      }
+     ],
+     "descargas": [
+      "docs/files/sponge-holder/sponge_holder.3mf",
+      "docs/files/sponge-holder/sponge_holder.stl",
+      "docs/files/sponge-holder/print_settings.md"
+     ]
+    },
+    {
+     "id": "borrador-bastidor",
+     "tipo": "borrador",
+     "nombre": "bastidor",
+     "archivo": "estropajero-v3",
+     "fecha": "2026-10-31",
+     "texto": "Brazo, bastidor y bandeja que se levanta. El bastidor entra de lado en el brazo para poder montarlo en PLA. Las medidas eran supuestas: una salió 9 mm larga.",
+     "modelos": [
+      {
+       "nombre": "piezas",
+       "de": [
+        "3d-models/_borradores/estropajero-v3/pieza_A.stl",
+        "3d-models/_borradores/estropajero-v3/pieza_B_bastidor.stl",
+        "3d-models/_borradores/estropajero-v3/pieza_C_bandeja.stl"
+       ]
+      }
+     ],
+     "imagenes": [
+      {
+       "de": "3d-models/_borradores/estropajero-v3/preview.png",
+       "pie": "montado"
+      },
+      {
+       "de": "3d-models/_borradores/estropajero-v3/montaje_A_B.png",
+       "pie": "montaje de A y B"
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "A brazo",
+       "de": "3d-models/_borradores/estropajero-v3/pieza_A.stl"
+      },
+      {
+       "nombre": "B bastidor",
+       "de": "3d-models/_borradores/estropajero-v3/pieza_B_bastidor.stl"
+      },
+      {
+       "nombre": "C bandeja",
+       "de": "3d-models/_borradores/estropajero-v3/pieza_C_bandeja.stl"
+      }
+     ],
+     "descargas": [
+      "3d-models/_borradores/estropajero-v3/APRENDIZAJES.md",
+      "3d-models/_borradores/estropajero-v3/estropajero_v3.scad"
+     ]
+    },
+    {
+     "id": "borrador-colgador",
+     "tipo": "borrador",
+     "nombre": "colgador",
+     "archivo": "estropajero-v4",
+     "fecha": "2026-11-01",
+     "texto": "Rediseño por resistencia: brazo, colgador, bandeja y una llave suelta. Todo trabaja en el plano de capa, pero la llave de 2 g se cae al fregadero y de lado es inestable.",
+     "modelos": [
+      {
+       "nombre": "piezas",
+       "de": [
+        "3d-models/_borradores/estropajero-v4/pieza_A_brazo.stl",
+        "3d-models/_borradores/estropajero-v4/pieza_B_colgador.stl",
+        "3d-models/_borradores/estropajero-v4/pieza_C_bandeja.stl",
+        "3d-models/_borradores/estropajero-v4/pieza_K_llave.stl"
+       ]
+      }
+     ],
+     "imagenes": [
+      {
+       "de": "3d-models/_borradores/estropajero-v4/preview.png",
+       "pie": "montado"
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "A brazo",
+       "de": "3d-models/_borradores/estropajero-v4/pieza_A_brazo.stl"
+      },
+      {
+       "nombre": "B colgador",
+       "de": "3d-models/_borradores/estropajero-v4/pieza_B_colgador.stl"
+      },
+      {
+       "nombre": "C bandeja",
+       "de": "3d-models/_borradores/estropajero-v4/pieza_C_bandeja.stl"
+      },
+      {
+       "nombre": "K llave",
+       "de": "3d-models/_borradores/estropajero-v4/pieza_K_llave.stl"
+      }
+     ],
+     "descargas": [
+      "3d-models/_borradores/estropajero-v4/APRENDIZAJES.md",
+      "3d-models/_borradores/estropajero-v4/estropajero_v4.scad"
+     ]
+    },
+    {
+     "id": "v2",
+     "tipo": "version",
+     "nombre": "v2",
+     "fecha": "2026-11-16",
+     "por_imprimir": true,
+     "texto": "El Secadero. Cuna para el estropajo de canto, marco percha que se engancha por forma y cuña de apriete. Formas redondeadas y grabado en JetBrains Mono. Medida antes de modelar.",
+     "modelos": [
+      {
+       "nombre": "abajo",
+       "glb": "docs/models/el_secadero_v2_abajo.glb"
+      },
+      {
+       "nombre": "levantada",
+       "glb": "docs/models/el_secadero_v2_levantada.glb"
+      },
+      {
+       "nombre": "placa a1",
+       "glb": "docs/models/el_secadero_v2_placa.glb"
+      }
+     ],
+     "imagenes": [
+      {
+       "de": "3d-models/el-secadero-v2/grabado.png",
+       "pie": "grabado"
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "A brazo",
+       "de": "3d-models/el-secadero-v2/pieza_A_brazo.stl"
+      },
+      {
+       "nombre": "B marco",
+       "de": "3d-models/el-secadero-v2/pieza_B_marco.stl"
+      },
+      {
+       "nombre": "C cuna",
+       "de": "3d-models/el-secadero-v2/pieza_C_cuna.stl"
+      },
+      {
+       "nombre": "K cuña",
+       "de": "3d-models/el-secadero-v2/pieza_K_cuna_apriete.stl"
+      }
+     ],
+     "descargas": [
+      "docs/files/el-secadero-v2/el_secadero_v2_A1.3mf",
+      "docs/files/el-secadero-v2/pieza_A_brazo.stl",
+      "docs/files/el-secadero-v2/pieza_B_marco.stl",
+      "docs/files/el-secadero-v2/pieza_C_cuna.stl",
+      "docs/files/el-secadero-v2/pieza_K_cuna_apriete.stl",
+      "docs/files/el-secadero-v2/el_secadero_v2.scad",
+      "docs/files/el-secadero-v2/APRENDIZAJES.md"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "botonera-nch",
+   "nombre": "botonera nch",
+   "que": "fidget con las cuatro formas del icono de nocodehackers como botones",
+   "estado": "2×2 en prueba",
+   "aprendizajes": "fidgets/botonera-nch/APRENDIZAJES.md",
+   "estados": [
+    {
+     "id": "lengueta",
+     "tipo": "borrador",
+     "nombre": "lengüetas",
+     "archivo": "botonera_nch",
+     "fecha": "2026-10-28",
+     "texto": "Una sola pieza de 50 × 50 × 12 mm. Cada botón va sobre una lengüeta de la tapa recortada en U que flexa al pulsar.",
+     "modelos": [
+      {
+       "nombre": "pieza",
+       "de": [
+        "fidgets/botonera-nch/botonera_nch.3mf"
+       ]
+      }
+     ],
+     "imagenes": [
+      {
+       "de": "fidgets/botonera-nch/preview.png",
+       "pie": "vista previa"
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "botonera",
+       "de": "fidgets/botonera-nch/botonera_nch.3mf"
+      }
+     ],
+     "descargas": [
+      "fidgets/botonera-nch/botonera_nch.3mf"
+     ]
+    },
+    {
+     "id": "clic",
+     "tipo": "borrador",
+     "nombre": "clic",
+     "archivo": "botonera_nch_v2",
+     "fecha": "2026-10-28",
+     "texto": "Bajo cada lengüeta, una cuchilla con diente en cuña: clic al bajar y otro al soltar. Sigue siendo una pieza. Versión bicolor para el AMS lite.",
+     "modelos": [
+      {
+       "nombre": "pieza",
+       "de": [
+        "fidgets/botonera-nch/botonera_nch_v2.3mf"
+       ]
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "botonera",
+       "de": "fidgets/botonera-nch/botonera_nch_v2.3mf"
+      }
+     ],
+     "descargas": [
+      "fidgets/botonera-nch/botonera_nch_v2.3mf",
+      "fidgets/botonera-nch/botonera_nch_v2_color.3mf"
+     ]
+    },
+    {
+     "id": "espiral",
+     "tipo": "borrador",
+     "nombre": "espiral",
+     "archivo": "botonera_nch_v3",
+     "fecha": "2026-10-28",
+     "texto": "Cada forma va sobre un disco con 4 brazos en espiral: baja recto y paralelo, sin bisagra. Con su botón de prueba suelto.",
+     "modelos": [
+      {
+       "nombre": "botonera",
+       "de": [
+        "fidgets/botonera-nch/botonera_nch_v3.3mf"
+       ]
+      },
+      {
+       "nombre": "botón de prueba",
+       "de": [
+        "fidgets/botonera-nch/prueba_boton_v3.3mf"
+       ]
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "botonera",
+       "de": "fidgets/botonera-nch/botonera_nch_v3.3mf"
+      }
+     ],
+     "descargas": [
+      "fidgets/botonera-nch/botonera_nch_v3.3mf",
+      "fidgets/botonera-nch/botonera_nch_v3_color.3mf",
+      "fidgets/botonera-nch/prueba_boton_v3.3mf"
+     ]
+    },
+    {
+     "id": "tecla-oculta",
+     "tipo": "prueba",
+     "nombre": "tecla oculta",
+     "archivo": "botonera_nch_v4",
+     "fecha": "2026-10-28",
+     "texto": "Teclas con la forma del logo que tapan el mecanismo. Se imprimió el botón de prueba y la tecla se rompió al primer clic: los brazos del resorte iban en puente.",
+     "modelos": [
+      {
+       "nombre": "botón de prueba",
+       "de": [
+        "fidgets/botonera-nch/prueba_boton_v4.3mf"
+       ]
+      },
+      {
+       "nombre": "botonera",
+       "de": [
+        "fidgets/botonera-nch/botonera_nch_v4.3mf"
+       ]
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "botón de prueba",
+       "de": "fidgets/botonera-nch/prueba_boton_v4.3mf"
+      }
+     ],
+     "descargas": [
+      "fidgets/botonera-nch/prueba_boton_v4.3mf",
+      "fidgets/botonera-nch/botonera_nch_v4.3mf",
+      "fidgets/botonera-nch/botonera_nch_v4_color.3mf"
+     ]
+    },
+    {
+     "id": "tres-piezas",
+     "tipo": "version",
+     "nombre": "botón en 3 piezas",
+     "archivo": "boton_v5",
+     "fecha": "2026-10-28",
+     "texto": "Resorte plano con espirales de 300°, carcasa y tecla que encajan. Impreso y funciona. Luis pide más recorrido y menos tamaño.",
+     "modelos": [
+      {
+       "nombre": "piezas",
+       "de": [
+        "fidgets/botonera-nch/boton_v5_piezas.3mf"
+       ]
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "botón (3 piezas)",
+       "de": "fidgets/botonera-nch/boton_v5_piezas.3mf"
+      }
+     ],
+     "descargas": [
+      "fidgets/botonera-nch/boton_v5_piezas.3mf"
+     ]
+    },
+    {
+     "id": "compacto",
+     "tipo": "borrador",
+     "nombre": "botón compacto",
+     "archivo": "boton_v6",
+     "fecha": "2026-10-28",
+     "texto": "24 × 24 mm y 2 mm de recorrido con la misma tensión: resorte de 2 brazos de 1,0 mm que dan casi vuelta y media.",
+     "modelos": [
+      {
+       "nombre": "piezas",
+       "de": [
+        "fidgets/botonera-nch/boton_v6_piezas.3mf"
+       ]
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "botón (3 piezas)",
+       "de": "fidgets/botonera-nch/boton_v6_piezas.3mf"
+      }
+     ],
+     "descargas": [
+      "fidgets/botonera-nch/boton_v6_piezas.3mf"
+     ]
+    },
+    {
+     "id": "dos-por-dos",
+     "tipo": "borrador",
+     "nombre": "botonera 2×2",
+     "archivo": "botonera_v6_2x2",
+     "fecha": "2026-10-29",
+     "texto": "46 × 46 mm: carcasa de 4 celdas, 4 teclas y 4 resortes compactos en una placa. La tapa trasera a ras no es válida: ninguna pieza puede doblarse para encajar. Falta una probeta de holguras.",
+     "modelos": [
+      {
+       "nombre": "placa",
+       "de": [
+        "fidgets/botonera-nch/botonera_v6_2x2.3mf"
+       ]
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "botonera 2×2",
+       "de": "fidgets/botonera-nch/botonera_v6_2x2.3mf"
+      }
+     ],
+     "descargas": [
+      "fidgets/botonera-nch/botonera_v6_2x2.3mf",
+      "fidgets/botonera-nch/README.md",
+      "fidgets/botonera-nch/APRENDIZAJES.md"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "cajones-isla",
+   "nombre": "cajones de la isla",
+   "que": "cajones modulares para los huecos de 130 × 135 mm de la isla de la cocina",
+   "estado": "pendiente de probar el encaje",
+   "aprendizajes": "cajones-isla/APRENDIZAJES.md",
+   "estados": [
+    {
+     "id": "marco",
+     "tipo": "prueba",
+     "nombre": "marco de prueba",
+     "fecha": "2026-10-13",
+     "texto": "Solo el contorno del cajón, 10 mm de fondo, para probar el encaje en los 6 huecos gastando lo mínimo. Hace de galga.",
+     "modelos": [
+      {
+       "nombre": "marco",
+       "de": [
+        "cajones-isla/marco_prueba_130x135.stl"
+       ]
+      }
+     ],
+     "imagenes": [
+      {
+       "de": "cajones-isla/marco_prueba_preview.png",
+       "pie": "marco"
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "marco",
+       "de": "cajones-isla/marco_prueba_130x135.stl"
+      }
+     ],
+     "descargas": [
+      "cajones-isla/marco_prueba_130x135.stl",
+      "cajones-isla/README.md"
+     ]
+    },
+    {
+     "id": "conceptos",
+     "tipo": "borrador",
+     "nombre": "conceptos",
+     "fecha": "2026-10-13",
+     "texto": "Caja, bandeja y bandeja perforada; la versión Gridfinity; cinco frentes; la estética de la puerta con línea de sombra y los revoltons, el techo de bóveda catalana de la casa de Luis.",
+     "imagenes": [
+      {
+       "de": "cajones-isla/concepto_cajon_variantes.png",
+       "pie": "caja, bandeja, perforada"
+      },
+      {
+       "de": "cajones-isla/concepto_gridfinity.png",
+       "pie": "gridfinity"
+      },
+      {
+       "de": "cajones-isla/propuestas_frente.png",
+       "pie": "cinco frentes"
+      },
+      {
+       "de": "cajones-isla/puertas_estetica.png",
+       "pie": "estética de la puerta"
+      },
+      {
+       "de": "cajones-isla/revoltons.png",
+       "pie": "revoltons"
+      },
+      {
+       "de": "cajones-isla/cajon_agujero.png",
+       "pie": "agujero de dedo"
+      }
+     ]
+    },
+    {
+     "id": "llave",
+     "tipo": "prueba",
+     "nombre": "probeta de la llave",
+     "fecha": "2026-10-13",
+     "texto": "Tres juntas con llave de mariposa (juego de 0,1, 0,2 y 0,3 mm, marcadas con 1, 2 o 3 muescas) para elegir el ajuste antes del cajón.",
+     "modelos": [
+      {
+       "nombre": "probeta",
+       "de": [
+        "cajones-isla/prueba_union_llave_mariposa.stl"
+       ]
+      }
+     ],
+     "imagenes": [
+      {
+       "de": "cajones-isla/uniones.png",
+       "pie": "uniones"
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "probeta",
+       "de": "cajones-isla/prueba_union_llave_mariposa.stl"
+      }
+     ],
+     "descargas": [
+      "cajones-isla/prueba_union_llave_mariposa.stl"
+     ]
+    },
+    {
+     "id": "cajon",
+     "tipo": "borrador",
+     "nombre": "cajón clickfinity",
+     "fecha": "2026-10-14",
+     "texto": "Dos tramos con base Clickfinity, frente de 3 voltes y 4 llaves de mariposa. Las placas Clickfinity no están en el repo por su licencia (CC BY-NC-SA) y no entran en el coste.",
+     "modelos": [
+      {
+       "nombre": "piezas",
+       "de": [
+        "cajones-isla/stl/frente_revoltons3.stl",
+        "cajones-isla/stl/tramo_A.stl",
+        "cajones-isla/stl/tramo_B.stl",
+        "cajones-isla/stl/llave_mariposa.stl"
+       ]
+      }
+     ],
+     "imagenes": [
+      {
+       "de": "cajones-isla/cajon_clickfinity.png",
+       "pie": "cajón"
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "frente 3 voltes",
+       "de": "cajones-isla/stl/frente_revoltons3.stl"
+      },
+      {
+       "nombre": "tramo A",
+       "de": "cajones-isla/stl/tramo_A.stl"
+      },
+      {
+       "nombre": "tramo B",
+       "de": "cajones-isla/stl/tramo_B.stl"
+      },
+      {
+       "nombre": "llave de mariposa",
+       "de": "cajones-isla/stl/llave_mariposa.stl",
+       "cantidad": 4
+      }
+     ],
+     "descargas": [
+      "cajones-isla/stl/frente_revoltons3.stl",
+      "cajones-isla/stl/tramo_A.stl",
+      "cajones-isla/stl/tramo_B.stl",
+      "cajones-isla/stl/llave_mariposa.stl"
+     ]
+    },
+    {
+     "id": "tapa-pasante",
+     "tipo": "borrador",
+     "nombre": "tapa pasante",
+     "fecha": "2026-10-14",
+     "texto": "El frente de 3 voltes con un faldón de 12 mm y costillas aplastables. Sirve para probar la puerta y para tapar los huecos sin cajón. Los dedos enganchan por detrás.",
+     "modelos": [
+      {
+       "nombre": "tapa",
+       "de": [
+        "cajones-isla/stl/tapa_revoltons3_pasante.stl"
+       ]
+      }
+     ],
+     "imagenes": [
+      {
+       "de": "cajones-isla/tapas.png",
+       "pie": "las dos tapas"
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "tapa",
+       "de": "cajones-isla/stl/tapa_revoltons3_pasante.stl"
+      }
+     ],
+     "descargas": [
+      "cajones-isla/stl/tapa_revoltons3_pasante.stl"
+     ]
+    },
+    {
+     "id": "tapa-bolsillo",
+     "tipo": "borrador",
+     "nombre": "tapa bolsillo",
+     "fecha": "2026-10-14",
+     "texto": "Igual que la pasante, pero con una cajita cerrada detrás del arco: la yema engancha y no se ve el interior. La mejor para tapar huecos.",
+     "modelos": [
+      {
+       "nombre": "tapa",
+       "de": [
+        "cajones-isla/stl/tapa_revoltons3_bolsillo.stl"
+       ]
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "tapa",
+       "de": "cajones-isla/stl/tapa_revoltons3_bolsillo.stl"
+      }
+     ],
+     "descargas": [
+      "cajones-isla/stl/tapa_revoltons3_bolsillo.stl",
+      "cajones-isla/APRENDIZAJES.md"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "barra-bano",
+   "nombre": "barra de baño",
+   "que": "barra modular para el baño, junto al grifo",
+   "estado": "tres propuestas",
+   "estados": [
+    {
+     "id": "hilo",
+     "tipo": "borrador",
+     "nombre": "hilo",
+     "fecha": "2026-05-01",
+     "texto": "Varilla de aluminio y clamps que encajan a presión.",
+     "modelos": [
+      {
+       "nombre": "barra",
+       "glb": "docs/models/bathroom_bar_a.glb"
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "barra y clamps",
+       "de": "3d-models/bathroom-bar-a/bathroom_bar_a.stl"
+      }
+     ],
+     "descargas": [
+      "docs/files/bathroom-bar-a/bathroom_bar_a.stl"
+     ]
+    },
+    {
+     "id": "carril",
+     "tipo": "borrador",
+     "nombre": "carril",
+     "fecha": "2026-05-01",
+     "texto": "Perfil de PLA con canal en T por el que corren los accesorios.",
+     "modelos": [
+      {
+       "nombre": "barra",
+       "glb": "docs/models/bathroom_bar_b.glb"
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "carril",
+       "de": "3d-models/bathroom-bar-b/bathroom_bar_b.stl"
+      }
+     ],
+     "descargas": [
+      "docs/files/bathroom-bar-b/bathroom_bar_b.stl"
+     ]
+    },
+    {
+     "id": "rama",
+     "tipo": "borrador",
+     "nombre": "rama",
+     "fecha": "2026-05-01",
+     "texto": "Brazo curvo de una pieza.",
+     "modelos": [
+      {
+       "nombre": "barra",
+       "glb": "docs/models/bathroom_bar_c.glb"
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "rama",
+       "de": "3d-models/bathroom-bar-c/bathroom_bar_c.stl"
+      }
+     ],
+     "descargas": [
+      "docs/files/bathroom-bar-c/bathroom_bar_c.stl"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "llaveros",
+   "nombre": "llaveros",
+   "que": "llaveros con texto grabado o en relieve",
+   "estado": "los dos impresos",
+   "estados": [
+    {
+     "id": "habitacion-26",
+     "tipo": "version",
+     "nombre": "habitación 26",
+     "fecha": "2026-05-13",
+     "texto": "Llavero tipo motel con «Room 26» grabado a 0,4 mm (2 capas) en la cara de atrás, en letra con serifa y en vertical. Impreso.",
+     "modelos": [
+      {
+       "nombre": "llavero",
+       "de": [
+        "llaveros/habitacion-26/key-room-26.stl"
+       ]
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "llavero",
+       "de": "llaveros/habitacion-26/key-room-26.stl"
+      }
+     ],
+     "descargas": [
+      "llaveros/habitacion-26/key-room-26.stl",
+      "llaveros/habitacion-26/generate-key-stl.mjs"
+     ]
+    },
+    {
+     "id": "st26-botella",
+     "tipo": "version",
+     "nombre": "st26 botella",
+     "fecha": "2026-11-01",
+     "texto": "Llavero en forma de botella, blanco y naranja, con ojal. Laminado e impreso en la A1. La purga de los cambios de color pesa más que el propio llavero. Sin archivos en este repo.",
+     "real": {
+      "gramos": 14.43,
+      "pieza_g": 6.89,
+      "fuente": "bambu studio, 1 llavero por placa, con purga y torre"
+     }
+    }
+   ]
+  }
+ ]
+}
