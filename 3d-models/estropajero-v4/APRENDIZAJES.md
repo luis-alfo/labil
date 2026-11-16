@@ -125,3 +125,12 @@ Luis pidió repensar el modelo y criticarlo según sus principios: resistencia, 
 3. Colgador con apoyo ancho arriba y dos topes separados en la pared, y enganche con bloqueo.
 4. Abrazadera baja, solo alrededor del embellecedor, con una llave en cuña que apriete. Brazo de 3 mm.
 5. Rejilla de 2 mm.
+
+## Datos de Luis para la V5 (16 nov 2026)
+- Decisión: el soporte sí puede apoyarse en la pared interior del fregadero.
+- El estropajo es de tipo salvauñas: espuma amarilla con ranuras de agarre a los lados y fibra verde en una cara. Faltan sus medidas.
+- Luis preguntó cómo se seca mejor. Recomendación (pendiente de que la confirme): de canto, apoyado en el lado largo, con la fibra en vertical y sobre dos o tres nervios finos en vez de un fondo plano.
+  - Así las dos caras grandes quedan al aire y el agua baja por gravedad y gotea.
+  - Tumbado sobre la fibra, la cara de abajo queda siempre mojada.
+- Consecuencia para el diseño: la bandeja pasa a ser una cuna estrecha (el grosor del estropajo más holgura) y entra menos en el fregadero.
+- Siguen pendientes las medidas 1 a 8 del grifo, el canto, la pared del fregadero y el estropajo.
