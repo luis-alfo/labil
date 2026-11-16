@@ -35,3 +35,18 @@ Registro vivo de explicaciones, decisiones y convenciones acordadas.
   - **A · Bitfigura**: la «l» de labil en bitmap fósforo + nodo `ink`, sobre rejilla apagada.
   - **B · Flujo**: nodo → arista (`ink-faint`) → nodo, en píxeles.
   - **C · Capa encima**: marcas de esquina de `Panel` + nodo de fósforo, sobre `surface-raised`.
+
+## 2026-11-16 · Reencuadre: «de la letra al objeto»
+
+- **Tesis de Luis**: *diseño objetos desde la escritura, con IA*. Labil no es "un editor
+  de diagramas con IA": la **escritura es el material** y el objeto es una forma que toma.
+- **El nombre ya lo dice**: *lábil* = inestable, que cambia de estado con facilidad.
+  Labil es el estado intermedio entre letra y objeto. Encaja con LG Señal
+  («la Señal cambia», «ruido que se ordena»).
+- **Lo que el código ya demuestra**: `mermaidToFlow` / `flowToMermaid` hacen
+  texto ⇄ objeto en ambos sentidos. Ese ida y vuelta es el núcleo; el canvas es una vista.
+- **Implicaciones abiertas** (pendiente de decidir con Luis):
+  - La fuente de verdad es el texto; el objeto se regenera y se puede volver a escribir.
+  - "Objeto" hoy = diagrama. ¿Mañana: documentos, interfaces, piezas físicas?
+  - Gesto de marca: una letra que se reordena hasta ser forma (animación de descifrado).
+  - El favicon debería mostrar esa transición (letra → objeto), no una letra ni un nodo sueltos.
