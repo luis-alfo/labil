@@ -85,17 +85,18 @@ function pie() {
 
 // ── inicio: de la letra al objeto (motion graphics) y, debajo, los objetos ────
 // Casi sin texto: la marca y una palabra por fase.
-//   1 escribes   · una frase se escribe
-//   2 se diseña  · sus letras se ordenan en la pieza, en la rejilla de píxeles
-//   3 se calcula · mapa de tensiones (rápido)
-//   4 se imprime · una impresora 3D imprime la placa real de el secadero v2, capa a capa
-//   5 objeto     · la impresora desaparece y queda el objeto
+//   1 definición · una frase se escribe
+//   2 diseño     · sus letras se ordenan en la pieza, en la rejilla de píxeles
+//   3 cálculo    · una fuerza de 20 N en el borde; la tensión crece hasta la unión
+//                  brazo-pata y su valor (17 MPa) se compara con el límite (20)
+//   4 impresión  · una impresora 3D imprime la placa real de el secadero v2, capa a capa
+//   5 montaje    · las piezas salen de la placa y se montan en el grifo
 const FASES = [
-  { palabra: "escribes", ms: 2400 },
-  { palabra: "se diseña", ms: 1900 },
-  { palabra: "se calcula", ms: 1100 },
-  { palabra: "se imprime", ms: 6200 },
-  { palabra: "objeto", ms: 2600 },
+  { palabra: "definición", ms: 2400 },
+  { palabra: "diseño", ms: 1900 },
+  { palabra: "cálculo", ms: 3800 },
+  { palabra: "impresión", ms: 5600 },
+  { palabra: "montaje", ms: 4600 },
 ];
 const FRASE = "un soporte para el estropajo";
 
@@ -200,6 +201,59 @@ function animarPortada() {
   // la impresora 3D (three.js) se carga aparte; si no se puede, la impresión se hace en la rejilla
   cargarImpresora(lienzo3d).then((imp) => { if (id === animacion) impresora = imp; }).catch(() => {});
 
+  // tensión de cada celda: crece hacia la unión brazo-pata (29, 7), donde se concentra el par
+  const tension = new Map(pieza.celdas.map(([x, y]) => [x + "," + y, Math.max(0, 1 - Math.hypot(x - 29, y - 7) / 26)]));
+  // camino de la carga: desde el fondo de la cuna (33, 22) por la estructura
+  const pasos = new Map(); {
+    const cola = [[33, 22]]; pasos.set("33,22", 0);
+    while (cola.length) {
+      const [x, y] = cola.shift();
+      for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+        const kk = `${x + dx},${y + dy}`;
+        if (tension.has(kk) && !pasos.has(kk)) { pasos.set(kk, pasos.get(`${x},${y}`) + 1); cola.push([x + dx, y + dy]); }
+      }
+    }
+  }
+  const maxPaso = Math.max(...pasos.values());
+  function texto(t, x, y, color, tam = 12, alin = "left") {
+    ctx.fillStyle = color; ctx.textAlign = alin; ctx.textBaseline = "middle";
+    ctx.font = `500 ${tam * dims.dpr}px "JetBrains Mono", monospace`;
+    ctx.fillText(t, x * dims.dpr, y * dims.dpr);
+  }
+  function dibujarCalculo(f) {
+    const { cel, ox, oy, dpr } = dims;
+    // 1) la fuerza: una flecha de píxeles que baja hasta el fondo de la cuna (33, 22)
+    const baja = escalon(Math.min(1, f / 0.18), 4);
+    const punta = oy + 21.6 * cel - (1 - baja) * cel * 3, fx = ox + 33.5 * cel, p = cel * 0.6;
+    ctx.fillStyle = C.tinta;
+    for (let i = 1; i <= 4; i++) ctx.fillRect((fx - p / 2) * dpr, (punta - p * (i + 1.2)) * dpr, p * dpr, p * 0.8 * dpr);
+    ctx.fillRect((fx - p * 1.5) * dpr, (punta - p * 1.2) * dpr, p * 3 * dpr, p * 0.6 * dpr);
+    ctx.fillRect((fx - p / 2) * dpr, (punta - p * 0.6) * dpr, p * dpr, p * 0.6 * dpr);
+    texto("20 N", fx, punta - p * 6.5, C.tinta, 12, "center");
+    // 2) la tensión recorre la estructura desde la carga y se colorea según su valor
+    const frente = escalon((f - 0.15) / 0.5, 12) * maxPaso;
+    pieza.celdas.forEach(([x, y]) => {
+      const kk = x + "," + y;
+      if (pasos.get(kk) > frente) return celda(x, y, C.muda);
+      const v = tension.get(kk);
+      celda(x, y, v > 0.85 ? C.aviso : v > 0.55 ? C.senal : C.tenue);
+    });
+    // 3) el valor: 17 MPa en la unión, frente al límite de 20
+    if (f > 0.62) {
+      const g = escalon((f - 0.62) / 0.3, 10);
+      const hx = ox + 29.5 * cel, hy = oy + 7.5 * cel;
+      ctx.strokeStyle = C.aviso; ctx.lineWidth = dpr;
+      ctx.beginPath(); ctx.moveTo(hx * dpr, hy * dpr); ctx.lineTo((hx + cel * 3) * dpr, (hy - cel * 4) * dpr); ctx.stroke();
+      texto(`${Math.round(17 * g)} MPa`, hx + cel * 3.5, hy - cel * 4, C.aviso, 13);
+      // medidor: 0 ── 17 ── 20 (límite del PLA en el plano de capa)
+      const mx = ox, my = oy + pieza.H * cel + cel * 2.2, mw = pieza.W * cel;
+      ctx.fillStyle = C.apagado.replace("0.07", "0.2"); ctx.fillRect(mx * dpr, my * dpr, mw * dpr, 3 * dpr);
+      ctx.fillStyle = C.aviso; ctx.fillRect(mx * dpr, my * dpr, mw * (17 / 20) * g * dpr, 3 * dpr);
+      texto("0", mx, my + 12, C.tenue, 11);
+      texto(g >= 1 ? "límite 20 MPa ✓" : "límite 20 MPa", mx + mw, my + 12, g >= 1 ? C.senal : C.tenue, 11, "right");
+    }
+  }
+
   function dibujar(ms) {
     if (id !== animacion || !document.body.contains(plano)) return;
     const { w, h, dpr } = dims;
@@ -231,15 +285,11 @@ function animarPortada() {
           ctx.fillStyle = s < 1 ? C.tinta : C.muda;
           ctx.fillRect(px * dpr, py * dpr, (cel - 2) * dpr, (cel - 2) * dpr);
         });
-      } else if (k === 2) { // se calcula: tensiones, más altas en la unión brazo-pata
-        const barrido = escalon(f * 1.4, 10) * pieza.W;
-        pieza.celdas.forEach(([x, y]) => {
-          if (x > barrido) return celda(x, y, C.muda);
-          const d = Math.hypot(x - 29, y - 7);
-          celda(x, y, d < 3 ? C.aviso : d < 7 ? C.senal : C.tenue);
-        });
+      } else if (k === 2) { // cálculo: fuerza → tensión que crece → valor frente al límite
+        dibujarCalculo(f);
       } else if (!impresora) { // sin 3d: se imprime en la rejilla, capa a capa
         const capas = k === 3 ? Math.floor(escalon(f, pieza.H) * pieza.H) : pieza.H, nivel = pieza.H - capas;
+        if (k === 4) { pieza.celdas.forEach(([x, y]) => celda(x, y, C.senal)); return requestAnimationFrame(dibujar); }
         pieza.celdas.forEach(([x, y]) => celda(x, y, y >= nivel ? C.senal : "rgba(201,225,201,0.18)"));
       } else {
         pieza.celdas.forEach(([x, y]) => celda(x, y, C.muda));
@@ -279,9 +329,14 @@ async function cargarImpresora(lienzo) {
   const mallas = []; raiz.traverse((n) => n.isMesh && mallas.push(n));
   // el GLB sale de trimesh sin normales: sin ellas las caras no reciben luz y se ven negras
   mallas.forEach((m) => { if (!m.geometry.attributes.normal) m.geometry.computeVertexNormals(); });
+  // el color tal como lo escribe trimesh en el GLB (sin convertir), para reconocer cada pieza
+  const srgb = (mat) => [mat.color.r, mat.color.g, mat.color.b].map((v) => Math.round(v * 255));
+  const igual = (a, b) => a.every((v, i) => Math.abs(v - b[i]) <= 3);
+  mallas.forEach((m) => { m.userData.rgb = srgb(m.material); });
   const esCama = (m) => new THREE.Box3().setFromObject(m).getSize(new THREE.Vector3()).x > 0.2;
   const piezas = mallas.filter((m) => !esCama(m));
-  mallas.filter(esCama).forEach((m) => { m.material = new THREE.MeshStandardMaterial({ color: 0x333a33, roughness: 0.9 }); });
+  const camaMat = new THREE.MeshStandardMaterial({ color: 0x333a33, roughness: 0.9, transparent: true });
+  mallas.filter(esCama).forEach((m) => { m.material = camaMat; });
   const cajaPiezas = new THREE.Box3(); piezas.forEach((m) => cajaPiezas.expandByObject(m));
   const y0 = cajaPiezas.min.y, y1 = cajaPiezas.max.y, banda = 0.0012;
 
@@ -294,7 +349,54 @@ async function cargarImpresora(lienzo) {
     const capa = new THREE.Mesh(m.geometry, brillo);
     capa.position.copy(m.position); capa.quaternion.copy(m.quaternion); capa.scale.copy(m.scale);
     m.parent.add(capa);
+    m.userData.capa = capa;
   });
+
+  // montaje: transformaciones placa → objeto montado (3d-models/montaje.py) y el contexto
+  // (grifo, encimera, fregadero, estropajo) del modelo montado
+  let montaje = null;
+  try {
+    const [datos, abajo] = await Promise.all([
+      fetch(conVer("models/el_secadero_v2_montaje.json")).then((r) => r.json()),
+      new GLTFLoader().loadAsync(conVer("models/el_secadero_v2_abajo.glb")),
+    ]);
+    const D = new THREE.Matrix4().fromArray(datos.desplazamiento);
+    const mov = [];
+    datos.orden.forEach((clave, i) => {
+      const pz = datos.piezas[clave];
+      const m = piezas.find((x) => igual(x.userData.rgb, pz.color));
+      if (!m) return;
+      m.updateMatrix();
+      const base = m.matrix.clone();
+      const fin = D.clone().multiply(new THREE.Matrix4().fromArray(pz.matriz));
+      const pos = new THREE.Vector3(), quat = new THREE.Quaternion(), esc = new THREE.Vector3();
+      fin.decompose(pos, quat, esc);
+      [m, m.userData.capa].forEach((x) => { x.matrixAutoUpdate = false; x.matrix.copy(base); });
+      mov.push({ m, base, pos, quat, i });
+    });
+    const ref = mov[0];
+    const contexto = [];
+    abajo.scene.traverse((n) => {
+      if (!n.isMesh) return;
+      const rgb = srgb(n.material), c = datos.contexto.find((x) => igual(x.color, rgb));
+      if (!c) return;
+      if (!n.geometry.attributes.normal) n.geometry.computeVertexNormals();
+      const mat = new THREE.MeshStandardMaterial({
+        color: { cromo: 0xd1d6de, encimera: 0x86a08a, fregadero: 0x222722, estropajo: 0xf2a516 }[c.nombre],
+        roughness: c.nombre === "cromo" ? 0.3 : 0.8, metalness: c.nombre === "cromo" ? 0.6 : 0, transparent: true, opacity: 0 });
+      const malla = new THREE.Mesh(n.geometry, mat);
+      malla.matrixAutoUpdate = false;
+      malla.matrix.copy(ref.base).multiply(D);
+      ref.m.parent.add(malla);
+      contexto.push({ malla, nombre: c.nombre });
+    });
+    // centro del objeto montado (para la cámara)
+    mov.forEach(({ m, base, pos, quat }) => m.matrix.copy(base).multiply(new THREE.Matrix4().compose(pos, quat, new THREE.Vector3(1, 1, 1))));
+    raiz.updateMatrixWorld(true);
+    const cajaMontaje = new THREE.Box3(); mov.forEach(({ m }) => cajaMontaje.expandByObject(m));
+    mov.forEach(({ m, base }) => m.matrix.copy(base));
+    montaje = { mov, contexto, centro: cajaMontaje.getCenter(new THREE.Vector3()), tam: cajaMontaje.getSize(new THREE.Vector3()).length() };
+  } catch (_) { montaje = null; } // sin montaje: la placa impresa gira y ya
 
   // la impresora: dos columnas, el puente que sube con la capa y el cabezal
   const marco = new THREE.MeshStandardMaterial({ color: 0x86a08a, roughness: 0.6, transparent: true });
@@ -323,8 +425,29 @@ async function cargarImpresora(lienzo) {
   }
   medir();
 
+  const suave = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x));
+  const I = new THREE.Quaternion(), CERO = new THREE.Vector3(), UNO = new THREE.Vector3(1, 1, 1);
+  function montar(f) {
+    if (!montaje) return 0;
+    for (const { m, base, pos, quat, i } of montaje.mov) {
+      const t = suave((f - 0.1 - i * 0.14) / 0.3);
+      const p = CERO.clone().lerp(pos, t); p.z += 60 * Math.sin(Math.PI * t); // sale de la placa en arco (mm, z arriba)
+      const q = I.clone().slerp(quat, t);
+      const M = base.clone().multiply(new THREE.Matrix4().compose(p, q, UNO));
+      m.matrix.copy(M); m.userData.capa.matrix.copy(M);
+    }
+    for (const { malla, nombre } of montaje.contexto) {
+      const max = { encimera: 0.22, fregadero: 0.35, cromo: 1, estropajo: 1 }[nombre];
+      malla.material.opacity = nombre === "estropajo" ? max * suave((f - 0.72) / 0.1) : max * suave((f - 0.02) / 0.2);
+      malla.visible = malla.material.opacity > 0.01;
+    }
+    camaMat.opacity = 1 - 0.75 * suave((f - 0.5) / 0.3);
+    return suave(f / 0.6);
+  }
+
   function pintar(ms, imprimir, final) {
     const h = y0 + (y1 - y0) * imprimir;
+    const viaje = montar(final);
     corte.constant = imprimir >= 1 ? 1 : h;
     bajoBanda.constant = -(h - banda);
     brillo.visible = imprimir < 1;
@@ -332,16 +455,24 @@ async function cargarImpresora(lienzo) {
     const x = Math.sin(ms / 90) * 0.11, z = Math.sin(ms / 1300) * 0.1 + 0.01;
     puente.position.set(0, h + 0.03, z);
     cabezal.position.set(x, h, z);
-    const opac = 1 - Math.min(1, final * 2.5);
+    const opac = 1 - Math.min(1, final * 6);
     marco.opacity = metal.opacity = opac; boquilla.visible = puente.visible = opac > 0.02;
     impresora.visible = opac > 0.02;
     // cámara: gira despacio alrededor de la placa; la distancia hace que quepa a lo ancho
     // (en un móvil en vertical el campo horizontal es estrecho); al final se acerca
     const hfov = 2 * Math.atan(Math.tan((camara.fov * Math.PI) / 360) * camara.aspect);
     const cabe = Math.max(0.42, 0.2 / Math.tan(hfov / 2));
-    const ang = ms / 9000, dist = cabe * (1 - final * 0.22);
-    camara.position.set(Math.sin(ang) * dist, dist * (0.55 - final * 0.12), Math.cos(ang) * dist);
-    camara.lookAt(0, 0.012, 0);
+    const objetivo = new THREE.Vector3(0, 0.012, 0);
+    let dist = cabe;
+    if (montaje && viaje > 0) {
+      objetivo.lerp(montaje.centro, viaje);
+      // que quepa el objeto montado (con el grifo) también a lo ancho, en vertical
+      const cabeMontaje = Math.max(0.34, (montaje.tam * 0.75) / Math.tan(hfov / 2));
+      dist = cabe + (cabeMontaje - cabe) * viaje;
+    }
+    const ang = ms / 9000;
+    camara.position.set(objetivo.x + Math.sin(ang) * dist, objetivo.y + dist * (0.55 - viaje * 0.2), objetivo.z + Math.cos(ang) * dist);
+    camara.lookAt(objetivo);
     renderer.render(escena, camara);
   }
   impresoraCache = { medir, pintar };

@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-16T12:13Z",
+ "generado": "2026-11-16T12:26Z",
  "euros_kg": 20.0,
  "perfil": "A1 · capa 0.2 mm · relleno 15% · PLA 1.26 g/cm³",
  "objetos": [
@@ -1399,7 +1399,7 @@
    "id": "labil-web",
    "nombre": "labil · la web",
    "que": "la propia web donde se ven los objetos: también se diseña por versiones",
-   "estado": "portada en movimiento publicada",
+   "estado": "cálculo y montaje publicados",
    "palabras": {
     "version": "publicada",
     "pendiente": "por publicar"
@@ -1664,6 +1664,8 @@
        "texto": "El GLB sale de trimesh sin normales y en three.js las caras se veían negras: se calculan al cargarlo. La cámara ajusta la distancia al ancho de la pantalla, para que la placa quepa en un móvil en vertical."
       }
      ],
+     "feedback": "nada de «se» impersonal; el cálculo es rápido y solo son colores; que el objeto se monte saliendo de la placa",
+     "feedback_de": "luis",
      "modelos": [],
      "imagenes": [
       {
@@ -1681,6 +1683,55 @@
       {
        "src": "files/labil-web/portada-motion/2026-11-16-portada-motion-objeto.png",
        "pie": "objeto"
+      }
+     ],
+     "proceso": [],
+     "descargas": [],
+     "piezas": [],
+     "cambiado": null
+    },
+    {
+     "id": "portada-montaje",
+     "tipo": "version",
+     "nombre": "cálculo y montaje",
+     "fecha": "2026-11-16",
+     "texto": "Las fases tienen nombre propio (definición, diseño, cálculo, impresión, montaje), el cálculo se entiende y al final las piezas salen de la placa y se montan en el grifo.",
+     "cambio": "fases con nombre, cálculo legible y montaje desde la placa",
+     "memoria": [
+      {
+       "tema": "diseño",
+       "texto": "Luis: no un «se» universal e impersonal. Las fases pasan a ser sustantivos: definición, diseño, cálculo, impresión y montaje."
+      },
+      {
+       "tema": "uso",
+       "texto": "El cálculo era demasiado rápido y solo ponía colores. Ahora dura casi 4 s y se lee: baja una flecha de 20 N sobre la cuna, la tensión recorre la estructura desde la carga hasta la unión brazo-pata y allí sube un valor hasta 17 MPa, con un medidor frente al límite de 20 MPa ✓."
+      },
+      {
+       "tema": "montaje",
+       "texto": "Al final, las piezas salen de la placa en arco y se montan una a una en su sitio real: brazo, cuña, marco y cuna. Aparecen el grifo, la encimera y el estropajo; la cámara se acerca al objeto montado."
+      },
+      {
+       "tema": "método",
+       "texto": "3d-models/montaje.py calcula, para cada pieza, el giro y el desplazamiento exactos de la placa a su posición montada. Alinea las mallas con PCA e ICP y queda un error medio de 0,000 mm. Lo guarda en un JSON que lee la web y se recalcula en cada publicación. El orden de los vértices no coincide entre los dos GLB, así que no se pueden emparejar por índice."
+      },
+      {
+       "tema": "método",
+       "texto": "three.js no convierte el color del GLB al leerlo. Para reconocer cada pieza por su color hay que comparar el valor tal cual, sin pasarlo a sRGB."
+      }
+     ],
+     "modelos": [],
+     "imagenes": [
+      {
+       "src": "files/labil-web/portada-montaje/2026-11-16-portada-calculo.png",
+       "pie": "cálculo"
+      },
+      {
+       "src": "files/labil-web/portada-montaje/2026-11-16-portada-montaje-sale-de-la-placa.png",
+       "pie": "salen de la placa"
+      },
+      {
+       "src": "files/labil-web/portada-montaje/2026-11-16-portada-montaje-final.png",
+       "pie": "montado"
       }
      ],
      "proceso": [],

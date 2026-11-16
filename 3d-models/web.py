@@ -141,6 +141,11 @@ def main() -> None:
     SALIDA.parent.mkdir(parents=True, exist_ok=True)
     SALIDA.write_text(json.dumps(salida, ensure_ascii=False, indent=1) + "\n")
     sellar_index()
+    try:  # portada: de la placa al objeto montado
+        import montaje
+        montaje.main()
+    except Exception as err:  # la portada sigue funcionando sin montaje
+        print(f"aviso: sin montaje para la portada ({err})", file=sys.stderr)
 
 
 def sellar_index() -> None:

@@ -177,3 +177,17 @@ Registro vivo de explicaciones, decisiones y convenciones acordadas.
   La impresión es un plano de corte que sube, y la capa activa es una copia en verde.
 - **Lección técnica**: los GLB de trimesh no traen normales; en three.js hay que calcularlas
   (`computeVertexNormals`) o las caras salen negras. model-viewer las calcula solo.
+
+## 2026-11-16 · Portada: fases con nombre, cálculo legible y montaje
+
+- **Vocabulario de las fases** (Luis: nada de «se» impersonal): **definición → diseño → cálculo →
+  impresión → montaje**.
+- **Cálculo legible**: una flecha de 20 N cae sobre la cuna, la tensión viaja por la estructura hasta
+  la unión brazo-pata, el valor sube a 17 MPa y un medidor lo compara con el límite (20 MPa ✓).
+- **Montaje**: las piezas salen de la placa y se montan en el grifo en orden: brazo, cuña, marco y cuna.
+  El movimiento exacto lo calcula `3d-models/montaje.py`, que alinea la malla de cada pieza en la placa
+  con la del modelo montado (error 0,000 mm) y lo guarda en `docs/models/el_secadero_v2_montaje.json`.
+  CI lo recalcula en cada publicación.
+- **Lecciones técnicas**: (1) el mismo número de vértices no significa el mismo orden; para emparejar
+  dos mallas hace falta ICP, no el índice. (2) trimesh necesita `rtree` para su ICP; se escribió uno con
+  `scipy` para no añadir dependencias. (3) three.js guarda el color del GLB sin convertir: se compara tal cual.
