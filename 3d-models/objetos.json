@@ -1,5 +1,5 @@
 {
- "_leeme": "Fuente de la web (docs/). Cada objeto tiene estados en orden cronológico: 'version' = impresa (regla de Luis), 'prueba' = pieza de prueba, 'borrador' = diseño sin imprimir. Las rutas son desde la raíz del repo. `python3 3d-models/web.py` genera docs/data/objetos.json, los GLB que faltan, las copias de descarga y el coste de cada pieza.",
+ "_leeme": "Fuente de la web (docs/). Cada objeto tiene estados en orden cronológico: 'version' = impresa (regla de Luis), 'prueba' = pieza de prueba, 'borrador' = diseño sin imprimir. 'memoria' = qué cambia respecto al anterior y por qué, por temas. 'proceso' = imágenes que sube Luis durante el diseño (bocetos, fotos, capturas), guardadas con proceso/guardar.py. Las rutas son desde la raíz del repo. `python3 3d-models/web.py` genera docs/data/objetos.json.",
  "objetos": [
   {
    "id": "el-secadero",
@@ -37,6 +37,16 @@
      "descargas": [
       "docs/files/sponge-holder/test_faucet_clip.stl",
       "docs/files/sponge-holder/test_sponge_clip.stl"
+     ],
+     "memoria": [
+      {
+       "tema": "método",
+       "texto": "Antes de la pieza entera, cada contacto se prueba por separado: impresiones de unos 15 min en vez de 1 h, y el agarre se valida sin mezclarlo con la estructura."
+      },
+      {
+       "tema": "medidas",
+       "texto": "Columna del grifo de Ø 45 mm, con 0,4 mm de holgura para PLA."
+      }
      ]
     },
     {
@@ -77,6 +87,12 @@
       "docs/files/sponge-holder/test_sponge_v_300deg.stl",
       "docs/files/sponge-holder/test_sponge_v_340deg.stl",
       "docs/files/sponge-holder/test_sponge_v_parallel.stl"
+     ],
+     "memoria": [
+      {
+       "tema": "uso",
+       "texto": "Tres maneras de pellizcar la esponja para decidir en la mano, no en la pantalla."
+      }
      ]
     },
     {
@@ -108,6 +124,16 @@
      "descargas": [
       "docs/files/sponge-holder/test_sponge_v_fork.3mf",
       "docs/files/sponge-holder/test_sponge_v_fork_compare.3mf"
+     ],
+     "memoria": [
+      {
+       "tema": "uso",
+       "texto": "Después de probar las pinzas, Luis pidió otra forma: un tenedor que pellizca con puntas finas."
+      },
+      {
+       "tema": "método",
+       "texto": "El brazo bajó de 28 a 20 mm, y una sola pieza compara 20 con 14 mm: una impresión decide entre las dos."
+      }
      ]
     },
     {
@@ -132,6 +158,20 @@
       "docs/files/sponge-holder/sponge_holder.3mf",
       "docs/files/sponge-holder/sponge_holder.stl",
       "docs/files/sponge-holder/print_settings.md"
+     ],
+     "memoria": [
+      {
+       "tema": "diseño",
+       "texto": "Tenedor corto de 14 mm con dos puntas en los extremos."
+      },
+      {
+       "tema": "resistencia",
+       "texto": "Puntas triangulares y un refuerzo entre el brazo y la abrazadera."
+      },
+      {
+       "tema": "uso",
+       "texto": "Lo que falló, según Luis (29 oct): la pinza chocaba con el borde del fregadero y acabó rompiéndose; el brazo quedaba unos mm por encima de la encimera, porque el aro apoyaba en el embellecedor; meter el estropajo desde abajo era incómodo."
+      }
      ]
     },
     {
@@ -178,6 +218,24 @@
      "descargas": [
       "3d-models/_borradores/estropajero-v3/APRENDIZAJES.md",
       "3d-models/_borradores/estropajero-v3/estropajero_v3.scad"
+     ],
+     "memoria": [
+      {
+       "tema": "uso",
+       "texto": "Luis pidió una bandeja colgada en vez de pinza, el brazo a ras de la encimera, que se pudiera levantar para fregar, y rejilla para gastar menos."
+      },
+      {
+       "tema": "diseño",
+       "texto": "Bastidor calado en forma de A y bandeja de rejilla con bisagra de bayoneta: con ojos cerrados habría que abrir la A contra las capas."
+      },
+      {
+       "tema": "material",
+       "texto": "Unos 30 cm³ frente a 46 de una bandeja maciza (−34 %)."
+      },
+      {
+       "tema": "montaje",
+       "texto": "Luis vio que el bastidor no podía entrar en el brazo siendo PLA: la cabeza de 17 mm no pasaba por la ranura de 14,5. Se abrió la ranura por un lado. Lección: simular el camino de montaje, no solo la posición final."
+      }
      ]
     },
     {
@@ -225,6 +283,24 @@
      "descargas": [
       "3d-models/_borradores/estropajero-v4/APRENDIZAJES.md",
       "3d-models/_borradores/estropajero-v4/estropajero_v4.scad"
+     ],
+     "memoria": [
+      {
+       "tema": "resistencia",
+       "texto": "Con números, el borrador anterior no aguantaba: el giro de la bandeja se frenaba con un tope en el canto, a solo 8 mm de palanca. Con 20 N en el borde, la punta del brazo llegaba a 99 MPa y rompía."
+      },
+      {
+       "tema": "diseño",
+       "texto": "El colgador cuelga como un péndulo y apoya en la pared del fregadero, 77 mm más abajo. La palanca pasa de 8 a 77 mm y las fuerzas bajan unas 10 veces."
+      },
+      {
+       "tema": "montaje",
+       "texto": "Abrazadera en U que se cierra con una llave desde arriba: el PLA ya no tiene que doblarse."
+      },
+      {
+       "tema": "medidas",
+       "texto": "Un error de medida ahora solo inclina un poco: 2 mm son 1,5°."
+      }
      ]
     },
     {
@@ -280,6 +356,28 @@
       "docs/files/el-secadero-v2/pieza_K_cuna_apriete.stl",
       "docs/files/el-secadero-v2/el_secadero_v2.scad",
       "docs/files/el-secadero-v2/APRENDIZAJES.md"
+     ],
+     "memoria": [
+      {
+       "tema": "medidas",
+       "texto": "Medidas tomadas de la V1 impresa (Ø 45 mm, 59 mm del grifo al canto). Los borradores usaban medidas supuestas y una quedó 9 mm larga."
+      },
+      {
+       "tema": "uso",
+       "texto": "Cuna a la medida del estropajo salvauñas (95 × 70 × 45 mm), de canto, que es como mejor se seca."
+      },
+      {
+       "tema": "resistencia",
+       "texto": "El marco apoya en la pared del fregadero con 116 mm entre apoyos, en vez de 10: ya no se ladea. Con 20 N en el borde, nada pasa de 17 MPa."
+      },
+      {
+       "tema": "montaje",
+       "texto": "Una cuña de 12° aprieta la abrazadera y se queda bloqueada sola. Sustituye a la llave suelta, que no apretaba y se caía al fregadero."
+      },
+      {
+       "tema": "estética",
+       "texto": "Formas redondeadas y grabado en JetBrains Mono. Redondear quitaba resistencia: se recuperó con unos 5 g más."
+      }
      ]
     }
    ]
@@ -320,6 +418,12 @@
      ],
      "descargas": [
       "fidgets/botonera-nch/botonera_nch.3mf"
+     ],
+     "memoria": [
+      {
+       "tema": "diseño",
+       "texto": "Una botonera 100 % impresa, sin muelles ni imanes: cada botón va sobre una lengüeta recortada en U que flexa."
+      }
      ]
     },
     {
@@ -346,6 +450,16 @@
      "descargas": [
       "fidgets/botonera-nch/botonera_nch_v2.3mf",
       "fidgets/botonera-nch/botonera_nch_v2_color.3mf"
+     ],
+     "memoria": [
+      {
+       "tema": "clic",
+       "texto": "La lengüeta flexaba, pero no hacía clic. Una cuchilla con diente en cuña (0,5 mm de solape) da un clic al bajar y otro al soltar."
+      },
+      {
+       "tema": "impresión",
+       "texto": "Versión bicolor, fondo y logo, para el AMS lite."
+      }
      ]
     },
     {
@@ -379,6 +493,16 @@
       "fidgets/botonera-nch/botonera_nch_v3.3mf",
       "fidgets/botonera-nch/botonera_nch_v3_color.3mf",
       "fidgets/botonera-nch/prueba_boton_v3.3mf"
+     ],
+     "memoria": [
+      {
+       "tema": "uso",
+       "texto": "La lengüeta baja inclinada, como una bisagra. Con 4 brazos en espiral, el disco baja recto y paralelo."
+      },
+      {
+       "tema": "clic",
+       "texto": "Dos cuchillas con diente bajo el disco."
+      }
      ]
     },
     {
@@ -412,6 +536,16 @@
       "fidgets/botonera-nch/prueba_boton_v4.3mf",
       "fidgets/botonera-nch/botonera_nch_v4.3mf",
       "fidgets/botonera-nch/botonera_nch_v4_color.3mf"
+     ],
+     "memoria": [
+      {
+       "tema": "estética",
+       "texto": "Teclas con la forma del logo que tapan todo el mecanismo."
+      },
+      {
+       "tema": "resistencia",
+       "texto": "Se imprimió el botón de prueba y la tecla se rompió al primer clic. Los brazos del resorte, de 1,2 mm, iban impresos en puente (capas mal pegadas) y se deformaban un ~5 %, cuando el PLA rompe entre el 2 y el 4 %. Regla: un resorte no se imprime en puente."
+      }
      ]
     },
     {
@@ -437,6 +571,20 @@
      ],
      "descargas": [
       "fidgets/botonera-nch/boton_v5_piezas.3mf"
+     ],
+     "memoria": [
+      {
+       "tema": "montaje",
+       "texto": "Decisión de Luis: piezas impresas que encajan. Así cada pieza se orienta de la mejor forma para imprimirla."
+      },
+      {
+       "tema": "resistencia",
+       "texto": "Resorte plano sobre la cama, con espirales de 300°: se deforma un 0,47 %, el doble de margen sobre el 1 % aconsejable en PLA, y pide 1,1 N."
+      },
+      {
+       "tema": "uso",
+       "texto": "Impreso: funciona. Luis pide más recorrido y que sea más pequeño."
+      }
      ]
     },
     {
@@ -462,6 +610,16 @@
      ],
      "descargas": [
       "fidgets/botonera-nch/boton_v6_piezas.3mf"
+     ],
+     "memoria": [
+      {
+       "tema": "diseño",
+       "texto": "24 mm en vez de 30."
+      },
+      {
+       "tema": "clic",
+       "texto": "Dos brazos de 1,0 mm que dan casi vuelta y media: 2 mm de recorrido con la misma deformación (0,50 %) y 0,5 N. Regla: con la misma tensión, más pequeño es menos recorrido, y se compensa con más vueltas y brazos más finos."
+      }
      ]
     },
     {
@@ -489,6 +647,16 @@
       "fidgets/botonera-nch/botonera_v6_2x2.3mf",
       "fidgets/botonera-nch/README.md",
       "fidgets/botonera-nch/APRENDIZAJES.md"
+     ],
+     "memoria": [
+      {
+       "tema": "diseño",
+       "texto": "Cuatro botones compactos en 46 mm, en una sola placa."
+      },
+      {
+       "tema": "montaje",
+       "texto": "La tapa trasera a ras no es válida: ninguna pieza puede doblarse para encajar, y la holgura de 0,15 mm es menor que los 0,2–0,4 mm recomendados. Un enganche bien hecho es un brazo en voladizo impreso en el plano, con la raíz redondeada. Antes, una probeta de holguras."
+      }
      ]
     }
    ]
@@ -529,6 +697,16 @@
      "descargas": [
       "cajones-isla/marco_prueba_130x135.stl",
       "cajones-isla/README.md"
+     ],
+     "memoria": [
+      {
+       "tema": "medidas",
+       "texto": "Hueco de 130 × 135 mm, con 0,5 mm de holgura por lado. Absorbe tres errores que se suman: la medida del hueco (±0,5), la impresora (±0,2–0,3) y el aire que necesita para deslizar."
+      },
+      {
+       "tema": "coste",
+       "texto": "11 g que sirven de galga: en 2 minutos dice si los 6 huecos miden lo mismo."
+      }
      ]
     },
     {
@@ -562,6 +740,20 @@
        "de": "cajones-isla/cajon_agujero.png",
        "pie": "agujero de dedo"
       }
+     ],
+     "memoria": [
+      {
+       "tema": "coste",
+       "texto": "Caja entera 352 g, bandeja 232, bandeja perforada 184 y la versión Gridfinity ~125 g."
+      },
+      {
+       "tema": "diseño",
+       "texto": "Modular en tres capas, para que sirva al mudarse: adaptador al hueco, enganche estándar y módulos."
+      },
+      {
+       "tema": "estética",
+       "texto": "Línea de sombra en el frente y revoltons: el techo de bóveda catalana de la casa de Luis como lenguaje."
+      }
      ]
     },
     {
@@ -592,6 +784,16 @@
      ],
      "descargas": [
       "cajones-isla/prueba_union_llave_mariposa.stl"
+     ],
+     "memoria": [
+      {
+       "tema": "montaje",
+       "texto": "Una llave de mariposa suelta une los tramos por debajo: cualquier tramo encaja con cualquiera y en cualquier orden."
+      },
+      {
+       "tema": "medidas",
+       "texto": "Juego de 0,1, 0,2 y 0,3 mm para elegir con la probeta."
+      }
      ]
     },
     {
@@ -641,6 +843,20 @@
       "cajones-isla/stl/tramo_A.stl",
       "cajones-isla/stl/tramo_B.stl",
       "cajones-isla/stl/llave_mariposa.stl"
+     ],
+     "memoria": [
+      {
+       "tema": "diseño",
+       "texto": "Decisión de Luis: base Clickfinity real («para que no inventes nada»), recortada para caber en 130 mm. Dos tramos, porque 348 mm no caben en la cama de 256 de la A1."
+      },
+      {
+       "tema": "material",
+       "texto": "Clickfinity pide PETG y Luis solo tiene PLA. Se acepta: si el clic cede con el tiempo, sigue siendo una base Gridfinity."
+      },
+      {
+       "tema": "coste",
+       "texto": "Unos 2,9 € por cajón."
+      }
      ]
     },
     {
@@ -671,6 +887,16 @@
      ],
      "descargas": [
       "cajones-isla/stl/tapa_revoltons3_pasante.stl"
+     ],
+     "memoria": [
+      {
+       "tema": "uso",
+       "texto": "Para probar la puerta antes del cajón y para tapar los huecos que no lleven cajón."
+      },
+      {
+       "tema": "montaje",
+       "texto": "Costillas aplastables de 0,8 mm. Se descartaron las lengüetas elásticas: impresas boca abajo, se parten entre capas."
+      }
      ]
     },
     {
@@ -696,6 +922,12 @@
      "descargas": [
       "cajones-isla/stl/tapa_revoltons3_bolsillo.stl",
       "cajones-isla/APRENDIZAJES.md"
+     ],
+     "memoria": [
+      {
+       "tema": "uso",
+       "texto": "Con una cajita detrás del arco: la yema engancha y no se ve el interior. Es la mejor para tapar huecos."
+      }
      ]
     }
    ]
@@ -726,6 +958,12 @@
      ],
      "descargas": [
       "docs/files/bathroom-bar-a/bathroom_bar_a.stl"
+     ],
+     "memoria": [
+      {
+       "tema": "método",
+       "texto": "Tres direcciones distintas para elegir antes de detallar ninguna: varilla de aluminio, perfil en T de PLA o una sola pieza curva."
+      }
      ]
     },
     {
@@ -803,6 +1041,16 @@
      "descargas": [
       "llaveros/habitacion-26/key-room-26.stl",
       "llaveros/habitacion-26/generate-key-stl.mjs"
+     ],
+     "memoria": [
+      {
+       "tema": "impresión",
+       "texto": "Grabado de 0,4 mm, 2 capas: lo justo para leerse sin comerse la pieza."
+      },
+      {
+       "tema": "estética",
+       "texto": "Letra con serifa, en vertical y más pequeña, para que no llene todo el llavero."
+      }
      ]
     },
     {
@@ -815,7 +1063,140 @@
       "gramos": 14.43,
       "pieza_g": 6.89,
       "fuente": "bambu studio, 1 llavero por placa, con purga y torre"
-     }
+     },
+     "memoria": [
+      {
+       "tema": "coste",
+       "texto": "La purga de los cambios de color fue el 52 % del filamento. En tandas de 10, cada llavero baja de 0,36 a ~0,19 €."
+      },
+      {
+       "tema": "impresión",
+       "texto": "Algunos se combaron: había viento cerca y la placa no estaba limpia."
+      },
+      {
+       "tema": "diseño",
+       "texto": "Reglas que salieron: trazo mínimo de 0,9 mm en las letras y hueco mínimo de 0,5 mm."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "labil-web",
+   "nombre": "labil · la web",
+   "que": "la propia web donde se ven los objetos: también se diseña por versiones",
+   "estado": "página limpia publicada",
+   "palabras": {
+    "version": "publicada",
+    "pendiente": "por publicar"
+   },
+   "estados": [
+    {
+     "id": "v1",
+     "tipo": "version",
+     "nombre": "v1 beige",
+     "fecha": "2026-05-01",
+     "texto": "Un visor único con pestañas y desplazamiento por secciones, paleta beige y letra con serifa. Cada diseño o prueba era una sección más.",
+     "imagenes": [
+      {
+       "de": "labil-web/capturas/2026-05-01-web-v1-beige.png",
+       "pie": "v1 en el móvil"
+      }
+     ],
+     "memoria": [
+      {
+       "tema": "diseño",
+       "texto": "Un solo HTML para todo lo imprimible, con pestañas arriba y una sección por modelo."
+      }
+     ],
+     "descargas": []
+    },
+    {
+     "id": "v2",
+     "tipo": "version",
+     "nombre": "v2 lg señal",
+     "fecha": "2026-11-16",
+     "texto": "Labil pasa a ser parte de Lagu y usa LG Señal. Una página por objeto, con sus estados en un raíl y el coste de cada uno.",
+     "imagenes": [
+      {
+       "de": "labil-web/capturas/2026-11-16-web-v2-inicio.png",
+       "pie": "inicio"
+      },
+      {
+       "de": "labil-web/capturas/2026-11-16-web-v2-objeto-con-rail.png",
+       "pie": "objeto con raíl"
+      }
+     ],
+     "proceso": [
+      {
+       "de": "labil-web/capturas/2026-11-16-favicons-letra-al-objeto.png",
+       "pie": "propuestas de favicon «de la letra al objeto»; Luis eligió la C",
+       "fecha": "2026-11-16"
+      },
+      {
+       "de": "proceso/labil-web/2026-11-16-la-web-v2-publicada-el-secadero.jpg",
+       "pie": "la v2 publicada, que Luis capturó antes de pedir limpiarla (rehecha aquí: su captura no llegó como archivo)",
+       "fecha": "2026-11-16"
+      }
+     ],
+     "memoria": [
+      {
+       "tema": "uso",
+       "texto": "La v1 era un scroll infinito de cosas que no tenían que ver unas con otras. Ahora cada objeto tiene su página, con versiones, pruebas y borradores en orden."
+      },
+      {
+       "tema": "diseño",
+       "texto": "Labil es parte de Lagu: oscuro, verde fósforo, JetBrains Mono, minúsculas y rejilla de 4 px."
+      },
+      {
+       "tema": "coste",
+       "texto": "Cada estado dice lo que cuesta su plástico a 20 €/kg, calculado desde sus 3MF o STL."
+      },
+      {
+       "tema": "método",
+       "texto": "La v1 queda archivada en /v1 y el trabajo de todas las ramas se une con su historia."
+      }
+     ],
+     "descargas": []
+    },
+    {
+     "id": "limpia",
+     "tipo": "version",
+     "nombre": "página limpia",
+     "fecha": "2026-11-16",
+     "texto": "El modelo a pantalla completa. Arriba, icono, nombre y precio; abajo, versiones y posiciones; los detalles en una banda que sube.",
+     "imagenes": [
+      {
+       "de": "labil-web/capturas/2026-11-16-web-limpia-objeto.png",
+       "pie": "objeto"
+      },
+      {
+       "de": "labil-web/capturas/2026-11-16-web-limpia-detalles.png",
+       "pie": "detalles abiertos"
+      }
+     ],
+     "proceso": [
+      {
+       "de": "proceso/labil-web/2026-11-16-boceto-en-la-pizarra-de-la-pagina-de-objeto.jpg",
+       "pie": "boceto de Luis en la pizarra: icono, título y precio arriba; versiones y posiciones abajo; banda de detalles",
+       "fecha": "2026-11-16"
+      }
+     ],
+     "memoria": [
+      {
+       "tema": "uso",
+       "texto": "Luis quería limpiar la interfaz: el raíl, la ficha y los botones competían con el modelo."
+      },
+      {
+       "tema": "diseño",
+       "texto": "Lo que se usa a menudo se queda al alcance del pulgar: versiones abajo a la izquierda y posiciones abajo a la derecha, siempre visibles. El resto va en una hoja de detalles."
+      },
+      {
+       "tema": "método",
+       "texto": "Se dibujó primero en la pizarra y se construyó tal cual el boceto."
+      }
+     ],
+     "descargas": []
     }
    ]
   }

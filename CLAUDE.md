@@ -31,7 +31,8 @@ sus estados en orden: versiones impresas, pruebas y borradores.
 
 | Archivo | Qué es |
 | --- | --- |
-| `3d-models/objetos.json` | **Fuente de la web.** Objetos y estados (`version` = impresa, `prueba`, `borrador`; `por_imprimir`), textos, piezas, modelos, imágenes y descargas. Al añadir un diseño o un estado, se añade aquí. |
+| `3d-models/objetos.json` | **Fuente de la web.** Objetos y estados (`version` = impresa, `prueba`, `borrador`; `por_imprimir`), textos, piezas, modelos, imágenes, `proceso`, `memoria` y descargas. Al añadir un diseño o un estado, se añade aquí. |
+| `proceso/` | Imágenes del proceso que sube Luis, por objeto. `proceso/guardar.py` las prepara. |
 | `3d-models/web.py` | Genera `docs/data/objetos.json`, los GLB que faltan (`docs/models/archivo/`) y copia descargas a `docs/files/<objeto>/<estado>/`. Corre en CI después de los `generate_stl.py`. |
 | `3d-models/costes.py` | Gramos y euros de cada pieza (laminador simplificado, perfil A1, **20 €/kg**). `--calibrar` lo compara con los gramos del laminador real (error medio 4 %, máx. 9 %). |
 | `docs/index.html`, `app.js`, `app.css` | La web v2 (rutas `#/`, `#/<objeto>/<estado>`, `#/historial`). Sin compilación. Página de objeto: modelo a pantalla completa; icono→inicio, nombre y precio arriba; versiones (desplegable) y posiciones (vistas `modelos`) abajo; banda «detalles» con la hoja. |
@@ -45,6 +46,28 @@ marcados como borrador. Siguen sin numerarse como versiones.
 Objetos que vienen de otras ramas (unidos el 16 nov 2026 con su historia): `fidgets/botonera-nch/`
 (`claude/brave-darwin-9hqz7q`), `cajones-isla/` (`claude/nice-goodall-9jt9q8`) y
 `llaveros/habitacion-26/` (copiado de `claude/add-3d-color-combinations-xTKbo`).
+
+## Proceso y memoria (normas de Luis, 16 nov 2026)
+
+La web no enseña solo el resultado: enseña **el proceso de diseño** y **por qué cambia** cada versión.
+
+1. **Cada imagen que Luis suba** durante el diseño (bocetos, pizarras, fotos de piezas impresas,
+   capturas de la web) **se guarda en el repo** y se enseña en su objeto:
+   - `python3 proceso/guardar.py <imagen> <objeto> "<qué muestra>" [AAAA-MM-DD]`. La reduce a 1600 px,
+     le quita los metadatos (GPS) y la deja en `proceso/<objeto>/<fecha>-<descripcion>.jpg`.
+   - Se añade a la lista `proceso` del estado al que pertenece en `3d-models/objetos.json`
+     (`{"de", "pie", "fecha"}`). El pie dice qué muestra y qué se decidió a partir de ella.
+   - Si una imagen no llega como archivo (solo se ve en la conversación), se dice y se pide de nuevo,
+     o se rehace la captura y el pie lo indica.
+2. **Cada estado lleva `memoria`**: qué cambia respecto al anterior y **por qué**, en frases
+   cortas con un `tema`: `diseño`, `uso`, `resistencia`, `clic`, `montaje`, `material`, `medidas`,
+   `impresión`, `estética`, `coste` o `método`. Con números cuando los hay (MPa, %, g, mm) y
+   con lo que dijo Luis tal cual cuando es una decisión suya. Se escribe al crear el estado,
+   no al final.
+3. La memoria se lee en la hoja de detalles («qué cambia y por qué») y entera en
+   `#/<objeto>/memoria`.
+4. **La propia web es un objeto** (`labil-web`): sus versiones, capturas (`labil-web/capturas/`) y
+   bocetos van igual que los de cualquier pieza. Para ella, «versión» se dice «publicada».
 
 ## Versiones y carpetas de los diseños 3D (regla de Luis)
 

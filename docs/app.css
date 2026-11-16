@@ -215,6 +215,13 @@ body.en-escena { overflow: hidden; }
 .descargas .ext { color: var(--signal); min-width: 3ch; }
 .descargas .nombre { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
+.memoria li { display: grid; gap: var(--s1); padding: var(--s2) 0; border-bottom: 1px solid var(--line); }
+.memoria li:last-child { border-bottom: 0; }
+.memoria .tema { font-size: 11px; line-height: 14px; letter-spacing: 0.2em; color: var(--signal); }
+.imagenes.proceso img { background: var(--surface-raised); object-fit: contain; }
+.mem-estado { display: grid; gap: var(--s3); padding: var(--s5) 0; border-top: 1px solid var(--line); }
+.mem-estado h2 a:hover { color: var(--signal); }
+
 /* historial */
 .mes { margin-top: var(--s5); }
 .mes h2 { margin-bottom: var(--s2); }

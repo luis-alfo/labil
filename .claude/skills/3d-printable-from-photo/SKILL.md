@@ -18,3 +18,10 @@ with sticky tabs, scroll-snap, GLB cache-busting, GitHub Pages via
 Actions).
 
 The canonical reference implementation is `/3d-models/sponge-holder/`.
+
+## Proceso y memoria (norma de Luis)
+
+- Guarda **cada foto o boceto que suba Luis** con `python3 proceso/guardar.py <imagen> <objeto> "<qué muestra>"`
+  y añádela a la lista `proceso` del estado en `3d-models/objetos.json`.
+- Cada estado nuevo lleva su `memoria`: qué cambia respecto al anterior y por qué (diseño, resistencia,
+  clic, montaje, material, medidas, coste…). Ver «Proceso y memoria» en `/CLAUDE.md`.

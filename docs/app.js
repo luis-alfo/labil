@@ -10,7 +10,14 @@ const TIPO = {
   prueba: { txt: "prueba", cls: "prueba" },
   borrador: { txt: "borrador", cls: "borrador" },
 };
-const tipoDe = (e) => (e.tipo === "version" && e.por_imprimir ? TIPO.pendiente : TIPO[e.tipo]);
+// el objeto puede cambiar las palabras (la web se «publica», no se «imprime»)
+const tipoDe = (e, o) => {
+  const t = e.tipo === "version" && e.por_imprimir ? TIPO.pendiente : TIPO[e.tipo];
+  const p = (o && o.palabras) || {};
+  if (t === TIPO.version && p.version) return { ...t, txt: p.version };
+  if (t === TIPO.pendiente && p.pendiente) return { ...t, txt: p.pendiente };
+  return t;
+};
 
 const MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
 const fecha = (iso) => { const [a, m, d] = iso.split("-").map(Number); return `${d} ${MESES[m - 1]}`; };
@@ -92,8 +99,8 @@ function vistaInicio() {
       <div class="obj-cab"><h2 class="title">${esc(o.nombre)}</h2>
         ${ultimo.coste ? `<span class="strong signal">${eur(ultimo.coste.euros)}</span>` : ""}</div>
       <p class="body muted">${esc(o.que)}</p>
-      <div class="ticks" aria-hidden="true">${o.estados.map((e) => `<i class="${tipoDe(e).cls}"></i>`).join("")}</div>
-      <p class="caption">${o.estados.length} estados · ${impresas} ${impresas === 1 ? "impresa" : "impresas"} · ${esc(o.estado)} · ${fecha(ultimo.fecha)}</p>
+      <div class="ticks" aria-hidden="true">${o.estados.map((e) => `<i class="${tipoDe(e, o).cls}"></i>`).join("")}</div>
+      <p class="caption">${o.estados.length} estados · ${impresas} ${((o.palabras && o.palabras.version) || "impresa") + (impresas === 1 ? "" : "s")} · ${esc(o.estado)} · ${fecha(ultimo.fecha)}</p>
     </a></li>`;
   }).join("");
   app.innerHTML = cabecera("objetos") + `<main>
@@ -127,7 +134,7 @@ function vistaObjeto(oid, eid, abrirDetalles = false) {
   const e = o.estados[i];
   const ant = o.estados[i - 1];
   const sig = o.estados[i + 1];
-  const t = tipoDe(e);
+  const t = tipoDe(e, o);
   const enlace = (x) => `#/${o.id}/${x.id}`;
 
   // posiciones: las vistas del modelo; si no hay modelo, las imágenes
@@ -144,7 +151,7 @@ function vistaObjeto(oid, eid, abrirDetalles = false) {
       : `<img id="im" class="lienzo-img" src="${primera.src}" alt="${esc(primera.nombre)}">`;
 
   const opciones = o.estados.map((x) =>
-    `<option value="${x.id}" ${x === e ? "selected" : ""}>${esc(x.nombre)} · ${tipoDe(x).txt} · ${fecha(x.fecha)}</option>`).join("");
+    `<option value="${x.id}" ${x === e ? "selected" : ""}>${esc(x.nombre)} · ${tipoDe(x, o).txt} · ${fecha(x.fecha)}</option>`).join("");
 
   // detalles
   const previo = o.estados.slice(0, i).reverse().find((x) => x.coste);
@@ -167,6 +174,8 @@ function vistaObjeto(oid, eid, abrirDetalles = false) {
     ? `<section class="seccion"><h3 class="label">imágenes</h3><div class="imagenes">${e.imagenes.map((im) =>
         `<figure><a href="${im.src}"><img src="${im.src}" alt="${esc(im.pie)}" loading="lazy"></a><figcaption class="caption">${esc(im.pie)}</figcaption></figure>`).join("")}</div></section>`
     : "";
+  const memoria = memoriaHTML(e);
+  const proceso = procesoHTML(e);
   const descargas = e.descargas.length
     ? `<section class="seccion"><h3 class="label">descargas</h3><ul class="descargas">${e.descargas.map((d) => {
         const nombre = d.split("/").pop();
@@ -207,10 +216,10 @@ function vistaObjeto(oid, eid, abrirDetalles = false) {
           <span class="caption">${fechaLarga(e.fecha)} · ${i + 1} / ${o.estados.length}${e.archivo ? ` · archivo: ${esc(e.archivo)}` : ""}</span></div>
         <h2 class="display">${esc(e.nombre)}</h2>
         <p class="body">${esc(e.texto)}</p>
-        ${coste}${delta}${piezas}${imagenes}${descargas}
+        ${coste}${delta}${memoria}${proceso}${piezas}${imagenes}${descargas}
         <section class="seccion"><h3 class="label">el objeto</h3>
           <p class="body muted">${esc(o.que)} · ${esc(o.estado)}</p>
-          ${o.aprendizajes ? `<p><a class="enlace" href="${o.aprendizajes}">aprendizajes</a></p>` : ""}</section>
+          <p><a class="enlace" href="#/${o.id}/memoria">memoria completa →</a>${o.aprendizajes ? ` · <a class="enlace" href="${o.aprendizajes}">aprendizajes</a>` : ""}</p></section>
         <nav class="hoja-pasos">
           ${ant ? `<a href="${enlace(ant)}" rel="prev"><span class="caption">← anterior</span><span class="control">${esc(ant.nombre)}</span></a>` : "<span></span>"}
           ${sig ? `<a class="sig" href="${enlace(sig)}" rel="next"><span class="caption">siguiente →</span><span class="control">${esc(sig.nombre)}</span></a>` : "<span></span>"}
@@ -270,6 +279,39 @@ function vistaObjeto(oid, eid, abrirDetalles = false) {
 let teclas = null;
 document.addEventListener("keydown", (ev) => teclas && teclas(ev));
 
+// ── memoria y proceso ────────────────────────────────────────────────────────
+function memoriaHTML(e) {
+  if (!e.memoria || !e.memoria.length) return "";
+  return `<section class="seccion"><h3 class="label">qué cambia y por qué</h3><ul class="memoria">
+    ${e.memoria.map((m) => `<li><span class="tema">${esc(m.tema)}</span><p class="body">${esc(m.texto)}</p></li>`).join("")}</ul></section>`;
+}
+function procesoHTML(e) {
+  if (!e.proceso || !e.proceso.length) return "";
+  return `<section class="seccion"><h3 class="label">proceso</h3><div class="imagenes proceso">${e.proceso.map((im) =>
+    `<figure><a href="${im.src}"><img src="${im.src}" alt="${esc(im.pie)}" loading="lazy"></a>
+      <figcaption class="caption">${fecha(im.fecha)} · ${esc(im.pie)}</figcaption></figure>`).join("")}</div></section>`;
+}
+
+// ── memoria de un objeto: cómo cambia de un estado a otro y por qué ──────────
+function vistaMemoria(o) {
+  const filas = o.estados.map((e, i) => {
+    const t = tipoDe(e, o);
+    return `<article class="mem-estado">
+      <div class="ficha-cab"><span class="status ${t.cls} control">${t.txt}</span>
+        <span class="caption">${fechaLarga(e.fecha)} · ${i + 1} / ${o.estados.length}${e.coste ? ` · ${eur(e.coste.euros)} · ${gr(e.coste.gramos)}` : ""}</span></div>
+      <h2 class="title"><a href="#/${o.id}/${e.id}">${esc(e.nombre)} <span class="signal">→</span></a></h2>
+      <p class="body muted">${esc(e.texto)}</p>
+      ${memoriaHTML(e)}${procesoHTML(e)}
+    </article>`;
+  }).join("");
+  app.innerHTML = cabecera("objetos", o.nombre) + `<main class="memoria-pag">
+    <section class="hero"><p class="label">memoria</p><h1 class="display" id="titulo">${esc(o.nombre)}</h1>
+      <p class="body muted">${esc(o.que)}. Cómo cambia de un estado a otro y por qué: diseño, uso, resistencia, montaje, material, coste.</p></section>
+    ${filas}${pie()}</main>`;
+  descifra(document.getElementById("titulo"));
+  document.title = `labil · ${o.nombre} · memoria`;
+}
+
 // ── historial: todo lo hecho, por meses ──────────────────────────────────────
 function vistaHistorial() {
   const filas = DATOS.objetos.flatMap((o) => o.estados.map((e, n) => ({ o, e, n })))
@@ -283,7 +325,7 @@ function vistaHistorial() {
       ${fs.map(({ o, e }) => `<li><a href="#/${o.id}/${e.id}">
         <span class="caption">${fecha(e.fecha)}</span>
         <span class="que"><span class="control">${esc(o.nombre)} · ${esc(e.nombre)}</span>
-          <span class="status ${tipoDe(e).cls} caption">${tipoDe(e).txt}</span></span>
+          <span class="status ${tipoDe(e, o).cls} caption">${tipoDe(e, o).txt}</span></span>
         <span class="strong">${e.coste ? eur(e.coste.euros) : "—"}</span></a></li>`).join("")}
     </ol></section>`;
   }).join("");
@@ -302,7 +344,10 @@ function ruta() {
   const partes = location.hash.replace(/^#\/?/, "").split("/").filter(Boolean).map(decodeURIComponent);
   if (!partes.length) vistaInicio();
   else if (partes[0] === "historial") vistaHistorial();
-  else vistaObjeto(partes[0], partes[1]);
+  else if (partes[1] === "memoria") {
+    const o = DATOS.objetos.find((x) => x.id === partes[0]);
+    o ? vistaMemoria(o) : (location.hash = "#/");
+  } else vistaObjeto(partes[0], partes[1]);
   window.scrollTo(0, 0);
 }
 

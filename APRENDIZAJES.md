@@ -120,3 +120,19 @@ Registro vivo de explicaciones, decisiones y convenciones acordadas.
     Se abre tocando o deslizando hacia arriba, y se cierra hacia abajo, tocando fuera o con Esc.
 - En escritorio, la hoja de detalles se abre como panel lateral.
 - **Vocabulario**: *posición* = una vista o colocación del mismo estado (no es otra versión).
+
+## 2026-11-16 · Proceso y memoria en la web
+
+- **Qué pidió Luis**: que la web enseñe también su **proceso de diseño** (las imágenes que sube:
+  bocetos, pizarras, capturas) y una **memoria** de cómo cambia de una versión a otra, con las
+  razones (diseño, resistencia del clic, montaje…). Quedó como norma en `CLAUDE.md`.
+- **Dónde**: imágenes en `proceso/<objeto>/` (con `proceso/guardar.py`, que reduce y quita el GPS).
+  La memoria va en cada estado de `3d-models/objetos.json`. En la web, la hoja de detalles muestra
+  «qué cambia y por qué» y «proceso», y `#/<objeto>/memoria` lo cuenta todo seguido.
+- **Vocabulario**: *proceso* = el camino (lo que dibuja o fotografía Luis); *imágenes* = el resultado
+  (renders, capturas finales); *memoria* = el porqué de cada cambio, por temas.
+- **La web es un objeto más** (`labil-web`): v1 beige → v2 LG Señal → página limpia (boceto de la pizarra).
+  Para la web, «versión» se dice «publicada».
+- Una imagen que Luis pegó en la conversación (su captura de la v2) no llegó como archivo al repositorio.
+  Se rehízo la misma captura y el pie lo dice. Si vuelve a pasar, se le avisa.
+- **Autonomía (16 nov 2026)**: Luis autorizó a fusionar en `main` yo mismo cuando esté todo listo.
