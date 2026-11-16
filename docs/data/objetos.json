@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-16T11:47Z",
+ "generado": "2026-11-16T11:50Z",
  "euros_kg": 20.0,
  "perfil": "A1 · capa 0.2 mm · relleno 15% · PLA 1.26 g/cm³",
  "objetos": [
@@ -1495,6 +1495,10 @@
       {
        "tema": "método",
        "texto": "Se mantiene lo bueno del nativo: se usa con el pulgar (filas de 52 px), con el teclado (flechas, Inicio, Fin, Intro, Esc) y lo anuncia el lector de pantalla como lista de opciones."
+      },
+      {
+       "tema": "método",
+       "texto": "La captura de Luis mostró la web vieja después de fusionar: GitHub Pages tarda unos 3 min en publicar y el móvil guarda app.js hasta 10 min. Desde ahora, cada publicación pone la versión en app.js y app.css (?v=…) para que el móvil los descargue de nuevo."
       }
      ],
      "modelos": [],
@@ -1508,7 +1512,13 @@
        "pie": "cerrado"
       }
      ],
-     "proceso": [],
+     "proceso": [
+      {
+       "src": "files/labil-web/desplegable/2026-11-16-desplegable-del-sistema-en-el-iphone-de-luis.jpg",
+       "pie": "captura de Luis en su iPhone a las 12:50: todavía salía el desplegable del sistema, blanco, redondeado y con otra letra. La web nueva aún se estaba publicando y el móvil guardaba la anterior hasta 10 min",
+       "fecha": "2026-11-16"
+      }
+     ],
      "descargas": [],
      "piezas": [],
      "cambiado": null

@@ -147,3 +147,7 @@ Registro vivo de explicaciones, decisiones y convenciones acordadas.
 - **Lo que no se pierde del nativo**: filas de 52 px para el pulgar; teclado (↑ ↓, Inicio, Fin,
   Intro, Esc); se cierra tocando fuera; el lector de pantalla lo anuncia como lista de opciones (`listbox`).
 - **Norma aplicada**: el cambio entra como estado nuevo de «labil · la web», con su captura y su memoria.
+- **Caché del móvil (16 nov 2026)**: justo después de fusionar, Luis seguía viendo el desplegable del
+  sistema. Había dos motivos: la publicación tarda unos 3 min y GitHub Pages deja que el móvil guarde
+  `app.js` y `app.css` hasta 10 min. Arreglo: `web.py` añade `?v=<commit>` a esos dos archivos en cada
+  publicación. `index.html` puede tardar hasta 10 min en refrescarse; si corre prisa, se recarga la página.
