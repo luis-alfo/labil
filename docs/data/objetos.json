@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-17T12:26Z",
+ "generado": "2026-11-17T12:28Z",
  "euros_kg": 20.0,
  "perfil": "A1 · capa 0.2 mm · relleno 15% · PLA 1.26 g/cm³",
  "objetos": [
@@ -64,7 +64,7 @@
       "euros": 0.34,
       "origen": "estimado"
      },
-     "cambiado": "2026-05-01"
+     "cambiado": "2026-11-16"
     },
     {
      "id": "pruebas-pinza",
@@ -130,7 +130,7 @@
       "euros": 0.8,
       "origen": "estimado"
      },
-     "cambiado": null
+     "cambiado": "2026-11-16"
     },
     {
      "id": "pruebas-tenedor",
@@ -188,7 +188,7 @@
       "euros": 0.36,
       "origen": "estimado"
      },
-     "cambiado": null
+     "cambiado": "2026-11-16"
     },
     {
      "id": "v1",
@@ -240,7 +240,7 @@
       "euros": 0.42,
       "origen": "estimado"
      },
-     "cambiado": null
+     "cambiado": "2026-11-16"
     },
     {
      "id": "borrador-bastidor",
@@ -319,7 +319,7 @@
       "euros": 0.94,
       "origen": "estimado"
      },
-     "cambiado": null
+     "cambiado": "2026-11-16"
     },
     {
      "id": "borrador-colgador",
@@ -401,7 +401,7 @@
       "euros": 0.91,
       "origen": "estimado"
      },
-     "cambiado": null
+     "cambiado": "2026-11-16"
     },
     {
      "id": "v2",
@@ -498,7 +498,7 @@
       "euros": 0.86,
       "origen": "estimado"
      },
-     "cambiado": null
+     "cambiado": "2026-11-16"
     }
    ]
   },
@@ -555,7 +555,7 @@
       "euros": 0.29,
       "origen": "estimado"
      },
-     "cambiado": null
+     "cambiado": "2026-10-28"
     },
     {
      "id": "clic",
@@ -603,7 +603,7 @@
       "euros": 0.29,
       "origen": "estimado"
      },
-     "cambiado": null
+     "cambiado": "2026-10-28"
     },
     {
      "id": "espiral",
@@ -654,7 +654,7 @@
       "euros": 0.36,
       "origen": "estimado"
      },
-     "cambiado": null
+     "cambiado": "2026-10-28"
     },
     {
      "id": "tecla-oculta",
@@ -707,7 +707,7 @@
       "euros": 0.12,
       "origen": "estimado"
      },
-     "cambiado": null
+     "cambiado": "2026-10-28"
     },
     {
      "id": "tres-piezas",
@@ -758,7 +758,7 @@
       "euros": 0.13,
       "origen": "estimado"
      },
-     "cambiado": null
+     "cambiado": "2026-10-28"
     },
     {
      "id": "compacto",
@@ -803,7 +803,7 @@
       "euros": 0.09,
       "origen": "estimado"
      },
-     "cambiado": null
+     "cambiado": "2026-10-28"
     },
     {
      "id": "dos-por-dos",
@@ -852,7 +852,7 @@
       "euros": 0.41,
       "origen": "estimado"
      },
-     "cambiado": null
+     "cambiado": "2026-10-29"
     }
    ]
   },
@@ -860,7 +860,7 @@
    "id": "cajones-isla",
    "nombre": "cajones de la isla",
    "que": "cajones modulares para los huecos de 130 × 135 mm de la isla de la cocina",
-   "estado": "pendiente de probar el encaje",
+   "estado": "la tapa de costillas se caía: falta medir el hueco con la galga",
    "aprendizajes": "files/cajones-isla/notas/APRENDIZAJES.md",
    "estados": [
     {
@@ -911,7 +911,7 @@
       "euros": 0.23,
       "origen": "estimado"
      },
-     "cambiado": null
+     "cambiado": "2026-10-14"
     },
     {
      "id": "conceptos",
@@ -1017,7 +1017,7 @@
       "euros": 0.08,
       "origen": "estimado"
      },
-     "cambiado": null
+     "cambiado": "2026-10-13"
     },
     {
      "id": "cajon",
@@ -1096,7 +1096,7 @@
       "euros": 2.05,
       "origen": "estimado"
      },
-     "cambiado": null
+     "cambiado": "2026-10-14"
     },
     {
      "id": "tapa-pasante",
@@ -1145,7 +1145,7 @@
       "euros": 0.95,
       "origen": "estimado"
      },
-     "cambiado": null
+     "cambiado": "2026-10-14"
     },
     {
      "id": "tapa-bolsillo",
@@ -1160,6 +1160,8 @@
       }
      ],
      "cambio": "con una cajita detrás: no se ve el interior",
+     "feedback": "la prueba que hicimos se caía. no se enganchaba por toda la holgura que dejaba",
+     "feedback_de": "luis",
      "modelos": [
       {
        "nombre": "tapa",
@@ -1186,7 +1188,171 @@
       "euros": 1.07,
       "origen": "estimado"
      },
+     "cambiado": "2026-11-16"
+    },
+    {
+     "id": "galga",
+     "tipo": "prueba",
+     "nombre": "galga del hueco",
+     "fecha": "2026-11-17",
+     "texto": "Chapa escalonada de 128 a 140 mm, con un escalón cada 0,5 mm. Se mete por la punta hasta que no entra más y se lee el último número: de lado mide el ancho del hueco y de pie, el alto.",
+     "memoria": [
+      {
+       "tema": "método",
+       "texto": "La tapa de costillas era un encaje a presión de 0,3 mm por lado sobre una medida de flexómetro (±0,5–1 mm) que nunca se comprobó. Un apriete así necesita conocer el hueco con ±0,2 mm. Antes de gastar más plástico, se mide."
+      },
+      {
+       "tema": "medidas",
+       "texto": "25 escalones de 128 a 140 mm. Las dos primeras capas van metidas 0,3 mm para que la pata de elefante no falsee la medida."
+      },
+      {
+       "tema": "coste",
+       "texto": "9 g. La tapa que falló gastó 47 g para descubrir lo mismo."
+      }
+     ],
+     "cambio": "antes de imprimir nada más, medir el hueco de verdad con 9 g",
+     "modelos": [
+      {
+       "nombre": "galga",
+       "src": "models/archivo/cajones-isla-galga-0.glb"
+      }
+     ],
+     "imagenes": [
+      {
+       "src": "files/cajones-isla/galga/tapa_lenguetas.png",
+       "pie": "lengüetas y galga"
+      }
+     ],
+     "proceso": [],
+     "descargas": [
+      "files/cajones-isla/galga/galga_hueco_128-140.stl"
+     ],
+     "piezas": [
+      {
+       "nombre": "galga",
+       "cantidad": 1,
+       "gramos": 8.8,
+       "euros": 0.18,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 8.8,
+      "euros": 0.18,
+      "origen": "estimado"
+     },
      "cambiado": null
+    },
+    {
+     "id": "aro-lenguetas",
+     "tipo": "prueba",
+     "nombre": "aro de lengüetas",
+     "fecha": "2026-11-17",
+     "texto": "El contorno de la tapa nueva, sin el frente: faldón, pies y las 4 lengüetas. Prueba si agarra en el hueco con la mitad de plástico que la tapa entera.",
+     "memoria": [
+      {
+       "tema": "montaje",
+       "texto": "Cuatro lengüetas (2 por lado) que sobresalen 4 mm del canto y se doblan al entrar. Aprietan en cualquier hueco de 130 a 135 mm de ancho; las costillas solo lo hacían entre 130,0 y 130,6."
+      },
+      {
+       "tema": "resistencia",
+       "texto": "Lámina de 2 × 10,6 mm y 46 mm de largo: 0,8 N por mm doblado y 0,65 % de deformación si se aplasta del todo (el PLA aguanta ~2 %). Flexa en el plano de las capas, la dirección fuerte."
+      },
+      {
+       "tema": "impresión",
+       "texto": "Boca abajo, sin soportes. Cada lámina se imprime en puente sobre 3 apoyos con una capa de aire; se sueltan al apretarla la primera vez. Comprobado capa a capa: no hay más voladizos."
+      },
+      {
+       "tema": "método",
+       "texto": "En octubre se descartaron las lengüetas «porque se parten entre capas». Era cierto para una lengüeta de pie, no para una tumbada en el plano de la cama."
+      }
+     ],
+     "cambio": "lengüetas flexibles en vez de costillas rígidas, probadas con 25 g",
+     "modelos": [
+      {
+       "nombre": "aro",
+       "src": "models/archivo/cajones-isla-aro-lenguetas-0.glb"
+      }
+     ],
+     "imagenes": [],
+     "proceso": [],
+     "descargas": [
+      "files/cajones-isla/aro-lenguetas/tapa_lenguetas_aro.stl"
+     ],
+     "piezas": [
+      {
+       "nombre": "aro",
+       "cantidad": 1,
+       "gramos": 24.9,
+       "euros": 0.5,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 24.9,
+      "euros": 0.5,
+      "origen": "estimado"
+     },
+     "cambiado": null
+    },
+    {
+     "id": "tapa-lenguetas",
+     "tipo": "borrador",
+     "nombre": "tapa de lengüetas",
+     "fecha": "2026-11-17",
+     "texto": "La puerta de 3 voltes con las lengüetas del aro, pasante o con bolsillo. Dos pies la levantan 0,5 mm del estante para que la rendija sea igual abajo que arriba. Con la medida de la galga se regenera al tamaño real del hueco.",
+     "memoria": [
+      {
+       "tema": "diseño",
+       "texto": "El faldón va metido 7,6 mm desde el canto para dejar sitio a las lengüetas. La holgura con el hueco ya no sujeta nada: solo decide la rendija que se ve."
+      },
+      {
+       "tema": "estética",
+       "texto": "Si el hueco mide más de 130 mm, la rendija crece. Por eso el tamaño final del frente sale de la galga: `tapa_lenguetas.py --ancho-hueco … --alto-hueco …`."
+      },
+      {
+       "tema": "uso",
+       "texto": "Al ir enrasada, nada impide empujarla hacia dentro. Pendiente de decidir con Luis si lleva dos pestañas finas por delante."
+      }
+     ],
+     "cambio": "la puerta de 3 voltes con lengüetas; el tamaño final sale de la galga",
+     "modelos": [
+      {
+       "nombre": "pasante",
+       "src": "models/archivo/cajones-isla-tapa-lenguetas-0.glb"
+      },
+      {
+       "nombre": "bolsillo",
+       "src": "models/archivo/cajones-isla-tapa-lenguetas-1.glb"
+      }
+     ],
+     "imagenes": [
+      {
+       "src": "files/cajones-isla/tapa-lenguetas/tapa_lenguetas.png",
+       "pie": "lengüetas y galga"
+      }
+     ],
+     "proceso": [],
+     "descargas": [
+      "files/cajones-isla/tapa-lenguetas/tapa_lenguetas_pasante.stl",
+      "files/cajones-isla/tapa-lenguetas/tapa_lenguetas_bolsillo.stl",
+      "files/cajones-isla/tapa-lenguetas/APRENDIZAJES.md"
+     ],
+     "piezas": [
+      {
+       "nombre": "tapa pasante",
+       "cantidad": 1,
+       "gramos": 50.6,
+       "euros": 1.01,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 50.6,
+      "euros": 1.01,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-16"
     }
    ]
   },
@@ -1235,7 +1401,7 @@
       "euros": 0.32,
       "origen": "estimado"
      },
-     "cambiado": "2026-05-01"
+     "cambiado": "2026-11-16"
     },
     {
      "id": "carril",
@@ -1275,7 +1441,7 @@
       "euros": 1.78,
       "origen": "estimado"
      },
-     "cambiado": "2026-05-01"
+     "cambiado": "2026-11-16"
     },
     {
      "id": "rama",
@@ -1317,7 +1483,7 @@
       "euros": 1.24,
       "origen": "estimado"
      },
-     "cambiado": "2026-05-01"
+     "cambiado": "2026-11-16"
     },
     {
      "id": "trazo",
@@ -1502,7 +1668,7 @@
       "euros": 0.13,
       "origen": "estimado"
      },
-     "cambiado": null
+     "cambiado": "2026-11-16"
     },
     {
      "id": "st26-botella",

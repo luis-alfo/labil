@@ -72,6 +72,19 @@ Ajustes del autor para las piezas Clickfinity: boquilla de 0,4, 2 paredes, relle
 
 ## Tapa autónoma (prueba de puerta y tapa para huecos sin cajón)
 
-![Tapas](tapas.png)
+**La tapa de costillas (`stl/tapa_revoltons3_*.stl`) se caía**: apretaba solo 0,3 mm por lado y el hueco real es más ancho de lo medido. La sustituye la tapa de lengüetas. Orden para imprimir:
 
-`stl/tapa_revoltons3_pasante.stl` o `stl/tapa_revoltons3_bolsillo.stl`: puerta de 3 voltes con un faldón de 12 mm que entra en el hueco y 6 costillas que aprietan 0,3 mm por lado. Se imprime boca abajo, sin soportes. Si aprieta demasiado, rebaja las costillas con un cúter. Para tapar huecos, mejor la de bolsillo (no se ve el interior).
+![Lengüetas y galga](tapa_lenguetas.png)
+
+| Paso | Pieza | Gramos | Para qué |
+|---|---|---|---|
+| 1 | `stl/galga_hueco_128-140.stl` | 9 g | Medir el ancho y el alto reales del hueco |
+| 2 | `stl/tapa_lenguetas_aro.stl` | 25 g | Probar que las lengüetas agarran |
+| 3 | `stl/tapa_lenguetas_pasante.stl` o `…_bolsillo.stl` | 51 g / 57 g | La tapa, regenerada al tamaño que diga la galga |
+
+- **Galga**: tumbada sobre la cama, con los números hacia arriba. Se mete en el hueco por la punta estrecha, plana y recta, hasta que no entra más. Se lee el último número que ha entrado; si entró también el escalón sin número que le sigue, se suman 0,5 mm. De lado mide el ancho; de pie, el alto.
+- **Aro y tapa**: boca abajo, sin soportes. Al sacarlos de la cama, aprieta cada lengüeta hacia dentro una vez para soltarla de sus tres apoyos.
+- Las lengüetas aprietan en huecos de 130 a 135 mm de ancho. Para otro tamaño: `python3 conceptos/tapa_lenguetas.py --ancho-hueco 131.5 --alto-hueco 135.5`.
+- Si ya tienes impresa la tapa de costillas, se puede aprovechar pegando fieltro adhesivo en los costados del faldón.
+
+![Tapas de costillas (descartadas)](tapas.png)
