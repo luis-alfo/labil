@@ -23,7 +23,7 @@ about the Next.js app), you can ignore the rest of this file.
 | Carpeta | Qué es |
 | --- | --- |
 | `3d-models/sponge-holder/` | **V1**. Impresa. Con sus piezas de prueba `test_*`. |
-| `3d-models/el-secadero-v2/` | **V2**, «El Secadero». Diseño actual, sin imprimir. Fuente: `el_secadero_v2.scad`. |
+| `3d-models/el-secadero-v2/` | **V2**, «El Secadero». Impresa en PLA Tough y montada (nov 2026). Fuente: `el_secadero_v2.scad`. Fotos en `docs/img/el-secadero-v2/`. |
 | `3d-models/bathroom-bar-{a,b,c}/` | Otro proyecto (barra de baño). |
 | `3d-models/_borradores/` | Archivo de borradores (`estropajero-v3`, `estropajero-v4`). **No son versiones** y no se publican. Se conservan por sus `APRENDIZAJES.md`. |
 | `3d-models/perfiles/` | Perfil de laminador para estimar tiempos (A1 + PLA). |

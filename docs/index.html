@@ -63,6 +63,8 @@
     }
 
     .brand {
+      white-space: nowrap;
+      flex-shrink: 0;
       font-weight: 600;
       font-size: 1.05rem;
       letter-spacing: -0.01em;
@@ -77,7 +79,12 @@
     .tabs {
       display: flex;
       gap: 0.15rem;
+      min-width: 0;
+      margin-left: 1rem;
+      overflow-x: auto;       /* con muchas pestañas, la barra se desliza */
+      scrollbar-width: none;
     }
+    .tabs::-webkit-scrollbar { display: none; }
     .tabs a { white-space: nowrap; }
     .tabs a {
       font-family: inherit;
@@ -213,6 +220,37 @@
       font-style: italic;
     }
 
+    /* ---- Galería de fotos: carrusel horizontal ---- */
+    .gallery {
+      display: flex;
+      gap: 0.6rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      margin: 0 -1.25rem;
+      padding: 0 1.25rem 0.5rem;
+      scrollbar-width: thin;
+    }
+    .gallery figure {
+      flex: 0 0 86%;
+      scroll-snap-align: center;
+    }
+    .gallery img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      background: var(--bg-canvas);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+    .gallery figcaption {
+      margin-top: 0.4rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-style: italic;
+    }
     .toggle {
       display: inline-flex;
       gap: 0.2rem;
@@ -261,7 +299,8 @@
       labil<span class="brand-sub">— modelos 3D</span>
     </div>
     <nav class="tabs" aria-label="Modelos">
-      <a href="#v2"       data-target="v2"       class="active">El Secadero V2</a>
+      <a href="#v2-fotos" data-target="v2-fotos" class="active">El Secadero V2</a>
+      <a href="#v2"       data-target="v2">V2 · modelo 3D</a>
       <a href="#v2-placa" data-target="v2-placa">V2 · placa A1</a>
       <a href="#bar-a"  data-target="bar-a">A · Hilo</a>
       <a href="#bar-b"  data-target="bar-b">B · Carril</a>
@@ -277,7 +316,8 @@
     </nav>
     <select class="tabs-mobile" aria-label="Modelos">
       <optgroup label="El Secadero V2">
-        <option value="v2">Montado</option>
+        <option value="v2-fotos">Fotos</option>
+        <option value="v2">Modelo 3D</option>
         <option value="v2-placa">Placa A1</option>
       </optgroup>
       <optgroup label="Barra modular">
@@ -301,9 +341,69 @@
   </header>
 
   <main id="snap-root">
+    <section id="v2-fotos">
+      <div class="section-inner">
+        <div class="eyebrow">Soporte de estropajo · V2 · impreso y montado</div>
+        <h2>El Secadero</h2>
+        <p class="lede">
+          Así queda en el fregadero. El estropajo se seca de canto y al
+          aire, y la cuna se levanta para fregar. Desliza para ver las fotos.
+        </p>
+        <div class="gallery" aria-label="Fotos de El Secadero V2 montado">
+          <figure>
+            <img src="img/el-secadero-v2/01-con-estropajo-800.jpg"
+                 srcset="img/el-secadero-v2/01-con-estropajo-800.jpg 800w, img/el-secadero-v2/01-con-estropajo-1600.jpg 1600w"
+                 sizes="(max-width: 700px) 86vw, 540px" width="1600" height="1200"
+                 alt="El Secadero V2 con el estropajo de canto en la cuna, visto en ángulo">
+            <figcaption>El estropajo se seca de canto y al aire</figcaption>
+          </figure>
+          <figure>
+            <img src="img/el-secadero-v2/02-con-estropajo-frente-800.jpg"
+                 srcset="img/el-secadero-v2/02-con-estropajo-frente-800.jpg 800w, img/el-secadero-v2/02-con-estropajo-frente-1600.jpg 1600w"
+                 sizes="(max-width: 700px) 86vw, 540px" width="1600" height="1200"
+                 alt="El Secadero V2 con el estropajo, visto de frente" loading="lazy">
+            <figcaption>De frente, con el estropajo</figcaption>
+          </figure>
+          <figure>
+            <img src="img/el-secadero-v2/03-cuna-abajo-800.jpg"
+                 srcset="img/el-secadero-v2/03-cuna-abajo-800.jpg 800w, img/el-secadero-v2/03-cuna-abajo-1600.jpg 1600w"
+                 sizes="(max-width: 700px) 86vw, 540px" width="1600" height="1200"
+                 alt="La cuna de El Secadero V2 bajada y vacía, vista en ángulo" loading="lazy">
+            <figcaption>La cuna abajo, vacía</figcaption>
+          </figure>
+          <figure>
+            <img src="img/el-secadero-v2/04-cuna-abajo-frente-800.jpg"
+                 srcset="img/el-secadero-v2/04-cuna-abajo-frente-800.jpg 800w, img/el-secadero-v2/04-cuna-abajo-frente-1600.jpg 1600w"
+                 sizes="(max-width: 700px) 86vw, 540px" width="1600" height="1200"
+                 alt="La cuna de El Secadero V2 bajada, vista de frente" loading="lazy">
+            <figcaption>La cuna abajo, de frente</figcaption>
+          </figure>
+          <figure>
+            <img src="img/el-secadero-v2/05-cuna-levantada-800.jpg"
+                 srcset="img/el-secadero-v2/05-cuna-levantada-800.jpg 800w, img/el-secadero-v2/05-cuna-levantada-1600.jpg 1600w"
+                 sizes="(max-width: 700px) 86vw, 540px" width="1600" height="1200"
+                 alt="La cuna de El Secadero V2 levantada contra el marco, vista en ángulo" loading="lazy">
+            <figcaption>Levantada para fregar: se queda sola</figcaption>
+          </figure>
+          <figure>
+            <img src="img/el-secadero-v2/06-cuna-levantada-frente-800.jpg"
+                 srcset="img/el-secadero-v2/06-cuna-levantada-frente-800.jpg 800w, img/el-secadero-v2/06-cuna-levantada-frente-1600.jpg 1600w"
+                 sizes="(max-width: 700px) 86vw, 540px" width="1600" height="1200"
+                 alt="La cuna de El Secadero V2 levantada, vista de frente" loading="lazy">
+            <figcaption>Levantada, de frente</figcaption>
+          </figure>
+        </div>
+        <dl class="meta">
+          <dt>Material</dt><dd>PLA Tough · Bambu Lab A1 · cuatro piezas sin soportes</dd>
+          <dt>Grabado</dt><dd>«EL SECADERO | V2 | 161126» en el anillo</dd>
+          <dt>Más</dt><dd><a href="#v2" data-goto="v2">modelo 3D</a> · <a href="#v2-placa" data-goto="v2-placa">placa para imprimirlo</a></dd>
+        </dl>
+      </div>
+    </section>
+
     <section id="v2">
       <div class="section-inner">
-        <div class="eyebrow">Soporte de estropajo · V2 · PLA · sin imprimir aún</div>
+        <div class="eyebrow">Soporte de estropajo · V2 · modelo 3D</div>
         <h2>El Secadero</h2>
         <p class="lede">
           El estropajo se seca de canto y al aire, en una cuna a su medida
@@ -473,7 +573,7 @@
 
     <section id="full">
       <div class="section-inner">
-        <div class="eyebrow">Sponge holder · V1 · la única impresa hasta ahora</div>
+        <div class="eyebrow">Sponge holder · V1 · la primera versión impresa</div>
         <h2>Pieza completa — robusta con prongs triangulares</h2>
         <p class="lede">
           Versión reforzada tras feedback de fragilidad. Prongs ahora
@@ -800,6 +900,15 @@
       a.addEventListener("click", e => {
         e.preventDefault();
         const target = document.getElementById(a.dataset.target);
+        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+
+    // ── Enlaces internos entre secciones
+    document.querySelectorAll("a[data-goto]").forEach(a => {
+      a.addEventListener("click", e => {
+        e.preventDefault();
+        const target = document.getElementById(a.dataset.goto);
         if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
       });
     });
