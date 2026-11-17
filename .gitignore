@@ -58,3 +58,6 @@ logs/
 # Python (generadores de 3d-models)
 __pycache__/
 *.pyc
+
+# mallas derivadas de Clickfinity (CC BY-NC-SA, uso personal; se generan con conceptos/cajon_click.py)
+cajones-isla/clickfinity_local/

@@ -3,11 +3,13 @@ name: Build & deploy 3D viewer
 on:
   push:
     branches:
-      - main
-      - 'claude/**'
+      - main   # solo main: si publicaran también las ramas claude/**, la última en subir pisaría la web
     paths:
       - '3d-models/**'
       - 'docs/**'
+      - 'fidgets/**'
+      - 'cajones-isla/**'
+      - 'llaveros/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -25,6 +27,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # web.py lee la fecha del último cambio de cada estado
 
       - uses: actions/setup-python@v5
         with:
@@ -33,7 +37,8 @@ jobs:
       - name: Install Python deps
         # networkx + lxml: trimesh's .3mf exporter
         # scipy: trimesh's convex_hull (used by the triangular prongs)
-        run: pip install trimesh shapely manifold3d numpy-stl networkx lxml scipy
+        # mapbox-earcut: triangula los perfiles de bathroom-trazo
+        run: pip install trimesh shapely manifold3d numpy-stl networkx lxml scipy mapbox-earcut
 
       - name: Install OpenSCAD
         # el-secadero-v2 se modela en OpenSCAD; su generate_stl.py lo necesita
@@ -68,6 +73,11 @@ jobs:
           mkdir -p docs/files/sponge-holder
           cp 3d-models/sponge-holder/*.stl 3d-models/sponge-holder/*.3mf \
              3d-models/sponge-holder/print_settings.md docs/files/sponge-holder/
+
+      - name: Web v2 (objetos, costes y visor de borradores)
+        # Lee 3d-models/objetos.json, calcula el coste de cada pieza a 20 €/kg y
+        # escribe docs/data/objetos.json, los GLB que faltan y las descargas.
+        run: python3 3d-models/web.py
 
       - uses: actions/configure-pages@v5
 

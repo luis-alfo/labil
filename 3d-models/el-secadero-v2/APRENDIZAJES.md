@@ -207,4 +207,4 @@ Luis preguntó si lo que cuelga solo se apoya en el brazo, y si eso no es frági
 - Brazo y cuña están en gris claro, y marco y cuna en gris oscuro: dos filamentos.
 - Lo que las fotos no dicen: si algún encaje quedó duro o flojo, si la cuña aprieta bien y cuánto juego tiene el marco. Falta que Luis lo cuente.
 - Con esto la V2 pasa a ser una versión de verdad, según su regla. La siguiente que se imprima será la V3.
-- Las fotos están en la web, en `docs/img/el-secadero-v2/`, a 800 y 1600 px y sin metadatos. Los originales no llevaban ubicación.
+- Las fotos están en `proceso/el-secadero/` (guardadas con `proceso/guardar.py`, sin metadatos) y en el estado `v2` de `3d-models/objetos.json`, en `imagenes` y en `proceso`.
