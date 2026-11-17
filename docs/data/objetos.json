@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-17T11:08Z",
+ "generado": "2026-11-17T12:28Z",
  "euros_kg": 20.0,
  "perfil": "A1 · capa 0.2 mm · relleno 15% · PLA 1.26 g/cm³",
  "objetos": [
@@ -1359,8 +1359,9 @@
   {
    "id": "barra-bano",
    "nombre": "barra de baño",
-   "que": "barra modular para el baño, junto al grifo",
-   "estado": "tres propuestas",
+   "que": "línea modular que cuelga del grifo del baño",
+   "estado": "trazo por imprimir",
+   "aprendizajes": "files/barra-bano/notas/APRENDIZAJES.md",
    "estados": [
     {
      "id": "hilo",
@@ -1374,6 +1375,7 @@
        "texto": "Tres direcciones distintas para elegir antes de detallar ninguna: varilla de aluminio, perfil en T de PLA o una sola pieza curva."
       }
      ],
+     "cambio": "varilla de aluminio con abrazaderas a presión",
      "modelos": [
       {
        "nombre": "barra",
@@ -1407,6 +1409,13 @@
      "nombre": "carril",
      "fecha": "2026-05-01",
      "texto": "Perfil de PLA con canal en T por el que corren los accesorios.",
+     "cambio": "perfil de pla con canal en t y abrazaderas atornilladas",
+     "memoria": [
+      {
+       "tema": "montaje",
+       "texto": "Los ganchos corren por un canal en T y las abrazaderas se aprietan con tornillos M3: siete piezas y un riel de 485 mm."
+      }
+     ],
      "modelos": [
       {
        "nombre": "barra",
@@ -1440,6 +1449,15 @@
      "nombre": "rama",
      "fecha": "2026-05-01",
      "texto": "Brazo curvo de una pieza.",
+     "cambio": "una sola pieza curva con los anillos integrados",
+     "memoria": [
+      {
+       "tema": "montaje",
+       "texto": "Los anillos son cerrados: no se pueden poner sin desmontar el grifo."
+      }
+     ],
+     "feedback": "creo que podemos mejorar mucho",
+     "feedback_de": "luis",
      "modelos": [
       {
        "nombre": "barra",
@@ -1466,6 +1484,139 @@
       "origen": "estimado"
      },
      "cambiado": "2026-11-16"
+    },
+    {
+     "id": "trazo",
+     "tipo": "version",
+     "nombre": "trazo",
+     "fecha": "2026-11-17",
+     "por_imprimir": true,
+     "texto": "Una línea plana de PLA que cuelga del propio grifo. Pasa por encima del caño y de la manilla, se engancha a cada uno con un lazo abierto hacia abajo y se alarga un palmo a cada lado. Los ganchos van a caballo sobre su canto.",
+     "memoria": [
+      {
+       "tema": "diseño",
+       "texto": "«No la entiendo como barra sino como una línea» (Luis). Pasa a ser un perfil plano de 8 mm de fondo que recorre la pared por encima del grifo y afina de 14 a 6 mm hacia las puntas."
+      },
+      {
+       "tema": "resistencia",
+       "texto": "Los lazos se abren hacia abajo: el peso aprieta su parte maciza contra el grifo. En hilo la boca miraba hacia arriba y el peso tiraba de la pieza hacia fuera. Cada lazo aguanta unos 25 N hacia arriba (estimado)."
+      },
+      {
+       "tema": "resistencia",
+       "texto": "500 g en la punta: unos 4 mm de flecha y 12 N sobre el lazo contrario (estimado, E = 3000 MPa). Lo pesado, cerca del grifo."
+      },
+      {
+       "tema": "uso",
+       "texto": "La línea va por arriba y en los 8 mm pegados a la pared: no cruza la palanca ni toca el mando. En hilo y carril la barra pasaba justo por donde baja la palanca."
+      },
+      {
+       "tema": "montaje",
+       "texto": "Cuatro jinetes (gancho, horquilla, aro y repisa) se apoyan en el canto superior y se cambian de sitio a mano. Sin tornillos."
+      },
+      {
+       "tema": "material",
+       "texto": "Todo PLA, como pidió Luis. Desaparece la varilla de aluminio de hilo."
+      },
+      {
+       "tema": "impresión",
+       "texto": "Todo son perfiles planos sin soportes; las capas quedan en el plano en que flexan los lazos. La línea mide 485 mm y se parte en dos con cola de milano: cada mitad (253 mm) entra en diagonal en la A1."
+      },
+      {
+       "tema": "medidas",
+       "texto": "Medido por Luis: caño Ø 29, manilla Ø 42, 49 mm de borde a borde, centros alineados. Supuesto desde las fotos: 3,5 mm de embellecedor y que los 42 mm son del casquillo fijo. Tres pruebas de 10-20 min lo confirman antes de imprimir la pieza."
+      },
+      {
+       "tema": "método",
+       "texto": "El modelo se renderizó y se miró desde varios ángulos antes de enseñarlo. Los tres borradores se exportaban tumbados, en espejo y mil veces más grandes; ya están corregidos."
+      }
+     ],
+     "cambio": "lazos boca abajo, todo plano en pla y ganchos a caballo sobre la línea",
+     "modelos": [
+      {
+       "nombre": "montada",
+       "src": "models/bathroom_trazo.glb"
+      },
+      {
+       "nombre": "piezas",
+       "src": "models/bathroom_trazo_piezas.glb"
+      },
+      {
+       "nombre": "prueba manilla",
+       "src": "models/test_clip_manilla.glb"
+      },
+      {
+       "nombre": "prueba caño",
+       "src": "models/test_clip_cano.glb"
+      },
+      {
+       "nombre": "prueba unión",
+       "src": "models/test_union.glb"
+      }
+     ],
+     "imagenes": [],
+     "proceso": [],
+     "descargas": [
+      "files/barra-bano/trazo/trazo_izquierda.stl",
+      "files/barra-bano/trazo/trazo_derecha.stl",
+      "files/barra-bano/trazo/jinete_gancho.stl",
+      "files/barra-bano/trazo/jinete_horquilla.stl",
+      "files/barra-bano/trazo/jinete_aro.stl",
+      "files/barra-bano/trazo/jinete_repisa.stl",
+      "files/barra-bano/trazo/test_clip_manilla.stl",
+      "files/barra-bano/trazo/test_clip_cano.stl",
+      "files/barra-bano/trazo/test_union.stl",
+      "files/barra-bano/trazo/APRENDIZAJES.md"
+     ],
+     "piezas": [
+      {
+       "nombre": "mitad izquierda",
+       "cantidad": 1,
+       "gramos": 18.2,
+       "euros": 0.36,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "mitad derecha",
+       "cantidad": 1,
+       "gramos": 17.9,
+       "euros": 0.36,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "gancho",
+       "cantidad": 2,
+       "gramos": 8.9,
+       "euros": 0.18,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "horquilla",
+       "cantidad": 1,
+       "gramos": 4.9,
+       "euros": 0.1,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "aro",
+       "cantidad": 1,
+       "gramos": 7.1,
+       "euros": 0.14,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "repisa",
+       "cantidad": 1,
+       "gramos": 17.3,
+       "euros": 0.35,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 74.3,
+      "euros": 1.49,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-17"
     }
    ]
   },

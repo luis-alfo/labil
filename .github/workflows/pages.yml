@@ -37,7 +37,8 @@ jobs:
       - name: Install Python deps
         # networkx + lxml: trimesh's .3mf exporter
         # scipy: trimesh's convex_hull (used by the triangular prongs)
-        run: pip install trimesh shapely manifold3d numpy-stl networkx lxml scipy
+        # mapbox-earcut: triangula los perfiles de bathroom-trazo
+        run: pip install trimesh shapely manifold3d numpy-stl networkx lxml scipy mapbox-earcut
 
       - name: Install OpenSCAD
         # el-secadero-v2 se modela en OpenSCAD; su generate_stl.py lo necesita

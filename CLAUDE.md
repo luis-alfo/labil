@@ -80,7 +80,9 @@ La web no enseña solo el resultado: enseña **el proceso de diseño** y **por q
 | --- | --- |
 | `3d-models/sponge-holder/` | **V1**. Impresa. Con sus piezas de prueba `test_*`. |
 | `3d-models/el-secadero-v2/` | **V2**, «El Secadero». Diseño actual, sin imprimir. Fuente: `el_secadero_v2.scad`. |
-| `3d-models/bathroom-bar-{a,b,c}/` | Otro proyecto (barra de baño). |
+| `3d-models/bathroom-trazo/` | Barra de baño, **«Trazo»**. Diseño actual, sin imprimir. Fuente: `generate_stl.py`. Con sus pruebas `test_*`. |
+| `3d-models/bathroom-bar-{a,b,c}/` | Barra de baño: los tres borradores anteriores (hilo, carril, rama), descartados. |
+| `3d-models/_bathroom_context.py` | Grifo del baño para ver la barra en contexto y `export_glb()` (ver abajo). No es un diseño. |
 | `3d-models/_borradores/` | Archivo de borradores (`estropajero-v3`, `estropajero-v4`). **No son versiones**. Sus `generate_stl.py` no corren en CI, pero la web v2 los enseña como borradores (vía `objetos.json`). |
 | `3d-models/perfiles/` | Perfil de laminador para estimar tiempos (A1 + PLA). |
 
@@ -152,7 +154,7 @@ Diseños nuevos: OpenSCAD como fuente. El workflow instala OpenSCAD en CI, así 
 Required Python deps (install from CI or local; la lista exacta está en `pages.yml`):
 
 ```
-pip install trimesh shapely manifold3d numpy-stl networkx lxml scipy
+pip install trimesh shapely manifold3d numpy-stl networkx lxml scipy mapbox-earcut
 ```
 Más `openscad` (`apt-get install openscad`) para los diseños con fuente `.scad`.
 
@@ -201,6 +203,20 @@ def main():
    fregadero y estropajo, en las posiciones abajo y levantada.
 4. **Volver a medir las secciones tras un cambio estético.** Un cambio de forma puede
    quitar resistencia sin que se note a la vista.
+
+### Lecciones de Trazo (`3d-models/bathroom-trazo/APRENDIZAJES.md`)
+
+1. **Mirar el modelo antes de enseñarlo.** `is_volume` solo dice que la malla está
+   cerrada. En las sesiones en la nube hay Chromium y Playwright: con `npm install three`
+   y una página de diez líneas con `GLTFLoader` salen capturas de frente, de lado y en
+   tres cuartos.
+2. **Marco y unidades del GLB.** glTF es Y arriba, a derechas y en metros. Los modelos
+   en el marco «x derecha, y hacia ti, z arriba» se exportan con `export_glb()` de
+   `3d-models/_bathroom_context.py`; si no, salen tumbados, en espejo y mil veces más grandes.
+3. **La boca de un clip, al lado contrario de la carga.** Así el peso aprieta la parte
+   maciza contra el eje y los brazos solo retienen.
+4. **Modelar lo que se mueve** alrededor de la pieza (mandos, palancas, caños) y dejarla
+   fuera de su recorrido.
 
 ### Verification before declaring done
 

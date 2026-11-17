@@ -201,3 +201,17 @@ Registro vivo de explicaciones, decisiones y convenciones acordadas.
 - **Estropajo realista**: salvauñas con espuma amarilla porosa y una capa verde de fibra, cantos redondeados.
 - **Suavidad**: la rejilla conserva el píxel, pero los movimientos ya no van a saltos. Hay fundidos entre fases
   y al reiniciar. Regla para la marca: *a saltos* en la UI, *suave* en el movimiento 3D.
+
+## 2026-11-17 · Barra de baño: de tres borradores a «Trazo»
+
+- Luis pidió repensar el modelo entero: «creo que podemos mejorar mucho». Los tres
+  borradores (hilo, carril, rama) se quedan como borradores y el diseño actual es
+  **Trazo** (`3d-models/bathroom-trazo/`, con su `APRENDIZAJES.md`).
+- **Código compartido**: un modelo no se enseña sin haberlo renderizado y mirado antes.
+  `is_volume` solo dice que la malla está cerrada.
+- **Código compartido**: la boca de un clip va al lado contrario de la carga.
+- **Marco de los GLB**: Y arriba, a derechas y en metros. Para modelos pensados con
+  «x derecha, y hacia ti, z arriba» se usa `export_glb()` de `3d-models/_bathroom_context.py`.
+- **Realidad de Luis**: sigue el trabajo desde el móvil. La web solo se publica desde `main`,
+  así que para verlo antes de fusionar hace falta otra vía (un artefacto de Claude sirvió).
+- Las fotos del baño llegaron solo dentro de la conversación; faltan en `proceso/`.

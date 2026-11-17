@@ -1124,8 +1124,8 @@
   {
    "id": "barra-bano",
    "nombre": "barra de baño",
-   "que": "barra modular para el baño, junto al grifo",
-   "estado": "tres propuestas",
+   "que": "línea modular que cuelga del grifo del baño",
+   "estado": "trazo por imprimir",
    "estados": [
     {
      "id": "hilo",
@@ -1153,7 +1153,8 @@
        "tema": "método",
        "texto": "Tres direcciones distintas para elegir antes de detallar ninguna: varilla de aluminio, perfil en T de PLA o una sola pieza curva."
       }
-     ]
+     ],
+     "cambio": "varilla de aluminio con abrazaderas a presión"
     },
     {
      "id": "carril",
@@ -1175,6 +1176,13 @@
      ],
      "descargas": [
       "docs/files/bathroom-bar-b/bathroom_bar_b.stl"
+     ],
+     "cambio": "perfil de pla con canal en t y abrazaderas atornilladas",
+     "memoria": [
+      {
+       "tema": "montaje",
+       "texto": "Los ganchos corren por un canal en T y las abrazaderas se aprietan con tornillos M3: siete piezas y un riel de 485 mm."
+      }
      ]
     },
     {
@@ -1197,9 +1205,127 @@
      ],
      "descargas": [
       "docs/files/bathroom-bar-c/bathroom_bar_c.stl"
-     ]
+     ],
+     "cambio": "una sola pieza curva con los anillos integrados",
+     "memoria": [
+      {
+       "tema": "montaje",
+       "texto": "Los anillos son cerrados: no se pueden poner sin desmontar el grifo."
+      }
+     ],
+     "feedback": "creo que podemos mejorar mucho",
+     "feedback_de": "luis"
+    },
+    {
+     "id": "trazo",
+     "tipo": "version",
+     "nombre": "trazo",
+     "fecha": "2026-11-17",
+     "por_imprimir": true,
+     "texto": "Una línea plana de PLA que cuelga del propio grifo. Pasa por encima del caño y de la manilla, se engancha a cada uno con un lazo abierto hacia abajo y se alarga un palmo a cada lado. Los ganchos van a caballo sobre su canto.",
+     "modelos": [
+      {
+       "nombre": "montada",
+       "glb": "docs/models/bathroom_trazo.glb"
+      },
+      {
+       "nombre": "piezas",
+       "glb": "docs/models/bathroom_trazo_piezas.glb"
+      },
+      {
+       "nombre": "prueba manilla",
+       "glb": "docs/models/test_clip_manilla.glb"
+      },
+      {
+       "nombre": "prueba caño",
+       "glb": "docs/models/test_clip_cano.glb"
+      },
+      {
+       "nombre": "prueba unión",
+       "glb": "docs/models/test_union.glb"
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "mitad izquierda",
+       "de": "3d-models/bathroom-trazo/trazo_izquierda.stl"
+      },
+      {
+       "nombre": "mitad derecha",
+       "de": "3d-models/bathroom-trazo/trazo_derecha.stl"
+      },
+      {
+       "nombre": "gancho",
+       "de": "3d-models/bathroom-trazo/jinete_gancho.stl",
+       "cantidad": 2
+      },
+      {
+       "nombre": "horquilla",
+       "de": "3d-models/bathroom-trazo/jinete_horquilla.stl"
+      },
+      {
+       "nombre": "aro",
+       "de": "3d-models/bathroom-trazo/jinete_aro.stl"
+      },
+      {
+       "nombre": "repisa",
+       "de": "3d-models/bathroom-trazo/jinete_repisa.stl"
+      }
+     ],
+     "descargas": [
+      "3d-models/bathroom-trazo/trazo_izquierda.stl",
+      "3d-models/bathroom-trazo/trazo_derecha.stl",
+      "3d-models/bathroom-trazo/jinete_gancho.stl",
+      "3d-models/bathroom-trazo/jinete_horquilla.stl",
+      "3d-models/bathroom-trazo/jinete_aro.stl",
+      "3d-models/bathroom-trazo/jinete_repisa.stl",
+      "3d-models/bathroom-trazo/test_clip_manilla.stl",
+      "3d-models/bathroom-trazo/test_clip_cano.stl",
+      "3d-models/bathroom-trazo/test_union.stl",
+      "3d-models/bathroom-trazo/APRENDIZAJES.md"
+     ],
+     "memoria": [
+      {
+       "tema": "diseño",
+       "texto": "«No la entiendo como barra sino como una línea» (Luis). Pasa a ser un perfil plano de 8 mm de fondo que recorre la pared por encima del grifo y afina de 14 a 6 mm hacia las puntas."
+      },
+      {
+       "tema": "resistencia",
+       "texto": "Los lazos se abren hacia abajo: el peso aprieta su parte maciza contra el grifo. En hilo la boca miraba hacia arriba y el peso tiraba de la pieza hacia fuera. Cada lazo aguanta unos 25 N hacia arriba (estimado)."
+      },
+      {
+       "tema": "resistencia",
+       "texto": "500 g en la punta: unos 4 mm de flecha y 12 N sobre el lazo contrario (estimado, E = 3000 MPa). Lo pesado, cerca del grifo."
+      },
+      {
+       "tema": "uso",
+       "texto": "La línea va por arriba y en los 8 mm pegados a la pared: no cruza la palanca ni toca el mando. En hilo y carril la barra pasaba justo por donde baja la palanca."
+      },
+      {
+       "tema": "montaje",
+       "texto": "Cuatro jinetes (gancho, horquilla, aro y repisa) se apoyan en el canto superior y se cambian de sitio a mano. Sin tornillos."
+      },
+      {
+       "tema": "material",
+       "texto": "Todo PLA, como pidió Luis. Desaparece la varilla de aluminio de hilo."
+      },
+      {
+       "tema": "impresión",
+       "texto": "Todo son perfiles planos sin soportes; las capas quedan en el plano en que flexan los lazos. La línea mide 485 mm y se parte en dos con cola de milano: cada mitad (253 mm) entra en diagonal en la A1."
+      },
+      {
+       "tema": "medidas",
+       "texto": "Medido por Luis: caño Ø 29, manilla Ø 42, 49 mm de borde a borde, centros alineados. Supuesto desde las fotos: 3,5 mm de embellecedor y que los 42 mm son del casquillo fijo. Tres pruebas de 10-20 min lo confirman antes de imprimir la pieza."
+      },
+      {
+       "tema": "método",
+       "texto": "El modelo se renderizó y se miró desde varios ángulos antes de enseñarlo. Los tres borradores se exportaban tumbados, en espejo y mil veces más grandes; ya están corregidos."
+      }
+     ],
+     "cambio": "lazos boca abajo, todo plano en pla y ganchos a caballo sobre la línea"
     }
-   ]
+   ],
+   "aprendizajes": "3d-models/bathroom-trazo/APRENDIZAJES.md"
   },
   {
    "id": "llaveros",
