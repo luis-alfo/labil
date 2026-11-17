@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-17T12:50Z",
+ "generado": "2026-11-17T12:51Z",
  "euros_kg": 20.0,
  "perfil": "A1 · capa 0.2 mm · relleno 15% · PLA 1.26 g/cm³",
  "objetos": [
@@ -860,7 +860,7 @@
    "id": "cajones-isla",
    "nombre": "cajones de la isla",
    "que": "cajones modulares para los huecos de 130 × 135 mm de la isla de la cocina",
-   "estado": "la tapa de costillas se caía: falta medir el hueco con la galga",
+   "estado": "la tapa impresa se caía: falta medir el hueco con la galga",
    "aprendizajes": "files/cajones-isla/notas/APRENDIZAJES.md",
    "estados": [
     {
@@ -1099,11 +1099,52 @@
      "cambiado": "2026-10-14"
     },
     {
-     "id": "tapa-pasante",
+     "id": "tapa-bolsillo",
      "tipo": "borrador",
+     "nombre": "tapa bolsillo",
+     "fecha": "2026-10-14",
+     "texto": "Igual que la pasante, pero con una cajita cerrada detrás del arco: la yema engancha y no se ve el interior. La mejor para tapar huecos.",
+     "memoria": [
+      {
+       "tema": "uso",
+       "texto": "Con una cajita detrás del arco: la yema engancha y no se ve el interior. Es la mejor para tapar huecos."
+      }
+     ],
+     "cambio": "con una cajita detrás: no se ve el interior",
+     "modelos": [
+      {
+       "nombre": "tapa",
+       "src": "models/archivo/cajones-isla-tapa-bolsillo-0.glb"
+      }
+     ],
+     "imagenes": [],
+     "proceso": [],
+     "descargas": [
+      "files/cajones-isla/tapa-bolsillo/tapa_revoltons3_bolsillo.stl",
+      "files/cajones-isla/tapa-bolsillo/APRENDIZAJES.md"
+     ],
+     "piezas": [
+      {
+       "nombre": "tapa",
+       "cantidad": 1,
+       "gramos": 53.4,
+       "euros": 1.07,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 53.4,
+      "euros": 1.07,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-17"
+    },
+    {
+     "id": "tapa-pasante",
+     "tipo": "version",
      "nombre": "tapa pasante",
      "fecha": "2026-10-14",
-     "texto": "El frente de 3 voltes con un faldón de 12 mm y costillas aplastables. Sirve para probar la puerta y para tapar los huecos sin cajón. Los dedos enganchan por detrás.",
+     "texto": "El frente de 3 voltes con un faldón de 12 mm y costillas rígidas. Impresa: se caía. Las costillas solo apretaban si el hueco medía entre 130,0 y 130,6 mm, y el hueco real es más ancho.",
      "memoria": [
       {
        "tema": "uso",
@@ -1112,9 +1153,15 @@
       {
        "tema": "montaje",
        "texto": "Costillas aplastables de 0,8 mm. Se descartaron las lengüetas elásticas: impresas boca abajo, se parten entre capas."
+      },
+      {
+       "tema": "uso",
+       "texto": "Impresa por Luis. Se caía: «no se enganchaba por toda la holgura que dejaba». El frente (129 × 134 mm) se mantiene en la tapa siguiente; lo que cambia es cómo se sujeta."
       }
      ],
      "cambio": "el frente con faldón y costillas, para probar la puerta",
+     "feedback": "la prueba que hicimos se caía. no se enganchaba por toda la holgura que dejaba",
+     "feedback_de": "luis",
      "modelos": [
       {
        "nombre": "tapa",
@@ -1146,49 +1193,6 @@
       "origen": "estimado"
      },
      "cambiado": "2026-10-14"
-    },
-    {
-     "id": "tapa-bolsillo",
-     "tipo": "borrador",
-     "nombre": "tapa bolsillo",
-     "fecha": "2026-10-14",
-     "texto": "Igual que la pasante, pero con una cajita cerrada detrás del arco: la yema engancha y no se ve el interior. La mejor para tapar huecos.",
-     "memoria": [
-      {
-       "tema": "uso",
-       "texto": "Con una cajita detrás del arco: la yema engancha y no se ve el interior. Es la mejor para tapar huecos."
-      }
-     ],
-     "cambio": "con una cajita detrás: no se ve el interior",
-     "feedback": "la prueba que hicimos se caía. no se enganchaba por toda la holgura que dejaba",
-     "feedback_de": "luis",
-     "modelos": [
-      {
-       "nombre": "tapa",
-       "src": "models/archivo/cajones-isla-tapa-bolsillo-0.glb"
-      }
-     ],
-     "imagenes": [],
-     "proceso": [],
-     "descargas": [
-      "files/cajones-isla/tapa-bolsillo/tapa_revoltons3_bolsillo.stl",
-      "files/cajones-isla/tapa-bolsillo/APRENDIZAJES.md"
-     ],
-     "piezas": [
-      {
-       "nombre": "tapa",
-       "cantidad": 1,
-       "gramos": 53.4,
-       "euros": 1.07,
-       "fuente": "stl"
-      }
-     ],
-     "coste": {
-      "gramos": 53.4,
-      "euros": 1.07,
-      "origen": "estimado"
-     },
-     "cambiado": "2026-11-17"
     },
     {
      "id": "galga",
