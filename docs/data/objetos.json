@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-17T12:51Z",
+ "generado": "2026-11-17T19:09Z",
  "euros_kg": 20.0,
  "perfil": "A1 · capa 0.2 mm · relleno 15% · PLA 1.26 g/cm³",
  "objetos": [
@@ -7,7 +7,7 @@
    "id": "el-secadero",
    "nombre": "el secadero",
    "que": "soporte de estropajo que abraza el grifo de la cocina",
-   "estado": "v2 por imprimir",
+   "estado": "v2 impresa y montada",
    "aprendizajes": "files/el-secadero/notas/APRENDIZAJES.md",
    "estados": [
     {
@@ -408,7 +408,6 @@
      "tipo": "version",
      "nombre": "v2",
      "fecha": "2026-11-16",
-     "por_imprimir": true,
      "texto": "El Secadero. Cuna para el estropajo de canto, marco percha que se engancha por forma y cuña de apriete. Formas redondeadas y grabado en JetBrains Mono. Medida antes de modelar.",
      "memoria": [
       {
@@ -430,6 +429,10 @@
       {
        "tema": "estética",
        "texto": "Formas redondeadas y grabado en JetBrains Mono. Redondear quitaba resistencia: se recuperó con unos 5 g más."
+      },
+      {
+       "tema": "impresión",
+       "texto": "Impresa en PLA Tough en la A1 y montada (fotos de Luis, 17 nov 2026). Brazo y cuña en gris claro; marco y cuna en gris oscuro. Encaja en el grifo, la cuna se queda levantada sola y el estropajo cabe de canto. Falta que Luis cuente cómo quedaron los ajustes."
       }
      ],
      "cambio": "medidas de la v1, cuna a medida del estropajo y cuña que aprieta sola",
@@ -449,11 +452,50 @@
      ],
      "imagenes": [
       {
+       "src": "files/el-secadero/v2/2026-11-17-impresa-y-montada-con-el-estropajo-de-canto.jpg",
+       "pie": "impresa, con el estropajo"
+      },
+      {
+       "src": "files/el-secadero/v2/2026-11-17-la-cuna-levantada-se-queda-sola.jpg",
+       "pie": "cuna levantada"
+      },
+      {
        "src": "files/el-secadero/v2/grabado.png",
        "pie": "grabado"
       }
      ],
-     "proceso": [],
+     "proceso": [
+      {
+       "src": "files/el-secadero/v2/2026-11-17-impresa-y-montada-con-el-estropajo-de-canto.jpg",
+       "pie": "Foto de Luis: impresa en PLA Tough y montada, con el estropajo de canto en la cuna. El anillo rodea el embellecedor y el brazo va a ras de la encimera hasta el canto.",
+       "fecha": "2026-11-17"
+      },
+      {
+       "src": "files/el-secadero/v2/2026-11-17-de-frente-con-el-estropajo.jpg",
+       "pie": "Foto de Luis, de frente: el estropajo queda de pie dentro del fregadero y se lee el grabado «EL SECADERO | V2 | 161126».",
+       "fecha": "2026-11-17"
+      },
+      {
+       "src": "files/el-secadero/v2/2026-11-17-la-cuna-abajo-vacia.jpg",
+       "pie": "Foto de Luis: la cuna abajo y vacía. Queda horizontal, apoyada en los topes del marco.",
+       "fecha": "2026-11-17"
+      },
+      {
+       "src": "files/el-secadero/v2/2026-11-17-la-cuna-abajo-de-frente.jpg",
+       "pie": "Foto de Luis, de frente: el marco cuelga centrado de la punta del brazo.",
+       "fecha": "2026-11-17"
+      },
+      {
+       "src": "files/el-secadero/v2/2026-11-17-la-cuna-levantada-se-queda-sola.jpg",
+       "pie": "Foto de Luis: la cuna levantada para fregar. Se queda sola contra la pared del fregadero.",
+       "fecha": "2026-11-17"
+      },
+      {
+       "src": "files/el-secadero/v2/2026-11-17-la-cuna-levantada-de-frente.jpg",
+       "pie": "Foto de Luis, de frente, con la cuna levantada entre las patas del marco.",
+       "fecha": "2026-11-17"
+      }
+     ],
      "descargas": [
       "files/el-secadero-v2/el_secadero_v2_A1.3mf",
       "files/el-secadero-v2/pieza_A_brazo.stl",
@@ -498,7 +540,7 @@
       "euros": 0.86,
       "origen": "estimado"
      },
-     "cambiado": "2026-11-16"
+     "cambiado": "2026-11-17"
     }
    ]
   },
