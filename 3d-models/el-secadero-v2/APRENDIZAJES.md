@@ -189,3 +189,9 @@ Luis preguntó si lo que cuelga solo se apoya en el brazo, y si eso no es frági
   - El suelo del alojamiento mide 1,6 mm.
 - No es un clic: sigue siendo un encaje con holgura (0,25 mm), así que el marco puede moverse un poco si se le toca. Lo que cambia es que ya no se sale.
 - Lección: «no se sale tirando» no basta. Hay que mirar también cuánta fuerza y recorrido hacen falta para sacar una pieza por el mismo camino por el que entró.
+
+## Material de la primera impresión (17 nov 2026)
+- Luis va a imprimir la V2 con PLA Tough, no con PLA básico.
+- El 3MF no cambia: solo lleva las piezas colocadas en la placa, sin perfil de filamento ni ajustes. El filamento se elige en Bambu Studio.
+- Los ajustes por pieza (paredes y relleno) son los mismos.
+- Las holguras del diseño están pensadas para PLA y no se han tocado. Si algún encaje queda duro o flojo, se corrige tras la primera prueba.
