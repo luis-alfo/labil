@@ -215,3 +215,13 @@ Registro vivo de explicaciones, decisiones y convenciones acordadas.
 - **Realidad de Luis**: sigue el trabajo desde el móvil. La web solo se publica desde `main`,
   así que para verlo antes de fusionar hace falta otra vía (un artefacto de Claude sirvió).
 - Las fotos del baño llegaron solo dentro de la conversación; faltan en `proceso/`.
+
+## 2026-11-17 · La web: precio de la prueba bajo el precio del diseño
+
+- Luis vio que al pasar a una pieza de prueba el precio de arriba no cambiaba. No quiere que
+  cambie: quiere **el precio del diseño siempre arriba y, debajo, el de la prueba que se ve**,
+  con su nombre.
+- **Código compartido**: una prueba no es parte del precio del diseño; se enseña aparte.
+- Cómo se marca: en `3d-models/objetos.json`, el modelo lleva `"prueba": "<ruta al STL>"`.
+  `web.py` le calcula gramos y euros; `app.js` los pinta bajo el precio y en «pruebas antes
+  de imprimir», dentro de detalles.
