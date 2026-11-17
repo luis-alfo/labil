@@ -225,3 +225,22 @@ Registro vivo de explicaciones, decisiones y convenciones acordadas.
 - Cómo se marca: en `3d-models/objetos.json`, el modelo lleva `"prueba": "<ruta al STL>"`.
   `web.py` le calcula gramos y euros; `app.js` los pinta bajo el precio y en «pruebas antes
   de imprimir», dentro de detalles.
+
+## 2026-11-17 · Regresión: una rama vieja publicó el visor antiguo encima de la web v2
+
+- Qué pasó: Luis pidió poner en la web las fotos de El Secadero ya impreso. Claude trabajaba
+  en `claude/3d-model-generation-IEA7l`, una rama que no se había actualizado desde `main`.
+  Seguía con el `pages.yml` antiguo, que desplegaba desde cualquier rama `claude/**`, y con el
+  visor v1 en `docs/`. Al hacer push, publicó el visor viejo encima de la web v2. Luis lo vio:
+  «está la web vieja, no la nueva».
+- Cómo se arregló: se relanzó el despliegue de `main` (`workflow_dispatch`) y la web v2 volvió
+  en unos dos minutos. La rama se rehízo desde `main` y las fotos se añadieron con el sistema
+  de la web v2 (`proceso/guardar.py` y `3d-models/objetos.json`).
+- **Código compartido**: antes de tocar la web o hacer push, `git fetch` y mirar si `main` ha
+  cambiado. Si ha cambiado, la rama se rehace desde `main` antes de seguir. Otras sesiones
+  trabajan en paralelo y la web puede no ser la que la sesión recuerda.
+- **Código compartido**: «he comprobado que la web carga» no basta. Hay que comprobar que es
+  **la web que toca** (aquí, que siguiera siendo la v2), no solo que responde 200.
+- Ninguna otra rama remota conserva el disparador antiguo (comprobado el 17 nov). Para que no
+  pueda repetirse ni con una rama vieja, Luis puede limitar el entorno `github-pages` a `main`
+  en los ajustes del repo (Settings → Environments → github-pages → Deployment branches).

@@ -2,15 +2,15 @@
 
 ## Cómo se numeran las versiones (decisión de Luis, 16 nov 2026)
 - Solo cuenta como versión lo que se imprime.
-- **V1** es la única impresa hasta ahora (`3d-models/sponge-holder/`).
-- **V2** es este diseño.
+- **V1** es la primera impresa (`3d-models/sponge-holder/`).
+- **V2** es este diseño, impreso y montado en noviembre de 2026.
 - Todo lo que hubo entre medias fueron borradores de diseño, no versiones.
   - En la conversación y en commits antiguos se les llamó «V2» a «V5».
   - Dos de ellos están archivados en `3d-models/_borradores/` (`estropajero-v3` y `estropajero-v4`).
   - En estas notas se les llama «el borrador anterior» o «los borradores».
 - El grabado y la web usan la numeración de Luis: «EL SECADERO | V2 | 161126».
 
-Estado: diseñado y simulado el 16 nov 2026. Sin imprimir.
+Estado: diseñado y simulado el 16 nov 2026. Impreso en PLA Tough y montado (fotos del 17 nov 2026).
 
 ## De dónde sale cada medida
 | Dato | Valor | Origen |
@@ -195,3 +195,16 @@ Luis preguntó si lo que cuelga solo se apoya en el brazo, y si eso no es frági
 - El 3MF no cambia: solo lleva las piezas colocadas en la placa, sin perfil de filamento ni ajustes. El filamento se elige en Bambu Studio.
 - Los ajustes por pieza (paredes y relleno) son los mismos.
 - Las holguras del diseño están pensadas para PLA y no se han tocado. Si algún encaje queda duro o flojo, se corrige tras la primera prueba.
+
+## Impresa y montada (fotos de Luis, 17 nov 2026)
+- Luis la imprimió en PLA Tough y la montó en el grifo. Mandó seis fotos: con el estropajo, con la cuna abajo y con la cuna levantada, cada una en ángulo y de frente.
+- Lo que se ve en las fotos:
+  - El anillo rodea el embellecedor y el brazo llega al canto, a ras de la encimera.
+  - El grabado «EL SECADERO | V2 | 161126» se lee.
+  - El marco cuelga centrado dentro del fregadero.
+  - La cuna queda horizontal abajo y se aguanta sola levantada.
+  - El estropajo cabe de canto.
+- Brazo y cuña están en gris claro, y marco y cuna en gris oscuro: dos filamentos.
+- Lo que las fotos no dicen: si algún encaje quedó duro o flojo, si la cuña aprieta bien y cuánto juego tiene el marco. Falta que Luis lo cuente.
+- Con esto la V2 pasa a ser una versión de verdad, según su regla. La siguiente que se imprima será la V3.
+- Las fotos están en `proceso/el-secadero/` (guardadas con `proceso/guardar.py`, sin metadatos) y en el estado `v2` de `3d-models/objetos.json`, en `imagenes` y en `proceso`.

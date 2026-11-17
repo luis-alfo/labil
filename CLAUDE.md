@@ -79,7 +79,7 @@ La web no enseña solo el resultado: enseña **el proceso de diseño** y **por q
 | Carpeta | Qué es |
 | --- | --- |
 | `3d-models/sponge-holder/` | **V1**. Impresa. Con sus piezas de prueba `test_*`. |
-| `3d-models/el-secadero-v2/` | **V2**, «El Secadero». Diseño actual, sin imprimir. Fuente: `el_secadero_v2.scad`. |
+| `3d-models/el-secadero-v2/` | **V2**, «El Secadero». Impresa en PLA Tough y montada (nov 2026). Fuente: `el_secadero_v2.scad`. Fotos en `proceso/el-secadero/`. |
 | `3d-models/bathroom-trazo/` | Barra de baño, **«Trazo»**. Diseño actual, sin imprimir. Fuente: `generate_stl.py`. Con sus pruebas `test_*`. |
 | `3d-models/bathroom-bar-{a,b,c}/` | Barra de baño: los tres borradores anteriores (hilo, carril, rama), descartados. |
 | `3d-models/_bathroom_context.py` | Grifo del baño para ver la barra en contexto y `export_glb()` (ver abajo). No es un diseño. |
