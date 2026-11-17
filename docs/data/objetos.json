@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-17T12:28Z",
+ "generado": "2026-11-17T12:47Z",
  "euros_kg": 20.0,
  "perfil": "A1 · capa 0.2 mm · relleno 15% · PLA 1.26 g/cm³",
  "objetos": [
@@ -911,7 +911,7 @@
       "euros": 0.23,
       "origen": "estimado"
      },
-     "cambiado": "2026-10-14"
+     "cambiado": "2026-11-17"
     },
     {
      "id": "conceptos",
@@ -1188,7 +1188,7 @@
       "euros": 1.07,
       "origen": "estimado"
      },
-     "cambiado": "2026-11-16"
+     "cambiado": "2026-11-17"
     },
     {
      "id": "galga",
@@ -1241,7 +1241,7 @@
       "euros": 0.18,
       "origen": "estimado"
      },
-     "cambiado": null
+     "cambiado": "2026-11-17"
     },
     {
      "id": "aro-lenguetas",
@@ -1293,7 +1293,7 @@
       "euros": 0.5,
       "origen": "estimado"
      },
-     "cambiado": null
+     "cambiado": "2026-11-17"
     },
     {
      "id": "tapa-lenguetas",
@@ -1352,7 +1352,7 @@
       "euros": 1.01,
       "origen": "estimado"
      },
-     "cambiado": "2026-11-16"
+     "cambiado": "2026-11-17"
     }
    ]
   },
@@ -1542,15 +1542,27 @@
       },
       {
        "nombre": "prueba manilla",
-       "src": "models/test_clip_manilla.glb"
+       "src": "models/test_clip_manilla.glb",
+       "coste": {
+        "gramos": 7.6,
+        "euros": 0.15
+       }
       },
       {
        "nombre": "prueba caño",
-       "src": "models/test_clip_cano.glb"
+       "src": "models/test_clip_cano.glb",
+       "coste": {
+        "gramos": 7.0,
+        "euros": 0.14
+       }
       },
       {
        "nombre": "prueba unión",
-       "src": "models/test_union.glb"
+       "src": "models/test_union.glb",
+       "coste": {
+        "gramos": 4.4,
+        "euros": 0.09
+       }
       }
      ],
      "imagenes": [],

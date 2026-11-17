@@ -108,7 +108,16 @@ def main() -> None:
             for i, mod in enumerate(est.get("modelos", [])):
                 src = (web(RAIZ / mod["glb"]) if "glb" in mod
                        else glb(mod["de"], f"{obj['id']}-{est['id']}-{i}"))
-                e["modelos"].append({"nombre": mod["nombre"], "src": src})
+                vista = {"nombre": mod["nombre"], "src": src}
+                if "prueba" in mod:   # vista de una pieza de prueba: lleva su propio coste
+                    stls = [mod["prueba"]] if isinstance(mod["prueba"], str) else mod["prueba"]
+                    for s in stls:
+                        if s not in gramos_cache:
+                            gramos_cache[s] = costes.gramos(costes.cargar(RAIZ / s))
+                    g = sum(gramos_cache[s] for s in stls)
+                    vista["coste"] = {"gramos": round(g, 1),
+                                      "euros": round(g * costes.EUROS_KG / 1000, 2)}
+                e["modelos"].append(vista)
             e["imagenes"] = [{"src": publicar(im["de"], obj["id"], est["id"]), "pie": im["pie"]}
                              for im in est.get("imagenes", [])]
             e["proceso"] = [{"src": publicar(im["de"], obj["id"], est["id"]), "pie": im["pie"],

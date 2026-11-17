@@ -89,3 +89,15 @@ PLA con E ≈ 3000 MPa. Los imprime `generate_stl.py`.
   triangulación al extruir. Se arregla con `simplify(0.01)` antes.
 - **La web de artefactos de Claude no sirve `.glb`.** Para verlo allí hubo
   que pasar el modelo en base64 dentro de un `.json`.
+
+## Coste (calculado por la web, perfil A1, 20 €/kg)
+
+| Qué | Gramos | Euros |
+| --- | --- | --- |
+| El diseño entero (dos mitades y cinco jinetes) | 74 g | 1,49 € |
+| Prueba manilla | 7,6 g | 0,15 € |
+| Prueba caño | 7,0 g | 0,14 € |
+| Prueba unión | 4,4 g | 0,09 € |
+| Las tres pruebas | 19 g | 0,38 € |
+
+Las pruebas van aparte del precio del diseño.

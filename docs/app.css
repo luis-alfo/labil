@@ -128,7 +128,10 @@ body.en-escena { overflow: hidden; }
 .ir-inicio { display: grid; place-items: center; width: 44px; height: 44px; margin-left: -6px; }
 .ir-inicio img { width: 32px; height: 32px; display: block; }
 .hud-titulo { text-align: center; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.hud-precio { justify-self: end; }
+.hud-precio { justify-self: end; display: grid; justify-items: end; gap: var(--s1, 4px); }
+.precio-pos { display: flex; align-items: baseline; gap: 8px; white-space: nowrap; }
+.precio-pos:empty { display: none; }
+.precio-pos .num { color: var(--ink); font-size: 13px; }
 
 .hud-abajo {
   bottom: calc(52px + env(safe-area-inset-bottom)); padding-bottom: var(--s3);
