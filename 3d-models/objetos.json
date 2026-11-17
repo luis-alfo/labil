@@ -699,7 +699,7 @@
    "id": "cajones-isla",
    "nombre": "cajones de la isla",
    "que": "cajones modulares para los huecos de 130 × 135 mm de la isla de la cocina",
-   "estado": "la tapa de costillas se caía: falta medir el hueco con la galga",
+   "estado": "la tapa impresa se caía: falta medir el hueco con la galga",
    "aprendizajes": "cajones-isla/APRENDIZAJES.md",
    "estados": [
     {
@@ -904,11 +904,43 @@
      "feedback_de": "luis"
     },
     {
-     "id": "tapa-pasante",
+     "id": "tapa-bolsillo",
      "tipo": "borrador",
+     "nombre": "tapa bolsillo",
+     "fecha": "2026-10-14",
+     "texto": "Igual que la pasante, pero con una cajita cerrada detrás del arco: la yema engancha y no se ve el interior. La mejor para tapar huecos.",
+     "modelos": [
+      {
+       "nombre": "tapa",
+       "de": [
+        "cajones-isla/stl/tapa_revoltons3_bolsillo.stl"
+       ]
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "tapa",
+       "de": "cajones-isla/stl/tapa_revoltons3_bolsillo.stl"
+      }
+     ],
+     "descargas": [
+      "cajones-isla/stl/tapa_revoltons3_bolsillo.stl",
+      "cajones-isla/APRENDIZAJES.md"
+     ],
+     "memoria": [
+      {
+       "tema": "uso",
+       "texto": "Con una cajita detrás del arco: la yema engancha y no se ve el interior. Es la mejor para tapar huecos."
+      }
+     ],
+     "cambio": "con una cajita detrás: no se ve el interior"
+    },
+    {
+     "id": "tapa-pasante",
+     "tipo": "version",
      "nombre": "tapa pasante",
      "fecha": "2026-10-14",
-     "texto": "El frente de 3 voltes con un faldón de 12 mm y costillas aplastables. Sirve para probar la puerta y para tapar los huecos sin cajón. Los dedos enganchan por detrás.",
+     "texto": "El frente de 3 voltes con un faldón de 12 mm y costillas rígidas. Impresa: se caía. Las costillas solo apretaban si el hueco medía entre 130,0 y 130,6 mm, y el hueco real es más ancho.",
      "modelos": [
       {
        "nombre": "tapa",
@@ -940,41 +972,13 @@
       {
        "tema": "montaje",
        "texto": "Costillas aplastables de 0,8 mm. Se descartaron las lengüetas elásticas: impresas boca abajo, se parten entre capas."
-      }
-     ],
-     "cambio": "el frente con faldón y costillas, para probar la puerta"
-    },
-    {
-     "id": "tapa-bolsillo",
-     "tipo": "borrador",
-     "nombre": "tapa bolsillo",
-     "fecha": "2026-10-14",
-     "texto": "Igual que la pasante, pero con una cajita cerrada detrás del arco: la yema engancha y no se ve el interior. La mejor para tapar huecos.",
-     "modelos": [
-      {
-       "nombre": "tapa",
-       "de": [
-        "cajones-isla/stl/tapa_revoltons3_bolsillo.stl"
-       ]
-      }
-     ],
-     "piezas": [
-      {
-       "nombre": "tapa",
-       "de": "cajones-isla/stl/tapa_revoltons3_bolsillo.stl"
-      }
-     ],
-     "descargas": [
-      "cajones-isla/stl/tapa_revoltons3_bolsillo.stl",
-      "cajones-isla/APRENDIZAJES.md"
-     ],
-     "memoria": [
+      },
       {
        "tema": "uso",
-       "texto": "Con una cajita detrás del arco: la yema engancha y no se ve el interior. Es la mejor para tapar huecos."
+       "texto": "Impresa por Luis. Se caía: «no se enganchaba por toda la holgura que dejaba». El frente (129 × 134 mm) se mantiene en la tapa siguiente; lo que cambia es cómo se sujeta."
       }
      ],
-     "cambio": "con una cajita detrás: no se ve el interior",
+     "cambio": "el frente con faldón y costillas, para probar la puerta",
      "feedback": "la prueba que hicimos se caía. no se enganchaba por toda la holgura que dejaba",
      "feedback_de": "luis"
     },

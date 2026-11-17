@@ -63,6 +63,26 @@
 - **Arreglo rápido de la tapa ya impresa**: pegar fieltro adhesivo o cinta de espuma en los costados
   del faldón hasta que apriete.
 
+### Qué cambia exactamente entre la tapa impresa y la nueva (pregunta de Luis, 2026-11-17)
+
+Luis imprimió la **tapa pasante de costillas**. Preguntó si, además de añadir las solapas, había cambiado el ancho.
+
+**El frente no cambia: sigue midiendo 129 × 134 mm.** Cambia lo que hay detrás:
+
+| | Tapa impresa (costillas) | Tapa nueva (lengüetas) |
+|---|---|---|
+| Frente (lo que se ve) | 129 × 134 mm | 129 × 134 mm, igual |
+| Ancho máximo en reposo | 130,6 mm (en las costillas) | 137 mm (de tope a tope) |
+| Qué sujeta | 6 costillas rígidas de 0,8 mm | 4 lengüetas que se doblan hasta 4 mm |
+| Hueco en el que aprieta | de 130,0 a 130,6 mm | de 130 a 135 mm |
+| Faldón | a ras del canto, 129 mm de ancho, pared de 1,6 | metido 7,6 mm por lado, 113,8 mm de ancho, pared de 1,2 |
+| Apoyo en el estante | el canto inferior del frente | 2 pies que lo levantan 0,5 mm |
+| Alto total | 134 mm | 134,5 mm (con los pies) |
+| Peso estimado | 47 g | 51 g |
+
+- *Solapas* es como llama Luis a las *lengüetas*. Valen las dos palabras.
+- Consecuencia: como el frente es el mismo, **la rendija que se veía con la tapa impresa se verá igual** con la nueva. La nueva agarra, pero no tapa más. Para cerrar la rendija hay que ensanchar el frente con la medida de la galga (`--ancho-hueco`).
+
 ### Qué más depende de la medida real (no imprimir hasta tenerla)
 
 - El **frente del cajón** (129 × 134): con el hueco más ancho, quedaría con rendijas grandes.
