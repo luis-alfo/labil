@@ -699,7 +699,7 @@
    "id": "cajones-isla",
    "nombre": "cajones de la isla",
    "que": "cajones modulares para los huecos de 130 × 135 mm de la isla de la cocina",
-   "estado": "pendiente de probar el encaje",
+   "estado": "la tapa de costillas se caía: falta medir el hueco con la galga",
    "aprendizajes": "cajones-isla/APRENDIZAJES.md",
    "estados": [
     {
@@ -974,7 +974,150 @@
        "texto": "Con una cajita detrás del arco: la yema engancha y no se ve el interior. Es la mejor para tapar huecos."
       }
      ],
-     "cambio": "con una cajita detrás: no se ve el interior"
+     "cambio": "con una cajita detrás: no se ve el interior",
+     "feedback": "la prueba que hicimos se caía. no se enganchaba por toda la holgura que dejaba",
+     "feedback_de": "luis"
+    },
+    {
+     "id": "galga",
+     "tipo": "prueba",
+     "nombre": "galga del hueco",
+     "fecha": "2026-11-17",
+     "texto": "Chapa escalonada de 128 a 140 mm, con un escalón cada 0,5 mm. Se mete por la punta hasta que no entra más y se lee el último número: de lado mide el ancho del hueco y de pie, el alto.",
+     "modelos": [
+      {
+       "nombre": "galga",
+       "de": [
+        "cajones-isla/stl/galga_hueco_128-140.stl"
+       ]
+      }
+     ],
+     "imagenes": [
+      {
+       "de": "cajones-isla/tapa_lenguetas.png",
+       "pie": "lengüetas y galga"
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "galga",
+       "de": "cajones-isla/stl/galga_hueco_128-140.stl"
+      }
+     ],
+     "descargas": [
+      "cajones-isla/stl/galga_hueco_128-140.stl"
+     ],
+     "memoria": [
+      {
+       "tema": "método",
+       "texto": "La tapa de costillas era un encaje a presión de 0,3 mm por lado sobre una medida de flexómetro (±0,5–1 mm) que nunca se comprobó. Un apriete así necesita conocer el hueco con ±0,2 mm. Antes de gastar más plástico, se mide."
+      },
+      {
+       "tema": "medidas",
+       "texto": "25 escalones de 128 a 140 mm. Las dos primeras capas van metidas 0,3 mm para que la pata de elefante no falsee la medida."
+      },
+      {
+       "tema": "coste",
+       "texto": "9 g. La tapa que falló gastó 47 g para descubrir lo mismo."
+      }
+     ],
+     "cambio": "antes de imprimir nada más, medir el hueco de verdad con 9 g"
+    },
+    {
+     "id": "aro-lenguetas",
+     "tipo": "prueba",
+     "nombre": "aro de lengüetas",
+     "fecha": "2026-11-17",
+     "texto": "El contorno de la tapa nueva, sin el frente: faldón, pies y las 4 lengüetas. Prueba si agarra en el hueco con la mitad de plástico que la tapa entera.",
+     "modelos": [
+      {
+       "nombre": "aro",
+       "de": [
+        "cajones-isla/stl/tapa_lenguetas_aro.stl"
+       ]
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "aro",
+       "de": "cajones-isla/stl/tapa_lenguetas_aro.stl"
+      }
+     ],
+     "descargas": [
+      "cajones-isla/stl/tapa_lenguetas_aro.stl"
+     ],
+     "memoria": [
+      {
+       "tema": "montaje",
+       "texto": "Cuatro lengüetas (2 por lado) que sobresalen 4 mm del canto y se doblan al entrar. Aprietan en cualquier hueco de 130 a 135 mm de ancho; las costillas solo lo hacían entre 130,0 y 130,6."
+      },
+      {
+       "tema": "resistencia",
+       "texto": "Lámina de 2 × 10,6 mm y 46 mm de largo: 0,8 N por mm doblado y 0,65 % de deformación si se aplasta del todo (el PLA aguanta ~2 %). Flexa en el plano de las capas, la dirección fuerte."
+      },
+      {
+       "tema": "impresión",
+       "texto": "Boca abajo, sin soportes. Cada lámina se imprime en puente sobre 3 apoyos con una capa de aire; se sueltan al apretarla la primera vez. Comprobado capa a capa: no hay más voladizos."
+      },
+      {
+       "tema": "método",
+       "texto": "En octubre se descartaron las lengüetas «porque se parten entre capas». Era cierto para una lengüeta de pie, no para una tumbada en el plano de la cama."
+      }
+     ],
+     "cambio": "lengüetas flexibles en vez de costillas rígidas, probadas con 25 g"
+    },
+    {
+     "id": "tapa-lenguetas",
+     "tipo": "borrador",
+     "nombre": "tapa de lengüetas",
+     "fecha": "2026-11-17",
+     "texto": "La puerta de 3 voltes con las lengüetas del aro, pasante o con bolsillo. Dos pies la levantan 0,5 mm del estante para que la rendija sea igual abajo que arriba. Con la medida de la galga se regenera al tamaño real del hueco.",
+     "modelos": [
+      {
+       "nombre": "pasante",
+       "de": [
+        "cajones-isla/stl/tapa_lenguetas_pasante.stl"
+       ]
+      },
+      {
+       "nombre": "bolsillo",
+       "de": [
+        "cajones-isla/stl/tapa_lenguetas_bolsillo.stl"
+       ]
+      }
+     ],
+     "imagenes": [
+      {
+       "de": "cajones-isla/tapa_lenguetas.png",
+       "pie": "lengüetas y galga"
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "tapa pasante",
+       "de": "cajones-isla/stl/tapa_lenguetas_pasante.stl"
+      }
+     ],
+     "descargas": [
+      "cajones-isla/stl/tapa_lenguetas_pasante.stl",
+      "cajones-isla/stl/tapa_lenguetas_bolsillo.stl",
+      "cajones-isla/APRENDIZAJES.md"
+     ],
+     "memoria": [
+      {
+       "tema": "diseño",
+       "texto": "El faldón va metido 7,6 mm desde el canto para dejar sitio a las lengüetas. La holgura con el hueco ya no sujeta nada: solo decide la rendija que se ve."
+      },
+      {
+       "tema": "estética",
+       "texto": "Si el hueco mide más de 130 mm, la rendija crece. Por eso el tamaño final del frente sale de la galga: `tapa_lenguetas.py --ancho-hueco … --alto-hueco …`."
+      },
+      {
+       "tema": "uso",
+       "texto": "Al ir enrasada, nada impide empujarla hacia dentro. Pendiente de decidir con Luis si lleva dos pestañas finas por delante."
+      }
+     ],
+     "cambio": "la puerta de 3 voltes con lengüetas; el tamaño final sale de la galga"
     }
    ]
   },
