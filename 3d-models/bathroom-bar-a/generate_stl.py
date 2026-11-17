@@ -25,7 +25,7 @@ import trimesh
 from shapely.geometry import LineString, Polygon
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from _bathroom_context import make_context_meshes, colour_pla, COLOR_CHROME
+from _bathroom_context import export_glb, make_context_meshes, colour_pla, COLOR_CHROME
 
 # ===== Common (all proposals share these) ====================================
 FAUCET_OD       = 29.0
@@ -253,7 +253,7 @@ def main():
     for name, mesh in make_context_meshes(FAUCET_OD, HANDLE_OD, CTC):
         scene.add_geometry(mesh, geom_name=name, node_name=name)
     WEB_DIR.mkdir(parents=True, exist_ok=True)
-    scene.export(WEB_FILE)
+    export_glb(scene, WEB_FILE)
     update_web_version()
 
     bb_min, bb_max = printed.bounds

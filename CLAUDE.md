@@ -72,7 +72,7 @@ Two parallel files, same parameters, kept in sync:
 Required Python deps (install from CI or local):
 
 ```
-pip install trimesh shapely manifold3d numpy-stl
+pip install trimesh shapely manifold3d numpy-stl scipy mapbox-earcut
 ```
 
 ### File skeleton
@@ -123,6 +123,25 @@ print(f"Manifold:  {holder.is_volume}")          # MUST be True
 
 If `is_volume` is False, the slicer will silently produce garbage.
 Investigate before exporting.
+
+### Look at it before you show it
+
+`is_volume` only proves the mesh is closed. Before telling the user a model
+is ready, render the GLB and look: Chromium + Playwright are available in
+cloud sessions, and `npm install three` plus a ten-line `GLTFLoader` page
+is enough for screenshots from the front, three-quarters and the side.
+
+Three things the bathroom-bar proposals A/B/C got wrong and a render
+catches at once:
+
+- **Frame and units.** glTF is Y-up, right-handed, in metres. Export
+  through `export_glb()` in `3d-models/_bathroom_context.py` or the model
+  shows lying down, mirrored, and 1000x too big in AR.
+- **Load path of a snap clip.** Point the mouth away from the load, so the
+  weight presses the solid side of the clip onto the shaft. A mouth that
+  faces the load relies on the snap arms alone.
+- **What moves.** Model the real object around the part (handle caps,
+  levers, spouts) and keep the part out of their sweep.
 
 ## Phase 3 — MVP test pieces
 

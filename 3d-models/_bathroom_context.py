@@ -1,198 +1,164 @@
-"""Shared visual context for bathroom-bar designs.
+"""Shared visual context + GLB export for the bathroom-bar designs.
 
-Provides geometry of the wall-mounted faucet (caño + spout) and the
-mixer handle (manilla + lever) so each proposal can be rendered in
-its real environment. Returned meshes carry per-face colours so the
-fixtures show as matte black against the cream-coloured PLA parts.
+Not a printable design: it lives beside the design folders so the CI loop
+(`for dir in 3d-models/*/`) ignores it.
 
-This module is NOT a printable design — it lives at the parent of the
-design folders so the CI's `for dir in 3d-models/*/` loop ignores it.
+Model frame used by every bathroom-bar generator (millimetres):
 
-Usage from a generator:
+    x  → right, as seen by someone standing in front of the wall
+    y  → out of the wall, towards that person (y = 0 is the black plate's face)
+    z  → up
+    origin = midpoint between the caño and manilla axes
 
-    import sys
-    from pathlib import Path
-    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-    from _bathroom_context import make_context_meshes, COLOR_PLA
+That frame is left-handed, so `export_glb()` mirrors it into glTF's
+right-handed Y-up frame and scales mm → m. Without that step the model shows
+lying on its back, mirrored, and 1000x too large in AR.
 
-    ctx = make_context_meshes(faucet_od=29.0, handle_od=42.0, ctc=84.5)
-    for name, mesh in ctx:
-        scene.add_geometry(mesh, geom_name=name)
+The fixture geometry is estimated from the user's photos: only the two
+diameters and the edge-to-edge gap were measured. Everything else (plate
+size, flange thickness, spout reach, lever angle) is approximate and exists
+only to judge the design in context.
 """
 
 from __future__ import annotations
 
 import math
-from typing import List, Tuple
+from typing import Iterable, List, Tuple
 
 import numpy as np
 import trimesh
+from shapely.geometry import Point
+from trimesh.visual.material import PBRMaterial
 
 ARC_SEG = 48
 
-# Per-face RGBA colours (uint8). trimesh writes these into the GLB so
-# <model-viewer> renders them as flat-shaded materials.
-COLOR_BLACK  = [38, 38, 41, 255]      # matte black faucet / plate / lever
-COLOR_CHROME = [205, 205, 215, 255]   # chrome rings + spout tip
-COLOR_PLA    = [240, 230, 200, 255]   # warm cream PLA for the bar parts
+# (rgba 0-255, metallic, roughness)
+MAT_BLACK  = ([34, 34, 37, 255], 0.35, 0.55)     # matte black fixtures
+MAT_CHROME = ([212, 214, 220, 255], 1.0, 0.18)   # chrome rings / aerator
+MAT_WALL   = ([150, 146, 139, 255], 0.0, 0.95)   # grey microcement panel
+MAT_PLA    = ([238, 231, 216, 255], 0.0, 0.6)    # the printed line
+MAT_PLA_2  = ([207, 106, 52, 255], 0.0, 0.6)     # interchangeable hooks
+
+# Kept for the older A/B/C generators, which paint with face colours.
+COLOR_BLACK  = MAT_BLACK[0]
+COLOR_CHROME = MAT_CHROME[0]
+COLOR_PLA    = MAT_PLA[0]
+
+# model (x right, y out, z up; mm)  →  glTF (X right, Y up, Z towards viewer; m)
+_GLTF_FROM_MODEL = np.array([
+    [1, 0, 0, 0],
+    [0, 0, 1, 0],
+    [0, 1, 0, 0],
+    [0, 0, 0, 1000.0],
+], dtype=float) / 1000.0
 
 
-def _rot_x(angle_rad: float):
-    return trimesh.transformations.rotation_matrix(angle_rad, [1, 0, 0])
-
-
-def _rot_y(angle_rad: float):
-    return trimesh.transformations.rotation_matrix(angle_rad, [0, 1, 0])
-
-
-def _coloured(mesh: "trimesh.Trimesh", rgba) -> "trimesh.Trimesh":
-    mesh.visual.face_colors = rgba
+def paint(mesh: "trimesh.Trimesh", mat) -> "trimesh.Trimesh":
+    """Give a mesh a flat PBR material (no texture)."""
+    rgba, metallic, roughness = mat
+    mesh.visual = trimesh.visual.TextureVisuals(material=PBRMaterial(
+        baseColorFactor=[c / 255.0 for c in rgba],
+        metallicFactor=metallic,
+        roughnessFactor=roughness,
+    ))
     return mesh
-
-
-def make_context_meshes(faucet_od: float, handle_od: float,
-                        ctc: float) -> List[Tuple[str, "trimesh.Trimesh"]]:
-    """Build the wall-mounted faucet + handle visualisation context.
-
-    Coords match the bar generators: Z up, Y wall-perpendicular (+Y away
-    from wall), X along the rod direction. Origin = midpoint between the
-    two cylinder centres at the wall surface (Y=0).
-    """
-    # ---- dimensions ----
-    PLATE_W_X       = 200.0
-    PLATE_H_Z       = 90.0
-    PLATE_T_Y       = 4.0
-
-    CYL_LEN_Y       = 18.0     # cylinders protrude this much from the wall
-
-    SPOUT_OD        = 9.0
-    SPOUT_OUT_LEN   = 14.0     # short straight section before the elbow
-    SPOUT_DOWN_LEN  = 60.0     # longer section after the elbow
-    SPOUT_ANGLE     = 30.0     # elbow turns the spout this far past vertical
-
-    LEVER_OD        = 7.0
-    LEVER_LEN       = 80.0
-    LEVER_TILT_DEG  = 12.0     # slight downward tilt
-    LEVER_DIR_X     = +1.0     # exits to the right of the handle
-
-    items: List[Tuple[str, "trimesh.Trimesh"]] = []
-
-    # ---- wall plate ----
-    plate = trimesh.creation.box(
-        extents=[PLATE_W_X, PLATE_T_Y, PLATE_H_Z]
-    )
-    plate.apply_translation([0, -PLATE_T_Y / 2, 0])
-    items.append(("wall_plate", _coloured(plate, COLOR_BLACK)))
-
-    # Helper for a cylinder along +Y
-    def cyl_along_y(radius, length, sections=ARC_SEG):
-        m = trimesh.creation.cylinder(radius=radius, height=length,
-                                      sections=sections)
-        m.apply_transform(_rot_x(math.pi / 2))
-        return m
-
-    # ---- caño (faucet body) ----
-    caño = cyl_along_y(faucet_od / 2, CYL_LEN_Y)
-    caño.apply_translation([-ctc / 2, CYL_LEN_Y / 2, 0])
-    items.append(("faucet_cylinder", _coloured(caño, COLOR_BLACK)))
-
-    # Chrome ring at the base of the caño, snug against the plate
-    ring_caño = trimesh.creation.annulus(r_min=faucet_od / 2 + 0.4,
-                                         r_max=faucet_od / 2 + 2.6,
-                                         height=2.2,
-                                         sections=ARC_SEG)
-    ring_caño.apply_transform(_rot_x(math.pi / 2))
-    ring_caño.apply_translation([-ctc / 2, 1.2, 0])
-    items.append(("faucet_chrome_ring", _coloured(ring_caño, COLOR_CHROME)))
-
-    # ---- spout: short straight + elbow + longer down-and-out ----
-    # Segment 1: short straight section continuing along +Y from the cylinder front
-    seg1 = trimesh.creation.cylinder(radius=SPOUT_OD / 2,
-                                     height=SPOUT_OUT_LEN,
-                                     sections=ARC_SEG)
-    seg1.apply_transform(_rot_x(math.pi / 2))
-    seg1.apply_translation([-ctc / 2,
-                            CYL_LEN_Y + SPOUT_OUT_LEN / 2,
-                            0])
-    items.append(("spout_seg1", _coloured(seg1, COLOR_BLACK)))
-
-    # Elbow: a sphere at the joint
-    elbow_pos = np.array([-ctc / 2,
-                          CYL_LEN_Y + SPOUT_OUT_LEN,
-                          0])
-    elbow = trimesh.creation.icosphere(radius=SPOUT_OD / 2 + 0.3,
-                                       subdivisions=2)
-    elbow.apply_translation(elbow_pos)
-    items.append(("spout_elbow", _coloured(elbow, COLOR_BLACK)))
-
-    # Segment 2: angled down-and-forward from the elbow
-    angle = math.radians(SPOUT_ANGLE)
-    # direction = (0, sin(angle), -cos(angle)) — mostly down, slightly forward
-    dir2 = np.array([0, math.sin(angle), -math.cos(angle)])
-    seg2 = trimesh.creation.cylinder(radius=SPOUT_OD / 2,
-                                     height=SPOUT_DOWN_LEN,
-                                     sections=ARC_SEG)
-    # Default cylinder along +Z. To align +Z with dir2 = (0, sin, -cos):
-    # rotate around +X by (π - angle): +Z → (0, sin(π-angle), cos(π-angle)) = (0, sin, -cos). ✓
-    seg2.apply_transform(_rot_x(math.pi - angle))
-    seg2.apply_translation(elbow_pos + dir2 * (SPOUT_DOWN_LEN / 2))
-    items.append(("spout_seg2", _coloured(seg2, COLOR_BLACK)))
-
-    # Chrome tip at the end of segment 2
-    tip_pos = elbow_pos + dir2 * SPOUT_DOWN_LEN
-    tip = trimesh.creation.cylinder(radius=SPOUT_OD / 2 + 0.7,
-                                    height=10.0,
-                                    sections=ARC_SEG)
-    tip.apply_transform(_rot_x(math.pi - angle))
-    tip.apply_translation(tip_pos - dir2 * 5.0)
-    items.append(("spout_chrome_tip", _coloured(tip, COLOR_CHROME)))
-
-    # ---- manilla (handle body) ----
-    manilla = cyl_along_y(handle_od / 2, CYL_LEN_Y)
-    manilla.apply_translation([+ctc / 2, CYL_LEN_Y / 2, 0])
-    items.append(("handle_cylinder", _coloured(manilla, COLOR_BLACK)))
-
-    # Chrome ring at the base of the manilla
-    ring_man = trimesh.creation.annulus(r_min=handle_od / 2 + 0.4,
-                                        r_max=handle_od / 2 + 2.6,
-                                        height=2.2,
-                                        sections=ARC_SEG)
-    ring_man.apply_transform(_rot_x(math.pi / 2))
-    ring_man.apply_translation([+ctc / 2, 1.2, 0])
-    items.append(("handle_chrome_ring", _coloured(ring_man, COLOR_CHROME)))
-
-    # ---- lever ----
-    tilt = math.radians(LEVER_TILT_DEG)
-    # direction = (cos(tilt), 0, -sin(tilt)) — mostly +X, slightly down
-    dir_lever = np.array([math.cos(tilt) * LEVER_DIR_X, 0, -math.sin(tilt)])
-    # Default cylinder along +Z; rotate around +Y by (π/2 + tilt) so +Z → (sin, 0, cos) at right angle
-    # We want +Z → (cos(tilt), 0, -sin(tilt)) for LEVER_DIR_X = +1.
-    # Rot_y(θ) maps +Z to (sin(θ), 0, cos(θ)). Want sin(θ) = cos(tilt), cos(θ) = -sin(tilt) → θ = π/2 + tilt.
-    rot_lever = math.pi / 2 + tilt
-    if LEVER_DIR_X < 0:
-        rot_lever = -rot_lever
-    lever = trimesh.creation.cylinder(radius=LEVER_OD / 2,
-                                      height=LEVER_LEN,
-                                      sections=ARC_SEG)
-    lever.apply_transform(_rot_y(rot_lever))
-    lever_start = np.array([+ctc / 2 + (handle_od / 2 - 1.0) * LEVER_DIR_X,
-                            CYL_LEN_Y / 2,
-                            0])
-    lever.apply_translation(lever_start + dir_lever * (LEVER_LEN / 2))
-    items.append(("handle_lever", _coloured(lever, COLOR_BLACK)))
-
-    # Lever tip (small black ball)
-    tip_pos2 = lever_start + dir_lever * LEVER_LEN
-    lever_tip = trimesh.creation.icosphere(radius=LEVER_OD / 2 + 0.3,
-                                           subdivisions=2)
-    lever_tip.apply_translation(tip_pos2)
-    items.append(("handle_lever_tip", _coloured(lever_tip, COLOR_CHROME)))
-
-    return items
 
 
 def colour_pla(mesh: "trimesh.Trimesh") -> "trimesh.Trimesh":
-    """Convenience wrapper to paint a printed PLA part with the warm cream
-    colour used by the viewer."""
-    mesh.visual.face_colors = COLOR_PLA
-    return mesh
+    return paint(mesh, MAT_PLA)
+
+
+def export_glb(items, path) -> None:
+    """Write named meshes (or a Scene) as a GLB in glTF's frame and units."""
+    if isinstance(items, trimesh.Scene):
+        items = list(items.geometry.items())
+    scene = trimesh.Scene()
+    for name, mesh in items:
+        m = mesh.copy()
+        m.apply_transform(_GLTF_FROM_MODEL)   # mirror: trimesh re-winds faces
+        scene.add_geometry(m, geom_name=name, node_name=name)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    scene.export(path)
+
+
+def _cyl_y(radius: float, y0: float, y1: float, x: float, z: float = 0.0):
+    """Cylinder whose axis runs along +y from y0 to y1."""
+    m = trimesh.creation.cylinder(radius=radius, height=y1 - y0,
+                                  sections=ARC_SEG)
+    m.apply_transform(trimesh.transformations.rotation_matrix(
+        math.pi / 2, [1, 0, 0]))
+    m.apply_translation([x, (y0 + y1) / 2, z])
+    return m
+
+
+def _tube(points: Iterable[Tuple[float, float, float]], radius: float):
+    """Round tube through 3D points (sphere-capped cylinder chain)."""
+    pts = [np.asarray(p, dtype=float) for p in points]
+    parts = []
+    for a, b in zip(pts[:-1], pts[1:]):
+        seg = trimesh.creation.cylinder(radius=radius, segment=[a, b],
+                                        sections=ARC_SEG)
+        parts.append(seg)
+    for p in pts[1:-1]:
+        ball = trimesh.creation.icosphere(radius=radius, subdivisions=2)
+        ball.apply_translation(p)
+        parts.append(ball)
+    return trimesh.util.concatenate(parts)
+
+
+def make_context_meshes(faucet_od: float, handle_od: float, ctc: float,
+                        wall: bool = True
+                        ) -> List[Tuple[str, "trimesh.Trimesh"]]:
+    """Wall panel, black plate, caño with its spout, manilla with its lever."""
+    FLANGE_T   = 3.5      # chrome flange at the base of each cylinder
+    PLATE_T    = 4.0
+    xc, xm = -ctc / 2, +ctc / 2
+    items: List[Tuple[str, "trimesh.Trimesh"]] = []
+
+    if wall:
+        panel = trimesh.creation.box(extents=[550, 4, 250])
+        panel.apply_translation([0, -PLATE_T - 2, -30])
+        items.append(("pared", paint(panel, MAT_WALL)))
+
+    # Black plate: ~158 x 81 mm, sitting a little low relative to the axes.
+    plate = trimesh.creation.box(extents=[158, PLATE_T, 81])
+    plate.apply_translation([2, -PLATE_T / 2, -5.5])
+    items.append(("placa", paint(plate, MAT_BLACK)))
+
+    # ---- caño: chrome flange, Ø29 tube that reaches out and turns down ----
+    items.append(("cano_embellecedor", paint(
+        _cyl_y(faucet_od / 2 + 4, 0, FLANGE_T, xc), MAT_CHROME)))
+    reach, bend_r = 78.0, 40.0
+    path = [(xc, 0.0, 0.0), (xc, reach, 0.0)]
+    for i in range(1, 13):
+        a = math.radians(82 * i / 12)
+        path.append((xc, reach + bend_r * math.sin(a),
+                     -bend_r * (1 - math.cos(a))))
+    end = np.array(path[-1])
+    direction = end - np.array(path[-2])
+    direction /= np.linalg.norm(direction)
+    path.append(tuple(end + direction * 8))
+    items.append(("cano", paint(_tube(path, faucet_od / 2), MAT_BLACK)))
+    tip_a = np.array(path[-1])
+    items.append(("cano_aireador", paint(
+        _tube([tip_a, tip_a + direction * 20], faucet_od / 2 + 0.4),
+        MAT_CHROME)))
+
+    # ---- manilla: flange, fixed sleeve, chrome dome, moving cap, lever ----
+    items.append(("manilla_embellecedor", paint(
+        _cyl_y(handle_od / 2 + 3.5, 0, FLANGE_T, xm), MAT_CHROME)))
+    items.append(("manilla_casquillo_fijo", paint(
+        _cyl_y(handle_od / 2, FLANGE_T, 13, xm), MAT_BLACK)))
+    dome = trimesh.creation.icosphere(radius=handle_od / 2 - 2.5,
+                                      subdivisions=3)
+    dome.apply_translation([xm, 15, 0])
+    items.append(("manilla_rotula", paint(dome, MAT_CHROME)))
+    items.append(("manilla_mando", paint(
+        _cyl_y(handle_od / 2, 19, 42, xm), MAT_BLACK)))
+    lean = math.radians(24)                     # lever hangs down-right
+    start = np.array([xm + 6 * math.sin(lean), 31, -handle_od / 2 + 4])
+    lever_dir = np.array([math.sin(lean), 0, -math.cos(lean)])
+    items.append(("manilla_palanca", paint(
+        _tube([start, start + lever_dir * 78], 4.0), MAT_BLACK)))
+
+    return items

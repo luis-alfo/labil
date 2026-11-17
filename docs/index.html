@@ -215,7 +215,12 @@
       labil<span class="brand-sub">— modelos 3D</span>
     </div>
     <nav class="tabs" aria-label="Modelos">
-      <a href="#bar-a"  data-target="bar-a"  class="active">A · Hilo</a>
+      <a href="#trazo"         data-target="trazo" class="active">Trazo</a>
+      <a href="#trazo-piezas"  data-target="trazo-piezas">Piezas</a>
+      <a href="#trazo-t-mani"  data-target="trazo-t-mani">Test manilla</a>
+      <a href="#trazo-t-cano"  data-target="trazo-t-cano">Test caño</a>
+      <a href="#trazo-t-union" data-target="trazo-t-union">Test unión</a>
+      <a href="#bar-a"  data-target="bar-a">A · Hilo</a>
       <a href="#bar-b"  data-target="bar-b">B · Carril</a>
       <a href="#bar-c"  data-target="bar-c">C · Rama</a>
       <a href="#full"   data-target="full">Esponja</a>
@@ -225,9 +230,139 @@
   </header>
 
   <main id="snap-root">
+    <section id="trazo">
+      <div class="section-inner">
+        <div class="eyebrow">Barra modular · propuesta final</div>
+        <h2>Trazo — una línea plana de PLA</h2>
+        <p class="lede">
+          Una sola línea de 8 mm de fondo que pasa por encima del caño y la manilla, se engancha a cada uno con un lazo abierto hacia abajo y se alarga un palmo a cada lado con las puntas hacia arriba. El peso aprieta el lazo contra el grifo en vez de abrirlo. Los ganchos cabalgan sobre el canto superior y se cambian de sitio sin herramientas.
+        </p>
+        <model-viewer
+          data-src="models/bathroom_trazo.glb"
+          alt="Trazo montado sobre el grifo"
+          camera-controls
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          shadow-intensity="0.7"
+          shadow-softness="0.8"
+          exposure="1.05"
+          camera-orbit="-22deg 78deg auto">
+        </model-viewer>
+        <p class="ar-pill">📱 Pulsa el icono AR para verla a tamaño real</p>
+        <dl class="meta">
+          <dt>Línea</dt><dd>485 × 14→6 × 8 mm, en dos mitades con cola de milano</dd>
+          <dt>Anclaje</dt><dd>2 lazos snap boca abajo · 230° / 232° de abrazo</dd>
+          <dt>Ganchos</dt><dd>4 jinetes: gancho, horquilla, aro, repisa</dd>
+          <dt>Carga</dt><dd>500 g en la punta ≈ 4 mm de flecha (estimado)</dd>
+          <dt>Imprimir</dt><dd>todo plano, sin soportes · ≈ 96 g de PLA</dd>
+        </dl>
+      </div>
+    </section>
+
+    <section id="trazo-piezas">
+      <div class="section-inner">
+        <div class="eyebrow">Trazo · bandeja de impresión</div>
+        <h2>Las piezas, como salen de la cama</h2>
+        <p class="lede">
+          Todas son perfiles planos: las capas quedan en el plano en el que flexan los lazos y trabaja la línea. Cada mitad cabe en diagonal en una cama de 235 mm.
+        </p>
+        <model-viewer
+          data-src="models/bathroom_trazo_piezas.glb"
+          alt="Piezas de Trazo tumbadas sobre la cama"
+          camera-controls
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          shadow-intensity="0.7"
+          shadow-softness="0.8"
+          exposure="1.05"
+          camera-orbit="0deg 35deg auto">
+        </model-viewer>
+        <dl class="meta">
+          <dt>Mitades</dt><dd><a href="../3d-models/bathroom-trazo/trazo_izquierda.stl">izquierda</a> · <a href="../3d-models/bathroom-trazo/trazo_derecha.stl">derecha</a> · 253 × 57 × 8 mm</dd>
+          <dt>Jinetes</dt><dd><a href="../3d-models/bathroom-trazo/jinete_gancho.stl">gancho</a> · <a href="../3d-models/bathroom-trazo/jinete_horquilla.stl">horquilla</a> · <a href="../3d-models/bathroom-trazo/jinete_aro.stl">aro</a> · <a href="../3d-models/bathroom-trazo/jinete_repisa.stl">repisa</a></dd>
+          <dt>Ajustes</dt><dd>0,20 mm · 5 perímetros · 30 % giroide · brim 6 mm</dd>
+        </dl>
+      </div>
+    </section>
+
+    <section id="trazo-t-mani">
+      <div class="section-inner">
+        <div class="eyebrow">Trazo · MVP de prueba</div>
+        <h2>Lazo de la manilla</h2>
+        <p class="lede">
+          La prueba que más importa: confirma que los Ø 42 son del casquillo fijo pegado a la pared y que los 8 mm de fondo no rozan el mando al abrir el agua.
+        </p>
+        <model-viewer
+          data-src="models/test_clip_manilla.glb"
+          alt="Test lazo manilla"
+          camera-controls
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          shadow-intensity="0.7"
+          shadow-softness="0.8"
+          exposure="1.05"
+          camera-orbit="0deg 35deg auto">
+        </model-viewer>
+        <dl class="meta">
+          <dt>Tamaño</dt><dd>64 × 48 × 8 mm · ~20 min</dd>
+          <dt>STL</dt><dd><a href="../3d-models/bathroom-trazo/test_clip_manilla.stl">descargar</a></dd>
+        </dl>
+      </div>
+    </section>
+
+    <section id="trazo-t-cano">
+      <div class="section-inner">
+        <div class="eyebrow">Trazo · MVP de prueba</div>
+        <h2>Lazo del caño</h2>
+        <p class="lede">
+          Valida el clic sobre el tubo de Ø 29 y sirve de tramo de línea para probar cómo ajustan los jinetes.
+        </p>
+        <model-viewer
+          data-src="models/test_clip_cano.glb"
+          alt="Test lazo caño"
+          camera-controls
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          shadow-intensity="0.7"
+          shadow-softness="0.8"
+          exposure="1.05"
+          camera-orbit="0deg 35deg auto">
+        </model-viewer>
+        <dl class="meta">
+          <dt>Tamaño</dt><dd>60 × 45 × 8 mm · ~20 min</dd>
+          <dt>STL</dt><dd><a href="../3d-models/bathroom-trazo/test_clip_cano.stl">descargar</a></dd>
+        </dl>
+      </div>
+    </section>
+
+    <section id="trazo-t-union">
+      <div class="section-inner">
+        <div class="eyebrow">Trazo · MVP de prueba</div>
+        <h2>Unión en cola de milano</h2>
+        <p class="lede">
+          Dos tacos con la unión central. Debe entrar a mano y no cabecear: la holgura de esta unión es lo que decide cuánto caen las puntas.
+        </p>
+        <model-viewer
+          data-src="models/test_union.glb"
+          alt="Test unión cola de milano"
+          camera-controls
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          shadow-intensity="0.7"
+          shadow-softness="0.8"
+          exposure="1.05"
+          camera-orbit="0deg 35deg auto">
+        </model-viewer>
+        <dl class="meta">
+          <dt>Tamaño</dt><dd>46 × 26 × 8 mm · ~10 min</dd>
+          <dt>STL</dt><dd><a href="../3d-models/bathroom-trazo/test_union.stl">descargar</a></dd>
+        </dl>
+      </div>
+    </section>
+
     <section id="bar-a">
       <div class="section-inner">
-        <div class="eyebrow">Barra modular · propuesta A</div>
+        <div class="eyebrow">Barra modular · propuesta A (descartada)</div>
         <h2>Hilo — varilla aluminio + clamps snap</h2>
         <p class="lede">
           Línea Ø 6 mm en aluminio (485 mm, curvas suaves a los extremos)
@@ -261,7 +396,7 @@
 
     <section id="bar-b">
       <div class="section-inner">
-        <div class="eyebrow">Barra modular · propuesta B</div>
+        <div class="eyebrow">Barra modular · propuesta B (descartada)</div>
         <h2>Carril — perfil PLA con canal en T</h2>
         <p class="lede">
           Riel rectangular 14 × 18 mm con canal en T en la cara inferior,
@@ -294,7 +429,7 @@
 
     <section id="bar-c">
       <div class="section-inner">
-        <div class="eyebrow">Barra modular · propuesta C</div>
+        <div class="eyebrow">Barra modular · propuesta C (descartada)</div>
         <h2>Rama — brazo curvo monolítico</h2>
         <p class="lede">
           Una sola pieza orgánica que dipa entre el caño y la manilla,
