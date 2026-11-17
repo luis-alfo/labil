@@ -2,6 +2,84 @@
 
 > Movido desde el CLAUDE.md de la rama `claude/nice-goodall-9jt9q8` al unir el histórico (2026-11-16).
 
+## 2026-11-17 · La tapa se caía: qué falló y qué cambia
+
+> Luis: «la prueba que hicimos se caía. No se enganchaba por toda la holgura que dejaba».
+
+### Qué falló (repaso de lo hecho)
+
+1. **Un encaje a presión sobre una medida sin comprobar.** La tapa de costillas medía 129 mm y sus
+   costillas llegaban a 130,6 mm: apretaban 0,3 mm por lado contra un hueco que se daba por hecho
+   de 130,0 mm. Ese «13 cm» salió de un flexómetro (±0,5–1 mm). Un apriete rígido necesita conocer
+   el hueco con ±0,2 mm. Solo podía sujetar si el hueco medía **entre 130,0 y 130,6 mm**.
+2. **Se confundieron dos usos de la holgura.** Un cajón que *desliza* quiere aire (0,5 mm por lado).
+   Una tapa que *se sujeta* quiere lo contrario: apretar. Se usó la misma cota para las dos cosas.
+3. **Se saltó la prueba barata.** El propio vocabulario decía «siempre se prototipa el marco antes».
+   El marco de prueba (11 g) no se llegó a usar como galga y la primera pieza que tocó el hueco fue
+   una tapa de 47 g.
+4. **Se descartaron las lengüetas con un argumento a medias.** «Impresas boca abajo se parten entre
+   capas» vale para una lengüeta *de pie* (se dobla cruzando las capas). Una lámina *tumbada*, que
+   flexa en el plano de la cama, trabaja en la dirección fuerte del PLA.
+
+### Qué cambia
+
+- **Primero se mide: galga escalonada** (`stl/galga_hueco_128-140.stl`, modelo `conceptos/galga.py`, 9 g).
+  Chapa con 25 escalones de 128 a 140 mm, uno cada 0,5 mm, y los números en relieve en la barra
+  central. Se mete por la punta, plana y recta, hasta que no entra más; se lee el último número que
+  ha entrado (+0,5 si también entró el escalón sin número que le sigue). De lado mide el ancho; de
+  pie, el alto. Sirve también para comprobar si los 6 huecos son iguales.
+- **Tapa con lengüetas flexibles** (`conceptos/tapa_lenguetas.py`; `stl/tapa_lenguetas_{aro,pasante,bolsillo}.stl`):
+  - 4 lengüetas, 2 por lado, que salen de un taco central. Cada una es una lámina de 2 × 10,6 mm y
+    46 mm de largo con un tope al final que **sobresale 4 mm del canto** del frente. En reposo la
+    tapa mide 137 mm de tope a tope; al entrar, los topes se meten.
+  - **Aprieta en huecos de 130 a 135 mm de ancho.** Rigidez: 0,8 N por mm doblado y por lengüeta.
+
+    | Ancho del hueco | Se dobla cada lengüeta | Fuerza por lengüeta | Rendija que se ve por lado |
+    |---|---|---|---|
+    | 130 mm | 3,5 mm | 2,8 N | 0,5 mm |
+    | 131 mm | 3,0 mm | 2,4 N | 1,0 mm |
+    | 132 mm | 2,5 mm | 2,0 N | 1,5 mm |
+    | 133 mm | 2,0 mm | 1,6 N | 2,0 mm |
+    | 134 mm | 1,5 mm | 1,2 N | 2,5 mm |
+    | 135 mm | 1,0 mm | 0,8 N | 3,0 mm |
+
+    Son valores calculados (E = 3000 MPa), no medidos. La tapa pesa unos 50 g (0,5 N).
+  - Deformación máxima 0,65 % si se aplasta del todo; el PLA aguanta alrededor del 2 %. Con los
+    meses el PLA cede algo bajo carga constante (fluencia): la fuerza bajará, por eso va sobrada.
+  - El **faldón va metido 7,6 mm** desde el canto para dejar sitio a las lengüetas. Dos **pies**
+    levantan el frente 0,5 mm del estante: la rendija queda igual abajo que arriba.
+  - **Impresión**: boca abajo, sin soportes. Cada lámina se imprime en puente a 1,4 mm del frente,
+    sobre 3 apoyos pequeños con una capa de aire (0,2 mm). Los apoyos se sueltan la primera vez que
+    se aprieta la lengüeta hacia dentro. `conceptos/comprobar_voladizos.py` revisa capa a capa qué
+    queda en el aire: solo esos puentes, el techo del bolsillo y el chaflán de la abertura.
+  - Variantes: **aro** (solo el contorno, 25 g: prueba las lengüetas gastando la mitad),
+    **pasante** (51 g) y **bolsillo** (57 g).
+  - Paramétrica: `python3 conceptos/tapa_lenguetas.py --ancho-hueco 131.5 --alto-hueco 135.5`
+    regenera el frente al tamaño real, con la rendija que se quiera (`--holgura`).
+- **La holgura ya no sujeta nada.** Solo decide la rendija que se ve (la «línea de sombra»). Sujetan
+  las lengüetas. Por eso el tamaño final del frente se fija con el dato de la galga.
+- **Queda abierto**: al ir enrasada, nada impide empujar la tapa hacia dentro del hueco. Si molesta,
+  se le añaden dos pestañas finas por delante que apoyen en el canto del mueble.
+- **Arreglo rápido de la tapa ya impresa**: pegar fieltro adhesivo o cinta de espuma en los costados
+  del faldón hasta que apriete.
+
+### Qué más depende de la medida real (no imprimir hasta tenerla)
+
+- El **frente del cajón** (129 × 134): con el hueco más ancho, quedaría con rendijas grandes.
+- El **recorte de las placas Clickfinity**: se recortaron a 126,4 mm porque una placa de 3 columnas
+  (131,7 mm) no cabía en 130. Con laterales de 1 mm y 0,5 mm de holgura por lado, cabe entera si el hueco mide 134,7 mm o más.
+- La **bandeja** (ancho exterior 129 mm): desliza igual, pero bailaría de lado.
+
+### Códigos compartidos nuevos
+
+- *Galga*: pieza que mide. *Aro*: la tapa sin el frente, para probar el agarre.
+- *Lengüeta*: lámina flexible con *tope*. *Saliente*: lo que asoma el tope fuera del canto, en reposo.
+- *Rendija*: el hueco que se ve entre el frente y el mueble (antes se llamaba holgura a todo).
+- Regla: **lo que sujeta por apriete se diseña con muelle, no con medida exacta**, salvo que la
+  medida se haya comprobado con una galga.
+
+---
+
 ### Impresión 3D / prototipado (cajones de la isla, 2026-10)
 
 - **Vocabulario compartido**
