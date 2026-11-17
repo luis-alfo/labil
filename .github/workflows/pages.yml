@@ -3,11 +3,13 @@ name: Build & deploy 3D viewer
 on:
   push:
     branches:
-      - main
-      - 'claude/**'
+      - main   # solo main: si publicaran también las ramas claude/**, la última en subir pisaría la web
     paths:
       - '3d-models/**'
       - 'docs/**'
+      - 'fidgets/**'
+      - 'cajones-isla/**'
+      - 'llaveros/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -25,13 +27,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # web.py lee la fecha del último cambio de cada estado
 
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
       - name: Install Python deps
-        run: pip install trimesh shapely manifold3d numpy-stl scipy mapbox-earcut
+        # networkx + lxml: trimesh's .3mf exporter
+        # scipy: trimesh's convex_hull (used by the triangular prongs)
+        # mapbox-earcut: triangula los perfiles de bathroom-trazo
+        run: pip install trimesh shapely manifold3d numpy-stl networkx lxml scipy mapbox-earcut
+
+      - name: Install OpenSCAD
+        # el-secadero-v2 se modela en OpenSCAD; su generate_stl.py lo necesita
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq openscad
 
       - name: Regenerate STL + GLB for every design
         run: |
@@ -50,6 +61,24 @@ jobs:
             echo "::endgroup::"
           done
 
+      - name: Copiar descargas de los diseños antiguos a docs/files
+        # Solo se publica docs/, así que los STL/3MF/MD que enlaza el visor
+        # tienen que estar dentro. el-secadero-v2 ya escribe los suyos.
+        run: |
+          set -euo pipefail
+          for d in bathroom-bar-a bathroom-bar-b bathroom-bar-c; do
+            mkdir -p "docs/files/$d"
+            cp 3d-models/$d/*.stl "docs/files/$d/"
+          done
+          mkdir -p docs/files/sponge-holder
+          cp 3d-models/sponge-holder/*.stl 3d-models/sponge-holder/*.3mf \
+             3d-models/sponge-holder/print_settings.md docs/files/sponge-holder/
+
+      - name: Web v2 (objetos, costes y visor de borradores)
+        # Lee 3d-models/objetos.json, calcula el coste de cada pieza a 20 €/kg y
+        # escribe docs/data/objetos.json, los GLB que faltan y las descargas.
+        run: python3 3d-models/web.py
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
@@ -58,7 +87,6 @@ jobs:
 
   deploy:
     needs: build
-    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

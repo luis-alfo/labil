@@ -11,7 +11,7 @@ Sustituye a las propuestas A/B/C (`../bathroom-bar-{a,b,c}/`).
 
 | Archivo | Qué es | Cómo se imprime |
 | --- | --- | --- |
-| `trazo_izquierda.stl`, `trazo_derecha.stl` | Las dos mitades de la línea, unidas en el centro por cola de milano | Planas, como se exportan. 253 × 57 × 8 mm: en diagonal en cama ≥ 222 mm |
+| `trazo_izquierda.stl`, `trazo_derecha.stl` | Las dos mitades de la línea, unidas en el centro por cola de milano | Planas, como se exportan. 253 × 57 × 8 mm: en diagonal en la A1 |
 | `jinete_gancho.stl` | Gancho en J | De canto, como se exporta |
 | `jinete_repisa.stl` | Repisa con borde (pasta de dientes de pie) | De canto, como se exporta |
 | `jinete_horquilla.stl` | Horquilla de 8 mm (cepillo colgado por el cuello) | Placa abajo, como se exporta |

@@ -2,6 +2,13 @@
 
 Project guide auto-loaded by Claude Code on every session in this repo.
 
+## Forma de trabajar con Luis
+
+- Idioma de trabajo: español.
+- Cada vez que Claude explique algo, lo guarda en los aprendizajes del proyecto
+  (`APRENDIZAJES.md` en la raíz para lo general, el `APRENDIZAJES.md` de cada objeto para lo suyo).
+  El objetivo es crear códigos compartidos y entender las realidades de Luis.
+
 ## Project
 
 This repo has two distinct concerns:
@@ -16,6 +23,74 @@ This repo has two distinct concerns:
 If the user's request is unrelated to 3D-printable design (e.g. they ask
 about the Next.js app), you can ignore the rest of this file.
 
+## La web (GitHub Pages, `docs/`) — v2 desde el 16 nov 2026
+
+Labil es parte de **Lagu** y la web usa el design system **LG Señal** (oscuro, fósforo
+`#24e824`, JetBrains Mono, minúsculas, rejilla de 4 px). Una página por objeto; dentro,
+sus estados en orden: versiones impresas, pruebas y borradores.
+
+| Archivo | Qué es |
+| --- | --- |
+| `3d-models/objetos.json` | **Fuente de la web.** Objetos y estados (`version` = impresa, `prueba`, `borrador`; `por_imprimir`), textos, piezas, modelos, imágenes, `proceso`, `memoria` y descargas. Al añadir un diseño o un estado, se añade aquí. |
+| `proceso/` | Imágenes del proceso que sube Luis, por objeto. `proceso/guardar.py` las prepara. |
+| `3d-models/web.py` | Genera `docs/data/objetos.json`, los GLB que faltan (`docs/models/archivo/`) y copia descargas a `docs/files/<objeto>/<estado>/`. Corre en CI después de los `generate_stl.py`. |
+| `3d-models/costes.py` | Gramos y euros de cada pieza (laminador simplificado, perfil A1, **20 €/kg**). `--calibrar` lo compara con los gramos del laminador real (error medio 4 %, máx. 9 %). |
+| `docs/index.html`, `app.js`, `app.css` | La web v2 (rutas `#/`, `#/<objeto>/<estado>`, `#/historial`). Sin compilación. Portada en motion graphics casi sin texto: definición (frase) → diseño (rejilla) → cálculo (20 N → 17 MPa / 20) → impresión (three.js 0.160, placa real) → montaje (las piezas salen de la placa a su sitio; transformaciones de `3d-models/montaje.py`) y debajo las tarjetas. Página de objeto: modelo a pantalla completa; icono→inicio, nombre y precio arriba; burbujas a la derecha; versiones (desplegable propio: solo versiones, borradores plegados entre ellas) y posiciones abajo; banda «detalles». `index.html` carga `app.js`/`app.css` con la versión de `version.json` (sin caché). |
+| `docs/v1/` | **Archivo**: la web anterior congelada, con copia de sus modelos. No se toca. |
+
+Los borradores **sí se publican** en la web v2 (lo pidió Luis): se ven en la página de su objeto
+marcados como borrador. Siguen sin numerarse como versiones.
+
+**Publicación**: `pages.yml` despliega **solo desde `main`** (decisión de Luis, 16 nov 2026). Una rama `claude/**` no cambia la web hasta que se fusiona; para probar antes, `workflow_dispatch` o abrir `docs/` en local (`python3 -m http.server -d docs`).
+
+Objetos que vienen de otras ramas (unidos el 16 nov 2026 con su historia): `fidgets/botonera-nch/`
+(`claude/brave-darwin-9hqz7q`), `cajones-isla/` (`claude/nice-goodall-9jt9q8`) y
+`llaveros/habitacion-26/` (copiado de `claude/add-3d-color-combinations-xTKbo`).
+
+## Proceso y memoria (normas de Luis, 16 nov 2026)
+
+La web no enseña solo el resultado: enseña **el proceso de diseño** y **por qué cambia** cada versión.
+
+1. **Cada imagen que Luis suba** durante el diseño (bocetos, pizarras, fotos de piezas impresas,
+   capturas de la web) **se guarda en el repo** y se enseña en su objeto:
+   - `python3 proceso/guardar.py <imagen> <objeto> "<qué muestra>" [AAAA-MM-DD]`. La reduce a 1600 px,
+     le quita los metadatos (GPS) y la deja en `proceso/<objeto>/<fecha>-<descripcion>.jpg`.
+   - Se añade a la lista `proceso` del estado al que pertenece en `3d-models/objetos.json`
+     (`{"de", "pie", "fecha"}`). El pie dice qué muestra y qué se decidió a partir de ella.
+   - Si una imagen no llega como archivo (solo se ve en la conversación), se dice y se pide de nuevo,
+     o se rehace la captura y el pie lo indica.
+2. **Cada estado lleva `memoria`**: qué cambia respecto al anterior y **por qué**, en frases
+   cortas con un `tema`: `diseño`, `uso`, `resistencia`, `clic`, `montaje`, `material`, `medidas`,
+   `impresión`, `estética`, `coste` o `método`. Con números cuando los hay (MPa, %, g, mm) y
+   con lo que dijo Luis tal cual cuando es una decisión suya. Se escribe al crear el estado,
+   no al final.
+3. Cada estado lleva también, para las **burbujas** del visor, `cambio` (qué cambió, que quepa
+   en dos líneas) y, si lo hubo, `feedback` con `feedback_de` (`luis`, `revisión`…). La burbuja
+   «nos llevó a» enlaza sola con el estado siguiente.
+4. La memoria se lee en la hoja de detalles («qué cambia y por qué») y entera en
+   `#/<objeto>/memoria`, como línea de tiempo de lo más reciente a lo más antiguo.
+5. **La propia web es un objeto** (`labil-web`): sus versiones, capturas (`labil-web/capturas/`) y
+   bocetos van igual que los de cualquier pieza. Para ella, «versión» se dice «publicada».
+
+## Versiones y carpetas de los diseños 3D (regla de Luis)
+
+**Solo cuenta como versión lo que se ha impreso.** Todo lo demás son borradores.
+
+| Carpeta | Qué es |
+| --- | --- |
+| `3d-models/sponge-holder/` | **V1**. Impresa. Con sus piezas de prueba `test_*`. |
+| `3d-models/el-secadero-v2/` | **V2**, «El Secadero». Diseño actual, sin imprimir. Fuente: `el_secadero_v2.scad`. |
+| `3d-models/bathroom-trazo/` | Barra de baño, **«Trazo»**. Diseño actual, sin imprimir. Fuente: `generate_stl.py`. Con sus pruebas `test_*`. |
+| `3d-models/bathroom-bar-{a,b,c}/` | Barra de baño: los tres borradores anteriores (hilo, carril, rama), descartados. |
+| `3d-models/_bathroom_context.py` | Grifo del baño para ver la barra en contexto y `export_glb()` (ver abajo). No es un diseño. |
+| `3d-models/_borradores/` | Archivo de borradores (`estropajero-v3`, `estropajero-v4`). **No son versiones**. Sus `generate_stl.py` no corren en CI, pero la web v2 los enseña como borradores (vía `objetos.json`). |
+| `3d-models/perfiles/` | Perfil de laminador para estimar tiempos (A1 + PLA). |
+
+- Cada diseño tiene su `APRENDIZAJES.md` (datos, decisiones, comprobaciones). Léelo antes de tocarlo.
+- No numeres un borrador como «V3», «V4»… La siguiente versión será la que se imprima.
+- Un directorio de `3d-models/` solo se ejecuta en CI si tiene `generate_stl.py` en su raíz.
+  Para archivar algo, muévelo a `_borradores/`.
+
 ---
 
 # Designing 3D-printable parts from a photo
@@ -26,6 +101,10 @@ sponge-holder design (`/3d-models/sponge-holder/`). Apply to any new
 printable: clips, brackets, hooks, holders, jigs.
 
 ## Phase 1 — Discovery (do not skip)
+
+Antes de preguntar, **mira lo que ya existe en el repo**: medidas de la V1 impresa
+(`3d-models/sponge-holder/`) y `APRENDIZAJES.md` de cada diseño. Una medida que ya
+funcionó impresa vale más que una estimación nueva.
 
 Before generating any geometry, ask the user. **Hand-drawn dimensions
 on a photo are almost always ambiguous**; assumptions cost a print.
@@ -62,18 +141,22 @@ Always parametric. Hard-coded dimensions waste the user's iteration time.
 
 ### Toolchain
 
-Two parallel files, same parameters, kept in sync:
+Hay dos modos de trabajo según el diseño:
 
-| File | Purpose |
-| --- | --- |
-| `generate_stl.py` | Source of truth. Uses `trimesh` + `shapely` + `manifold3d`. Outputs both STL (printing) and GLB (web preview). |
-| `*.scad` | Human-readable mirror in OpenSCAD for users who prefer that ecosystem. Optional but cheap to maintain. |
+| Modo | Diseños | Fuente de verdad |
+| --- | --- | --- |
+| **OpenSCAD como fuente** (el actual) | `el-secadero-v2` | `*.scad` paramétrico. `generate_stl.py` lo pasa por OpenSCAD, ensambla con `trimesh` y escribe STL, GLB (`docs/models/`) y descargas (`docs/files/<diseño>/`, incluido el 3MF de la placa A1). **No editar el STL a mano**: se regenera. |
+| **Python como fuente** (histórico) | `sponge-holder`, `bathroom-bar-*` | `generate_stl.py` (`trimesh` + `shapely` + `manifold3d`); el `*.scad` de `sponge-holder` es un espejo legible. |
 
-Required Python deps (install from CI or local):
+Diseños nuevos: OpenSCAD como fuente. El workflow instala OpenSCAD en CI, así que
+`generate_stl.py` puede llamarlo.
+
+Required Python deps (install from CI or local; la lista exacta está en `pages.yml`):
 
 ```
-pip install trimesh shapely manifold3d numpy-stl scipy mapbox-earcut
+pip install trimesh shapely manifold3d numpy-stl networkx lxml scipy mapbox-earcut
 ```
+Más `openscad` (`apt-get install openscad`) para los diseños con fuente `.scad`.
 
 ### File skeleton
 
@@ -110,6 +193,31 @@ def main():
 | Booleans must be manifold | `trimesh.boolean.union(parts, engine="manifold")`; check `holder.is_volume` after |
 | Tiny welding overlap so booleans don't crack | `CLIP_OVERLAP = 0.6` mm — every junction overlaps neighbours by this |
 
+### Lecciones de El Secadero V2 (`3d-models/el-secadero-v2/APRENDIZAJES.md`)
+
+1. **Medir antes de modelar.** Las medidas supuestas (46 / 54 × 8 / 68 mm en los
+   borradores) salieron mal; una quedó 9 mm larga. Apunta de dónde sale cada dato y su
+   incertidumbre.
+2. **Mirar lo ya impreso.** Los datos de la V1 llevaban en el repo desde el principio.
+3. **Simular el montaje completo**, no solo cada pieza: piezas contra grifo, encimera,
+   fregadero y estropajo, en las posiciones abajo y levantada.
+4. **Volver a medir las secciones tras un cambio estético.** Un cambio de forma puede
+   quitar resistencia sin que se note a la vista.
+
+### Lecciones de Trazo (`3d-models/bathroom-trazo/APRENDIZAJES.md`)
+
+1. **Mirar el modelo antes de enseñarlo.** `is_volume` solo dice que la malla está
+   cerrada. En las sesiones en la nube hay Chromium y Playwright: con `npm install three`
+   y una página de diez líneas con `GLTFLoader` salen capturas de frente, de lado y en
+   tres cuartos.
+2. **Marco y unidades del GLB.** glTF es Y arriba, a derechas y en metros. Los modelos
+   en el marco «x derecha, y hacia ti, z arriba» se exportan con `export_glb()` de
+   `3d-models/_bathroom_context.py`; si no, salen tumbados, en espejo y mil veces más grandes.
+3. **La boca de un clip, al lado contrario de la carga.** Así el peso aprieta la parte
+   maciza contra el eje y los brazos solo retienen.
+4. **Modelar lo que se mueve** alrededor de la pieza (mandos, palancas, caños) y dejarla
+   fuera de su recorrido.
+
 ### Verification before declaring done
 
 Always print these three after `main()`:
@@ -123,25 +231,6 @@ print(f"Manifold:  {holder.is_volume}")          # MUST be True
 
 If `is_volume` is False, the slicer will silently produce garbage.
 Investigate before exporting.
-
-### Look at it before you show it
-
-`is_volume` only proves the mesh is closed. Before telling the user a model
-is ready, render the GLB and look: Chromium + Playwright are available in
-cloud sessions, and `npm install three` plus a ten-line `GLTFLoader` page
-is enough for screenshots from the front, three-quarters and the side.
-
-Three things the bathroom-bar proposals A/B/C got wrong and a render
-catches at once:
-
-- **Frame and units.** glTF is Y-up, right-handed, in metres. Export
-  through `export_glb()` in `3d-models/_bathroom_context.py` or the model
-  shows lying down, mirrored, and 1000x too big in AR.
-- **Load path of a snap clip.** Point the mouth away from the load, so the
-  weight presses the solid side of the clip onto the shaft. A mouth that
-  faces the load relies on the snap arms alone.
-- **What moves.** Model the real object around the part (handle caps,
-  levers, spouts) and keep the part out of their sweep.
 
 ## Phase 3 — MVP test pieces
 
@@ -210,15 +299,18 @@ with AR if they want, **without manually running anything**.
 
 The repo has **a single shared viewer** that lists every printable
 design in the project. New designs always get **added to that viewer
-as a new section + tab**, never their own page.
+as a new section + tab**, never their own page. Los borradores archivados
+en `_borradores/` no aparecen en el visor.
 
 Stack:
 
 ```
 3d-models/
-├── sponge-holder/          # one folder per design
+├── sponge-holder/          # V1 (impresa), una carpeta por diseño
 │   ├── generate_stl.py
 │   └── test_*.py
+├── el-secadero-v2/         # V2: *.scad + generate_stl.py + APRENDIZAJES.md
+├── _borradores/            # archivo, NO se ejecuta en CI
 └── <new-design>/           # new designs go here
     └── generate_stl.py
 
@@ -228,12 +320,17 @@ docs/
     ├── sponge_holder.glb   # one .glb per visible model in the viewer
     ├── <new-design>.glb    # generators write to /docs/models/...
     └── version.txt         # shared cache-buster timestamp
+└── files/<diseño>/         # descargas del visor: STL, 3MF, SCAD, APRENDIZAJES.md
 
-.github/workflows/pages.yml # regenerates ALL GLBs in CI, deploys /docs
+.github/workflows/pages.yml # instala deps + OpenSCAD, regenera todo en CI, deploys /docs
 ```
 
 Key points:
 
+- **Solo se publica `docs/`.** Un enlace `../3d-models/...` en `docs/index.html` da
+  404 en la web. Toda descarga enlazada (STL, 3MF, SCAD, notas) va en
+  `docs/files/<diseño>/` y se enlaza como `files/<diseño>/<archivo>`. Los diseños con
+  OpenSCAD la escriben su `generate_stl.py`; para los antiguos, `pages.yml` copia los STL.
 - Use **GLB** (not STL) for the viewer. trimesh can `.export(*.glb)`
   natively. Smaller, faster, and `<model-viewer>` only accepts GLB/glTF.
 - **Cache-busting**: write a unix timestamp to `models/version.txt` on
@@ -269,9 +366,12 @@ to include the new model. Concretely:
 4. **No JS changes needed.** `IntersectionObserver` discovers new
    sections via `document.querySelectorAll("main section")`, and the
    tab→scroll handler binds to every `.tabs a`.
-5. **No workflow changes needed.** `pages.yml` already globs
-   `3d-models/*/`, so new designs are picked up automatically.
-6. Update the `Modelo NN` numbering on the eyebrow if you want, or
+5. **Descargas**: que el generador escriba STL/3MF/SCAD/`APRENDIZAJES.md` en
+   `docs/files/<design>/` y enlázalos como `files/<design>/...` (nunca `../3d-models/`).
+6. **No workflow changes needed.** `pages.yml` already globs
+   `3d-models/*/` (y OpenSCAD ya está instalado), so new designs are picked up
+   automatically.
+7. Update the `Modelo NN` numbering on the eyebrow if you want, or
    just let the order in `<main>` define it.
 
 Do not create a second HTML file or a second route. The single
@@ -350,8 +450,10 @@ Default answers when something doesn't fit:
 
 ## Reference implementation
 
-`/3d-models/sponge-holder/` is the canonical example of this playbook
-applied end to end:
+`/3d-models/el-secadero-v2/` es el diseño actual y el ejemplo más reciente
+(OpenSCAD como fuente, `APRENDIZAJES.md`, descargas en `docs/files/`).
+`/3d-models/sponge-holder/` (V1) is the canonical example of this playbook
+applied end to end con Python como fuente:
 
 - `generate_stl.py` — main parametric model
 - `test_faucet_clip.py`, `test_sponge_clip.py` — MVP test pieces
