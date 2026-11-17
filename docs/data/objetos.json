@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-17T12:47Z",
+ "generado": "2026-11-17T12:50Z",
  "euros_kg": 20.0,
  "perfil": "A1 · capa 0.2 mm · relleno 15% · PLA 1.26 g/cm³",
  "objetos": [
@@ -1728,7 +1728,7 @@
    "id": "labil-web",
    "nombre": "labil · la web",
    "que": "la propia web donde se ven los objetos: también se diseña por versiones",
-   "estado": "montaje real publicado",
+   "estado": "precio de la prueba publicado",
    "palabras": {
     "version": "publicada",
     "pendiente": "por publicar"
@@ -2095,6 +2095,8 @@
        "texto": "Transiciones más suaves: las piezas de la rejilla se mueven con aceleración en lugar de a saltos, la rejilla se funde con la impresora en 1,3 s, la palabra de cada fase entra con un fundido y, al terminar el montaje, todo se apaga despacio antes de volver a escribir. El montaje dura 7 s."
       }
      ],
+     "feedback": "cuando cambio a las piezas de prueba no cambia el precio de arriba",
+     "feedback_de": "luis",
      "modelos": [],
      "imagenes": [
       {
@@ -2103,6 +2105,54 @@
       }
      ],
      "proceso": [],
+     "descargas": [],
+     "piezas": [],
+     "cambiado": null
+    },
+    {
+     "id": "precio-prueba",
+     "tipo": "version",
+     "nombre": "precio de la prueba",
+     "fecha": "2026-11-17",
+     "texto": "Al ver una pieza de prueba, bajo el precio del diseño aparece el de esa prueba, con su nombre y sus gramos. En detalles hay una lista de pruebas con su total.",
+     "cambio": "bajo el precio del diseño, el de la prueba que estás viendo",
+     "memoria": [
+      {
+       "tema": "uso",
+       "texto": "Luis: «en vez de alterarse el precio de arriba, que me muestre, además del precio total del diseño actual, debajo el precio de la prueba». El precio grande no cambia; debajo sale «prueba caño · 0,14 € · 7 g» solo en las vistas que son una prueba."
+      },
+      {
+       "tema": "coste",
+       "texto": "Las pruebas no suman al precio del diseño. En la barra de baño son 0,15 €, 0,14 € y 0,09 €: 0,38 € y 19 g entre las tres, frente a 1,49 € de la pieza."
+      },
+      {
+       "tema": "método",
+       "texto": "En objetos.json, un modelo con «prueba» (la ruta de su STL) es la vista de una pieza de prueba. web.py calcula sus gramos con el mismo laminador simplificado que las piezas."
+      }
+     ],
+     "modelos": [],
+     "imagenes": [
+      {
+       "src": "files/labil-web/precio-prueba/2026-11-17-precio-de-la-prueba.png",
+       "pie": "precio del diseño y, debajo, el de la prueba"
+      },
+      {
+       "src": "files/labil-web/precio-prueba/2026-11-17-precio-de-la-prueba-detalles.png",
+       "pie": "detalles: pruebas antes de imprimir"
+      }
+     ],
+     "proceso": [
+      {
+       "src": "files/labil-web/precio-prueba/2026-11-17-vista-montada-el-precio-de-arriba-es-el-del-diseno.jpg",
+       "pie": "Captura de Luis en la barra de baño, vista montada: arriba, 1,49 €, el precio del diseño.",
+       "fecha": "2026-11-17"
+      },
+      {
+       "src": "files/labil-web/precio-prueba/2026-11-17-vista-de-la-prueba-del-cano-el-precio-de-arriba-no-cambia.jpg",
+       "pie": "Captura de Luis en la prueba del caño: el precio sigue en 1,49 €. De aquí sale enseñar debajo el precio de la prueba.",
+       "fecha": "2026-11-17"
+      }
+     ],
      "descargas": [],
      "piezas": [],
      "cambiado": null
