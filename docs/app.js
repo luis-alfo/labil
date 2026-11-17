@@ -563,7 +563,7 @@ function vistaObjeto(oid, eid, abrirDetalles = false) {
 
   // posiciones: las vistas del modelo; si no hay modelo, las imágenes
   const posiciones = e.modelos.length
-    ? e.modelos.map((m) => ({ nombre: m.nombre, src: conVer(m.src), tipo: "modelo" }))
+    ? e.modelos.map((m) => ({ nombre: m.nombre, src: conVer(m.src), tipo: "modelo", coste: m.coste }))
     : e.imagenes.map((im) => ({ nombre: im.pie, src: im.src, tipo: "imagen" }));
   const primera = posiciones[0];
   const lienzo = !primera
@@ -622,6 +622,19 @@ function vistaObjeto(oid, eid, abrirDetalles = false) {
         ${e.piezas.length > 1 ? `<li class="total"><span class="caption">total</span><span class="num muted">${gr(e.coste.gramos)}</span><span class="num strong signal">${eur(e.coste.euros)}</span></li>` : ""}
       </ul></section>`
     : "";
+  // pruebas: las vistas que son una pieza de prueba llevan su propio coste
+  const pruebasPos = posiciones.filter((p) => p.coste);
+  const pruebas = pruebasPos.length
+    ? `<section class="seccion"><h3 class="label">pruebas antes de imprimir</h3><ul class="flujo">
+        ${pruebasPos.map((p) => `<li><span>${esc(p.nombre)}</span>
+          <span class="num muted">${gr(p.coste.gramos)}</span><span class="num strong">${eur(p.coste.euros)}</span></li>`).join("")}
+        ${pruebasPos.length > 1 ? `<li class="total"><span class="caption">todas las pruebas</span><span class="num muted">${gr(pruebasPos.reduce((s, p) => s + p.coste.gramos, 0))}</span><span class="num strong">${eur(pruebasPos.reduce((s, p) => s + p.coste.euros, 0))}</span></li>` : ""}
+      </ul><p class="caption">aparte del precio del diseño: son piezas pequeñas para comprobar el encaje.</p></section>`
+    : "";
+  // bajo el precio del diseño, el de la prueba que se está viendo
+  const precioPos = (p) => p && p.coste
+    ? `<span class="caption">${esc(p.nombre)}</span><span class="num strong">${eur(p.coste.euros)}</span><span class="caption">${gr(p.coste.gramos)}</span>`
+    : "";
   const coste = e.coste
     ? `<div class="coste">${bitEur(e.coste.euros, "lg")}
         <p class="caption">${gr(e.coste.gramos)} de plástico · ${e.coste.origen === "laminador" ? "dato del laminador real" : `estimado a ${DATOS.euros_kg} €/kg`}</p></div>`
@@ -658,7 +671,8 @@ function vistaObjeto(oid, eid, abrirDetalles = false) {
     <header class="hud hud-arriba">
       <a class="ir-inicio" href="#/" aria-label="objetos"><img src="icon.svg" alt=""></a>
       <h1 class="hud-titulo title" id="titulo">${esc(o.nombre)}</h1>
-      <span class="hud-precio">${e.coste ? bitEur(e.coste.euros, "sm") : ""}</span>
+      <span class="hud-precio">${e.coste ? bitEur(e.coste.euros, "sm") : ""}
+        <span class="precio-pos" id="precio-pos" aria-live="polite">${precioPos(primera)}</span></span>
     </header>
 ${burbujas}
 
@@ -688,7 +702,7 @@ ${burbujas}
           <span class="caption">${fechaLarga(e.fecha)} · ${i + 1} / ${o.estados.length}${e.archivo ? ` · archivo: ${esc(e.archivo)}` : ""}</span></div>
         <h2 class="display">${esc(e.nombre)}</h2>
         <p class="body">${esc(e.texto)}</p>
-        ${coste}${delta}${memoria}${proceso}${piezas}${imagenes}${descargas}
+        ${coste}${delta}${memoria}${proceso}${piezas}${pruebas}${imagenes}${descargas}
         <section class="seccion"><h3 class="label">el objeto</h3>
           <p class="body muted">${esc(o.que)} · ${esc(o.estado)}</p>
           <p><a class="enlace" href="#/${o.id}/memoria">memoria completa →</a>${o.aprendizajes ? ` · <a class="enlace" href="${o.aprendizajes}">aprendizajes</a>` : ""}</p></section>
@@ -758,6 +772,8 @@ ${burbujas}
     if (p.tipo === "imagen") destino.alt = p.nombre;
     const rotulo = document.getElementById("pos-nombre");
     if (rotulo) { rotulo.textContent = p.nombre; descifra(rotulo); }
+    const pp = document.getElementById("precio-pos");
+    if (pp) pp.innerHTML = precioPos(p);
   }));
 
   // hoja de detalles

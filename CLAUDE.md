@@ -31,7 +31,7 @@ sus estados en orden: versiones impresas, pruebas y borradores.
 
 | Archivo | Qué es |
 | --- | --- |
-| `3d-models/objetos.json` | **Fuente de la web.** Objetos y estados (`version` = impresa, `prueba`, `borrador`; `por_imprimir`), textos, piezas, modelos, imágenes, `proceso`, `memoria` y descargas. Al añadir un diseño o un estado, se añade aquí. |
+| `3d-models/objetos.json` | **Fuente de la web.** Objetos y estados (`version` = impresa, `prueba`, `borrador`; `por_imprimir`), textos, piezas, modelos, imágenes, `proceso`, `memoria` y descargas. Al añadir un diseño o un estado, se añade aquí. Un modelo con `"prueba": "<ruta al STL>"` es la vista de una pieza de prueba: la web enseña su precio bajo el del diseño y la lista en detalles. |
 | `proceso/` | Imágenes del proceso que sube Luis, por objeto. `proceso/guardar.py` las prepara. |
 | `3d-models/web.py` | Genera `docs/data/objetos.json`, los GLB que faltan (`docs/models/archivo/`) y copia descargas a `docs/files/<objeto>/<estado>/`. Corre en CI después de los `generate_stl.py`. |
 | `3d-models/costes.py` | Gramos y euros de cada pieza (laminador simplificado, perfil A1, **20 €/kg**). `--calibrar` lo compara con los gramos del laminador real (error medio 4 %, máx. 9 %). |
