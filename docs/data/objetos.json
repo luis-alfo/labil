@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-17T19:09Z",
+ "generado": "2026-11-19T11:29Z",
  "euros_kg": 20.0,
  "perfil": "A1 · capa 0.2 mm · relleno 15% · PLA 1.26 g/cm³",
  "objetos": [
@@ -1765,6 +1765,141 @@
       "gramos": 14.43,
       "euros": 0.29,
       "origen": "laminador"
+     },
+     "cambiado": null
+    }
+   ]
+  },
+  {
+   "id": "larc-hq",
+   "nombre": "larc hq",
+   "que": "cajonera que cuelga del elevador de pantalla",
+   "estado": "v1 por imprimir",
+   "aprendizajes": "files/larc-hq/notas/APRENDIZAJES.md",
+   "estados": [
+    {
+     "id": "v1",
+     "tipo": "version",
+     "nombre": "v1",
+     "fecha": "2026-11-19",
+     "por_imprimir": true,
+     "texto": "Dos cajones colgados de la cara de abajo del elevador: uno a medida de A5 y uno pequeño para cables, transformador y papelería. Una pinza abraza el canto delantero del tablero y lleva encima una bandeja para dos bolis, con el grabado en el fondo. Debajo sigue cabiendo el portátil.",
+     "memoria": [
+      {
+       "tema": "medidas",
+       "texto": "Medido con tarjetas estándar de 85,6 × 54 mm sobre las fotos: 225 mm de fondo y 85 mm libres bajo el tablero. El grosor (12 mm) y el tramo plano (~300 mm) son estimados."
+      },
+      {
+       "tema": "uso",
+       "texto": "«DinA5 (dina4 dobladas a la mitad), dos cables (portátil y móvil) y un transformador» (Luis). Un cajón de 152 × 217 × 38 mm para el A5 y otro de 84 × 217 × 38 mm con separador."
+      },
+      {
+       "tema": "montaje",
+       "texto": "«Pinza en el canto delantero […] y un poco de cinta de doble cara por debajo» (Luis). La pinza entra deslizando desde delante; al fondo, tres asientos de 40 × 16 mm para la cinta."
+      },
+      {
+       "tema": "diseño",
+       "texto": "«Que en la parte delantera que se engancha tenga para dejar dos bolis y en el fondo ponga larc hq | v1 | fecha» (Luis). Bandeja de 160 × 26 mm sobre la pinza, con el grabado en JetBrains Mono."
+      },
+      {
+       "tema": "resistencia",
+       "texto": "Sin la cinta y con 1 kg dentro, el labio de la pinza trabaja a unos 4,6 MPa. La cinta del fondo lo deja en casi nada."
+      },
+      {
+       "tema": "impresión",
+       "texto": "La carcasa es un perfil sin suelo ni trasera: se imprime de pie sobre su cara delantera, sin soportes. Mide 250 mm en una placa de 256."
+      },
+      {
+       "tema": "método",
+       "texto": "Antes de la carcasa (unos 200 g) se imprime una rebanada de 25 mm de la pinza: 6 g para saber si el tablero mide 12 mm."
+      }
+     ],
+     "cambio": "primera propuesta: dos cajones colgados, pinza al canto y bandeja de bolis grabada",
+     "modelos": [
+      {
+       "nombre": "cerrada",
+       "src": "models/larc_hq_cerrada.glb"
+      },
+      {
+       "nombre": "abierta",
+       "src": "models/larc_hq_abierta.glb"
+      },
+      {
+       "nombre": "placa a1",
+       "src": "models/larc_hq_placa.glb"
+      },
+      {
+       "nombre": "prueba pinza",
+       "src": "models/larc_hq_prueba_pinza.glb",
+       "coste": {
+        "gramos": 6.3,
+        "euros": 0.13
+       }
+      }
+     ],
+     "imagenes": [],
+     "proceso": [
+      {
+       "src": "files/larc-hq/v1/2026-11-19-fondo-del-tablero-en-tarjetas.jpg",
+       "pie": "Foto de Luis, desde arriba: tres tarjetas en fila miden el fondo del tablero, 54 + 85,6 + 85,6 = 225 mm. El pie del monitor queda a unos 42 mm del canto delantero: de ahí los 33 mm de la pinza. Nombre y números de las tarjetas tapados.",
+       "fecha": "2026-11-19"
+      },
+      {
+       "src": "files/larc-hq/v1/2026-11-19-tarjeta-de-pie-bajo-el-tablero.jpg",
+       "pie": "Foto de Luis: una tarjeta de pie cabe justa bajo el tablero, 85 mm libres. El grosor del contrachapado sale por proporción: unos 12 mm, a confirmar con la prueba de la pinza.",
+       "fecha": "2026-11-19"
+      },
+      {
+       "src": "files/larc-hq/v1/2026-11-19-tarjeta-tumbada-junto-a-la-pata.jpg",
+       "pie": "Foto de Luis: la tarjeta tumbada (54 mm) junto a la curva de la pata. La cajonera se queda en el tramo plano.",
+       "fecha": "2026-11-19"
+      },
+      {
+       "src": "files/larc-hq/v1/2026-11-19-el-elevador-de-frente.jpg",
+       "pie": "Foto de Luis, de frente: unos 510 mm entre patas y unos 300 mm de tramo plano (estimado). Debajo, los enchufes de la mesa y los cables.",
+       "fecha": "2026-11-19"
+      },
+      {
+       "src": "files/larc-hq/v1/2026-11-19-el-portatil-se-guarda-debajo.jpg",
+       "pie": "Foto de Luis: el portátil se guarda debajo del elevador. Por eso la cajonera cuelga y solo baja 44 mm: quedan 41 mm para él.",
+       "fecha": "2026-11-19"
+      }
+     ],
+     "descargas": [
+      "files/larc-hq/pieza_A_carcasa.stl",
+      "files/larc-hq/pieza_B_cajon_a5.stl",
+      "files/larc-hq/pieza_C_cajon_pequeno.stl",
+      "files/larc-hq/prueba_pinza.stl",
+      "files/larc-hq/larc_hq.scad",
+      "files/larc-hq/APRENDIZAJES.md"
+     ],
+     "piezas": [
+      {
+       "nombre": "A carcasa",
+       "cantidad": 1,
+       "gramos": 224.2,
+       "euros": 4.48,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "B cajón a5",
+       "cantidad": 1,
+       "gramos": 107.2,
+       "euros": 2.14,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "C cajón pequeño",
+       "cantidad": 1,
+       "gramos": 75.5,
+       "euros": 1.51,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 406.9,
+      "euros": 8.14,
+      "origen": "estimado"
      },
      "cambiado": null
     }

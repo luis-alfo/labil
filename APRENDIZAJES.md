@@ -244,3 +244,14 @@ Registro vivo de explicaciones, decisiones y convenciones acordadas.
 - Ninguna otra rama remota conserva el disparador antiguo (comprobado el 17 nov). Para que no
   pueda repetirse ni con una rama vieja, Luis puede limitar el entorno `github-pages` a `main`
   en los ajustes del repo (Settings → Environments → github-pages → Deployment branches).
+
+## 2026-11-19 · larc hq: cajonera del elevador de pantalla
+
+- **larc hq** = la oficina de Luis. Es el nombre del objeto y lo que se graba en él.
+- **Luis mide con tarjetas**: pone tarjetas estándar (85,6 × 54 mm) junto a la pieza y hace la foto.
+  Las medidas se leen contando tarjetas; lo que no toca una tarjeta es estimado y se dice.
+- **El grabado sigue una fórmula**: `NOMBRE | VERSIÓN | FECHA DE DISEÑO (ddmmaa)`, en JetBrains Mono,
+  como El Secadero. Luis lo pide con «v1» aunque no esté impreso: en la web va como versión por imprimir.
+- **Fotos con datos personales** (nombre, números de socio o de identificación): se publican con
+  los datos tapados (decisión de Luis, 19 nov 2026).
+- Detalle del diseño en `3d-models/larc-hq/APRENDIZAJES.md`.
