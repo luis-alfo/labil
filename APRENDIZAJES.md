@@ -255,3 +255,7 @@ Registro vivo de explicaciones, decisiones y convenciones acordadas.
 - **Fotos con datos personales** (nombre, números de socio o de identificación): se publican con
   los datos tapados (decisión de Luis, 19 nov 2026).
 - Detalle del diseño en `3d-models/larc-hq/APRENDIZAJES.md`.
+- **Curvas, regla común a LG Casa y a los objetos**: los radios de LG Casa (1–6 px) y de LG Señal
+  (0/2/4 px) son cortos a propósito; no son la fuente de las curvas. La curva está en el **arco de
+  La Guarida**: una línea de grosor constante que dobla con radio ≈ 4 × su grosor y acaba en punta
+  redonda. Para piezas: «lámina que se dobla, radio = 4 × grosor»; cantos pequeños en 2 / 4 / 6 mm.

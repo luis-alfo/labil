@@ -101,3 +101,27 @@ Si aprieta: `board_t += 0.3`. Si baila: `board_t -= 0.3`.
 2. Ancho del tramo plano del tablero, para confirmar que caben 250 mm.
 3. Dónde va a lo ancho: centrada, o a un lado para dejar libres los enchufes.
 4. Material y colores.
+
+## Curvas: qué se puede sacar de LG Casa (19 nov 2026)
+
+Luis ve la primera propuesta «demasiado recta» y pregunta qué sacar de los radios de LG Casa.
+
+- **Los radios de LG Casa son cortos a propósito**: 1, 2, 3, 4 y 6 px. Su norma: «la forma la dan
+  el canto y el color, no la curva». Lo redondo del todo (50 %) solo para puntos. LG Señal dice lo
+  mismo (0 / 2 / 4 px). La escala de radios no da curvas grandes; da **esquinas matadas**.
+- **La curva de LG Casa está en el arco de La Guarida** (el logo): una sola línea de grosor
+  constante, con las puntas redondas, que dobla con dos radios. Hombros amplios (radio ≈ 23 sobre
+  190 de ancho, **≈ 4 veces el grosor de la línea**), cumbre casi viva y tejado a unos 19°.
+- **El elevador dobla igual**: contrachapado de 12 mm con un radio de unos 45 mm, **≈ 4 veces su
+  grosor** (estimado en foto).
+- **Regla que sale de ahí**: la pieza es una lámina que se dobla, y dobla con radio = 4 × grosor.
+  Pared de 2 mm → R8. Los cantos pequeños siguen la escala de Casa leída en milímetros (2, 4, 6).
+- **Sale gratis al imprimir**: la carcasa es un perfil extruido de pie; cualquier curva del perfil
+  son paredes verticales, sin voladizos.
+
+Propuestas (pendiente de que Luis elija):
+
+1. Perfil de lámina doblada: esquinas de abajo de la carcasa en R8 y cajones que las siguen.
+2. Pinza como un solo doblez continuo sobre el canto, con la punta del labio redonda como las
+   puntas del arco.
+3. Frentes de cajón con esquinas R4 y tirador circular completo en vez de media muesca.
