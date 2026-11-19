@@ -9,6 +9,7 @@ Por cada estado escribe en llaveros/st26/<estado>/:
   st26-<estado>_negro.stl      cuerpo, filamento 1
   st26-<estado>_blanco.stl     ST, filamento 2        (si tiene letras de color)
   st26-<estado>_naranja.stl    26, filamento 3
+  st26-<estado>_vista.stl      solo para la web: la botella girada para verse de frente
 
 Uso: python3 rehacer.py
 """
@@ -163,6 +164,12 @@ def main():
         completo.export(d / f"st26-{nombre}.stl")
         for color, m in partes.items():
             m.export(d / f"st26-{nombre}_{color}.stl")
+        if p["sil"] not in ("v1", "v2", "lat", "v5"):
+            # vista para la web: la botella tumbada a lo ancho, con el tapón a la derecha y el
+            # logo leyéndose de izquierda a derecha (el visor la mira de frente)
+            vista = completo.copy()
+            vista.apply_transform(trimesh.transformations.rotation_matrix(-np.pi / 2, [0, 0, 1]))
+            vista.export(d / f"st26-{nombre}_vista.stl")
         ext = completo.extents
         print(f"{nombre:17s} {ext[0]:5.1f} × {ext[1]:5.1f} × {ext[2]:4.1f} mm  "
               f"{completo.volume / 1000:5.2f} cm³  cerrada={completo.is_volume}  "

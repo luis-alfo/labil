@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-17T19:09Z",
+ "generado": "2026-11-19T12:08Z",
  "euros_kg": 20.0,
  "perfil": "A1 · capa 0.2 mm · relleno 15% · PLA 1.26 g/cm³",
  "objetos": [
@@ -1682,7 +1682,7 @@
    "id": "llaveros",
    "nombre": "llaveros",
    "que": "llaveros con texto grabado o en relieve",
-   "estado": "los dos impresos",
+   "estado": "impreso; el llavero st26 tiene su propia página",
    "estados": [
     {
      "id": "habitacion-26",
@@ -1727,46 +1727,565 @@
       "origen": "estimado"
      },
      "cambiado": "2026-11-16"
+    }
+   ]
+  },
+  {
+   "id": "st26",
+   "nombre": "llavero st26",
+   "que": "llavero en forma de botella de vino con el logo ST26, en tres colores",
+   "estado": "v3 por imprimir: primera capa firme",
+   "aprendizajes": "files/st26/notas/APRENDIZAJES.md",
+   "estados": [
+    {
+     "id": "v1-silueta",
+     "tipo": "version",
+     "nombre": "v1 silueta",
+     "fecha": "2026-10-20",
+     "texto": "Silueta de las letras del logo, 45 × 34 × 4,2 mm, con un aro arriba para la anilla. ST en blanco y 26 en naranja, en relieve sobre una base negra. Impresa.",
+     "memoria": [
+      {
+       "tema": "diseño",
+       "texto": "Luis pidió la silueta de las letras, no un rectángulo, y unos 4,5 cm de ancho."
+      },
+      {
+       "tema": "método",
+       "texto": "Letras trazadas de una imagen de 335 px: es todo lo que hay del logo. Un vectorial haría las letras exactas."
+      },
+      {
+       "tema": "resistencia",
+       "texto": "PLA impreso plano (35 MPa): el aro aguanta ~150 N de tirón y ~23 N doblándolo. Sacarlo del bolsillo son 2–10 N; un enganchón, 20–50 N."
+      }
+     ],
+     "cambio": "de la imagen del logo a una pieza con la silueta de las letras",
+     "feedback": "salieron bolitas en los trazos finos y la s y la t pegadas",
+     "feedback_de": "luis",
+     "modelos": [
+      {
+       "nombre": "llavero",
+       "src": "models/archivo/st26-v1-silueta-0.glb"
+      }
+     ],
+     "imagenes": [],
+     "proceso": [
+      {
+       "src": "files/st26/v1-silueta/2026-10-20-logo-st26-de-partida.jpg",
+       "pie": "El logo del que se parte: ST en blanco y 26 en salmón, en letra gótica pixelada. De aquí se trazaron las letras.",
+       "fecha": "2026-10-20"
+      }
+     ],
+     "descargas": [
+      "files/st26/v1-silueta/st26-v1-silueta.stl",
+      "files/st26/v1-silueta/st26-v1-silueta_negro.stl",
+      "files/st26/v1-silueta/st26-v1-silueta_blanco.stl",
+      "files/st26/v1-silueta/st26-v1-silueta_naranja.stl"
+     ],
+     "piezas": [
+      {
+       "nombre": "llavero",
+       "cantidad": 1,
+       "gramos": 3.0,
+       "euros": 0.06,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 3.0,
+      "euros": 0.06,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-19"
     },
     {
-     "id": "st26-botella",
+     "id": "reforzada",
+     "tipo": "borrador",
+     "nombre": "aro reforzado",
+     "fecha": "2026-10-20",
+     "texto": "La misma silueta con el aro más grueso: pared de 3,2 mm.",
+     "memoria": [
+      {
+       "tema": "resistencia",
+       "texto": "Con 3,2 mm de pared el tirón pasa de ~150 a ~230 N y doblar el aro, de ~23 a ~43 N."
+      }
+     ],
+     "cambio": "aro con pared de 3,2 mm",
+     "modelos": [
+      {
+       "nombre": "llavero",
+       "src": "models/archivo/st26-reforzada-0.glb"
+      }
+     ],
+     "imagenes": [],
+     "proceso": [],
+     "descargas": [
+      "files/st26/reforzada/st26-reforzada.stl"
+     ],
+     "piezas": [
+      {
+       "nombre": "llavero",
+       "cantidad": 1,
+       "gramos": 3.1,
+       "euros": 0.06,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 3.1,
+      "euros": 0.06,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-19"
+    },
+    {
+     "id": "lateral",
+     "tipo": "borrador",
+     "nombre": "aro lateral",
+     "fecha": "2026-10-21",
+     "texto": "El aro pasa al lateral izquierdo, en la dirección en que se tira al sacar las llaves.",
+     "memoria": [
+      {
+       "tema": "uso",
+       "texto": "Luis: «Por direccionalidad de tiro al sacarlo de un bolsillo es mejor a la izquierda, no en la esquina.»"
+      },
+      {
+       "tema": "estética",
+       "texto": "Arriba quedaba poco estético, según Luis."
+      }
+     ],
+     "cambio": "aro a la izquierda, en la línea del tirón",
+     "feedback": "mejor a la izquierda que en la esquina",
+     "feedback_de": "luis",
+     "modelos": [
+      {
+       "nombre": "llavero",
+       "src": "models/archivo/st26-lateral-0.glb"
+      }
+     ],
+     "imagenes": [],
+     "proceso": [],
+     "descargas": [
+      "files/st26/lateral/st26-lateral.stl"
+     ],
+     "piezas": [
+      {
+       "nombre": "llavero",
+       "cantidad": 1,
+       "gramos": 3.1,
+       "euros": 0.06,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 3.1,
+      "euros": 0.06,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-19"
+    },
+    {
+     "id": "trazo-minimo",
+     "tipo": "borrador",
+     "nombre": "trazo mínimo",
+     "fecha": "2026-10-22",
+     "texto": "Se engordan solo los trazos que no llegaban a 0,9 mm y se separan la S y la T, sin perder el rombo de la S.",
+     "memoria": [
+      {
+       "tema": "impresión",
+       "texto": "Con boquilla de 0,4 mm, un trazo de menos de ~0,9 mm sale en bolitas. Se engorda cada trazo por su esqueleto, no todo por igual."
+      },
+      {
+       "tema": "diseño",
+       "texto": "El rombo de la S se conserva, y la S y la T van separadas 0,5 mm. En el logo las une un hilo de 1 px."
+      }
+     ],
+     "cambio": "trazos de al menos 0,9 mm y 0,5 mm de hueco entre letras",
+     "modelos": [
+      {
+       "nombre": "llavero",
+       "src": "models/archivo/st26-trazo-minimo-0.glb"
+      }
+     ],
+     "imagenes": [],
+     "proceso": [],
+     "descargas": [
+      "files/st26/trazo-minimo/st26-trazo-minimo.stl"
+     ],
+     "piezas": [
+      {
+       "nombre": "llavero",
+       "cantidad": 1,
+       "gramos": 3.0,
+       "euros": 0.06,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 3.0,
+      "euros": 0.06,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-19"
+    },
+    {
+     "id": "botella-primeras",
+     "tipo": "borrador",
+     "nombre": "primeras botellas",
+     "fecha": "2026-10-23",
+     "texto": "El logo dentro de una botella de vino, pequeña para imprimir. Se probaron tres formas; aquí la primera.",
+     "memoria": [
+      {
+       "tema": "diseño",
+       "texto": "Luis: «quiero que pongas esto en una botella de vino». El llavero es la botella; solo con la identidad ST26."
+      }
+     ],
+     "cambio": "el logo dentro de una botella",
+     "feedback": "«pf no parece una botella de vino»",
+     "feedback_de": "luis",
+     "modelos": [
+      {
+       "nombre": "llavero",
+       "src": "models/archivo/st26-botella-primeras-0.glb"
+      }
+     ],
+     "imagenes": [],
+     "proceso": [],
+     "descargas": [
+      "files/st26/botella-primeras/st26-botella-primeras.stl"
+     ],
+     "piezas": [
+      {
+       "nombre": "llavero",
+       "cantidad": 1,
+       "gramos": 2.7,
+       "euros": 0.05,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 2.7,
+      "euros": 0.05,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-19"
+    },
+    {
+     "id": "botella-75cl",
+     "tipo": "borrador",
+     "nombre": "botella de 75 cl",
+     "fecha": "2026-10-24",
+     "texto": "Proporciones de una botella bordelesa de 75 cl, con cápsula. Variantes A, B y C; Luis eligió la B, serigrafiada.",
+     "memoria": [
+      {
+       "tema": "diseño",
+       "texto": "Proporciones tomadas de una botella real: hombro, cuello largo y cápsula."
+      },
+      {
+       "tema": "estética",
+       "texto": "Luis eligió la variante B, con el logo serigrafiado en vertical."
+      }
+     ],
+     "cambio": "proporciones reales de una botella de 75 cl",
+     "feedback": "la argolla tiene que estar en el tapón y detrás no todo negro",
+     "feedback_de": "luis",
+     "modelos": [
+      {
+       "nombre": "llavero",
+       "src": "models/archivo/st26-botella-75cl-0.glb"
+      }
+     ],
+     "imagenes": [],
+     "proceso": [],
+     "descargas": [
+      "files/st26/botella-75cl/st26-botella-75cl.stl"
+     ],
+     "piezas": [
+      {
+       "nombre": "llavero",
+       "cantidad": 1,
+       "gramos": 2.9,
+       "euros": 0.06,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 2.9,
+      "euros": 0.06,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-19"
+    },
+    {
+     "id": "doble-cara",
+     "tipo": "borrador",
+     "nombre": "doble cara",
+     "fecha": "2026-10-25",
+     "texto": "Argolla en el tapón. Por detrás, el logo incrustado a ras en las primeras capas: se ve sin rellenar de color toda la pieza.",
+     "memoria": [
+      {
+       "tema": "diseño",
+       "texto": "Por detrás las letras van incrustadas a ras en 4 capas (0,8 mm), sin gastar color por dentro."
+      },
+      {
+       "tema": "resistencia",
+       "texto": "La cápsula de color del reverso llegaba al agujero. Las capas de otro color no cuentan como pared: el tirón real bajaba de 201 a 160 N."
+      }
+     ],
+     "cambio": "argolla en el tapón y logo incrustado detrás",
+     "modelos": [
+      {
+       "nombre": "llavero",
+       "src": "models/archivo/st26-doble-cara-0.glb"
+      }
+     ],
+     "imagenes": [],
+     "proceso": [],
+     "descargas": [
+      "files/st26/doble-cara/st26-doble-cara.stl",
+      "files/st26/doble-cara/st26-doble-cara_negro.stl",
+      "files/st26/doble-cara/st26-doble-cara_blanco.stl",
+      "files/st26/doble-cara/st26-doble-cara_naranja.stl"
+     ],
+     "piezas": [
+      {
+       "nombre": "llavero",
+       "cantidad": 1,
+       "gramos": 3.3,
+       "euros": 0.07,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 3.3,
+      "euros": 0.07,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-19"
+    },
+    {
+     "id": "tapon-macizo",
+     "tipo": "borrador",
+     "nombre": "tapón macizo",
+     "fecha": "2026-10-26",
+     "texto": "Letras todas blancas y tapón negro macizo, sin cápsula de color. Primer proyecto de Bambu Studio con los colores puestos.",
+     "memoria": [
+      {
+       "tema": "resistencia",
+       "texto": "Con el tapón negro macizo: ~221 N de tirón con contacto amplio, ~183 N con una anilla fina, ~46 N doblando."
+      },
+      {
+       "tema": "método",
+       "texto": "Primer proyecto .3mf de Bambu Studio escrito desde código, con filamentos y colores asignados."
+      }
+     ],
+     "cambio": "tapón negro macizo y primer .3mf para la A1",
+     "feedback": "choca con la anilla porque la argolla es recta",
+     "feedback_de": "luis",
+     "modelos": [
+      {
+       "nombre": "llavero",
+       "src": "models/archivo/st26-tapon-macizo-0.glb"
+      }
+     ],
+     "imagenes": [],
+     "proceso": [],
+     "descargas": [
+      "files/st26/tapon-macizo/st26-tapon-macizo.stl",
+      "files/st26/tapon-macizo/st26-tapon-macizo_negro.stl",
+      "files/st26/tapon-macizo/st26-tapon-macizo_blanco.stl",
+      "files/st26/tapon-macizo/st26-tapon-macizo_naranja.stl"
+     ],
+     "piezas": [
+      {
+       "nombre": "llavero",
+       "cantidad": 1,
+       "gramos": 3.3,
+       "euros": 0.07,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 3.3,
+      "euros": 0.07,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-19"
+    },
+    {
+     "id": "bisel",
+     "tipo": "borrador",
+     "nombre": "bisel",
+     "fecha": "2026-10-27",
+     "texto": "Bisel de 1 mm a 45° en el agujero por las dos caras para que la anilla pueda inclinarse.",
+     "memoria": [
+      {
+       "tema": "uso",
+       "texto": "Un túnel recto de 4,4 mm solo deja inclinarse la anilla 23°; con bisel, 35°. Una llave típica deja ~46°."
+      },
+      {
+       "tema": "resistencia",
+       "texto": "El bisel quita material: ~170 N de tirón (~140 N con anilla fina) y ~35 N doblando."
+      }
+     ],
+     "cambio": "bisel de 1 mm en el agujero",
+     "feedback": "agujero más ovalado y llavero algo mayor, para que se ponga como una llave más",
+     "feedback_de": "luis",
+     "modelos": [
+      {
+       "nombre": "llavero",
+       "src": "models/archivo/st26-bisel-0.glb"
+      }
+     ],
+     "imagenes": [],
+     "proceso": [],
+     "descargas": [
+      "files/st26/bisel/st26-bisel.stl",
+      "files/st26/bisel/st26-bisel_negro.stl",
+      "files/st26/bisel/st26-bisel_blanco.stl",
+      "files/st26/bisel/st26-bisel_naranja.stl"
+     ],
+     "piezas": [
+      {
+       "nombre": "llavero",
+       "cantidad": 1,
+       "gramos": 3.3,
+       "euros": 0.07,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 3.3,
+      "euros": 0.07,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-19"
+    },
+    {
+     "id": "botella-ojal",
      "tipo": "version",
-     "nombre": "st26 botella",
+     "nombre": "v2 botella con ojal",
      "fecha": "2026-11-01",
-     "texto": "Llavero en forma de botella, blanco y naranja, con ojal. Laminado e impreso en la A1. La purga de los cambios de color pesa más que el propio llavero. Sin archivos en este repo.",
+     "texto": "Un 15 % mayor (20,2 × 75,9 mm) y ojal de 3,5 × 7 mm alargado hacia el cuerpo. Blanco y naranja. Impresa en la A1.",
+     "memoria": [
+      {
+       "tema": "uso",
+       "texto": "El ojal da holgura justo en el giro que necesita: la anilla se inclina 55°, como una llave. De lado sigue en 35°."
+      },
+      {
+       "tema": "resistencia",
+       "texto": "~201 N de tirón (~143 N con anilla fina) y ~47 N doblando el tapón."
+      },
+      {
+       "tema": "coste",
+       "texto": "Laminado real: 6,89 g de llavero, 5,95 g de purga y 1,59 g de torre: 14,43 g y 0,36 € al precio de filamento de Bambu Studio. La purga y la torre son el 52 %. En tandas, cada llavero baja a ~0,19 €."
+      },
+      {
+       "tema": "impresión",
+       "texto": "Algunos se combaron y despegaron: ventana abierta con viento, placa sin lavar y la punta del cuello con poco apoyo por el bisel de abajo."
+      },
+      {
+       "tema": "impresión",
+       "texto": "El brim salía naranja: Bambu lo hace con el filamento de la primera capa que menos área tiene."
+      }
+     ],
+     "cambio": "ojal de 3,5 × 7 mm y botella un 15 % mayor",
+     "feedback": "se combaron y despegaron; el brim salió naranja",
+     "feedback_de": "luis",
      "real": {
       "gramos": 14.43,
       "pieza_g": 6.89,
       "fuente": "bambu studio, 1 llavero por placa, con purga y torre"
      },
-     "memoria": [
+     "modelos": [
       {
-       "tema": "coste",
-       "texto": "La purga de los cambios de color fue el 52 % del filamento. En tandas de 10, cada llavero baja de 0,36 a ~0,19 €."
-      },
-      {
-       "tema": "impresión",
-       "texto": "Algunos se combaron: había viento cerca y la placa no estaba limpia."
-      },
-      {
-       "tema": "diseño",
-       "texto": "Reglas que salieron: trazo mínimo de 0,9 mm en las letras y hueco mínimo de 0,5 mm."
+       "nombre": "llavero",
+       "src": "models/archivo/st26-botella-ojal-0.glb"
       }
      ],
-     "cambio": "botella blanca y naranja con ojal, impresa en la A1",
-     "feedback": "se combaron y despegaron: viento y placa sucia",
-     "feedback_de": "luis",
-     "modelos": [],
      "imagenes": [],
      "proceso": [],
-     "descargas": [],
+     "descargas": [
+      "files/st26/botella-ojal/st26-botella-ojal.stl",
+      "files/st26/botella-ojal/st26-botella-ojal_negro.stl",
+      "files/st26/botella-ojal/st26-botella-ojal_blanco.stl",
+      "files/st26/botella-ojal/st26-botella-ojal_naranja.stl"
+     ],
      "piezas": [],
      "coste": {
       "gramos": 14.43,
       "euros": 0.29,
       "origen": "laminador"
      },
-     "cambiado": null
+     "cambiado": "2026-11-19"
+    },
+    {
+     "id": "primera-capa",
+     "tipo": "version",
+     "nombre": "v3 primera capa",
+     "fecha": "2026-11-02",
+     "texto": "Sin biseles por la cara de la cama, brim de 4 mm en negro, relleno al 70 % con cuello y tapón macizos, y letras de detrás que «atraviesan». Proyecto para la A1, de uno y de 16 por placa.",
+     "memoria": [
+      {
+       "tema": "impresión",
+       "texto": "Sin bisel por la cara de la cama: la punta del cuello apoya entera. La anilla solo pierde de 55° a 52°."
+      },
+      {
+       "tema": "impresión",
+       "texto": "Brim de 4 mm solo por fuera y en negro (orden de primera capa 1 → 2 → 3). Pata de elefante a 0 para que las letras de detrás no se emborronen."
+      },
+      {
+       "tema": "material",
+       "texto": "Luis: «Relleno 100 no, quizá 70 o así pero que se sienta el peso.» 70 % rectilíneo y un modificador al 100 % en cuello y tapón: ~6,1 g."
+      },
+      {
+       "tema": "estética",
+       "texto": "Luis: «que se lea como si estuviese viéndose las letras por detrás, como si esas letras atravesasen». Detrás va la misma forma que delante."
+      },
+      {
+       "tema": "resistencia",
+       "texto": "~233 N de tirón (~186 N con anilla fina) y ~51 N doblando el tapón."
+      },
+      {
+       "tema": "coste",
+       "texto": "Placa de 16, el máximo que pidió Luis, en 2 filas de 8: la purga se reparte entre todos."
+      },
+      {
+       "tema": "método",
+       "texto": "Modelos y proyectos rehechos el 19 nov 2026 desde las siluetas guardadas, porque los originales se perdieron con el contenedor de la sesión. Faltan las fotos del proceso, que Luis volverá a subir."
+      }
+     ],
+     "cambio": "primera capa firme, relleno al 70 % y letras que atraviesan",
+     "por_imprimir": true,
+     "modelos": [
+      {
+       "nombre": "llavero",
+       "src": "models/archivo/st26-primera-capa-0.glb"
+      }
+     ],
+     "imagenes": [],
+     "proceso": [],
+     "descargas": [
+      "files/st26/primera-capa/st26-primera-capa_A1.3mf",
+      "files/st26/primera-capa/st26-primera-capa_A1_placa16.3mf",
+      "files/st26/primera-capa/st26-primera-capa.stl",
+      "files/st26/primera-capa/st26-primera-capa_negro.stl",
+      "files/st26/primera-capa/st26-primera-capa_blanco.stl",
+      "files/st26/primera-capa/st26-primera-capa_naranja.stl"
+     ],
+     "piezas": [
+      {
+       "nombre": "llavero",
+       "cantidad": 1,
+       "gramos": 4.2,
+       "euros": 0.08,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 4.2,
+      "euros": 0.08,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-19"
     }
    ]
   },
