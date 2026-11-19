@@ -1,0 +1,96 @@
+name: Build & deploy 3D viewer
+
+on:
+  push:
+    branches:
+      - main   # solo main: si publicaran también las ramas claude/**, la última en subir pisaría la web
+    paths:
+      - '3d-models/**'
+      - 'docs/**'
+      - 'fidgets/**'
+      - 'cajones-isla/**'
+      - 'llaveros/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # web.py lee la fecha del último cambio de cada estado
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python deps
+        # networkx + lxml: trimesh's .3mf exporter
+        # scipy: trimesh's convex_hull (used by the triangular prongs)
+        # mapbox-earcut: triangula los perfiles de bathroom-trazo
+        run: pip install trimesh shapely manifold3d numpy-stl networkx lxml scipy mapbox-earcut
+
+      - name: Install OpenSCAD
+        # el-secadero-v2 se modela en OpenSCAD; su generate_stl.py lo necesita
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq openscad
+
+      - name: Regenerate STL + GLB for every design
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          for dir in 3d-models/*/; do
+            echo "::group::$dir"
+            cd "$GITHUB_WORKSPACE/$dir"
+            for script in generate_stl.py test_*.py; do
+              if [ -f "$script" ]; then
+                echo "→ $script"
+                python3 "$script"
+              fi
+            done
+            cd "$GITHUB_WORKSPACE"
+            echo "::endgroup::"
+          done
+
+      - name: Copiar descargas de los diseños antiguos a docs/files
+        # Solo se publica docs/, así que los STL/3MF/MD que enlaza el visor
+        # tienen que estar dentro. el-secadero-v2 ya escribe los suyos.
+        run: |
+          set -euo pipefail
+          for d in bathroom-bar-a bathroom-bar-b bathroom-bar-c; do
+            mkdir -p "docs/files/$d"
+            cp 3d-models/$d/*.stl "docs/files/$d/"
+          done
+          mkdir -p docs/files/sponge-holder
+          cp 3d-models/sponge-holder/*.stl 3d-models/sponge-holder/*.3mf \
+             3d-models/sponge-holder/print_settings.md docs/files/sponge-holder/
+
+      - name: Web v2 (objetos, costes y visor de borradores)
+        # Lee 3d-models/objetos.json, calcula el coste de cada pieza a 20 €/kg y
+        # escribe docs/data/objetos.json, los GLB que faltan y las descargas.
+        run: python3 3d-models/web.py
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

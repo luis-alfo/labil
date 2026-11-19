@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2b312b">
+  <meta name="description" content="labil · de la letra al objeto: cada objeto con sus versiones, pruebas y borradores, y lo que cuesta imprimirlo.">
+  <title>labil · objetos</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script type="importmap">
+    { "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    } }
+  </script>
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+</head>
+<body>
+  <div id="app"><p class="caption" style="padding:16px">cargando…</p></div>
+  <noscript><p style="padding:16px">Esta web necesita JavaScript. <a href="v1/">Archivo v1</a>.</p></noscript>
+  <script>
+    // Carga app.js y app.css con la versión publicada (version.json, sin caché).
+    // GitHub Pages deja guardar los archivos 10 min: sin esto, Chrome o Safari
+    // pueden seguir enseñando la web anterior después de publicar.
+    (function () {
+      function cargar(v) {
+        var q = v ? "?v=" + v : "";
+        var l = document.createElement("link"); l.rel = "stylesheet"; l.href = "app.css" + q; document.head.appendChild(l);
+        var s = document.createElement("script"); s.src = "app.js" + q; document.body.appendChild(s);
+      }
+      fetch("version.json?_=" + Date.now(), { cache: "no-store" })
+        .then(function (r) { return r.json(); })
+        .then(function (j) { cargar(j.v); }, function () { cargar(""); });
+    })();
+  </script>
+</body>
+</html>
