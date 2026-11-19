@@ -244,3 +244,23 @@ Registro vivo de explicaciones, decisiones y convenciones acordadas.
 - Ninguna otra rama remota conserva el disparador antiguo (comprobado el 17 nov). Para que no
   pueda repetirse ni con una rama vieja, Luis puede limitar el entorno `github-pages` a `main`
   en los ajustes del repo (Settings → Environments → github-pages → Deployment branches).
+
+## 2026-11-19 · larc hq: cajonera del elevador de pantalla
+
+- **larc hq** = la oficina de Luis. Es el nombre del objeto y lo que se graba en él.
+- **Luis mide con tarjetas**: pone tarjetas estándar (85,6 × 54 mm) junto a la pieza y hace la foto.
+  Las medidas se leen contando tarjetas; lo que no toca una tarjeta es estimado y se dice.
+- **El grabado sigue una fórmula**: `NOMBRE | VERSIÓN | FECHA DE DISEÑO (ddmmaa)`, en JetBrains Mono,
+  como El Secadero. Luis lo pide con «v1» aunque no esté impreso: en la web va como versión por imprimir.
+- **Fotos con datos personales** (nombre, números de socio o de identificación): se publican con
+  los datos tapados (decisión de Luis, 19 nov 2026).
+- Detalle del diseño en `3d-models/larc-hq/APRENDIZAJES.md`.
+- **Curvas, regla común a LG Casa y a los objetos**: los radios de LG Casa (1–6 px) y de LG Señal
+  (0/2/4 px) son cortos a propósito; no son la fuente de las curvas. La curva está en el **arco de
+  La Guarida**: una línea de grosor constante que dobla con radio ≈ 4 × su grosor y acaba en punta
+  redonda. Para piezas: «lámina que se dobla, radio = 4 × grosor»; cantos pequeños en 2 / 4 / 6 mm.
+- **Del DS digital al objeto** (Luis, 19 nov 2026: «son DS para el mundo digital, tenemos que saber
+  traerlo al físico»): no se leen píxeles como milímetros. En un objeto hay tres escalas de curva:
+  **canto** (1–2 mm, lo que nota el dedo; ahí viven los radios de LG Casa y LG Señal), **esquina**
+  (4–8 mm, quita lo afilado) y **gesto** (20–45 mm, lo que el ojo llama curvo). De un logo o de un
+  DS se copia la proporción, no la medida.
