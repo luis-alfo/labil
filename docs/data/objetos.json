@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-19T11:29Z",
+ "generado": "2026-11-19T12:00Z",
  "euros_kg": 20.0,
  "perfil": "A1 · capa 0.2 mm · relleno 15% · PLA 1.26 g/cm³",
  "objetos": [
@@ -1783,7 +1783,7 @@
      "nombre": "v1",
      "fecha": "2026-11-19",
      "por_imprimir": true,
-     "texto": "Dos cajones colgados de la cara de abajo del elevador: uno a medida de A5 y uno pequeño para cables, transformador y papelería. Una pinza abraza el canto delantero del tablero y lleva encima una bandeja para dos bolis, con el grabado en el fondo. Debajo sigue cabiendo el portátil.",
+     "texto": "Dos cajones colgados de la cara de abajo del elevador: uno a medida de A5 y uno pequeño para cables, transformador y papelería. La carcasa es una lámina que se dobla, como el elevador. Una pestaña de esquinas redondas abraza el canto delantero y lleva encima una bandeja para dos bolis, con el grabado en el fondo. Los tiradores tienen la silueta de la casa de La Guarida. Debajo sigue cabiendo el portátil.",
      "memoria": [
       {
        "tema": "medidas",
@@ -1812,9 +1812,31 @@
       {
        "tema": "método",
        "texto": "Antes de la carcasa (unos 200 g) se imprime una rebanada de 25 mm de la pinza: 6 g para saber si el tablero mide 12 mm."
+      },
+      {
+       "tema": "estética",
+       "texto": "«Veo todo demasiado recto» (Luis). Las paredes dejan de hacer ángulo: bajan y doblan hacia el carril con radio 8 mm, cuatro veces su grosor, como el contrachapado del elevador y como el arco de La Guarida."
+      },
+      {
+       "tema": "método",
+       "texto": "«Son DS para el mundo digital, tenemos que saber traerlo al físico» (Luis). Los radios de LG Casa (1–6 px) no se leen como milímetros: en un objeto hay canto (1–2 mm), esquina (4–8 mm) y gesto (20–45 mm). De un logo se copia la proporción, no la medida."
+      },
+      {
+       "tema": "estética",
+       "texto": "«La pestaña que se engancha en el soporte también debe tener esquinas redondas» (Luis). Radio 12 mm en las dos esquinas del fondo de la pestaña y 6 mm en el borde de la bandeja."
+      },
+      {
+       "tema": "diseño",
+       "texto": "«El agujero de los cajones podría ser quizá con la forma de la casa» (Luis). El tirador es la silueta del arco de La Guarida, de 34 × 21,6 mm, de pie. Sustituye a la media muesca."
+      },
+      {
+       "tema": "impresión",
+       "texto": "Las curvas del perfil de la carcasa salen gratis: se imprime de pie y son paredes verticales. Los cajones llevan un chaflán de 5 mm a 45° bajo la curva en vez de radio, para apoyar el suelo en la placa sin voladizos."
       }
      ],
-     "cambio": "primera propuesta: dos cajones colgados, pinza al canto y bandeja de bolis grabada",
+     "cambio": "lámina doblada con radio 8, pestaña de esquinas redondas y tirador con la forma de la casa",
+     "feedback": "veo todo demasiado recto",
+     "feedback_de": "luis",
      "modelos": [
       {
        "nombre": "cerrada",
@@ -1863,6 +1885,16 @@
        "src": "files/larc-hq/v1/2026-11-19-el-portatil-se-guarda-debajo.jpg",
        "pie": "Foto de Luis: el portátil se guarda debajo del elevador. Por eso la cajonera cuelga y solo baja 44 mm: quedan 41 mm para él.",
        "fecha": "2026-11-19"
+      },
+      {
+       "src": "files/larc-hq/v1/2026-11-19-recto-frente-a-lamina-doblada.jpg",
+       "pie": "Captura de Claude: la primera propuesta, recta, frente a un borrador con radio = 4 × grosor. Arriba, el arco de La Guarida y cómo se lee boca abajo. Con 8 mm se suavizan las esquinas pero sigue siendo una caja: de ahí salen las tres escalas de curva.",
+       "fecha": "2026-11-19"
+      },
+      {
+       "src": "files/larc-hq/v1/2026-11-19-pestana-redonda-y-tirador-casa.jpg",
+       "pie": "Captura de Claude: el modelo con las curvas aplicadas y los dos cambios que pidió Luis, la pestaña con las esquinas redondas y el tirador con la forma de la casa.",
+       "fecha": "2026-11-19"
       }
      ],
      "descargas": [
@@ -1877,31 +1909,31 @@
       {
        "nombre": "A carcasa",
        "cantidad": 1,
-       "gramos": 224.2,
-       "euros": 4.48,
+       "gramos": 231.1,
+       "euros": 4.62,
        "fuente": "stl"
       },
       {
        "nombre": "B cajón a5",
        "cantidad": 1,
-       "gramos": 107.2,
-       "euros": 2.14,
+       "gramos": 104.0,
+       "euros": 2.08,
        "fuente": "stl"
       },
       {
        "nombre": "C cajón pequeño",
        "cantidad": 1,
-       "gramos": 75.5,
-       "euros": 1.51,
+       "gramos": 72.0,
+       "euros": 1.44,
        "fuente": "stl"
       }
      ],
      "coste": {
-      "gramos": 406.9,
+      "gramos": 407.1,
       "euros": 8.14,
       "origen": "estimado"
      },
-     "cambiado": null
+     "cambiado": "2026-11-19"
     }
    ]
   },

@@ -44,7 +44,7 @@ tablero y, encima de la pinza, una bandeja para dos bolis con el grabado
   pequeño (84,6 × 217 × 38 mm) con un separador a 85 mm del frente: detrás cabe un transformador
   de hasta 80 × 80 × 30 con sus cables, delante la papelería.
 - **Alto total 44 mm** bajo el tablero: quedan **41 mm** libres para el portátil (mide unos 12–16).
-- **La carcasa no es una caja**: es un perfil. Placa de arriba + tres paredes + carriles de 8 mm
+- **La carcasa no es una caja**: es un perfil. Placa de arriba + tres paredes + carriles
   donde apoyan los cajones. Sin suelo ni trasera: el suelo lo pone cada cajón. Menos plástico y
   todo son paredes verticales al imprimir.
 - **Pinza**: una pared de 3 mm sube por delante del canto y un labio de 33 mm entra sobre el
@@ -101,3 +101,63 @@ Si aprieta: `board_t += 0.3`. Si baila: `board_t -= 0.3`.
 2. Ancho del tramo plano del tablero, para confirmar que caben 250 mm.
 3. Dónde va a lo ancho: centrada, o a un lado para dejar libres los enchufes.
 4. Material y colores.
+
+## Curvas: qué se puede sacar de LG Casa (19 nov 2026)
+
+Luis ve la primera propuesta «demasiado recta» y pregunta qué sacar de los radios de LG Casa.
+
+- **Los radios de LG Casa son cortos a propósito**: 1, 2, 3, 4 y 6 px. Su norma: «la forma la dan
+  el canto y el color, no la curva». Lo redondo del todo (50 %) solo para puntos. LG Señal dice lo
+  mismo (0 / 2 / 4 px). La escala de radios no da curvas grandes; da **esquinas matadas**.
+- **La curva de LG Casa está en el arco de La Guarida** (el logo): una sola línea de grosor
+  constante, con las puntas redondas, que dobla con dos radios. Hombros amplios (radio ≈ 23 sobre
+  190 de ancho, **≈ 4 veces el grosor de la línea**), cumbre casi viva y tejado a unos 19°.
+- **El elevador dobla igual**: contrachapado de 12 mm con un radio de unos 45 mm, **≈ 4 veces su
+  grosor** (estimado en foto).
+- **Regla que sale de ahí**: la pieza es una lámina que se dobla, y dobla con radio = 4 × grosor.
+  Pared de 2 mm → R8. Los cantos pequeños siguen la escala de Casa leída en milímetros (2, 4, 6).
+- **Sale gratis al imprimir**: la carcasa es un perfil extruido de pie; cualquier curva del perfil
+  son paredes verticales, sin voladizos.
+
+Propuestas (pendiente de que Luis elija):
+
+1. Perfil de lámina doblada: esquinas de abajo de la carcasa en R8 y cajones que las siguen.
+2. Pinza como un solo doblez continuo sobre el canto, con la punta del labio redonda como las
+   puntas del arco.
+3. Frentes de cajón con esquinas R4 y tirador circular completo en vez de media muesca.
+
+### Del DS digital al objeto (corrección de Luis, 19 nov 2026)
+
+«Son DS para el mundo digital, tenemos que saber traerlo al físico» (Luis). Leer píxeles como
+milímetros no vale. Probado en un borrador con radio = 4 × grosor (R8): suaviza las esquinas pero
+la cajonera se sigue leyendo como una caja. Lo que se aprende:
+
+- **En pantalla el radio se mide contra el píxel; en un objeto, contra la mano y contra el tamaño
+  de la pieza.** Tres escalas distintas, que no se sustituyen entre sí:
+  - **canto** (1–2 mm): lo que nota el dedo. Es el equivalente real de los radios de LG Casa.
+  - **esquina** (4–8 mm): quita lo afilado, no cambia la silueta.
+  - **gesto** (20–45 mm): es lo que el ojo llama «curvo». En el elevador es el doblez de R45.
+- **Del arco se copia la proporción, no la medida**: sus hombros son un 12 % del ancho y casi un
+  20 % del alto. En una pieza de 44 mm de alto eso pide radios de 20 mm o más.
+
+### Aplicado al modelo (19 nov 2026)
+
+Luis pidió seguir con las curvas y añadió dos cambios: «la pestaña que se engancha en el soporte
+también debe tener esquinas redondas» y «el agujero de los cajones podría ser quizá con la forma
+de la casa».
+
+- **Paredes en J** (`bend_r` = 4 × `wall_t` = 8 mm): cada pared baja y dobla hacia el carril como
+  una línea de grosor constante con la punta redonda. El carril pasa de 8 a 14 mm para dejar
+  tramo plano después de la curva.
+- **Cajones con chaflán de 5 mm a 45°** (`dr_cham`) bajo la curva, no con radio: así el suelo
+  apoya en la placa sin voladizos. Queda 1,7 mm de holgura entre el chaflán y el doblez.
+- **Frentes**: esquinas de abajo en R8, siguiendo el doblez; las de arriba en R4. Las de abajo
+  arrancan tangentes a la placa: pueden salir algo rugosas en los primeros 2 mm.
+- **Pestaña** (`lip_r` = 12 mm): redondeadas las dos esquinas del fondo, vistas desde arriba. Las
+  de delante se quedan vivas porque esa cara es la que apoya en la placa.
+- **Bandeja**: borde con esquinas R6 y paredes abiertas a 45° por los tres lados.
+- **Tirador casa** (`casa_w` = 34 mm, alto 21,6): la silueta del arco de La Guarida cerrada por
+  abajo, de pie. El tejado tiene 19° de pendiente: al imprimir es un puente de 34 mm, corto.
+  Si se queda pequeño para el dedo, subir `casa_w` a 40.
+- **Pendiente: el gesto.** Esto es escala «esquina». La versión con radios de 20 mm o más está sin
+  probar.

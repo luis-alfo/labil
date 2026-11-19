@@ -44,7 +44,7 @@ tablero y, encima de la pinza, una bandeja para dos bolis con el grabado
   pequeño (84,6 × 217 × 38 mm) con un separador a 85 mm del frente: detrás cabe un transformador
   de hasta 80 × 80 × 30 con sus cables, delante la papelería.
 - **Alto total 44 mm** bajo el tablero: quedan **41 mm** libres para el portátil (mide unos 12–16).
-- **La carcasa no es una caja**: es un perfil. Placa de arriba + tres paredes + carriles de 8 mm
+- **La carcasa no es una caja**: es un perfil. Placa de arriba + tres paredes + carriles
   donde apoyan los cajones. Sin suelo ni trasera: el suelo lo pone cada cajón. Menos plástico y
   todo son paredes verticales al imprimir.
 - **Pinza**: una pared de 3 mm sube por delante del canto y un labio de 33 mm entra sobre el
@@ -71,9 +71,9 @@ tablero y, encima de la pinza, una bandeja para dos bolis con el grabado
 
 | Pieza | Postura | Medida en placa | Gramos y coste (estimado, 20 €/kg) |
 | --- | --- | --- | --- |
-| A carcasa | de pie sobre su cara delantera | 250 × 64 × 222 mm | 224 g · 4,48 € |
-| B cajón A5 | suelo en la placa | 158,5 × 221 × 41 mm | 107 g · 2,14 € |
-| C cajón pequeño | suelo en la placa | 90,5 × 221 × 41 mm | 76 g · 1,51 € |
+| A carcasa | de pie sobre su cara delantera | 250 × 64 × 222 mm | 231 g · 4,62 € |
+| B cajón A5 | suelo en la placa | 158,5 × 221 × 41 mm | 104 g · 2,08 € |
+| C cajón pequeño | suelo en la placa | 90,5 × 221 × 41 mm | 72 g · 1,44 € |
 | prueba de la pinza | de pie, como A | 25 × 17 × 43 mm | ~6 g |
 
 - La carcasa mide 250 mm en una placa de 256: **el borde (brim) no puede pasar de 3 mm**.
@@ -139,4 +139,25 @@ la cajonera se sigue leyendo como una caja. Lo que se aprende:
   - **gesto** (20–45 mm): es lo que el ojo llama «curvo». En el elevador es el doblez de R45.
 - **Del arco se copia la proporción, no la medida**: sus hombros son un 12 % del ancho y casi un
   20 % del alto. En una pieza de 44 mm de alto eso pide radios de 20 mm o más.
-- Pendiente: decidir con Luis de dónde sale el gesto (ver conversación).
+
+### Aplicado al modelo (19 nov 2026)
+
+Luis pidió seguir con las curvas y añadió dos cambios: «la pestaña que se engancha en el soporte
+también debe tener esquinas redondas» y «el agujero de los cajones podría ser quizá con la forma
+de la casa».
+
+- **Paredes en J** (`bend_r` = 4 × `wall_t` = 8 mm): cada pared baja y dobla hacia el carril como
+  una línea de grosor constante con la punta redonda. El carril pasa de 8 a 14 mm para dejar
+  tramo plano después de la curva.
+- **Cajones con chaflán de 5 mm a 45°** (`dr_cham`) bajo la curva, no con radio: así el suelo
+  apoya en la placa sin voladizos. Queda 1,7 mm de holgura entre el chaflán y el doblez.
+- **Frentes**: esquinas de abajo en R8, siguiendo el doblez; las de arriba en R4. Las de abajo
+  arrancan tangentes a la placa: pueden salir algo rugosas en los primeros 2 mm.
+- **Pestaña** (`lip_r` = 12 mm): redondeadas las dos esquinas del fondo, vistas desde arriba. Las
+  de delante se quedan vivas porque esa cara es la que apoya en la placa.
+- **Bandeja**: borde con esquinas R6 y paredes abiertas a 45° por los tres lados.
+- **Tirador casa** (`casa_w` = 34 mm, alto 21,6): la silueta del arco de La Guarida cerrada por
+  abajo, de pie. El tejado tiene 19° de pendiente: al imprimir es un puente de 34 mm, corto.
+  Si se queda pequeño para el dedo, subir `casa_w` a 40.
+- **Pendiente: el gesto.** Esto es escala «esquina». La versión con radios de 20 mm o más está sin
+  probar.

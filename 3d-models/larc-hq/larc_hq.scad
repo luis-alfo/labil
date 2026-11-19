@@ -25,8 +25,7 @@ web_t    = 3.0;        // pared que sube por delante del canto
 top_t    = 2.0;        // placa pegada a la cara de abajo del tablero
 wall_t   = 2.0;        // paredes laterales y central
 H        = 44;         // alto total bajo el tablero (quedan free_h - H para el portátil)
-ledge_w  = 8;          // ancho de los carriles donde apoyan los cajones
-ledge_t  = 2.0;
+ledge_t  = 2.0;        // grosor del carril donde apoyan los cajones
 bay_a5   = 156;        // hueco del cajón A5
 bay_small = W - 3 * wall_t - bay_a5;   // hueco del cajón pequeño (88)
 
@@ -44,6 +43,16 @@ label       = "LARC HQ | V1 | 191126";   // fecha de diseño: 19 nov 2026
 label_size  = 8;
 label_depth = 0.6;
 
+// --- curvas: la pieza es una lámina que se dobla (ver APRENDIZAJES.md) ---
+bend_r   = 4 * wall_t;  // doblez de las paredes hacia el carril: radio = 4 x grosor (8 mm)
+ledge_l  = 14;          // largo del carril desde el eje de la pared: deja tramo plano tras la curva
+lip_r    = 12;          // esquinas de la pestaña que entra sobre el tablero, vistas desde arriba
+tray_r   = 6;           // esquinas del borde de la bandeja
+front_r  = 4;           // esquinas de los frentes de cajón
+dr_cham  = 5;           // chaflán de los cajones bajo la curva (a 45°: se imprime sin voladizo)
+casa_w   = 34;          // tirador: hueco con la silueta del arco de La Guarida (190 x 121)
+casa_h   = casa_w * 121 / 190;
+
 // --- cajones ---
 gap_side  = 0.5;       // holgura a cada lado
 gap_z     = 0.4;       // holgura arriba y abajo
@@ -51,7 +60,6 @@ dr_wall   = 1.2;
 dr_floor  = 1.2;
 panel_t   = 2.4;       // frente, por delante de la carcasa
 panel_gap = 1.0;       // rendija entre los dos frentes
-notch_r   = 13;        // muesca para el dedo
 dr_back   = 216;       // hasta dónde llega el cajón cerrado
 
 // --- tope de los cajones: lengüeta flexible en la placa de arriba ---
@@ -112,29 +120,77 @@ module tongue_hook(xc) {   // rampa suave al meter el cajón, cara a 60° al sac
         [tongue_y1 - 2.7, -top_t - hook_h], [tongue_y1 - 2, -top_t + e]]);
 }
 
+function arc(c, r, a0, a1, n = 14) = [for (i = [0:n]) c + r * [cos(a0 + (a1 - a0) * i / n), sin(a0 + (a1 - a0) * i / n)]];
+function bez(p0, p1, p2, n = 10) = [for (i = [0:n]) let (t = i / n) (1 - t) * (1 - t) * p0 + 2 * (1 - t) * t * p1 + t * t * p2];
+
+// línea de grosor constante con las puntas redondas, como el trazo del arco
+module trazo(pts, t) {
+    for (i = [0:len(pts) - 2]) hull() {
+        translate(pts[i]) circle(d = t, $fn = 24);
+        translate(pts[i + 1]) circle(d = t, $fn = 24);
+    }
+}
+
+// pared que baja y dobla hacia dentro para hacer de carril (dir = +1 dobla a la derecha)
+module jota(xw, dir) {
+    rc = bend_r - wall_t / 2;
+    zc = -H + ledge_t / 2;
+    trazo(concat([[xw, -1]], arc([xw + dir * rc, zc + rc], rc, dir > 0 ? 180 : 0, dir > 0 ? 270 : -90),
+                 [[xw + dir * (ledge_l - 1), zc]]), wall_t);
+}
+
+module perfil() {
+    jota(x_l + wall_t / 2, 1);
+    jota(div_x + wall_t / 2, -1);
+    jota(div_x + wall_t / 2, 1);
+    jota(-x_l - wall_t / 2, -1);
+}
+
+// planta con las dos esquinas del fondo redondeadas (las de delante van en la placa al imprimir)
+module planta(x0, x1, y0, y1, r) {
+    hull() {
+        translate([x0, y0]) square([x1 - x0, 0.01]);
+        for (x = [x0 + r, x1 - r]) translate([x, y1 - r]) circle(r = r);
+    }
+}
+
+// silueta del arco de La Guarida, cerrada por abajo: ancho w, base en y = 0
+module casa(w) {
+    k = w / 190;
+    pts = concat([[155, 310], [155, 245]], bez([155, 245], [155, 222], [178, 213]),
+                 bez([246, 189], [250, 188], [254, 189]),
+                 bez([322, 213], [345, 222], [345, 245]), [[345, 310]]);
+    offset(r = 1.5) offset(delta = -1.5) polygon([for (p = pts) [(p[0] - 250) * k, (310 - p[1]) * k]]);
+}
+
 module carcasa() {
     a5_c = a5_x0 + bay_a5 / 2;
     sm_c = sm_x0 + bay_small / 2;
+    tx = tray_len / 2 + tray_rim;
     difference() {
         union() {
             // placa de arriba
             box(x_l, -x_l, -web_t, back_y, -top_t, 0);
-            // paredes
-            for (x = [x_l, div_x, -x_l - wall_t]) box(x, x + wall_t, -web_t, back_y, -H, -top_t + e);
-            // carriles
-            for (x = [a5_x0 - e, div_x - ledge_w, sm_x0 - e, -x_l - wall_t - ledge_w])
-                box(x, x + ledge_w + e, -web_t, back_y, -H, -H + ledge_t);
-            // pinza: pared delantera + labio sobre el tablero (canto trasero achaflanado para entrar)
+            // paredes y carriles: un perfil extruido a lo largo
+            translate([0, back_y, 0]) rotate([90, 0, 0]) linear_extrude(back_y + web_t) perfil();
+            // pinza: pared delantera + pestaña sobre el tablero, con el canto trasero achaflanado
             box(x_l, -x_l, -web_t, 0, -top_t, tray_z);
-            yz(x_l, -x_l, [[-e, lip_z], [lip_len - 1.2, lip_z], [lip_len, lip_z + 1.2],
-                           [lip_len, tray_z], [-e, tray_z]]);
+            intersection() {
+                yz(x_l, -x_l, [[-web_t, lip_z], [lip_len - 1.2, lip_z], [lip_len, lip_z + 1.2],
+                               [lip_len, tray_z], [-web_t, tray_z]]);
+                translate([0, 0, lip_z - 1]) linear_extrude(lip_t + 2) planta(x_l, -x_l, -web_t, lip_len, lip_r);
+            }
             yz(x_l, -x_l, [[0, lip_z + e], [1, lip_z + e], [-e, lip_z - 1]]);   // acuerdo interior
             // borde de la bandeja de bolis
-            box(-tray_len / 2 - tray_rim, tray_len / 2 + tray_rim, -web_t, lip_len, tray_z - e, tray_z + tray_h);
+            translate([0, 0, tray_z - e]) linear_extrude(tray_h + e) planta(-tx, tx, -web_t, lip_len, tray_r);
         }
-        // bandeja: fondo plano y pared trasera a 45° (se imprime sin soportes)
-        yz(-tray_len / 2, tray_len / 2,
-           [[0, tray_z], [tray_w, tray_z], [tray_w + tray_h + e, tray_z + tray_h + e], [0, tray_z + tray_h + e]]);
+        // bandeja: fondo plano y paredes abiertas a 45° hacia arriba (se imprime sin soportes)
+        hull() {
+            translate([0, 0, tray_z]) linear_extrude(e)
+                planta(-tray_len / 2, tray_len / 2, 0, tray_w, tray_r - 2);
+            translate([0, 0, tray_z + tray_h + e]) linear_extrude(e)
+                planta(-tray_len / 2, tray_len / 2, 0, tray_w + tray_h, tray_r - 2);
+        }
         // grabado en el fondo de la bandeja, se lee desde delante
         translate([0, tray_w / 2, tray_z - label_depth]) linear_extrude(label_depth + e)
             text(label, size = label_size, font = "JetBrains Mono:style=Bold", halign = "center", valign = "center");
@@ -158,22 +214,29 @@ module cajon(bay_x0, bay_w, px0, px1, div_y = 0) {
     x1 = bay_x0 + bay_w - gap_side;
     z0 = -H + ledge_t + gap_z;
     z1 = -top_t - gap_z;
+    zt = -0.6;                       // canto de arriba del frente
     xc = (px0 + px1) / 2;
+    module sec() polygon([[x0, z1], [x0, z0 + dr_cham], [x0 + dr_cham, z0],
+                          [x1 - dr_cham, z0], [x1, z0 + dr_cham], [x1, z1]]);
+    module a_lo_largo(y0, y1) translate([0, y1, 0]) rotate([90, 0, 0]) linear_extrude(y1 - y0) children();
     difference() {
         union() {
-            box(x0, x1, -web_t - e, dr_back, z0, z1);
-            // frente con las esquinas de arriba redondeadas
-            hull() {
-                box(px0, px1, -web_t - panel_t, -web_t, z0, z0 + 1);
-                for (x = [px0 + 2, px1 - 2]) translate([x, -web_t, -0.6 - 2])
-                    rotate([90, 0, 0]) cylinder(r = 2, h = panel_t, $fn = 24);
+            a_lo_largo(-web_t - e, dr_back) sec();
+            // frente: abajo sigue el doblez de la carcasa, arriba esquinas cortas
+            hull() for (x = [px0, px1]) for (abajo = [0, 1]) {
+                r = abajo ? bend_r : front_r;
+                translate([x + (x == px0 ? r : -r), -web_t, abajo ? z0 + r : zt - r])
+                    rotate([90, 0, 0]) cylinder(r = r, h = panel_t, $fn = 48);
             }
         }
-        box(x0 + dr_wall, x1 - dr_wall, -web_t, dr_back - dr_wall, z0 + dr_floor, 1);
-        // muesca para el dedo
-        translate([xc, 0, -0.6]) rotate([90, 0, 0]) cylinder(r = notch_r, h = 20, center = true);
+        a_lo_largo(-web_t, dr_back - dr_wall) union() {
+            offset(delta = -dr_wall) sec();
+            translate([x0 + dr_wall, z0 + dr_cham + 4]) square([x1 - x0 - 2 * dr_wall, 40]);
+        }
+        // tirador con la silueta de la casa
+        translate([xc, 10, (z0 + zt - casa_h) / 2]) rotate([90, 0, 0]) linear_extrude(20) casa(casa_w);
     }
-    if (div_y > 0) box(x0 + e, x1 - e, div_y, div_y + 1.2, z0 + e, -8);
+    if (div_y > 0) box(x0 + dr_cham, x1 - dr_cham, div_y, div_y + 1.2, z0 + e, -8);
 }
 
 module cajon_a5()    { cajon(a5_x0, bay_a5, x_l, div_x + wall_t / 2 - panel_gap / 2); }
@@ -182,7 +245,7 @@ module cajon_small() { cajon(sm_x0, bay_small, div_x + wall_t / 2 + panel_gap / 
 module prueba() {   // rebanada de la pinza: comprueba el grosor del tablero antes de imprimir A
     intersection() {
         carcasa();
-        box(90, 115, -web_t - 1, 40, -top_t - 1, 40);
+        box(86, 111, -web_t - 1, 40, -top_t - 1, 40);
     }
 }
 
