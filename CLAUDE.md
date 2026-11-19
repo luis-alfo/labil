@@ -8,6 +8,10 @@ Project guide auto-loaded by Claude Code on every session in this repo.
 - Cada vez que Claude explique algo, lo guarda en los aprendizajes del proyecto
   (`APRENDIZAJES.md` en la raíz para lo general, el `APRENDIZAJES.md` de cada objeto para lo suyo).
   El objetivo es crear códigos compartidos y entender las realidades de Luis.
+- Impresora de Luis: **Bambu Lab A1** (no la mini), boquilla 0,4 mm, AMS lite, placa PEI texturizada.
+  Para imprimir se entrega un proyecto `.3mf` de Bambu Studio para la A1 con filamentos y colores
+  asignados (`llaveros/st26/fuente/make_3mf.py` sabe escribirlo). Antes de una versión final,
+  cálculos de resistencia.
 
 ## Project
 
