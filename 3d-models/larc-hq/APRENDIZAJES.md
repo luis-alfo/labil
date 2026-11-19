@@ -125,3 +125,18 @@ Propuestas (pendiente de que Luis elija):
 2. Pinza como un solo doblez continuo sobre el canto, con la punta del labio redonda como las
    puntas del arco.
 3. Frentes de cajón con esquinas R4 y tirador circular completo en vez de media muesca.
+
+### Del DS digital al objeto (corrección de Luis, 19 nov 2026)
+
+«Son DS para el mundo digital, tenemos que saber traerlo al físico» (Luis). Leer píxeles como
+milímetros no vale. Probado en un borrador con radio = 4 × grosor (R8): suaviza las esquinas pero
+la cajonera se sigue leyendo como una caja. Lo que se aprende:
+
+- **En pantalla el radio se mide contra el píxel; en un objeto, contra la mano y contra el tamaño
+  de la pieza.** Tres escalas distintas, que no se sustituyen entre sí:
+  - **canto** (1–2 mm): lo que nota el dedo. Es el equivalente real de los radios de LG Casa.
+  - **esquina** (4–8 mm): quita lo afilado, no cambia la silueta.
+  - **gesto** (20–45 mm): es lo que el ojo llama «curvo». En el elevador es el doblez de R45.
+- **Del arco se copia la proporción, no la medida**: sus hombros son un 12 % del ancho y casi un
+  20 % del alto. En una pieza de 44 mm de alto eso pide radios de 20 mm o más.
+- Pendiente: decidir con Luis de dónde sale el gesto (ver conversación).

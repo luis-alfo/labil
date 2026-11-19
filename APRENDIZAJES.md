@@ -259,3 +259,8 @@ Registro vivo de explicaciones, decisiones y convenciones acordadas.
   (0/2/4 px) son cortos a propósito; no son la fuente de las curvas. La curva está en el **arco de
   La Guarida**: una línea de grosor constante que dobla con radio ≈ 4 × su grosor y acaba en punta
   redonda. Para piezas: «lámina que se dobla, radio = 4 × grosor»; cantos pequeños en 2 / 4 / 6 mm.
+- **Del DS digital al objeto** (Luis, 19 nov 2026: «son DS para el mundo digital, tenemos que saber
+  traerlo al físico»): no se leen píxeles como milímetros. En un objeto hay tres escalas de curva:
+  **canto** (1–2 mm, lo que nota el dedo; ahí viven los radios de LG Casa y LG Señal), **esquina**
+  (4–8 mm, quita lo afilado) y **gesto** (20–45 mm, lo que el ojo llama curvo). De un logo o de un
+  DS se copia la proporción, no la medida.
