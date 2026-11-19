@@ -3,12 +3,12 @@
 Llavero de la marca **ST26** con forma de botella de vino. Diseñado entre el 20 de octubre y el
 1 de noviembre de 2026 a partir de la imagen del logo (335 px).
 
-> **Aviso (19 nov 2026).** El trabajo completo (carpetas de cada estado con STL y `.3mf`, scripts,
-> fotos del proceso y la página `#/st26` de la web) estaba hecho y comprobado en local, pero no
-> llegó a subirse: GitHub rechazó la subida y el contenedor de la sesión se renovó antes de
-> poder subirlo. Se conserva este documento, `fuente/make_3mf.py` y las siluetas de todos los
-> estados (`fuente/siluetas_artefacto.json`, sacadas del artefacto «Evolución llavero ST26»).
-> Hay que rehacer modelos, proyectos y fotos. **Lección: subir cada paso en cuanto está hecho.**
+> **Rehecho el 19 nov 2026.** El trabajo original no llegó a subirse: GitHub rechazó la subida y
+> el contenedor de la sesión se renovó. Los modelos y proyectos se han rehecho desde las siluetas
+> guardadas (`fuente/siluetas_artefacto.json`, sacadas del artefacto «Evolución llavero ST26») con
+> `fuente/rehacer.py` y `fuente/make_a1.py`. Medidas y volúmenes coinciden con los originales
+> (v1 45 × 34 × 4,2 mm; v3 20,2 × 75,9 × 5,2 mm, 6,9 g maciza). Las resistencias son las del
+> cálculo original. Faltan las fotos del proceso, salvo el logo.
 
 ## Qué es ST26
 
@@ -112,12 +112,24 @@ Las siluetas están en milímetros: `base` (cuerpo negro, con su agujero), `whit
 
 ## Cómo se regenera
 
-| Pieza | Estado |
-| --- | --- |
-| `fuente/make_3mf.py` | Guardado. Escribe el proyecto `.3mf` de Bambu Studio (piezas con su filamento, modificadores de relleno, varias copias en la placa, orden de la primera capa). |
-| `fuente/siluetas_artefacto.json` | Guardado. Siluetas 2D de todos los estados, en mm. |
-| `bbl_profiles.py` | **Por rehacer.** Descargaba los perfiles oficiales de la A1 de BambuStudio v02.08.04.61 (`resources/profiles/BBL/…`) y resolvía `inherits` e `include` (sin los `include` el proyecto queda sin G-code de inicio). |
-| `logo.py`, `bottle_b2.py`, `stress_test.py`, `make_a1_*.py` | **Por rehacer** a partir de las siluetas y de los datos de arriba. Necesita la imagen del logo otra vez. |
+Scripts en `fuente/` (Python con `trimesh`, `shapely`, `manifold3d`, `matplotlib`). No corren en CI:
+los STL y `.3mf` de cada carpeta son la salida guardada. La web hace los GLB desde los STL
+(`3d-models/web.py`).
 
-Al rehacerlos: precisión `%.9g` en los vértices del `.3mf` (con `%.6g` la malla deja de ser
-cerrada), y comprobar `is_volume` de cada pieza.
+```
+cd llaveros/st26/fuente
+python3 rehacer.py    # STL de los once estados: completo, por color y vista para la web
+python3 make_a1.py    # .3mf de la v3 para la A1: un llavero y placa de 16
+```
+
+| Script | Qué hace |
+| --- | --- |
+| `rehacer.py` | Extruye las siluetas con el grosor, relieve, incrustación de detrás (`espejo` o `traspaso`) y biseles por capas de cada estado |
+| `make_a1.py` | Proyectos de la v3: colores, relleno 70 % con modificador al 100 % en cuello y tapón, brim negro, placa de 16 y torre |
+| `make_3mf.py` | Escribe el `.3mf` de Bambu Studio |
+| `bbl_profiles.py` | Descarga y resuelve los perfiles oficiales de la A1 (`inherits` e `include`); caché en `bbl_cache/` |
+| `siluetas_artefacto.json` | Siluetas 2D de todos los estados, en mm |
+
+Por rehacer si hace falta cambiar el logo: el trazado desde la imagen (`referencia/logo-st26.png`)
+y el cálculo de resistencia por elementos finitos. Al escribir el `.3mf`, precisión `%.9g` en los
+vértices (con `%.6g` la malla deja de ser cerrada).

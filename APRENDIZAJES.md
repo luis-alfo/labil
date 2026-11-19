@@ -244,3 +244,43 @@ Registro vivo de explicaciones, decisiones y convenciones acordadas.
 - Ninguna otra rama remota conserva el disparador antiguo (comprobado el 17 nov). Para que no
   pueda repetirse ni con una rama vieja, Luis puede limitar el entorno `github-pages` a `main`
   en los ajustes del repo (Settings → Environments → github-pages → Deployment branches).
+
+## 2026-10-20 → 11-19 · Llavero ST26: impresión multicolor en la A1 (y un trabajo perdido)
+
+Detalle del objeto en `llaveros/st26/APRENDIZAJES.md`; aquí, lo que vale para cualquier pieza.
+
+- **Equipo de Luis**: Bambu Lab A1 (no la mini), boquilla 0,4 mm, AMS lite (4 filamentos), placa
+  PEI texturizada. Se le entrega un proyecto `.3mf` de Bambu Studio con piezas, filamentos,
+  colores y ajustes ya puestos (`llaveros/st26/fuente/make_3mf.py` + `bbl_profiles.py`).
+- **Reglas de PLA para letras finas**: trazo mínimo ~0,9 mm (más fino sale en bolitas) y hueco
+  mínimo 0,5 mm entre letras. Se engorda solo lo que no llega, por su esqueleto, para no
+  perder detalles como el rombo de la S.
+- **Color por dentro no es pared**: las capas de otro color en una zona que carga no cuentan
+  para la resistencia (la unión entre colores en la misma capa es débil).
+- **Primera capa**: nada de biseles por la cara de la cama en puntas estrechas; brim solo por
+  fuera; pata de elefante a 0 si hay detalles a ras en la primera capa; placa lavada y sin
+  corrientes de aire (la ventana abierta combó varios llaveros).
+- **El brim sale del color de menos área**: Bambu hace el brim con el primer filamento de la
+  primera capa y por defecto empieza por el de menos área. Se fija el orden en la placa
+  (`first_layer_print_sequence`).
+- **Relleno por zonas**: un modificador (pieza invisible) cambia el relleno solo dentro de su
+  volumen: 70 % en el cuerpo para que pese, 100 % en cuello y tapón, que es donde se tira.
+- **Coste multicolor**: la purga y la torre pesan más que la pieza (52 % en un llavero suelto).
+  Imprimir en tandas reparte la purga: en la A1 caben hasta 28 de estos llaveros; Luis fijó 16.
+- **Códigos compartidos**: «tirón» = fuerza al sacar las llaves del bolsillo (2–10 N normal,
+  20–50 N enganchón); «inclinación de la anilla» = ángulo que deja el agujero a un alambre de
+  1,5 mm (una llave típica, ~46°); «traspaso» = letras de detrás con la misma forma que las de
+  delante, que se ven en espejo como si atravesaran la pieza.
+
+### Por qué no se veía en la web (19 nov)
+
+- **Se perdió trabajo sin subir.** GitHub rechazó la subida (403) y la sesión se quedó parada dos
+  días. El contenedor se renovó y se llevó los commits locales, los scripts y las imágenes subidas.
+  Se rehízo desde lo que había quedado fuera: las siluetas guardadas en el artefacto, el texto de
+  los aprendizajes y la imagen del logo, que Luis volvió a subir.
+- **Código compartido**: se sube cada paso en cuanto está hecho y comprobado. Si la subida falla,
+  se avisa a Luis en el momento, porque lo que está solo en el contenedor puede desaparecer.
+- **La web solo se publica desde `main`.** Lo que está en una rama `claude/**` (aquí, PR #6) no se
+  ve en la web hasta que se fusiona. Para verlo antes: `python3 -m http.server -d docs`.
+- **El visor mira las piezas tumbadas de frente.** Una pieza larga orientada hacia el fondo se ve
+  de punta. Para la web se exporta una vista girada (`_vista.stl`), sin tocar las piezas de imprimir.
