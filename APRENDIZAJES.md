@@ -309,3 +309,22 @@ Detalle del objeto en `llaveros/st26/APRENDIZAJES.md`; aquí, lo que vale para c
   las fuerzas (artefacto «Trazo en uso»).
 - Los pesos los da Luis con la báscula; los tamaños sacados de una foto son estimaciones y
   se dicen como tales.
+
+## 2026-11-20 · Lección: qué son los N, los MPa y el margen
+
+Luis: «no sé qué son estas cifras». Antes de dar un número, decir qué mide y traducirlo a
+algo que se pueda sopesar. **Código compartido**: las fuerzas se dan también en gramos.
+
+- **N (newton)**: unidad de fuerza. Regla de casa: **100 g pesan 1 N**. La colonia (370 g)
+  tira con 3,6 N; todo lo de la barra (1.050 g), con 10 N. Un lazo que aguanta 24 N es como
+  colgarle 2,4 kg tirando hacia arriba.
+- **Apoya / tiran**: la barra es un balancín con dos apoyos, los lazos. Con los dos lados
+  cargados, los dos lazos apoyan sobre el grifo y no pueden fallar. Si se vacía un lado, el
+  otro hace palanca y quiere levantar el lazo lejano: de ese tiran, y solo lo sujeta su clic.
+- **MPa (megapascal)**: tensión, la fuerza repartida por dentro del material.
+  **1 MPa = 10 kg sobre 1 cm²**. El PLA rompe hacia los 50 MPa; a 15 aguanta años sin
+  ceder, y ese es el tope que se usa. La barra trabaja a 1,8 en su peor caso.
+- **Margen ×**: cuántas veces más aguanta de lo que se le pide. Por debajo de ×1 falla; en
+  una pieza de plástico de uso diario se busca ×2 o más.
+- **Flecha (mm)**: cuánto baja la punta con lo que tiene colgado. El PLA cede con los años
+  y puede llegar al doble.
