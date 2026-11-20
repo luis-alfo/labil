@@ -33,8 +33,8 @@ en las mitades.
 - `WALL_GAP = 3.5`: grosor del embellecedor cromado contra el que apoya la
   pieza.
 - `DEPTH = 8`: fondo de la pieza; debe caber entre el embellecedor y el mando.
-- `RING_ID = 62`: diámetro del aro para el secador.
-- `ARM_LEN = 200`: el palmo a cada lado.
+- `SECADOR_D_MORRO = 48` y `SECADOR_D_CUERPO = 66`: el secador, **supuesto**. De ahí sale el aro en embudo.
+- `ARM_LEN = 250`: lo que se alarga a cada lado.
 
 ## Carga
 

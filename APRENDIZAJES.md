@@ -370,3 +370,19 @@ algo que se pueda sopesar. **Código compartido**: las fuerzas se dan también e
 - En la simulación: el tablero se pliega en dos barras de progreso (una por lazo) con el
   veredicto entre las dos; cada lista de objetos, en una pestaña lateral con «3/4».
   El estado se recuerda mientras dura la visita.
+
+## 2026-11-20 · Barra de baño: quitar material sin perder resistencia
+
+- Petición de Luis: bandejas que no sean opacas, con menos material y la misma resistencia.
+- Una pieza que trabaja a flexión aguanta según su **módulo resistente (W)**, no según su peso.
+  W crece con el cuadrado del fondo de la sección: doblar el fondo vale por cuatro de ancho.
+- Por eso unos nervios estrechos y hondos sustituyen a una lámina ancha y fina con menos plástico.
+- Abrir ventanas en una lámina fina, sin más, sí pierde resistencia: queda menos ancho y el mismo fondo.
+- Engrosar toda la lámina y abrirla tampoco ahorra: las zonas macizas crecen con el grosor.
+- Al cambiar la forma cambia también la carga: el bote quedó 5 mm más afuera y la palanca subió un 24 %.
+  Hay que recalcular la tensión, no solo comparar secciones.
+- Resultado en las bandejas colgadas: 18–20 % menos de peso, misma tensión y el triple de rigidez.
+- Código compartido: «nervio» es la tira honda que carga; «travesaño», la que une nervios;
+  «alma», la diagonal del codo; «lomo», la U que cabalga sobre la línea.
+- Los radios de LG Casa se llevan a la pieza por proporción (canto 2, esquina 4, encuentro 6,
+  doblez a 4 veces el grosor). Detalle en `3d-models/bathroom-trazo/APRENDIZAJES.md`.

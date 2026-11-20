@@ -1392,7 +1392,7 @@
      "nombre": "trazo",
      "fecha": "2026-11-20",
      "por_imprimir": true,
-     "texto": "Una línea plana de PLA que cuelga del propio grifo. Pasa por encima del caño y de la manilla y se alarga 250 mm a cada lado. Siete enganches, uno por objeto, todos fuera de la placa del grifo.",
+     "texto": "Una línea plana de PLA que cuelga del propio grifo. Pasa por encima del caño y de la manilla y se alarga 250 mm a cada lado. Siete enganches, uno por objeto, todos fuera de la placa del grifo. El secador encaja en un aro en embudo a la altura de la línea; colonia y desodorante van en bandejas abiertas, de nervios.",
      "modelos": [
       {
        "nombre": "simulación",
@@ -1433,11 +1433,11 @@
        "de": "3d-models/bathroom-trazo/trazo_derecha.stl"
       },
       {
-       "nombre": "bandeja colonia",
+       "nombre": "bandeja abierta colonia",
        "de": "3d-models/bathroom-trazo/jinete_colonia.stl"
       },
       {
-       "nombre": "aro desodorante",
+       "nombre": "bandeja colgada desodorante",
        "de": "3d-models/bathroom-trazo/jinete_desodorante.stl"
       },
       {
@@ -1449,7 +1449,7 @@
        "de": "3d-models/bathroom-trazo/jinete_cepillo.stl"
       },
       {
-       "nombre": "gancho secador",
+       "nombre": "aro en embudo secador",
        "de": "3d-models/bathroom-trazo/jinete_secador.stl"
       },
       {
@@ -1504,7 +1504,7 @@
       },
       {
        "tema": "impresión",
-       "texto": "La mitad derecha se imprime con la cara de delante sobre la cama, para que el relleno sea lo último y no pida soportes. Mide 12 mm de alto en vez de 8."
+       "texto": "Cada mitad mide 303 mm y girada cabe en un cuadrado de 222 mm: entra en la A1. Horquillas, vasito y aro del secador se imprimen con la placa abajo (el embudo crece inclinado 15°, sin soportes); bandejas, pinza y gancho, de canto. Cada ventana de una bandeja se cierra con un puente de menos de 30 mm."
       },
       {
        "tema": "estética",
@@ -1524,7 +1524,7 @@
       },
       {
        "tema": "impresión",
-       "texto": "Cada mitad mide 303 mm y girada cabe en un cuadrado de 222 mm: entra en la A1. Los enganches de horquilla, aro y vasito se imprimen con la placa abajo; bandeja y gancho, de canto. El suelo del vasito son dos puentes de 30 mm."
+       "texto": "Cada mitad mide 303 mm y girada cabe en un cuadrado de 222 mm: entra en la A1. Horquillas, vasito y aro del secador se imprimen con la placa abajo (el embudo crece inclinado 15°, sin soportes); bandejas, pinza y gancho, de canto. Cada ventana de una bandeja se cierra con un puente de menos de 30 mm."
       },
       {
        "tema": "medidas",
@@ -1532,10 +1532,38 @@
       },
       {
        "tema": "estética",
-       "texto": "Luis: «no me encanta que las cosas suban por encima de la barra». Cada objeto, menos el secador, tiene una segunda forma colgada bajo la línea: pasta en pinza, colonia y desodorante en bandeja baja, cepillos en horquilla baja y cepillo del pelo por el agujero del mango. La simulación deja comparar las dos; las cargas son las mismas."
+       "texto": "Luis: «no me encanta que las cosas suban por encima de la barra». Cada objeto, menos el secador y el desodorante, tiene una segunda forma colgada bajo la línea: pasta en pinza, colonia en bandeja baja, cepillos en horquilla baja y cepillo del pelo por el agujero del mango. La simulación deja comparar las dos; las cargas son las mismas."
+      },
+      {
+       "tema": "uso",
+       "texto": "Luis: «el secador es un aparato eléctrico que está más abajo que la altura del grifo, eso podría provocar salpicaduras». Ya no cuelga de un gancho: encaja morro abajo en un aro en embudo a la altura de la línea y se bloquea donde su cono toca el del aro. Motor e interruptor quedan por encima del grifo. El mango (es plegable) queda fuera, hacia ti: de ahí se coge."
+      },
+      {
+       "tema": "medidas",
+       "texto": "El embudo va de 64 a 50 mm de diámetro en 26 mm. Sale de un secador supuesto de 48 mm en el morro y 66 en el cuerpo: hay que medir el de Luis antes de imprimirlo."
+      },
+      {
+       "tema": "estética",
+       "texto": "Radios de LG Casa llevados a la pieza, como en la cajonera de LARC HQ: se copia la proporción, no los píxeles. Canto de 2 mm, esquina de 4 mm, encuentro interior de 6 mm, y una lámina que se dobla lo hace a 4 veces su grosor (3,2 → 12,8 mm). Se ve en el lomo de cada enganche, en las puntas redondas de las horquillas y en el labio de las bandejas, que sube como la punta de la línea."
+      },
+      {
+       "tema": "material",
+       "texto": "Luis: «no quiero que sea opaco, sino que reduzcamos el material que utilizamos sin perder resistencia», como en el colgador de estropajos. La pared y el suelo de las bandejas dejan de ser una lámina maciza de 3,2 mm: son nervios de 8 mm de fondo con ventanas en cápsula entre ellos. Bandeja colgada de la colonia: de 46 a 38 g (−18 %). Desodorante: de 30 a 24 g (−20 %). La bandeja de la colonia a la altura de la línea se queda igual, 21 g: casi no tenía pared que abrir."
+      },
+      {
+       "tema": "resistencia",
+       "texto": "El material se aleja del centro de la sección, que es donde menos trabaja. Colonia: el módulo resistente pasa de 123 a 154 mm³ y la tensión se queda en 0,58 MPa de 15, aunque el bote queda 5 mm más afuera; la bandeja es 3 veces más rígida. Desodorante: 0,22 MPa, igual que antes. El aro del secador trabaja a 2,8 MPa de 15 con el mango hacia fuera."
+      },
+      {
+       "tema": "resistencia",
+       "texto": "Pendiente de probar: el secador en el aro retuerce la línea el doble que la colonia (208 frente a 103 N·mm). Está calculado que aguanta, pero el lazo tiene 0,3 mm de holgura y el aro puede cabecear 2 o 3 mm hacia delante."
+      },
+      {
+       "tema": "uso",
+       "texto": "Luis, sobre el desodorante: del revés en un aro, «bueno, no, como plataforma». Se queda con una sola forma: de pie en una bandeja colgada bajo la línea."
       }
      ],
-     "cambio": "brazos de 250 mm y siete enganches a medida, ninguno sobre la placa",
+     "cambio": "secador en un aro en embudo, bandejas abiertas de nervios y radios de LG Casa en los enganches",
      "imagenes": [
       {
        "de": "3d-models/bathroom-trazo/trazo_en_el_bano_frente.jpg",
@@ -1562,7 +1590,9 @@
        "pie": "Lo que va en la barra: colonia, desodorante, pasta, cepillo del pelo, secador y cepillo de dientes (falta el Oral-B). De aquí salen los siete enganches y sus tamaños, estimados.",
        "fecha": "2026-11-20"
       }
-     ]
+     ],
+     "feedback": "el secador es eléctrico y queda más abajo que el grifo: salpicaduras. usemos los radios de LG Casa en los enganches y reduzcamos material sin perder resistencia",
+     "feedback_de": "luis"
     }
    ],
    "aprendizajes": "3d-models/bathroom-trazo/APRENDIZAJES.md"

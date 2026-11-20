@@ -98,6 +98,15 @@ RIDER_BRIDGE_T = 3.2
 RIDER_LEG      = 9.0
 PLATE_T        = 3.6     # plate of the fork / ring riders
 
+# --- LG Casa radii brought to the physical world (same reading as the
+# LARC HQ drawers): px are not mm; what is copied is the proportion. ---
+R_CANTO        = 2.0     # canto: the small edge of a piece
+R_ESQUINA      = 4.0     # esquina: where a piece turns (4-8 mm)
+R_ENCUENTRO    = 6.0     # esquina, inside: where two walls meet
+BEND_K         = 4.0     # a sheet that bends does it at 4x its thickness
+TRAY_T         = 8.0     # depth of the fins of the open trays (the solid wall was 3.2)
+RUNG           = 3.0     # rungs between fins
+
 # --- what hangs where. Weights given by Luis (20 Nov 2026). Sizes of the
 # objects are ESTIMATED from his photo: measure before printing a rider. ---
 #   id, name, grams, x of the rider centre (mm from the middle), rider maker
@@ -112,10 +121,13 @@ OBJETOS = [
 ]
 COLONIA_W, COLONIA_D, COLONIA_H = 68.0, 30.0, 72.0   # bottle body (estimated)
 DEO_D          = 42.0    # roll-on at its widest (estimated)
+DEO_DROP       = 88.0    # its platform hangs this far below the top of the line
 ORALB_D        = 28.0    # electric toothbrush handle (estimated)
 TUBE_NECK      = 15.0    # slot for the toothpaste neck; the shoulder rests on it
 BRUSH_NECK     = 8.0     # slot for a manual toothbrush neck
 HAIRBRUSH_NECK = 21.0    # slot for the hairbrush handle, under its head
+SECADOR_D_MORRO  = 48.0  # hairdryer barrel at the nozzle end (ESTIMATED)
+SECADOR_D_CUERPO = 66.0  # hairdryer barrel at its widest (ESTIMATED)
 
 ARC_SEG        = 96
 Z_TOP          = LINE_Z0 + LINE_H
@@ -268,18 +280,33 @@ def side_rider_to_local(width: float):
                      [0, 0, 0, 1]], dtype=float)
 
 
-def rider_saddle(leg: float = RIDER_LEG, bridge_t: float = RIDER_BRIDGE_T):
+def _round_corner(poly, corner, r, sy, sz):
+    """Round one convex corner of an axis-aligned profile. (sy, sz) point
+    from the inside of the piece to that corner."""
+    y, z = corner
+    cy, cz = y - sy * r, z - sz * r
+    square = sbox(min(y, cy), min(z, cz), max(y, cy), max(z, cz))
+    return poly.difference(square.difference(Point(cy, cz).buffer(r, 32)))
+
+
+def rider_saddle(leg: float = RIDER_LEG, bridge_t: float = RIDER_BRIDGE_T,
+                 front_t: float = RIDER_FRONT_T):
     """U that drops over the line. Rider frame: y = 0 at the line's back
-    face, z = 0 at the line's top edge. Returns (profile, y of front face)."""
+    face, z = 0 at the line's top edge. Returns (profile, y of front face).
+    Corners follow LG Casa: the front one turns with R_ESQUINA, the thin
+    back one with R_CANTO, and both legs end in a round tip."""
     c = RIDER_FIT / 2
     y_back0, y_back1 = -c - RIDER_BACK_T, -c
-    y_front0, y_front1 = DEPTH + c, DEPTH + c + RIDER_FRONT_T
+    y_front0, y_front1 = DEPTH + c, DEPTH + c + front_t
     u = unary_union([
         sbox(y_back0, -RIDER_BACK_LEG, y_back1, bridge_t),
         sbox(y_back0, 0, y_front1, bridge_t),
         sbox(y_front0, -leg, y_front1, bridge_t),
     ])
-    return u.buffer(-0.8).buffer(0.8), y_front0, y_front1
+    u = u.buffer(-0.95).buffer(0.95)
+    u = _round_corner(u, (y_front1, bridge_t), R_ESQUINA, +1, +1)
+    u = _round_corner(u, (y_back0, bridge_t), R_CANTO, -1, +1)
+    return u, y_front0, y_front1
 
 
 def make_gancho(width=18.0, drop=16.0, radius=10.0):
@@ -298,27 +325,91 @@ def make_gancho(width=18.0, drop=16.0, radius=10.0):
     return side.copy().apply_transform(side_rider_to_local(width)), on_bed(side)
 
 
-def make_bandeja(width=COLONIA_W + 4, depth=COLONIA_D + 3, lip=12.0, drop=None):
-    """Tray with a low front lip, open at both ends: the cologne bottle
-    stands in front of the line and comes out by lifting it 12 mm or
-    sliding it sideways. Printed on its side. With `drop`, the floor hangs
-    that far below the top of the line, so the object stays under it."""
-    leg = drop or RIDER_LEG + 3
-    u, y0, y1 = rider_saddle(leg=leg)
-    y_end = y1 + depth + 3.0
-    tray = unary_union([
-        sbox(y0, -leg, y1, -1),
-        sbox(y0, -leg, y_end, -leg + 3.2),
-        sbox(y_end - 3.0, -leg, y_end, -leg + lip),
-    ])
-    tray = tray.buffer(1.5).buffer(-1.5).buffer(-0.8).buffer(0.8)
+def _capsule(p0, p1, w):
+    return LineString([p0, p1]).buffer(w / 2, 24)
+
+
+def make_bandeja(width=COLONIA_W + 4, depth=COLONIA_D + 3, lip=12.0, drop=None,
+                 ribs=4, rib_w=3.6):
+    """Open tray: the object stands in front of the line (or, with `drop`,
+    hangs that far below its top edge). Printed on its side.
+
+    Same principle as the sponge cradle of El Secadero: ribs and an open
+    floor instead of a solid sheet. The wall and the floor are `ribs` fins
+    TRAY_T deep that run from the saddle to the lip; between them it is
+    open, with a rung every 30-45 mm and a diagonal web at the bend (they
+    are what each fin rests on while it prints). Material moves away from
+    the neutral axis: the fins keep the section modulus of the 3.2 mm
+    solid sheet they replace (asserted below) and are stiffer.
+    The lip is a 3.2 mm sheet that bends up at 4x its thickness and ends
+    in a round tip, like the ends of the line itself."""
+    t, T = RIDER_FRONT_T, TRAY_T
+    assert ribs * rib_w * T ** 2 >= width * t ** 2, "fins weaker than the solid sheet"
+    z_ft = -(drop or RIDER_LEG + 3) + 3.2          # floor top: where it stood before
+    z_fb = z_ft - T
+    u, y0, yw = rider_saddle(front_t=T)             # yw = front edge of the fins
+    y_fe = yw + depth + 3.0
+    body = unary_union([sbox(y0, z_fb, yw, 1.0), sbox(y0, z_fb, y_fe, z_ft)])
+    body = body.buffer(R_ENCUENTRO).buffer(-R_ENCUENTRO)        # inside corner
+    body = _round_corner(body, (y0, z_fb), BEND_K * t, -1, -1)
+    body = _round_corner(body, (y_fe, z_fb), T - t, +1, -1)
+    r = BEND_K * t                                              # lip bend
+    cz = z_ft - t / 2 + r
+    phi = math.acos(max(-1.0, 1 - (lip - t) / r))
+    pts = [(y_fe - 3.0, z_ft - t / 2)] + [
+        (y_fe + r * math.sin(a), cz - r * math.cos(a))
+        for a in np.linspace(0, phi, 24)]
+    tray = unary_union([body, LineString(pts).buffer(t / 2, 16)])
+    tray = tray.buffer(2.0).buffer(-2.0)
     side = extrude(unary_union([u, tray]), width)
-    return side.copy().apply_transform(side_rider_to_local(width)), on_bed(side)
+    solid = side.copy().apply_transform(side_rider_to_local(width))
+
+    bay = (width - ribs * rib_w) / (ribs - 1)
+    xs = [-width / 2 + rib_w + bay / 2 + k * (rib_w + bay) for k in range(ribs - 1)]
+    through_y = np.array([[1, 0, 0, 0], [0, 0, 1, y0 - 1.0],
+                          [0, 1, 0, 0], [0, 0, 0, 1.0]])
+    z_a = -0.5                              # the windows start under the bridge
+    wall = True
+    y_b = y_fe + 3.0                        # the windows bite into the foot of the lip
+    cuts, keeps = [], []
+    for x in xs:
+        if wall:
+            rows = max(1, math.ceil((z_a - z_ft) / (bay + 30.0)))
+            length = (z_a - z_ft - (rows - 1) * RUNG) / rows
+            for k in range(rows):
+                z1 = z_a - k * (length + RUNG)
+                last = k == rows - 1
+                z2 = z_fb - 1.0 if last else z1 - length
+                win = _capsule((x, z1 - bay / 2), (x, z2 + (0 if last else bay / 2)), bay)
+                if last:
+                    win = win.intersection(sbox(x - bay, z2, x + bay, z1))
+                m = extrude(win, T + 2.0)
+                m.apply_transform(through_y)
+                cuts.append(m)
+            web = trimesh.creation.box(extents=[bay + 1.0, RUNG, 6 * T])
+            web.apply_transform(trimesh.transformations.rotation_matrix(
+                -math.pi / 4, [1, 0, 0]))
+            web.apply_translation([x, yw - T / 2, z_ft - T / 2])
+            keeps.append(trimesh.boolean.intersection([solid, web], engine="manifold"))
+        y_a = y0 - 1.0 if wall else yw + R_ENCUENTRO + 0.5
+        win = _capsule((x, y_a + (0 if wall else bay / 2)), (x, y_b - bay / 2), bay)
+        if wall:
+            win = win.intersection(sbox(x - bay, y_a, x + bay, y_b))
+        m = extrude(win, T + 2.0)
+        m.apply_translation([0, 0, z_fb - 1.0])
+        cuts.append(m)
+    local = trimesh.boolean.difference([solid] + cuts, engine="manifold")
+    if keeps:
+        local = trimesh.boolean.union([local] + keeps, engine="manifold")
+    assert local.is_volume and len(local.split()) == 1
+    bed = local.copy().apply_transform(np.linalg.inv(side_rider_to_local(width)))
+    return local, on_bed(bed)
 
 
-def _plate_rider(plate_xy: Polygon, width: float, extra=()):
+def _plate_rider(plate_xy: Polygon, width: float, extra=(), cut=()):
     """Rider whose tool is a flat plate level with the bridge. Built in the
-    rider frame; printed upside down so the plate is the first layer."""
+    rider frame; printed upside down so the plate is the first layer.
+    The legs follow the rounded outline of the plate."""
     c = RIDER_FIT / 2
     plate = extrude(plate_xy, PLATE_T)                    # z 0..PLATE_T
     legs = []
@@ -328,7 +419,13 @@ def _plate_rider(plate_xy: Polygon, width: float, extra=()):
         leg = trimesh.creation.box(extents=[width, y1 - y0, length + 0.5])
         leg.apply_translation([0, (y0 + y1) / 2, -length / 2 + 0.25])
         legs.append(leg)
+    outline = extrude(Polygon(plate_xy.exterior), 40.0)
+    outline.apply_translation([0, 0, -30.0])
+    legs = [trimesh.boolean.intersection([leg, outline], engine="manifold")
+            for leg in legs]
     rider = trimesh.boolean.union([plate] + legs + list(extra), engine="manifold")
+    if cut:
+        rider = trimesh.boolean.difference([rider] + list(cut), engine="manifold")
     assert rider.is_volume
     return rider, on_bed(rider, flip=True)
 
@@ -341,8 +438,8 @@ def make_horquilla(slot=BRUSH_NECK, reach=22.0, width=22.0):
     y_end = y_leg + reach
     body = sbox(-width / 2, y_back, width / 2, y_end)
     channel = LineString([(0, y_leg + 3 + slot / 2), (0, y_end + 5)]).buffer(slot / 2)
-    r = min(2.5, (width - slot) / 4 - 0.2)
-    plate = body.difference(channel).buffer(-r).buffer(r)     # round prongs
+    r = (width - slot) / 4 - 0.05                 # prongs end in a full round tip
+    plate = body.difference(channel).buffer(-r).buffer(r)
     return _plate_rider(plate, width)
 
 
@@ -362,6 +459,31 @@ def make_aro(inner_d=DEO_D - 1.0, wall=4.0, width=30.0):
     """Ring: the roll-on drops in cap down and rests on its widest part."""
     plate, _ = _ring_plate(inner_d, wall, width)
     return _plate_rider(plate, width)
+
+
+def _frustum(r_top, r_bot, z_top, z_bot):
+    return trimesh.creation.revolve(
+        [(0, z_bot), (r_bot, z_bot), (r_top, z_top), (0, z_top)], sections=96)
+
+
+def make_embudo(d_top=SECADOR_D_CUERPO - 2.0, d_bot=SECADOR_D_MORRO + 2.0,
+                height=26.0, wall=3.2, width=44.0):
+    """Funnel ring for the hairdryer, level with the line: the barrel goes
+    in nozzle down and wedges where its taper meets the cone, so the motor
+    and the switch stay above the faucet, away from splashes. The handle
+    (it folds) stays out, towards you: it is what you grab.
+    Printed plate down: the cone grows upwards leaning 15 deg, no supports."""
+    plate, yc = _ring_plate(d_top, wall, width)
+    plate = unary_union([plate, Point(0, yc).buffer(d_top / 2 + 0.01)])
+    outer = _frustum(d_top / 2 + wall, d_bot / 2 + wall, 0.5, -height)
+    inner = _frustum(d_top / 2, d_bot / 2, 0.0, -height)
+    hole = trimesh.util.concatenate([
+        _frustum(d_top / 2, d_bot / 2 - (d_top - d_bot) / 2 / height, 0.0, -height - 1),
+        _cyl(d_top, PLATE_T + 1, 0, 0, -0.01)])
+    for m in (outer, hole):
+        m.apply_translation([0, yc, 0])
+    hole = trimesh.boolean.union(hole.split(), engine="manifold")
+    return _plate_rider(plate, width, [outer], [hole])
 
 
 def make_vasito(inner_d=ORALB_D + 3.0, wall=4.0, width=30.0, depth=42.0):
@@ -418,19 +540,20 @@ def make_pinza(width=40.0, drop=34.0, slit=1.2):
 RIDERS = {
     "cepillo":     lambda: make_horquilla(BRUSH_NECK, 22.0, 22.0),
     "pasta":       lambda: make_horquilla(TUBE_NECK, 26.0, 30.0),
-    "desodorante": lambda: make_aro(),
+    # Luis, 20 Nov: the roll-on on a platform, hanging, not upside down in a ring
+    "desodorante": lambda: make_bandeja(DEO_D + 4, DEO_D + 2, 14.0, drop=DEO_DROP,
+                                        ribs=3, rib_w=2.9),
     "colonia":     lambda: make_bandeja(),
-    "secador":     lambda: make_gancho(),
+    "secador":     lambda: make_embudo(),
     "pelo":        lambda: make_horquilla(HAIRBRUSH_NECK, 32.0, 44.0),
     "oralb":       lambda: make_vasito(),
 }
 
 # The same objects hanging below the line instead of standing on it
-# ("la línea es el techo"). The hairdryer already hangs: it has no second form.
+# ("la línea es el techo"). The hairdryer and the roll-on have one form.
 RIDERS_BAJO = {
     "cepillo":     lambda: make_horquilla_baja(BRUSH_NECK, 22.0, 22.0, 34.0),
     "pasta":       lambda: make_pinza(),
-    "desodorante": lambda: make_bandeja(DEO_D + 4, DEO_D + 2, 14.0, drop=88.0),
     "colonia":     lambda: make_bandeja(drop=COLONIA_H + 27.0),
     "pelo":        lambda: make_gancho(5.5, 8.0, 7.0),
     "oralb":       lambda: make_horquilla_baja(10.0, 24.0, 26.0, 32.0),
@@ -478,7 +601,13 @@ def make_objetos():
     y_ring = lambda d, wall: y_leg + 2 + d / 2 + wall
     yd, yo = y_ring(DEO_D - 1, 4.0), y_ring(ORALB_D + 3, 4.0)
     yb, yp, yh = y_fork(BRUSH_NECK), y_fork(TUBE_NECK), y_fork(HAIRBRUSH_NECK)
-    yc = y_leg + 1.5 + COLONIA_D / 2
+    y_tray = DEPTH + c + TRAY_T                 # front of the ribs of a tray
+    yc = y_tray + 1.5 + COLONIA_D / 2
+    ydb = y_tray + 1.5 + (DEO_D + 2) / 2
+    zd = -DEO_DROP + 3.2
+    ye = y_leg + 2 + (SECADOR_D_CUERPO - 2.0) / 2 + 3.2      # funnel axis
+    barrel = _frustum(SECADOR_D_CUERPO / 2, SECADOR_D_MORRO / 2, 12.0, -22.0)
+    barrel.apply_translation([0, ye, 0])
     arriba = {
         "cepillo": [(_box(9, 6, 150, 0, yb, -150 + T), "celeste"),
                     (_box(11, 8, 12, 0, yb, T), "blanco"),
@@ -486,13 +615,15 @@ def make_objetos():
         "pasta": [(_cyl(13, 16, 0, yp, -16 + T), "blanco"),
                   (_cyl(30, 60, 0, yp, T), "rojo"),
                   (_box(34, 8, 50, 0, yp, T + 58), "blanco")],
-        "desodorante": [(_cyl(DEO_D - 3, 38, 0, yd, -38 + 2), "azul"),
-                        (_cyl(DEO_D, 44, 0, yd, 2), "blanco")],
+        "desodorante": [(_cyl(DEO_D - 3, 38, 0, ydb, zd), "azul"),
+                        (_cyl(DEO_D, 44, 0, ydb, zd + 38), "blanco")],
         "colonia": [(_box(COLONIA_W, COLONIA_D, COLONIA_H, 0, yc, -RIDER_LEG - 3 + 3.2), "ambar"),
                     (_cyl(22, 22, 0, yc, -RIDER_LEG - 3 + 3.2 + COLONIA_H), "plata")],
-        "secador": [(_box(8, 5, 26, 0, y_leg + 8, -58), "negro"),
-                    (_box(30, 26, 105, 0, y_leg + 10, -160), "negro"),
-                    (_cyl(62, 118, 0, y_leg - 8, -160 - 26, axis="y"), "gris")],
+        "secador": [(_cyl(SECADOR_D_MORRO, 22, 0, ye, -44), "negro"),
+                    (barrel, "gris"),
+                    (_cyl(SECADOR_D_CUERPO, 56, 0, ye, 12), "gris"),
+                    (_cyl(SECADOR_D_CUERPO - 8, 5, 0, ye, 68), "negro"),
+                    (_box(28, 100, 30, 0, ye + SECADOR_D_CUERPO / 2 + 46, 30), "negro")],
         "pelo": [(_cyl(18, 118, 0, yh, -118 + T), "negro"),
                  (_blob(64, 20, 96, 0, yh, T + 4), "negro")],
         "oralb": [(_cyl(ORALB_D, 122, 0, yo, -42 + 2.4), "blanco"),
@@ -502,8 +633,6 @@ def make_objetos():
     }
     # hanging: nothing rises above the top of the line (z = 0)
     zc = -(COLONIA_H + 27.0) + 3.2
-    zd = -88.0 + 3.2
-    ydb = y_leg + 1.5 + (DEO_D + 2) / 2
     zb, zo = -34.0 + T, -32.0 + T
     yob = y_leg + 3 + 5 + 3
     yj = y_leg - RIDER_FRONT_T / 2 + 7
@@ -515,8 +644,6 @@ def make_objetos():
                   (_box(36, 8, 22, 0, y_leg + 2, -56), "blanco"),
                   (_cyl(30, 84, 0, y_leg + 6, -140), "rojo"),
                   (_cyl(13, 14, 0, y_leg + 6, -154), "blanco")],
-        "desodorante": [(_cyl(DEO_D - 3, 38, 0, ydb, zd), "azul"),
-                        (_cyl(DEO_D, 44, 0, ydb, zd + 38), "blanco")],
         "colonia": [(_box(COLONIA_W, COLONIA_D, COLONIA_H, 0, yc, zc), "ambar"),
                     (_cyl(22, 22, 0, yc, zc + COLONIA_H), "plata")],
         "pelo": [(_cyl(18, 118, 0, yj, -134), "negro"),
@@ -663,6 +790,25 @@ def report(left: Polygon, right: Polygon, printed: dict):
     w = c["peor"]["flecha"]
     print(f"  worst tip sag: {w['valor']:.1f} mm at first, about double with "
           f"the years (creep), with {', '.join(w['con'])}")
+    print("\n— Open trays: fins TRAY_T deep instead of a solid 3.2 mm sheet —")
+    t, T = RIDER_FRONT_T, TRAY_T
+    for name, width, ribs, rib_w, grams, d in (
+            ("colonia", COLONIA_W + 4, 4, 3.6, 370, COLONIA_D),
+            ("desodorante", DEO_D + 4, 3, 2.9, 65, DEO_D + 2)):
+        w0, w1 = width * t ** 2 / 6, ribs * rib_w * T ** 2 / 6
+        i0, i1 = width * t ** 3 / 12, ribs * rib_w * T ** 3 / 12
+        m0 = grams * G * (t + 1.5 + d / 2)          # weight x how far it stands out
+        m1 = grams * G * (T + 1.5 + d / 2)
+        print(f"  {name:11s} W {w0:.0f} -> {w1:.0f} mm3 · I {i0:.0f} -> {i1:.0f} mm4"
+              f" (x{i1 / i0:.1f} stiffer) · stress {m0 / w0:.2f} -> {m1 / w1:.2f} MPa"
+              f" of {SIGMA_OK:.0f}")
+    grams, arm, width = 250, 85.0, 44.0             # hairdryer, handle towards you
+    m = grams * G * arm
+    print(f"\n— Funnel ring (hairdryer {grams} g, centre of mass ~{arm:.0f} mm out) —")
+    print(f"  plate at the saddle: {m / (width * PLATE_T ** 2 / 6):.1f} MPa · front leg: "
+          f"{m / (width * RIDER_FRONT_T ** 2 / 6):.1f} MPa of {SIGMA_OK:.0f} · it twists "
+          f"the line with {m:.0f} N·mm (the cologne tray: "
+          f"{370 * G * (TRAY_T + 1.5 + COLONIA_D / 2 + DEPTH / 2):.0f})")
     print("\n— Print —")
     for name, poly in (("trazo_izquierda", left), ("trazo_derecha", right)):
         x0, z0, x1, z1 = poly.bounds
