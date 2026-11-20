@@ -340,3 +340,25 @@ algo que se pueda sopesar. **Código compartido**: las fuerzas se dan también e
   `"simulacion": "<ruta a cargas.json>"`; el GLB nombra cada objeto `obj_<id>_<n>`.
   El código está en `docs/sim.js`.
 - El primer artefacto de Claude sirvió para acordar el contenido; la web es donde se queda.
+
+## 2026-11-20 · La web: luz, sombras y la pieza en su sitio
+
+- **Lo que pidió Luis** (mirando los cajones de la isla): «me faltaría ver más sombras… y poder colocarlo en
+  lo que sería la estantería, pero como STL, no como una foto… si no, veo una pieza blanca que no se
+  entiende dónde se va a encajar».
+- **Luz del visor**: `docs/luz-visor.hdr` (lo escribe `3d-models/luz_visor.py`). Sustituye al entorno
+  «neutral» de `<model-viewer>`, que ilumina igual desde todos lados y aplana las piezas claras. Es un
+  estudio de tres luces: principal arriba a la izquierda, relleno a la derecha y contraluz. Vale para todos
+  los objetos. En `app.js`: `environment-image`, `exposure="0.9"`, `tone-mapping="neutral"` y sombra en el suelo.
+- **Sombras de verdad**: `<model-viewer>` solo pinta una sombra en el suelo, que sobre el fondo oscuro de
+  LG Señal casi no se ve. No calcula la sombra de una pieza sobre otra. Cuando hace falta (una pieza dentro
+  de un mueble), la sombra se calcula antes y viaja en el color de los vértices del GLB. Receta en
+  `cajones-isla/conceptos/escenas.py`.
+- **Vistas con encuadre**: en `3d-models/objetos.json`, una vista de `modelos` admite `orbita`
+  (`camera-orbit`, p. ej. `"32deg 76deg 1.5m"`) y `objetivo` (`camera-target`, en metros y en el marco del
+  GLB). Sin ellos, el encuadre de siempre. Con encuadre propio la cámara puede acercarse hasta 25 cm.
+- **Trampa de `<model-viewer>`**: si solo se le cambia el `src`, conserva el ángulo de la vista anterior y
+  no recalcula bien la distancia. Por eso `app.js` crea un visor nuevo en cada cambio de vista.
+- **Códigos**: *vista* o *posición* = cada botón de abajo a la derecha; *escena* = una vista con contexto
+  (la pieza y lo que la rodea); *encuadre* = desde dónde mira la cámara al abrir una vista.
+- **Orden de las vistas**: primero la pieza en su sitio, después la pieza suelta.
