@@ -340,3 +340,11 @@ algo que se pueda sopesar. **Código compartido**: las fuerzas se dan también e
   `"simulacion": "<ruta a cargas.json>"`; el GLB nombra cada objeto `obj_<id>_<n>`.
   El código está en `docs/sim.js`.
 - El primer artefacto de Claude sirvió para acordar el contenido; la web es donde se queda.
+
+## 2026-11-20 · La web: todo lo que rodea al modelo se puede plegar
+
+- Luis quiere poder dejar la pantalla limpia. **Código compartido**: cualquier panel que
+  rodee al modelo se pliega, y plegado sigue diciendo lo esencial en poco sitio.
+- En la simulación: el tablero se pliega en dos barras de progreso (una por lazo) con el
+  veredicto entre las dos; cada lista de objetos, en una pestaña lateral con «3/4».
+  El estado se recuerda mientras dura la visita.
