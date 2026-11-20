@@ -116,7 +116,7 @@ def make_context_meshes(faucet_od: float, handle_od: float, ctc: float,
     items: List[Tuple[str, "trimesh.Trimesh"]] = []
 
     if wall:
-        panel = trimesh.creation.box(extents=[550, 4, 250])
+        panel = trimesh.creation.box(extents=[620, 4, 250])
         panel.apply_translation([0, -PLATE_T - 2, -30])
         items.append(("pared", paint(panel, MAT_WALL)))
 

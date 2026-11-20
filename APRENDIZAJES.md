@@ -296,3 +296,47 @@ Detalle del objeto en `llaveros/st26/APRENDIZAJES.md`; aquí, lo que vale para c
   el modelo sobre sus propias fotos, sacando la cámara de un rectángulo conocido de la foto.
 - Estética de la barra: gris claro y naranja, «rollito Braun Dieter Rams».
 - Fotos con reflejos o espejo: se recorta o se difumina a la persona antes de publicarlas.
+
+## 2026-11-20 · Barra de baño: contarlo de palabra antes de diseñar
+
+- Luis pidió oír primero cómo sería cada enganche. Corrigió dos cosas que el modelo no
+  habría dejado ver a tiempo: la **usabilidad** (objetos de uso diario, con una mano) y la
+  **estética** (nada encima de la placa del grifo). **Código compartido**: antes de un
+  rediseño, contarlo de palabra y esperar.
+- **Código compartido**: lo pesado, cerca de los apoyos; y se calculan todas las
+  combinaciones de «puesto / quitado», no solo «todo puesto». El peor caso es quitar un lado.
+- Para enseñar un cálculo sirve una página donde Luis pone y quita cada objeto y ve cambiar
+  las fuerzas (artefacto «Trazo en uso»).
+- Los pesos los da Luis con la báscula; los tamaños sacados de una foto son estimaciones y
+  se dicen como tales.
+
+## 2026-11-20 · Lección: qué son los N, los MPa y el margen
+
+Luis: «no sé qué son estas cifras». Antes de dar un número, decir qué mide y traducirlo a
+algo que se pueda sopesar. **Código compartido**: las fuerzas se dan también en gramos.
+
+- **N (newton)**: unidad de fuerza. Regla de casa: **100 g pesan 1 N**. La colonia (370 g)
+  tira con 3,6 N; todo lo de la barra (1.050 g), con 10 N. Un lazo que aguanta 24 N es como
+  colgarle 2,4 kg tirando hacia arriba.
+- **Apoya / tiran**: la barra es un balancín con dos apoyos, los lazos. Con los dos lados
+  cargados, los dos lazos apoyan sobre el grifo y no pueden fallar. Si se vacía un lado, el
+  otro hace palanca y quiere levantar el lazo lejano: de ese tiran, y solo lo sujeta su clic.
+- **MPa (megapascal)**: tensión, la fuerza repartida por dentro del material.
+  **1 MPa = 10 kg sobre 1 cm²**. El PLA rompe hacia los 50 MPa; a 15 aguanta años sin
+  ceder, y ese es el tope que se usa. La barra trabaja a 1,8 en su peor caso.
+- **Margen ×**: cuántas veces más aguanta de lo que se le pide. Por debajo de ×1 falla; en
+  una pieza de plástico de uso diario se busca ×2 o más.
+- **Flecha (mm)**: cuánto baja la punta con lo que tiene colgado. El PLA cede con los años
+  y puede llegar al doble.
+
+## 2026-11-20 · La web: simulación de cargas dentro del modelo
+
+- Luis no quiere una página aparte con scroll: quiere la simulación **en la misma pantalla
+  que el modelo**, con los mandos alrededor, «como el velocímetro y los controles de un coche».
+- **Código compartido** (disposición): tablero arriba (viga + un dial por apoyo), objetos de
+  cada lado a su lado de la pantalla, «i» abajo a la izquierda con la lección de las cifras.
+  En móvil estrecho, los objetos van en una tira deslizable.
+- Cómo se activa: en `3d-models/objetos.json`, el modelo lleva
+  `"simulacion": "<ruta a cargas.json>"`; el GLB nombra cada objeto `obj_<id>_<n>`.
+  El código está en `docs/sim.js`.
+- El primer artefacto de Claude sirvió para acordar el contenido; la web es donde se queda.
