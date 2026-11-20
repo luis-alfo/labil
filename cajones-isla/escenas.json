@@ -1,0 +1,52 @@
+{
+ "cajones_marco_en_hueco": {
+  "glb": "docs/models/cajones_marco_en_hueco.glb",
+  "objetivo": "0.000m 0.491m -0.005m",
+  "orbita": "32deg 76deg 1.5m"
+ },
+ "cajones_cajon_abierto": {
+  "glb": "docs/models/cajones_cajon_abierto.glb",
+  "objetivo": "0.000m 0.644m 0.001m",
+  "orbita": "32deg 76deg 1.75m"
+ },
+ "cajones_tapa_costillas_bolsillo": {
+  "glb": "docs/models/cajones_tapa_costillas_bolsillo.glb",
+  "objetivo": "0.000m 0.338m -0.007m",
+  "orbita": "32deg 76deg 1.5m"
+ },
+ "cajones_tapa_costillas_pasante": {
+  "glb": "docs/models/cajones_tapa_costillas_pasante.glb",
+  "objetivo": "0.000m 0.338m -0.007m",
+  "orbita": "32deg 76deg 1.5m"
+ },
+ "cajones_galga_ancho": {
+  "glb": "docs/models/cajones_galga_ancho.glb",
+  "objetivo": "0.000m 0.425m 0.035m",
+  "orbita": "32deg 76deg 1.5m"
+ },
+ "cajones_galga_alto": {
+  "glb": "docs/models/cajones_galga_alto.glb",
+  "objetivo": "0.000m 0.491m -0.015m",
+  "orbita": "32deg 76deg 1.5m"
+ },
+ "cajones_aro_colocado": {
+  "glb": "docs/models/cajones_aro_colocado.glb",
+  "objetivo": "0.000m 0.338m -0.007m",
+  "orbita": "32deg 76deg 1.5m"
+ },
+ "cajones_aro_entrando": {
+  "glb": "docs/models/cajones_aro_entrando.glb",
+  "objetivo": "0.000m 0.338m 0.068m",
+  "orbita": "32deg 76deg 1.5m"
+ },
+ "cajones_tapa_lenguetas_colocada": {
+  "glb": "docs/models/cajones_tapa_lenguetas_colocada.glb",
+  "objetivo": "0.000m 0.338m -0.007m",
+  "orbita": "32deg 76deg 1.5m"
+ },
+ "cajones_tapa_lenguetas_entrando": {
+  "glb": "docs/models/cajones_tapa_lenguetas_entrando.glb",
+  "objetivo": "0.000m 0.338m 0.068m",
+  "orbita": "32deg 76deg 1.5m"
+ }
+}

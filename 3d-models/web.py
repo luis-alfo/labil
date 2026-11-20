@@ -109,6 +109,9 @@ def main() -> None:
                 src = (web(RAIZ / mod["glb"]) if "glb" in mod
                        else glb(mod["de"], f"{obj['id']}-{est['id']}-{i}"))
                 vista = {"nombre": mod["nombre"], "src": src}
+                for k in ("orbita", "objetivo"):   # encuadre propio de la vista (camera-orbit / camera-target)
+                    if k in mod:
+                        vista[k] = mod[k]
                 if "prueba" in mod:   # vista de una pieza de prueba: lleva su propio coste
                     stls = [mod["prueba"]] if isinstance(mod["prueba"], str) else mod["prueba"]
                     for s in stls:
