@@ -566,7 +566,7 @@ function vistaObjeto(oid, eid, abrirDetalles = false) {
 
   // posiciones: las vistas del modelo; si no hay modelo, las imágenes
   const posiciones = e.modelos.length
-    ? e.modelos.map((m) => ({ nombre: m.nombre, src: conVer(m.src), tipo: "modelo", coste: m.coste, orbita: m.orbita, objetivo: m.objetivo }))
+    ? e.modelos.map((m) => ({ nombre: m.nombre, src: conVer(m.src), tipo: "modelo", coste: m.coste, sim: m.sim, orbita: m.orbita, objetivo: m.objetivo }))
     : e.imagenes.map((im) => ({ nombre: im.pie, src: im.src, tipo: "imagen" }));
   const primera = posiciones[0];
   // el visor 3D de una vista. Cada vista puede traer su encuadre («orbita» y «objetivo»),
@@ -772,6 +772,20 @@ ${burbujas}
   });
   tocarFuera = (ev) => { if (vAbierta() && !ev.target.closest("#versiones")) vAbrir(false); };
 
+  // simulación de cargas: una vista con "sim" cambia el visor por sim.js (tablero y mandos)
+  let cierraSim = null, turnoSim = 0;
+  const ponSim = async (p) => {
+    const turno = ++turnoSim;
+    if (cierraSim) { cierraSim(); cierraSim = null; }
+    if (!p || !p.sim) return;
+    try {
+      const { montar } = await import(conVer("./sim.js"));
+      const cerrar = await montar(document.querySelector(".escena"), { glb: p.src, datos: conVer(p.sim) });
+      if (turno === turnoSim && document.body.contains(app.querySelector(".sim"))) cierraSim = cerrar; else cerrar();
+    } catch (err) { console.error("simulación", err); }
+  };
+  ponSim(primera);
+
   // posiciones
   document.querySelectorAll(".pos").forEach((b) => b.addEventListener("click", () => {
     document.querySelectorAll(".pos").forEach((x) => x.setAttribute("aria-pressed", x === b));
@@ -782,6 +796,7 @@ ${burbujas}
     else { destino.src = p.src; destino.alt = p.nombre; }
     const rotulo = document.getElementById("pos-nombre");
     if (rotulo) { rotulo.textContent = p.nombre; descifra(rotulo); }
+    ponSim(p);
     const pp = document.getElementById("precio-pos");
     if (pp) pp.innerHTML = precioPos(p);
   }));

@@ -1,0 +1,128 @@
+{
+ "ctc": 84.5,
+ "arm_len": 250.0,
+ "depth": 8.0,
+ "line_h": 16.0,
+ "E": 3000.0,
+ "taper": 1.6,
+ "sigma_ok": 15.0,
+ "aguanta_cano_N": 24.3,
+ "aguanta_manilla_N": 24.8,
+ "objetos": [
+  {
+   "id": "cepillo",
+   "nombre": "cepillo de dientes",
+   "gramos": 20,
+   "x": -256.0,
+   "formas": [
+    "arriba",
+    "abajo"
+   ]
+  },
+  {
+   "id": "pasta",
+   "nombre": "pasta de dientes",
+   "gramos": 100,
+   "x": -226.0,
+   "formas": [
+    "arriba",
+    "abajo"
+   ]
+  },
+  {
+   "id": "desodorante",
+   "nombre": "desodorante",
+   "gramos": 65,
+   "x": -182.5,
+   "formas": [
+    "arriba",
+    "abajo"
+   ]
+  },
+  {
+   "id": "colonia",
+   "nombre": "colonia",
+   "gramos": 370,
+   "x": -118.0,
+   "formas": [
+    "arriba",
+    "abajo"
+   ]
+  },
+  {
+   "id": "secador",
+   "nombre": "secador",
+   "gramos": 250,
+   "x": 122.0,
+   "formas": [
+    "puesto"
+   ]
+  },
+  {
+   "id": "pelo",
+   "nombre": "cepillo del pelo",
+   "gramos": 120,
+   "x": 185.0,
+   "formas": [
+    "arriba",
+    "abajo"
+   ]
+  },
+  {
+   "id": "oralb",
+   "nombre": "oral-b",
+   "gramos": 125,
+   "x": 241.0,
+   "formas": [
+    "arriba",
+    "abajo"
+   ]
+  }
+ ],
+ "todo": {
+  "peso_g": 1050,
+  "cano_N": 5.2,
+  "manilla_N": 5.1,
+  "momento_izq_Nmm": 586.58,
+  "tension_izq_MPa": 1.72,
+  "flecha_izq_mm": 1.47,
+  "momento_der_Nmm": 607.35,
+  "tension_der_MPa": 1.78,
+  "flecha_der_mm": 1.68
+ },
+ "peor": {
+  "cano": {
+   "valor": 7.19,
+   "con": [
+    "secador",
+    "pelo",
+    "oralb"
+   ]
+  },
+  "manilla": {
+   "valor": 6.94,
+   "con": [
+    "cepillo",
+    "pasta",
+    "desodorante",
+    "colonia"
+   ]
+  },
+  "tension": {
+   "valor": 1.78,
+   "con": [
+    "secador",
+    "pelo",
+    "oralb"
+   ]
+  },
+  "flecha": {
+   "valor": 1.68,
+   "con": [
+    "secador",
+    "pelo",
+    "oralb"
+   ]
+  }
+ }
+}

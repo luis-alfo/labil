@@ -125,3 +125,81 @@ Las pruebas van aparte del precio del diseño.
 - Las imágenes `trazo_en_el_bano_*.jpg` son el modelo colocado sobre las fotos de Luis: la
   cámara se saca de las cuatro esquinas de la placa negra (`cv2.solvePnP`) y el grifo tapa
   lo que queda detrás.
+
+## 20 nov 2026 · Siete objetos, brazos de 250 mm y cálculo de cargas
+
+Luis quiere colgar siete cosas, una por enganche, y dio sus pesos:
+
+| Objeto | Peso | Enganche | Lado |
+| --- | --- | --- | --- |
+| Colonia Boss | 370 g | bandeja con reborde, abierta por los lados | izquierda, junto a la placa |
+| Desodorante Sanex | 65 g | aro: cae de arriba y apoya en la panza | izquierda |
+| Pasta Colgate | 100 g | horquilla: cuelga boca abajo por el hombro | izquierda |
+| Cepillo de dientes | 20 g | horquilla | izquierda, en la punta |
+| Secador | 250 g | gancho hondo, por la anilla del mango | derecha, junto a la placa |
+| Cepillo del pelo | 120 g | horquilla ancha, bajo la cabeza | derecha |
+| Oral-B | 125 g | vasito: aro, cuatro postes y suelo en cruz | derecha, en la punta |
+
+**Dos criterios de Luis** que mandan sobre el reparto:
+- Usabilidad: son objetos de uso diario, se cogen y se dejan con una mano. Los enganches se
+  abren hacia delante.
+- Estética: «todo debería a nivel visual librar la placa de grifo y manilla». Nada encima
+  de la placa; la colonia no va entre grifo y manilla, como propuse al principio.
+
+**Rediseño**: fuera de la placa hacen falta unos 185 mm útiles por lado. Los brazos pasan
+de 200 a 250 mm (decisión de Luis), la curva de la punta se acorta a 24 mm y la línea sube
+de 14 a 16 mm de alto. Cada mitad mide 303 mm y, girada, cabe en un cuadrado de 222 mm.
+
+**Cálculo** (`estado()` y `cargas()` en `generate_stl.py`; resultado en `cargas.json`).
+La barra es una viga sobre dos apoyos, los lazos. Un lazo que «apoya» descansa sobre el
+grifo; uno del que «tiran» depende de su clic.
+
+| Qué | Valor | Aguanta | Margen |
+| --- | --- | --- | --- |
+| Todo puesto | caño apoya 5.2 N, manilla apoya 5.1 N | — | — |
+| Peor tirón en el caño (solo lo de la derecha) | 7.2 N | 24 N | ×3.4 |
+| Peor tirón en la manilla (solo lo de la izquierda) | 6.9 N | 25 N | ×3.6 |
+| Tensión en el arranque de un brazo | 1.8 MPa | 15 MPa | ×8.4 |
+| Caída de una punta | 1.7 mm | el doble con los años | — |
+
+Se han probado las 128 combinaciones de objetos puestos y quitados.
+
+**Lo que no está comprobado**
+- Lo que aguanta cada lazo es un cálculo. Las pruebas impresas encajan, pero no se ha
+  medido la fuerza para soltarlas.
+- Los tamaños de los objetos salen de la foto. Colonia (68 × 30 mm de base), desodorante
+  (Ø 42), Oral-B (Ø 28) y los cuellos de pasta (15), cepillo (8) y cepillo del pelo (21)
+  hay que medirlos antes de imprimir sus enganches.
+- No está calculado el tirón al coger el secador ni la torsión por lo que sobresale cada
+  objeto.
+- La pasta queda de pie sobre la horquilla, apoyada hacia atrás. Si se cae hacia delante,
+  la alternativa es una pinza para el extremo plano.
+- El suelo del vasito del Oral-B son dos puentes de 30 mm: hay que ver cómo salen.
+
+El artefacto «Trazo en uso» (https://claude.ai/artifact/TpyqDXyHMkNxnL79vbWcUZ) enseña esto
+mismo de forma interactiva: se pone y se quita cada objeto y cambian las fuerzas.
+
+## 20 nov 2026 · Dos formas por objeto: de pie o colgado
+
+Luis: «a nivel visual no me encanta que las cosas suban por encima de la barra», ni la pasta,
+ni la colonia, ni el cepillo eléctrico. Regla que se prueba: **la línea es el techo y todo
+cuelga por debajo**. No se decide todavía: se modelan las dos formas y se comparan en la
+simulación de la web, con un clic por objeto (arriba → abajo → quitado).
+
+| Objeto | De pie (arriba) | Colgado (abajo) |
+| --- | --- | --- |
+| Colonia | bandeja a ras de la línea | la misma bandeja, 99 mm más abajo |
+| Desodorante | aro | bandeja baja, 88 mm |
+| Pasta | horquilla, apoyada en el hombro | pinza: el extremo plano entra de lado en una ranura |
+| Cepillo de dientes | horquilla | horquilla 34 mm más abajo |
+| Cepillo del pelo | horquilla bajo la cabeza | gancho fino por el agujero del mango |
+| Oral-B | vasito | horquilla baja, colgado por el cuello |
+| Secador | gancho | (ya cuelga) |
+
+- **Las cargas no cambian**: mismo peso y misma posición a lo largo de la barra.
+- **Lo que sí cambia**: las bandejas bajas llevan una pared trasera grande (37 cm³ la de la
+  colonia, frente a 17); las horquillas bajas se imprimen de canto y la ranura pide un
+  soporte pequeño; lo colgado se balancea al cogerlo.
+- **Por comprobar**: la altura hasta la encimera (secador, Oral-B y cepillo del pelo bajan
+  20-25 cm) y si la pinza sujeta el tubo mojado.
+- Colgado, el cepillo del pelo queda pegado al secador: habría que separarlos.

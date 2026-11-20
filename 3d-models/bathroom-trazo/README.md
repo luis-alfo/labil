@@ -12,10 +12,8 @@ Sustituye a las propuestas A/B/C (`../bathroom-bar-{a,b,c}/`).
 | Archivo | Qué es | Cómo se imprime |
 | --- | --- | --- |
 | `trazo_izquierda.stl`, `trazo_derecha.stl` | Las dos mitades de la línea, unidas en el centro por cola de milano | Planas, como se exportan. 253 × 57 × 8 mm: en diagonal en la A1 |
-| `jinete_gancho.stl` | Gancho en J | De canto, como se exporta |
-| `jinete_repisa.stl` | Repisa con borde (pasta de dientes de pie) | De canto, como se exporta |
-| `jinete_horquilla.stl` | Horquilla de 8 mm (cepillo colgado por el cuello) | Placa abajo, como se exporta |
-| `jinete_aro.stl` | Aro Ø 62 (secador) | Placa abajo, como se exporta |
+
+| `jinete_*.stl` | Los siete enganches: colonia, desodorante, pasta, cepillo, secador, cepillo del pelo y Oral-B | Como se exportan, sin soportes |
 | `test_clip_manilla.stl`, `test_clip_cano.stl`, `test_union.stl` | Pruebas de 10-20 min | Planas |
 
 Ninguna necesita soportes. PLA, 0,20 mm, 5 perímetros, 30 % giroide, brim 6 mm

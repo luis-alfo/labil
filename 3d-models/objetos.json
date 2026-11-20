@@ -1,5 +1,5 @@
 {
- "_leeme": "Fuente de la web (docs/). Cada objeto tiene estados en orden cronológico: 'version' = impresa (regla de Luis), 'prueba' = pieza de prueba, 'borrador' = diseño sin imprimir. 'memoria' = qué cambia respecto al anterior y por qué, por temas. 'proceso' = imágenes que sube Luis durante el diseño (bocetos, fotos, capturas), guardadas con proceso/guardar.py. Las rutas son desde la raíz del repo. `python3 3d-models/web.py` genera docs/data/objetos.json. Un modelo con 'prueba' (ruta o lista de STL) es la vista de una pieza de prueba: la web calcula su coste y lo enseña bajo el precio del diseño.",
+ "_leeme": "Fuente de la web (docs/). Cada objeto tiene estados en orden cronológico: 'version' = impresa (regla de Luis), 'prueba' = pieza de prueba, 'borrador' = diseño sin imprimir. 'memoria' = qué cambia respecto al anterior y por qué, por temas. 'proceso' = imágenes que sube Luis durante el diseño (bocetos, fotos, capturas), guardadas con proceso/guardar.py. Las rutas son desde la raíz del repo. `python3 3d-models/web.py` genera docs/data/objetos.json. Un modelo con 'prueba' (ruta o lista de STL) es la vista de una pieza de prueba: la web calcula su coste y lo enseña bajo el precio del diseño. Un modelo con 'simulacion' (ruta a un cargas.json) abre la simulación de cargas: tablero arriba y mandos alrededor del modelo.",
  "objetos": [
   {
    "id": "el-secadero",
@@ -1392,8 +1392,13 @@
      "nombre": "trazo",
      "fecha": "2026-11-20",
      "por_imprimir": true,
-     "texto": "Una línea plana de PLA que cuelga del propio grifo. Pasa por encima del caño y de la manilla, se engancha a cada uno con un lazo abierto hacia abajo y se alarga un palmo a cada lado. Los ganchos van a caballo sobre su canto.",
+     "texto": "Una línea plana de PLA que cuelga del propio grifo. Pasa por encima del caño y de la manilla y se alarga 250 mm a cada lado. Siete enganches, uno por objeto, todos fuera de la placa del grifo.",
      "modelos": [
+      {
+       "nombre": "simulación",
+       "glb": "docs/models/bathroom_trazo_uso.glb",
+       "simulacion": "3d-models/bathroom-trazo/cargas.json"
+      },
       {
        "nombre": "montada",
        "glb": "docs/models/bathroom_trazo.glb"
@@ -1428,33 +1433,48 @@
        "de": "3d-models/bathroom-trazo/trazo_derecha.stl"
       },
       {
-       "nombre": "gancho",
-       "de": "3d-models/bathroom-trazo/jinete_gancho.stl",
-       "cantidad": 2
+       "nombre": "bandeja colonia",
+       "de": "3d-models/bathroom-trazo/jinete_colonia.stl"
       },
       {
-       "nombre": "horquilla",
-       "de": "3d-models/bathroom-trazo/jinete_horquilla.stl"
+       "nombre": "aro desodorante",
+       "de": "3d-models/bathroom-trazo/jinete_desodorante.stl"
       },
       {
-       "nombre": "aro",
-       "de": "3d-models/bathroom-trazo/jinete_aro.stl"
+       "nombre": "horquilla pasta",
+       "de": "3d-models/bathroom-trazo/jinete_pasta.stl"
       },
       {
-       "nombre": "repisa",
-       "de": "3d-models/bathroom-trazo/jinete_repisa.stl"
+       "nombre": "horquilla cepillo",
+       "de": "3d-models/bathroom-trazo/jinete_cepillo.stl"
+      },
+      {
+       "nombre": "gancho secador",
+       "de": "3d-models/bathroom-trazo/jinete_secador.stl"
+      },
+      {
+       "nombre": "horquilla cepillo del pelo",
+       "de": "3d-models/bathroom-trazo/jinete_pelo.stl"
+      },
+      {
+       "nombre": "vasito oral-b",
+       "de": "3d-models/bathroom-trazo/jinete_oralb.stl"
       }
      ],
      "descargas": [
       "3d-models/bathroom-trazo/trazo_izquierda.stl",
       "3d-models/bathroom-trazo/trazo_derecha.stl",
-      "3d-models/bathroom-trazo/jinete_gancho.stl",
-      "3d-models/bathroom-trazo/jinete_horquilla.stl",
-      "3d-models/bathroom-trazo/jinete_aro.stl",
-      "3d-models/bathroom-trazo/jinete_repisa.stl",
+      "3d-models/bathroom-trazo/jinete_colonia.stl",
+      "3d-models/bathroom-trazo/jinete_desodorante.stl",
+      "3d-models/bathroom-trazo/jinete_pasta.stl",
+      "3d-models/bathroom-trazo/jinete_cepillo.stl",
+      "3d-models/bathroom-trazo/jinete_secador.stl",
+      "3d-models/bathroom-trazo/jinete_pelo.stl",
+      "3d-models/bathroom-trazo/jinete_oralb.stl",
       "3d-models/bathroom-trazo/test_clip_manilla.stl",
       "3d-models/bathroom-trazo/test_clip_cano.stl",
       "3d-models/bathroom-trazo/test_union.stl",
+      "3d-models/bathroom-trazo/cargas.json",
       "3d-models/bathroom-trazo/APRENDIZAJES.md"
      ],
      "memoria": [
@@ -1467,24 +1487,8 @@
        "texto": "Los lazos se abren hacia abajo: el peso aprieta su parte maciza contra el grifo. En hilo la boca miraba hacia arriba y el peso tiraba de la pieza hacia fuera. Cada lazo aguanta unos 25 N hacia arriba (estimado)."
       },
       {
-       "tema": "resistencia",
-       "texto": "500 g en la punta: unos 4 mm de flecha y 12 N sobre el lazo contrario (estimado, E = 3000 MPa). Lo pesado, cerca del grifo."
-      },
-      {
-       "tema": "uso",
-       "texto": "La línea va por arriba y en los 8 mm pegados a la pared: no cruza la palanca ni toca el mando. En hilo y carril la barra pasaba justo por donde baja la palanca."
-      },
-      {
-       "tema": "montaje",
-       "texto": "Cuatro jinetes (gancho, horquilla, aro y repisa) se apoyan en el canto superior y se cambian de sitio a mano. Sin tornillos."
-      },
-      {
        "tema": "material",
        "texto": "Todo PLA, como pidió Luis. Desaparece la varilla de aluminio de hilo."
-      },
-      {
-       "tema": "impresión",
-       "texto": "Todo son perfiles planos sin soportes; las capas quedan en el plano en que flexan los lazos. La línea mide 485 mm y se parte en dos con cola de milano: cada mitad (253 mm) entra en diagonal en la A1."
       },
       {
        "tema": "método",
@@ -1505,9 +1509,33 @@
       {
        "tema": "estética",
        "texto": "Luis: línea en gris claro y enganches en naranja, «rollito Braun Dieter Rams»."
+      },
+      {
+       "tema": "uso",
+       "texto": "Luis: son objetos de uso diario; «todo debería a nivel visual librar la placa de grifo y manilla». Los siete enganches quedan a los lados de la placa y se abren hacia delante: horquillas para pasta y cepillos, bandeja para la colonia, aro para el desodorante, gancho para el secador y vasito para el Oral-B."
+      },
+      {
+       "tema": "diseño",
+       "texto": "Siete objetos fuera de la placa no caben en un palmo por lado: los brazos pasan de 200 a 250 mm y la línea de 14 a 16 mm de alto junto al grifo. Lo pesado va pegado a la placa (colonia a la izquierda, secador a la derecha) y lo ligero hacia las puntas."
+      },
+      {
+       "tema": "resistencia",
+       "texto": "Pesos de Luis: 1.050 g en total. Con todo puesto los dos lazos apoyan (5.2 y 5.1 N). El peor de los 128 casos tira de un lazo con 7.2 N y aguanta 24: margen ×3.4. Tensión máxima 1.8 MPa de 15; la punta baja 1.7 mm. Todo estimado, sin ensayo."
+      },
+      {
+       "tema": "impresión",
+       "texto": "Cada mitad mide 303 mm y girada cabe en un cuadrado de 222 mm: entra en la A1. Los enganches de horquilla, aro y vasito se imprimen con la placa abajo; bandeja y gancho, de canto. El suelo del vasito son dos puentes de 30 mm."
+      },
+      {
+       "tema": "medidas",
+       "texto": "Los tamaños de colonia, desodorante, Oral-B y cuellos están estimados desde la foto de Luis. Hay que medirlos antes de imprimir esos enganches."
+      },
+      {
+       "tema": "estética",
+       "texto": "Luis: «no me encanta que las cosas suban por encima de la barra». Cada objeto, menos el secador, tiene una segunda forma colgada bajo la línea: pasta en pinza, colonia y desodorante en bandeja baja, cepillos en horquilla baja y cepillo del pelo por el agujero del mango. La simulación deja comparar las dos; las cargas son las mismas."
       }
      ],
-     "cambio": "relleno de 4 mm tras el lazo de la manilla; línea gris claro y enganches naranja",
+     "cambio": "brazos de 250 mm y siete enganches a medida, ninguno sobre la placa",
      "imagenes": [
       {
        "de": "3d-models/bathroom-trazo/trazo_en_el_bano_frente.jpg",
@@ -1528,6 +1556,11 @@
        "de": "proceso/barra-bano/2026-11-17-el-bano-desde-arriba-y-a-la-izquierda.jpg",
        "pie": "El mismo sitio desde arriba y a la izquierda.",
        "fecha": "2026-11-17"
+      },
+      {
+       "de": "proceso/barra-bano/2026-11-20-los-objetos-que-van-en-la-barra.jpg",
+       "pie": "Lo que va en la barra: colonia, desodorante, pasta, cepillo del pelo, secador y cepillo de dientes (falta el Oral-B). De aquí salen los siete enganches y sus tamaños, estimados.",
+       "fecha": "2026-11-20"
       }
      ]
     }
@@ -2437,6 +2470,53 @@
       {
        "tema": "método",
        "texto": "En objetos.json, un modelo con «prueba» (la ruta de su STL) es la vista de una pieza de prueba. web.py calcula sus gramos con el mismo laminador simplificado que las piezas."
+      }
+     ],
+     "descargas": [],
+     "feedback": "quiero que incluyas en la web estas simulaciones, manteniendo los controles dentro del modelo, alrededor; que sea como el velocímetro y los controles de un coche",
+     "feedback_de": "luis"
+    },
+    {
+     "id": "simulacion",
+     "tipo": "version",
+     "nombre": "simulación de cargas",
+     "fecha": "2026-11-20",
+     "texto": "La página de un objeto puede simular sus cargas sin salir del modelo: arriba, un tablero con la viga sobre dos apoyos y un dial por apoyo; a cada lado, los objetos que se ponen y se quitan; y una «i» que explica las cifras.",
+     "cambio": "simulación de cargas con tablero arriba y mandos alrededor del modelo",
+     "imagenes": [
+      {
+       "de": "labil-web/capturas/2026-11-20-simulacion-tableta.png",
+       "pie": "barra de baño: tablero arriba y objetos a cada lado"
+      },
+      {
+       "de": "labil-web/capturas/2026-11-20-simulacion-movil.png",
+       "pie": "en móvil: los objetos en una tira deslizable"
+      }
+     ],
+     "memoria": [
+      {
+       "tema": "uso",
+       "texto": "Luis: «que no sea un scroll hacia abajo, que mantengamos el mismo estilo». La simulación vive en la misma pantalla que el modelo: los mandos van alrededor, como las versiones y las posiciones."
+      },
+      {
+       "tema": "diseño",
+       "texto": "Arriba, el tablero «como el velocímetro de un coche»: un dial por lazo (a la izquierda apoya, a la derecha tiran, en rojo el límite) y entre los dos la barra como viga, con sus pesos y su curva exagerada 10 veces."
+      },
+      {
+       "tema": "uso",
+       "texto": "Los objetos de la izquierda del grifo se ponen y se quitan a la izquierda de la pantalla, y los de la derecha a la derecha. En pantallas estrechas pasan a una tira deslizable sobre los mandos de abajo."
+      },
+      {
+       "tema": "uso",
+       "texto": "Luis: «no sé qué son estas cifras». Una «i» abajo a la izquierda abre qué son los newtons, los megapascales, el margen y la flecha, con ejemplos en gramos. Todas las fuerzas se dan también en gramos."
+      },
+      {
+       "tema": "método",
+       "texto": "docs/sim.js se carga solo cuando una vista lleva «simulacion» en objetos.json. Lee el cargas.json del diseño y mueve los objetos del GLB por su nombre (obj_<id>_<n>). Vale para cualquier objeto que publique esos dos archivos."
+      },
+      {
+       "tema": "uso",
+       "texto": "Luis: «me gustaría poder simular ambos cambiando en el selector de cada uno con un click». Cada botón pasa por las formas del objeto: ▲ de pie sobre la línea, ▼ colgado bajo ella y × quitado. «todo abajo» los cambia a la vez."
       }
      ],
      "descargas": [],
