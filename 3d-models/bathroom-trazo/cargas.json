@@ -13,43 +13,70 @@
    "id": "cepillo",
    "nombre": "cepillo de dientes",
    "gramos": 20,
-   "x": -256.0
+   "x": -256.0,
+   "formas": [
+    "arriba",
+    "abajo"
+   ]
   },
   {
    "id": "pasta",
    "nombre": "pasta de dientes",
    "gramos": 100,
-   "x": -226.0
+   "x": -226.0,
+   "formas": [
+    "arriba",
+    "abajo"
+   ]
   },
   {
    "id": "desodorante",
    "nombre": "desodorante",
    "gramos": 65,
-   "x": -182.5
+   "x": -182.5,
+   "formas": [
+    "arriba",
+    "abajo"
+   ]
   },
   {
    "id": "colonia",
    "nombre": "colonia",
    "gramos": 370,
-   "x": -118.0
+   "x": -118.0,
+   "formas": [
+    "arriba",
+    "abajo"
+   ]
   },
   {
    "id": "secador",
    "nombre": "secador",
    "gramos": 250,
-   "x": 122.0
+   "x": 122.0,
+   "formas": [
+    "puesto"
+   ]
   },
   {
    "id": "pelo",
    "nombre": "cepillo del pelo",
    "gramos": 120,
-   "x": 185.0
+   "x": 185.0,
+   "formas": [
+    "arriba",
+    "abajo"
+   ]
   },
   {
    "id": "oralb",
    "nombre": "oral-b",
    "gramos": 125,
-   "x": 241.0
+   "x": 241.0,
+   "formas": [
+    "arriba",
+    "abajo"
+   ]
   }
  ],
  "todo": {

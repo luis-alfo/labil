@@ -179,3 +179,27 @@ Se han probado las 128 combinaciones de objetos puestos y quitados.
 El artefacto «Trazo en uso» (https://claude.ai/artifact/TpyqDXyHMkNxnL79vbWcUZ) enseña esto
 mismo de forma interactiva: se pone y se quita cada objeto y cambian las fuerzas.
 
+## 20 nov 2026 · Dos formas por objeto: de pie o colgado
+
+Luis: «a nivel visual no me encanta que las cosas suban por encima de la barra», ni la pasta,
+ni la colonia, ni el cepillo eléctrico. Regla que se prueba: **la línea es el techo y todo
+cuelga por debajo**. No se decide todavía: se modelan las dos formas y se comparan en la
+simulación de la web, con un clic por objeto (arriba → abajo → quitado).
+
+| Objeto | De pie (arriba) | Colgado (abajo) |
+| --- | --- | --- |
+| Colonia | bandeja a ras de la línea | la misma bandeja, 99 mm más abajo |
+| Desodorante | aro | bandeja baja, 88 mm |
+| Pasta | horquilla, apoyada en el hombro | pinza: el extremo plano entra de lado en una ranura |
+| Cepillo de dientes | horquilla | horquilla 34 mm más abajo |
+| Cepillo del pelo | horquilla bajo la cabeza | gancho fino por el agujero del mango |
+| Oral-B | vasito | horquilla baja, colgado por el cuello |
+| Secador | gancho | (ya cuelga) |
+
+- **Las cargas no cambian**: mismo peso y misma posición a lo largo de la barra.
+- **Lo que sí cambia**: las bandejas bajas llevan una pared trasera grande (37 cm³ la de la
+  colonia, frente a 17); las horquillas bajas se imprimen de canto y la ranura pide un
+  soporte pequeño; lo colgado se balancea al cogerlo.
+- **Por comprobar**: la altura hasta la encimera (secador, Oral-B y cepillo del pelo bajan
+  20-25 cm) y si la pinza sujeta el tubo mojado.
+- Colgado, el cepillo del pelo queda pegado al secador: habría que separarlos.

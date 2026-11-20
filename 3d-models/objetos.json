@@ -1454,6 +1454,10 @@
       {
        "tema": "medidas",
        "texto": "Los tamaños de colonia, desodorante, Oral-B y cuellos están estimados desde la foto de Luis. Hay que medirlos antes de imprimir esos enganches."
+      },
+      {
+       "tema": "estética",
+       "texto": "Luis: «no me encanta que las cosas suban por encima de la barra». Cada objeto, menos el secador, tiene una segunda forma colgada bajo la línea: pasta en pinza, colonia y desodorante en bandeja baja, cepillos en horquilla baja y cepillo del pelo por el agujero del mango. La simulación deja comparar las dos; las cargas son las mismas."
       }
      ],
      "cambio": "brazos de 250 mm y siete enganches a medida, ninguno sobre la placa",
@@ -2434,6 +2438,10 @@
       {
        "tema": "método",
        "texto": "docs/sim.js se carga solo cuando una vista lleva «simulacion» en objetos.json. Lee el cargas.json del diseño y mueve los objetos del GLB por su nombre (obj_<id>_<n>). Vale para cualquier objeto que publique esos dos archivos."
+      },
+      {
+       "tema": "uso",
+       "texto": "Luis: «me gustaría poder simular ambos cambiando en el selector de cada uno con un click». Cada botón pasa por las formas del objeto: ▲ de pie sobre la línea, ▼ colgado bajo ella y × quitado. «todo abajo» los cambia a la vez."
       }
      ],
      "descargas": []
