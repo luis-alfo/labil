@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-20T16:59Z",
+ "generado": "2026-11-20T18:05Z",
  "euros_kg": 20.0,
  "perfil": "A1 · capa 0.2 mm · relleno 15% · PLA 1.26 g/cm³",
  "objetos": [
@@ -1574,24 +1574,24 @@
       {
        "nombre": "prueba caño",
        "cantidad": 1,
-       "gramos": 7.0,
-       "euros": 0.14,
+       "gramos": 7.5,
+       "euros": 0.15,
        "fuente": "stl"
       },
       {
        "nombre": "prueba manilla",
        "cantidad": 1,
-       "gramos": 8.2,
-       "euros": 0.16,
+       "gramos": 8.6,
+       "euros": 0.17,
        "fuente": "stl"
       }
      ],
      "coste": {
-      "gramos": 15.2,
-      "euros": 0.3,
+      "gramos": 16.1,
+      "euros": 0.32,
       "origen": "estimado"
      },
-     "cambiado": "2026-11-17"
+     "cambiado": "2026-11-20"
     },
     {
      "id": "trazo",
@@ -1599,7 +1599,7 @@
      "nombre": "trazo",
      "fecha": "2026-11-20",
      "por_imprimir": true,
-     "texto": "Una línea plana de PLA que cuelga del propio grifo. Pasa por encima del caño y de la manilla, se engancha a cada uno con un lazo abierto hacia abajo y se alarga un palmo a cada lado. Los ganchos van a caballo sobre su canto.",
+     "texto": "Una línea plana de PLA que cuelga del propio grifo. Pasa por encima del caño y de la manilla y se alarga 250 mm a cada lado. Siete enganches, uno por objeto, todos fuera de la placa del grifo.",
      "memoria": [
       {
        "tema": "diseño",
@@ -1610,24 +1610,8 @@
        "texto": "Los lazos se abren hacia abajo: el peso aprieta su parte maciza contra el grifo. En hilo la boca miraba hacia arriba y el peso tiraba de la pieza hacia fuera. Cada lazo aguanta unos 25 N hacia arriba (estimado)."
       },
       {
-       "tema": "resistencia",
-       "texto": "500 g en la punta: unos 4 mm de flecha y 12 N sobre el lazo contrario (estimado, E = 3000 MPa). Lo pesado, cerca del grifo."
-      },
-      {
-       "tema": "uso",
-       "texto": "La línea va por arriba y en los 8 mm pegados a la pared: no cruza la palanca ni toca el mando. En hilo y carril la barra pasaba justo por donde baja la palanca."
-      },
-      {
-       "tema": "montaje",
-       "texto": "Cuatro jinetes (gancho, horquilla, aro y repisa) se apoyan en el canto superior y se cambian de sitio a mano. Sin tornillos."
-      },
-      {
        "tema": "material",
        "texto": "Todo PLA, como pidió Luis. Desaparece la varilla de aluminio de hilo."
-      },
-      {
-       "tema": "impresión",
-       "texto": "Todo son perfiles planos sin soportes; las capas quedan en el plano en que flexan los lazos. La línea mide 485 mm y se parte en dos con cola de milano: cada mitad (253 mm) entra en diagonal en la A1."
       },
       {
        "tema": "método",
@@ -1648,10 +1632,34 @@
       {
        "tema": "estética",
        "texto": "Luis: línea en gris claro y enganches en naranja, «rollito Braun Dieter Rams»."
+      },
+      {
+       "tema": "uso",
+       "texto": "Luis: son objetos de uso diario; «todo debería a nivel visual librar la placa de grifo y manilla». Los siete enganches quedan a los lados de la placa y se abren hacia delante: horquillas para pasta y cepillos, bandeja para la colonia, aro para el desodorante, gancho para el secador y vasito para el Oral-B."
+      },
+      {
+       "tema": "diseño",
+       "texto": "Siete objetos fuera de la placa no caben en un palmo por lado: los brazos pasan de 200 a 250 mm y la línea de 14 a 16 mm de alto junto al grifo. Lo pesado va pegado a la placa (colonia a la izquierda, secador a la derecha) y lo ligero hacia las puntas."
+      },
+      {
+       "tema": "resistencia",
+       "texto": "Pesos de Luis: 1.050 g en total. Con todo puesto los dos lazos apoyan (5.2 y 5.1 N). El peor de los 128 casos tira de un lazo con 7.2 N y aguanta 24: margen ×3.4. Tensión máxima 1.8 MPa de 15; la punta baja 1.7 mm. Todo estimado, sin ensayo."
+      },
+      {
+       "tema": "impresión",
+       "texto": "Cada mitad mide 303 mm y girada cabe en un cuadrado de 222 mm: entra en la A1. Los enganches de horquilla, aro y vasito se imprimen con la placa abajo; bandeja y gancho, de canto. El suelo del vasito son dos puentes de 30 mm."
+      },
+      {
+       "tema": "medidas",
+       "texto": "Los tamaños de colonia, desodorante, Oral-B y cuellos están estimados desde la foto de Luis. Hay que medirlos antes de imprimir esos enganches."
       }
      ],
-     "cambio": "relleno de 4 mm tras el lazo de la manilla; línea gris claro y enganches naranja",
+     "cambio": "brazos de 250 mm y siete enganches a medida, ninguno sobre la placa",
      "modelos": [
+      {
+       "nombre": "con tus cosas",
+       "src": "models/bathroom_trazo_uso.glb"
+      },
       {
        "nombre": "montada",
        "src": "models/bathroom_trazo.glb"
@@ -1664,23 +1672,23 @@
        "nombre": "prueba manilla",
        "src": "models/test_clip_manilla.glb",
        "coste": {
-        "gramos": 8.2,
-        "euros": 0.16
+        "gramos": 8.6,
+        "euros": 0.17
        }
       },
       {
        "nombre": "prueba caño",
        "src": "models/test_clip_cano.glb",
        "coste": {
-        "gramos": 7.0,
-        "euros": 0.14
+        "gramos": 7.5,
+        "euros": 0.15
        }
       },
       {
        "nombre": "prueba unión",
        "src": "models/test_union.glb",
        "coste": {
-        "gramos": 4.4,
+        "gramos": 4.7,
         "euros": 0.09
        }
       }
@@ -1705,70 +1713,100 @@
        "src": "files/barra-bano/trazo/2026-11-17-el-bano-desde-arriba-y-a-la-izquierda.jpg",
        "pie": "El mismo sitio desde arriba y a la izquierda.",
        "fecha": "2026-11-17"
+      },
+      {
+       "src": "files/barra-bano/trazo/2026-11-20-los-objetos-que-van-en-la-barra.jpg",
+       "pie": "Lo que va en la barra: colonia, desodorante, pasta, cepillo del pelo, secador y cepillo de dientes (falta el Oral-B). De aquí salen los siete enganches y sus tamaños, estimados.",
+       "fecha": "2026-11-20"
       }
      ],
      "descargas": [
       "files/barra-bano/trazo/trazo_izquierda.stl",
       "files/barra-bano/trazo/trazo_derecha.stl",
-      "files/barra-bano/trazo/jinete_gancho.stl",
-      "files/barra-bano/trazo/jinete_horquilla.stl",
-      "files/barra-bano/trazo/jinete_aro.stl",
-      "files/barra-bano/trazo/jinete_repisa.stl",
+      "files/barra-bano/trazo/jinete_colonia.stl",
+      "files/barra-bano/trazo/jinete_desodorante.stl",
+      "files/barra-bano/trazo/jinete_pasta.stl",
+      "files/barra-bano/trazo/jinete_cepillo.stl",
+      "files/barra-bano/trazo/jinete_secador.stl",
+      "files/barra-bano/trazo/jinete_pelo.stl",
+      "files/barra-bano/trazo/jinete_oralb.stl",
       "files/barra-bano/trazo/test_clip_manilla.stl",
       "files/barra-bano/trazo/test_clip_cano.stl",
       "files/barra-bano/trazo/test_union.stl",
+      "files/barra-bano/trazo/cargas.json",
       "files/barra-bano/trazo/APRENDIZAJES.md"
      ],
      "piezas": [
       {
        "nombre": "mitad izquierda",
        "cantidad": 1,
-       "gramos": 18.2,
-       "euros": 0.36,
+       "gramos": 22.3,
+       "euros": 0.45,
        "fuente": "stl"
       },
       {
        "nombre": "mitad derecha",
        "cantidad": 1,
-       "gramos": 18.5,
-       "euros": 0.37,
+       "gramos": 22.6,
+       "euros": 0.45,
        "fuente": "stl"
       },
       {
-       "nombre": "gancho",
-       "cantidad": 2,
-       "gramos": 8.9,
+       "nombre": "bandeja colonia",
+       "cantidad": 1,
+       "gramos": 21.9,
+       "euros": 0.44,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "aro desodorante",
+       "cantidad": 1,
+       "gramos": 5.4,
+       "euros": 0.11,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "horquilla pasta",
+       "cantidad": 1,
+       "gramos": 4.3,
+       "euros": 0.09,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "horquilla cepillo",
+       "cantidad": 1,
+       "gramos": 3.2,
+       "euros": 0.06,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "gancho secador",
+       "cantidad": 1,
+       "gramos": 6.4,
+       "euros": 0.13,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "horquilla cepillo del pelo",
+       "cantidad": 1,
+       "gramos": 6.6,
+       "euros": 0.13,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "vasito oral-b",
+       "cantidad": 1,
+       "gramos": 9.1,
        "euros": 0.18,
-       "fuente": "stl"
-      },
-      {
-       "nombre": "horquilla",
-       "cantidad": 1,
-       "gramos": 4.9,
-       "euros": 0.1,
-       "fuente": "stl"
-      },
-      {
-       "nombre": "aro",
-       "cantidad": 1,
-       "gramos": 7.1,
-       "euros": 0.14,
-       "fuente": "stl"
-      },
-      {
-       "nombre": "repisa",
-       "cantidad": 1,
-       "gramos": 17.3,
-       "euros": 0.35,
        "fuente": "stl"
       }
      ],
      "coste": {
-      "gramos": 74.9,
-      "euros": 1.5,
+      "gramos": 101.8,
+      "euros": 2.04,
       "origen": "estimado"
      },
-     "cambiado": "2026-11-17"
+     "cambiado": "2026-11-20"
     }
    ]
   },

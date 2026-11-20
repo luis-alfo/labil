@@ -125,3 +125,57 @@ Las pruebas van aparte del precio del diseño.
 - Las imágenes `trazo_en_el_bano_*.jpg` son el modelo colocado sobre las fotos de Luis: la
   cámara se saca de las cuatro esquinas de la placa negra (`cv2.solvePnP`) y el grifo tapa
   lo que queda detrás.
+
+## 20 nov 2026 · Siete objetos, brazos de 250 mm y cálculo de cargas
+
+Luis quiere colgar siete cosas, una por enganche, y dio sus pesos:
+
+| Objeto | Peso | Enganche | Lado |
+| --- | --- | --- | --- |
+| Colonia Boss | 370 g | bandeja con reborde, abierta por los lados | izquierda, junto a la placa |
+| Desodorante Sanex | 65 g | aro: cae de arriba y apoya en la panza | izquierda |
+| Pasta Colgate | 100 g | horquilla: cuelga boca abajo por el hombro | izquierda |
+| Cepillo de dientes | 20 g | horquilla | izquierda, en la punta |
+| Secador | 250 g | gancho hondo, por la anilla del mango | derecha, junto a la placa |
+| Cepillo del pelo | 120 g | horquilla ancha, bajo la cabeza | derecha |
+| Oral-B | 125 g | vasito: aro, cuatro postes y suelo en cruz | derecha, en la punta |
+
+**Dos criterios de Luis** que mandan sobre el reparto:
+- Usabilidad: son objetos de uso diario, se cogen y se dejan con una mano. Los enganches se
+  abren hacia delante.
+- Estética: «todo debería a nivel visual librar la placa de grifo y manilla». Nada encima
+  de la placa; la colonia no va entre grifo y manilla, como propuse al principio.
+
+**Rediseño**: fuera de la placa hacen falta unos 185 mm útiles por lado. Los brazos pasan
+de 200 a 250 mm (decisión de Luis), la curva de la punta se acorta a 24 mm y la línea sube
+de 14 a 16 mm de alto. Cada mitad mide 303 mm y, girada, cabe en un cuadrado de 222 mm.
+
+**Cálculo** (`estado()` y `cargas()` en `generate_stl.py`; resultado en `cargas.json`).
+La barra es una viga sobre dos apoyos, los lazos. Un lazo que «apoya» descansa sobre el
+grifo; uno del que «tiran» depende de su clic.
+
+| Qué | Valor | Aguanta | Margen |
+| --- | --- | --- | --- |
+| Todo puesto | caño apoya 5.2 N, manilla apoya 5.1 N | — | — |
+| Peor tirón en el caño (solo lo de la derecha) | 7.2 N | 24 N | ×3.4 |
+| Peor tirón en la manilla (solo lo de la izquierda) | 6.9 N | 25 N | ×3.6 |
+| Tensión en el arranque de un brazo | 1.8 MPa | 15 MPa | ×8.4 |
+| Caída de una punta | 1.7 mm | el doble con los años | — |
+
+Se han probado las 128 combinaciones de objetos puestos y quitados.
+
+**Lo que no está comprobado**
+- Lo que aguanta cada lazo es un cálculo. Las pruebas impresas encajan, pero no se ha
+  medido la fuerza para soltarlas.
+- Los tamaños de los objetos salen de la foto. Colonia (68 × 30 mm de base), desodorante
+  (Ø 42), Oral-B (Ø 28) y los cuellos de pasta (15), cepillo (8) y cepillo del pelo (21)
+  hay que medirlos antes de imprimir sus enganches.
+- No está calculado el tirón al coger el secador ni la torsión por lo que sobresale cada
+  objeto.
+- La pasta queda de pie sobre la horquilla, apoyada hacia atrás. Si se cae hacia delante,
+  la alternativa es una pinza para el extremo plano.
+- El suelo del vasito del Oral-B son dos puentes de 30 mm: hay que ver cómo salen.
+
+El artefacto «Trazo en uso» (https://claude.ai/artifact/TpyqDXyHMkNxnL79vbWcUZ) enseña esto
+mismo de forma interactiva: se pone y se quita cada objeto y cambian las fuerzas.
+

@@ -296,3 +296,16 @@ Detalle del objeto en `llaveros/st26/APRENDIZAJES.md`; aquí, lo que vale para c
   el modelo sobre sus propias fotos, sacando la cámara de un rectángulo conocido de la foto.
 - Estética de la barra: gris claro y naranja, «rollito Braun Dieter Rams».
 - Fotos con reflejos o espejo: se recorta o se difumina a la persona antes de publicarlas.
+
+## 2026-11-20 · Barra de baño: contarlo de palabra antes de diseñar
+
+- Luis pidió oír primero cómo sería cada enganche. Corrigió dos cosas que el modelo no
+  habría dejado ver a tiempo: la **usabilidad** (objetos de uso diario, con una mano) y la
+  **estética** (nada encima de la placa del grifo). **Código compartido**: antes de un
+  rediseño, contarlo de palabra y esperar.
+- **Código compartido**: lo pesado, cerca de los apoyos; y se calculan todas las
+  combinaciones de «puesto / quitado», no solo «todo puesto». El peor caso es quitar un lado.
+- Para enseñar un cálculo sirve una página donde Luis pone y quita cada objeto y ve cambiar
+  las fuerzas (artefacto «Trazo en uso»).
+- Los pesos los da Luis con la báscula; los tamaños sacados de una foto son estimaciones y
+  se dicen como tales.
