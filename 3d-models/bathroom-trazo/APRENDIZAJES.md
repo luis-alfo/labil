@@ -19,7 +19,8 @@ Los ganchos («jinetes») se apoyan sobre su canto superior y se cambian a mano.
 | Separación | 49 mm de borde a borde → 84,5 mm entre ejes | Medido por Luis | Alta |
 | Altura de los ejes | Alineados | Luis: «los centros están alineados» | Alta |
 | Fondo de los cilindros | 15-20 mm | Luis, a ojo | Media |
-| Embellecedor cromado | 3,5 mm | Estimado desde las fotos | Baja |
+| Embellecedor del caño | ~6 mm | Luis, con la prueba impresa (20 nov 2026) | Media («aproximadamente») |
+| Embellecedor de la manilla | ~2 mm | Luis, con la prueba impresa | Media |
 | Placa negra | ~158 × 81 mm | Estimado desde las fotos | Baja (solo se usa para el visor) |
 | Palanca | Cuelga hacia abajo y a la derecha | Fotos | Media |
 | Largo de cada brazo | 200 mm | Luis: «un palmo por lado» | Media |
@@ -101,3 +102,26 @@ PLA con E ≈ 3000 MPa. Los imprime `generate_stl.py`.
 | Las tres pruebas | 19 g | 0,38 € |
 
 Las pruebas van aparte del precio del diseño.
+
+## 20 nov 2026 · Pruebas impresas y relleno de 4 mm
+
+- Luis imprimió `test_clip_cano` y `test_clip_manilla`. **Los dos lazos entran y se quedan.**
+  El de la manilla abraza el casquillo fijo, por detrás de la rótula cromada: los 42 mm eran
+  de la parte fija.
+- **No quedan a la misma distancia de la pared.** El caño tiene un embellecedor de unos 6 mm
+  y la manilla de 2 mm; se había supuesto 3,5 mm en los dos.
+- Decisión de Luis: sumar 4 mm por detrás a la pieza de la manilla, «para que estén
+  alineadas y entonces empujando al fondo vayan bien».
+- Cómo queda: `CANO_GAP = 6`, `MANI_GAP = 2`. La línea vive en el plano del caño. El lazo de
+  la manilla lleva un relleno (`MANI_PAD = 4`) solo en su parte alta (±45° desde arriba), de
+  modo que los brazos del clic siguen con los 8 mm de fondo que ya se probaron.
+- La mitad derecha se imprime con la cara de delante sobre la cama: el relleno es lo último
+  y no pide soportes.
+- **Por comprobar con la prueba nueva de la manilla:** con el relleno, el lazo llega hasta
+  14 mm de la placa (antes 10). Hay que ver que el mando no lo roza al abrir el agua.
+- En las fotos las pruebas se ven con el relleno al aire, sin capa de arriba. Para la pieza
+  final hacen falta capas macizas arriba y abajo: es lo que da rigidez a la línea.
+- Colores: línea en gris claro y enganches en naranja, «rollito Braun Dieter Rams» (Luis).
+- Las imágenes `trazo_en_el_bano_*.jpg` son el modelo colocado sobre las fotos de Luis: la
+  cámara se saca de las cuatro esquinas de la placa negra (`cv2.solvePnP`) y el grifo tapa
+  lo que queda detrás.

@@ -51,7 +51,16 @@ GAP_EDGE       = 49.0    # edge to edge between both cylinders
 CTC            = FAUCET_OD / 2 + GAP_EDGE + HANDLE_OD / 2      # 84.5
 
 # --- assumed from the photos: confirm with the test pieces ---
-WALL_GAP       = 3.5     # chrome flange thickness; the part rests against it
+# Measured by Luis on the printed test pieces (20 Nov 2026): the caño clip
+# stops ~6 mm from the plate and the manilla clip ~2 mm. The line lives in the
+# caño's plane; a pad behind the manilla loop fills the 4 mm difference so
+# both loops bottom out when the part is pushed home.
+CANO_GAP       = 6.0     # caño flange: where the back of the line rests
+MANI_GAP       = 2.0     # manilla flange
+WALL_GAP       = CANO_GAP
+MANI_PAD       = CANO_GAP - MANI_GAP   # filler behind the manilla loop
+PAD_HALF_DEG   = 45.0    # the pad covers the top of the loop, ±45° from 12h;
+                         # the snap arms below stay 8 mm deep, as tested
 DEPTH          = 8.0     # extrusion depth; cylinders expose 15-20 mm
 
 # --- snap loops (mouth down) ---
@@ -175,6 +184,17 @@ def stroke_profile() -> Polygon:
     return profile
 
 
+def mani_pad_polygon() -> Polygon:
+    """Top sector of the manilla loop: the footprint of the 4 mm filler."""
+    r_in = (HANDLE_OD + FIT) / 2
+    r_out = r_in + MANI_T
+    ang = np.radians(np.linspace(90 - PAD_HALF_DEG, 90 + PAD_HALF_DEG, 40))
+    xm = CTC / 2
+    outer = [(xm + r_out * math.cos(a), r_out * math.sin(a)) for a in ang]
+    inner = [(xm + r_in * math.cos(a), r_in * math.sin(a)) for a in ang[::-1]]
+    return Polygon(outer + inner).buffer(-0.5).buffer(0.5)
+
+
 def dovetail() -> Polygon:
     zc = (belly_bottom(TAIL_LEN) + Z_TOP) / 2
     tail = Polygon([(-1.0, zc - TAIL_NECK / 2), (TAIL_LEN, zc - TAIL_HEAD / 2),
@@ -209,6 +229,19 @@ def extrude(poly: Polygon, height: float) -> "trimesh.Trimesh":
         mesh.update_faces(mesh.nondegenerate_faces())
         trimesh.repair.fix_normals(mesh)
     assert mesh.is_volume, "extrusion is not a closed volume"
+    return mesh
+
+
+def stroke_mesh(poly: Polygon, pad: Polygon | None = None) -> "trimesh.Trimesh":
+    """Extrude a piece of the stroke. Local z = 0 is its back face (towards
+    the wall); a pad, if any, sticks out behind it, from -MANI_PAD to 0."""
+    body = extrude(poly, DEPTH)
+    if pad is None:
+        return body
+    filler = extrude(pad.intersection(poly), MANI_PAD + 0.6)
+    filler.apply_translation([0, 0, -MANI_PAD])
+    mesh = trimesh.boolean.union([body, filler], engine="manifold")
+    assert mesh.is_volume
     return mesh
 
 
@@ -391,9 +424,14 @@ def report(left: Polygon, right: Polygon, printed: dict):
 def build():
     profile = stroke_profile()
     left, right = split_profile(profile)
+    stroke = {
+        "trazo_izquierda":  stroke_mesh(left),
+        "trazo_derecha":    stroke_mesh(right, mani_pad_polygon()),
+    }
     printed = {
-        "trazo_izquierda":  extrude(left, DEPTH),
-        "trazo_derecha":    extrude(right, DEPTH),
+        "trazo_izquierda":  on_bed(stroke["trazo_izquierda"]),
+        # front face down, so the pad is the last thing printed: no supports
+        "trazo_derecha":    on_bed(stroke["trazo_derecha"], flip=True),
     }
     gancho, gw = make_gancho()
     repisa, sw = make_repisa()
@@ -407,15 +445,15 @@ def build():
     printed["jinete_repisa"] = on_bed(repisa)
     printed["jinete_horquilla"] = on_bed(riders_local["jinete_horquilla"], flip=True)
     printed["jinete_aro"] = on_bed(riders_local["jinete_aro"], flip=True)
-    return profile, left, right, printed, riders_local
+    return profile, left, right, printed, riders_local, stroke
 
 
-def write_test_piece(name: str, polygons, checklist):
+def write_test_piece(name: str, polygons, checklist, pads=None):
     """Export a cut-out of the stroke profile as an MVP test piece, lying on
     the bed exactly as the full part prints (same layer direction)."""
     meshes, x = [], 0.0
-    for poly in polygons:
-        m = extrude(poly, DEPTH)
+    for poly, pad in zip(polygons, pads or [None] * len(polygons)):
+        m = on_bed(stroke_mesh(poly, pad), flip=pad is not None)
         m.apply_translation([x - m.bounds[0][0], -m.bounds[0][1], 0])
         x = m.bounds[1][0] + 6
         meshes.append(m)
@@ -439,7 +477,7 @@ def update_web_version():
 
 
 def main():
-    profile, left, right, printed, riders_local = build()
+    profile, left, right, printed, riders_local, stroke = build()
 
     for name, mesh in printed.items():
         mesh.export(HERE / f"{name}.stl")
@@ -447,7 +485,7 @@ def main():
     # --- installed view, with the faucet for context ---
     scene = []
     for name in ("trazo_izquierda", "trazo_derecha"):
-        m = printed[name].copy()
+        m = stroke[name].copy()
         m.apply_transform(STROKE_TO_WALL)
         scene.append((name, paint(m, MAT_PLA)))
     layout = (("jinete_gancho", -200), ("jinete_horquilla", -150),
