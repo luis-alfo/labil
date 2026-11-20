@@ -117,6 +117,8 @@ def main() -> None:
                     g = sum(gramos_cache[s] for s in stls)
                     vista["coste"] = {"gramos": round(g, 1),
                                       "euros": round(g * costes.EUROS_KG / 1000, 2)}
+                if "simulacion" in mod:   # datos de cargas: la web monta el tablero (docs/sim.js)
+                    vista["sim"] = publicar(mod["simulacion"], obj["id"], est["id"])
                 e["modelos"].append(vista)
             e["imagenes"] = [{"src": publicar(im["de"], obj["id"], est["id"]), "pie": im["pie"]}
                              for im in est.get("imagenes", [])]

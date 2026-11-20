@@ -328,3 +328,15 @@ algo que se pueda sopesar. **Código compartido**: las fuerzas se dan también e
   una pieza de plástico de uso diario se busca ×2 o más.
 - **Flecha (mm)**: cuánto baja la punta con lo que tiene colgado. El PLA cede con los años
   y puede llegar al doble.
+
+## 2026-11-20 · La web: simulación de cargas dentro del modelo
+
+- Luis no quiere una página aparte con scroll: quiere la simulación **en la misma pantalla
+  que el modelo**, con los mandos alrededor, «como el velocímetro y los controles de un coche».
+- **Código compartido** (disposición): tablero arriba (viga + un dial por apoyo), objetos de
+  cada lado a su lado de la pantalla, «i» abajo a la izquierda con la lección de las cifras.
+  En móvil estrecho, los objetos van en una tira deslizable.
+- Cómo se activa: en `3d-models/objetos.json`, el modelo lleva
+  `"simulacion": "<ruta a cargas.json>"`; el GLB nombra cada objeto `obj_<id>_<n>`.
+  El código está en `docs/sim.js`.
+- El primer artefacto de Claude sirvió para acordar el contenido; la web es donde se queda.

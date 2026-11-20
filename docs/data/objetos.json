@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-20T18:05Z",
+ "generado": "2026-11-20T18:14Z",
  "euros_kg": 20.0,
  "perfil": "A1 · capa 0.2 mm · relleno 15% · PLA 1.26 g/cm³",
  "objetos": [
@@ -1657,8 +1657,9 @@
      "cambio": "brazos de 250 mm y siete enganches a medida, ninguno sobre la placa",
      "modelos": [
       {
-       "nombre": "con tus cosas",
-       "src": "models/bathroom_trazo_uso.glb"
+       "nombre": "simulación",
+       "src": "models/bathroom_trazo_uso.glb",
+       "sim": "files/barra-bano/trazo/cargas.json"
       },
       {
        "nombre": "montada",
@@ -2425,7 +2426,7 @@
    "id": "labil-web",
    "nombre": "labil · la web",
    "que": "la propia web donde se ven los objetos: también se diseña por versiones",
-   "estado": "precio de la prueba publicado",
+   "estado": "simulación de cargas publicada",
    "palabras": {
     "version": "publicada",
     "pendiente": "por publicar"
@@ -2827,6 +2828,8 @@
        "texto": "En objetos.json, un modelo con «prueba» (la ruta de su STL) es la vista de una pieza de prueba. web.py calcula sus gramos con el mismo laminador simplificado que las piezas."
       }
      ],
+     "feedback": "quiero que incluyas en la web estas simulaciones, manteniendo los controles dentro del modelo, alrededor; que sea como el velocímetro y los controles de un coche",
+     "feedback_de": "luis",
      "modelos": [],
      "imagenes": [
       {
@@ -2850,6 +2853,51 @@
        "fecha": "2026-11-17"
       }
      ],
+     "descargas": [],
+     "piezas": [],
+     "cambiado": null
+    },
+    {
+     "id": "simulacion",
+     "tipo": "version",
+     "nombre": "simulación de cargas",
+     "fecha": "2026-11-20",
+     "texto": "La página de un objeto puede simular sus cargas sin salir del modelo: arriba, un tablero con la viga sobre dos apoyos y un dial por apoyo; a cada lado, los objetos que se ponen y se quitan; y una «i» que explica las cifras.",
+     "cambio": "simulación de cargas con tablero arriba y mandos alrededor del modelo",
+     "memoria": [
+      {
+       "tema": "uso",
+       "texto": "Luis: «que no sea un scroll hacia abajo, que mantengamos el mismo estilo». La simulación vive en la misma pantalla que el modelo: los mandos van alrededor, como las versiones y las posiciones."
+      },
+      {
+       "tema": "diseño",
+       "texto": "Arriba, el tablero «como el velocímetro de un coche»: un dial por lazo (a la izquierda apoya, a la derecha tiran, en rojo el límite) y entre los dos la barra como viga, con sus pesos y su curva exagerada 10 veces."
+      },
+      {
+       "tema": "uso",
+       "texto": "Los objetos de la izquierda del grifo se ponen y se quitan a la izquierda de la pantalla, y los de la derecha a la derecha. En pantallas estrechas pasan a una tira deslizable sobre los mandos de abajo."
+      },
+      {
+       "tema": "uso",
+       "texto": "Luis: «no sé qué son estas cifras». Una «i» abajo a la izquierda abre qué son los newtons, los megapascales, el margen y la flecha, con ejemplos en gramos. Todas las fuerzas se dan también en gramos."
+      },
+      {
+       "tema": "método",
+       "texto": "docs/sim.js se carga solo cuando una vista lleva «simulacion» en objetos.json. Lee el cargas.json del diseño y mueve los objetos del GLB por su nombre (obj_<id>_<n>). Vale para cualquier objeto que publique esos dos archivos."
+      }
+     ],
+     "modelos": [],
+     "imagenes": [
+      {
+       "src": "files/labil-web/simulacion/2026-11-20-simulacion-tableta.png",
+       "pie": "barra de baño: tablero arriba y objetos a cada lado"
+      },
+      {
+       "src": "files/labil-web/simulacion/2026-11-20-simulacion-movil.png",
+       "pie": "en móvil: los objetos en una tira deslizable"
+      }
+     ],
+     "proceso": [],
      "descargas": [],
      "piezas": [],
      "cambiado": null
