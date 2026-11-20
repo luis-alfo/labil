@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-20T16:59Z",
+ "generado": "2026-11-20T18:32Z",
  "euros_kg": 20.0,
  "perfil": "A1 · capa 0.2 mm · relleno 15% · PLA 1.26 g/cm³",
  "objetos": [
@@ -924,8 +924,14 @@
      "cambio": "solo el contorno del cajón, para probar el encaje con 11 g",
      "modelos": [
       {
+       "nombre": "en la estantería",
+       "src": "models/cajones_marco_en_hueco.glb",
+       "orbita": "32deg 76deg 1.5m",
+       "objetivo": "0.000m 0.491m -0.005m"
+      },
+      {
        "nombre": "marco",
-       "src": "models/archivo/cajones-isla-marco-0.glb"
+       "src": "models/archivo/cajones-isla-marco-1.glb"
       }
      ],
      "imagenes": [
@@ -1086,8 +1092,14 @@
      "feedback_de": "luis",
      "modelos": [
       {
+       "nombre": "abierto",
+       "src": "models/cajones_cajon_abierto.glb",
+       "orbita": "32deg 76deg 1.75m",
+       "objetivo": "0.000m 0.644m 0.001m"
+      },
+      {
        "nombre": "piezas",
-       "src": "models/archivo/cajones-isla-cajon-0.glb"
+       "src": "models/archivo/cajones-isla-cajon-1.glb"
       }
      ],
      "imagenes": [
@@ -1155,8 +1167,14 @@
      "cambio": "con una cajita detrás: no se ve el interior",
      "modelos": [
       {
+       "nombre": "en la estantería",
+       "src": "models/cajones_tapa_costillas_bolsillo.glb",
+       "orbita": "32deg 76deg 1.5m",
+       "objetivo": "0.000m 0.338m -0.007m"
+      },
+      {
        "nombre": "tapa",
-       "src": "models/archivo/cajones-isla-tapa-bolsillo-0.glb"
+       "src": "models/archivo/cajones-isla-tapa-bolsillo-1.glb"
       }
      ],
      "imagenes": [],
@@ -1206,8 +1224,14 @@
      "feedback_de": "luis",
      "modelos": [
       {
+       "nombre": "en la estantería",
+       "src": "models/cajones_tapa_costillas_pasante.glb",
+       "orbita": "32deg 76deg 1.5m",
+       "objetivo": "0.000m 0.338m -0.007m"
+      },
+      {
        "nombre": "tapa",
-       "src": "models/archivo/cajones-isla-tapa-pasante-0.glb"
+       "src": "models/archivo/cajones-isla-tapa-pasante-1.glb"
       }
      ],
      "imagenes": [
@@ -1259,8 +1283,20 @@
      "cambio": "antes de imprimir nada más, medir el hueco de verdad con 9 g",
      "modelos": [
       {
+       "nombre": "mide el ancho",
+       "src": "models/cajones_galga_ancho.glb",
+       "orbita": "32deg 76deg 1.5m",
+       "objetivo": "0.000m 0.425m 0.035m"
+      },
+      {
+       "nombre": "mide el alto",
+       "src": "models/cajones_galga_alto.glb",
+       "orbita": "32deg 76deg 1.5m",
+       "objetivo": "0.000m 0.491m -0.015m"
+      },
+      {
        "nombre": "galga",
-       "src": "models/archivo/cajones-isla-galga-0.glb"
+       "src": "models/archivo/cajones-isla-galga-2.glb"
       }
      ],
      "imagenes": [
@@ -1316,8 +1352,20 @@
      "cambio": "lengüetas flexibles en vez de costillas rígidas, probadas con 25 g",
      "modelos": [
       {
+       "nombre": "colocado",
+       "src": "models/cajones_aro_colocado.glb",
+       "orbita": "32deg 76deg 1.5m",
+       "objetivo": "0.000m 0.338m -0.007m"
+      },
+      {
+       "nombre": "entrando",
+       "src": "models/cajones_aro_entrando.glb",
+       "orbita": "32deg 76deg 1.5m",
+       "objetivo": "0.000m 0.338m 0.068m"
+      },
+      {
        "nombre": "aro",
-       "src": "models/archivo/cajones-isla-aro-lenguetas-0.glb"
+       "src": "models/archivo/cajones-isla-aro-lenguetas-2.glb"
       }
      ],
      "imagenes": [],
@@ -1359,17 +1407,37 @@
       {
        "tema": "uso",
        "texto": "Al ir enrasada, nada impide empujarla hacia dentro. Pendiente de decidir con Luis si lleva dos pestañas finas por delante."
+      },
+      {
+       "tema": "método",
+       "texto": "Luis: «veo una pieza blanca que no se entiende dónde se va a encajar». Cada pieza se enseña ahora colocada en la estantería modelada en 3D, y la tapa también entrando. Del mueble solo están medidos el hueco (130 × 135 mm) y el fondo (350 mm); tableros, zócalo y encimera están estimados de las fotos."
+      },
+      {
+       "tema": "estética",
+       "texto": "En la estantería la pieza va en verde fósforo, no en el color del filamento: en blanco no se distinguiría del mueble. Colocada, las lengüetas se dibujan ya recogidas; entrando, sobresalen sus 4 mm."
       }
      ],
      "cambio": "la puerta de 3 voltes con lengüetas; el tamaño final sale de la galga",
      "modelos": [
       {
+       "nombre": "colocada",
+       "src": "models/cajones_tapa_lenguetas_colocada.glb",
+       "orbita": "32deg 76deg 1.5m",
+       "objetivo": "0.000m 0.338m -0.007m"
+      },
+      {
+       "nombre": "entrando",
+       "src": "models/cajones_tapa_lenguetas_entrando.glb",
+       "orbita": "32deg 76deg 1.5m",
+       "objetivo": "0.000m 0.338m 0.068m"
+      },
+      {
        "nombre": "pasante",
-       "src": "models/archivo/cajones-isla-tapa-lenguetas-0.glb"
+       "src": "models/archivo/cajones-isla-tapa-lenguetas-2.glb"
       },
       {
        "nombre": "bolsillo",
-       "src": "models/archivo/cajones-isla-tapa-lenguetas-1.glb"
+       "src": "models/archivo/cajones-isla-tapa-lenguetas-3.glb"
       }
      ],
      "imagenes": [
@@ -1378,7 +1446,13 @@
        "pie": "lengüetas y galga"
       }
      ],
-     "proceso": [],
+     "proceso": [
+      {
+       "src": "files/cajones-isla/tapa-lenguetas/2026-11-20-la-columna-de-huecos-de-la-isla-vista-desde-abajo.jpg",
+       "pie": "Foto de Luis de la columna de huecos, vista desde abajo: encimera arriba, cajones a la izquierda y el costado de la isla a la derecha. De aquí sale la estantería en 3D donde se coloca cada pieza.",
+       "fecha": "2026-11-20"
+      }
+     ],
      "descargas": [
       "files/cajones-isla/tapa-lenguetas/tapa_lenguetas_pasante.stl",
       "files/cajones-isla/tapa-lenguetas/tapa_lenguetas_bolsillo.stl",
@@ -1591,7 +1665,7 @@
       "euros": 0.3,
       "origen": "estimado"
      },
-     "cambiado": "2026-11-17"
+     "cambiado": "2026-11-20"
     },
     {
      "id": "trazo",
@@ -1768,7 +1842,7 @@
       "euros": 1.5,
       "origen": "estimado"
      },
-     "cambiado": "2026-11-17"
+     "cambiado": "2026-11-20"
     }
    ]
   },
@@ -2387,7 +2461,7 @@
    "id": "labil-web",
    "nombre": "labil · la web",
    "que": "la propia web donde se ven los objetos: también se diseña por versiones",
-   "estado": "precio de la prueba publicado",
+   "estado": "sombras y contexto publicado",
    "palabras": {
     "version": "publicada",
     "pendiente": "por publicar"
@@ -2789,6 +2863,8 @@
        "texto": "En objetos.json, un modelo con «prueba» (la ruta de su STL) es la vista de una pieza de prueba. web.py calcula sus gramos con el mismo laminador simplificado que las piezas."
       }
      ],
+     "feedback": "me faltaría ver más sombras, y poder colocarlo en la estantería. si no, veo una pieza blanca que no se entiende dónde se va a encajar",
+     "feedback_de": "luis",
      "modelos": [],
      "imagenes": [
       {
@@ -2812,6 +2888,63 @@
        "fecha": "2026-11-17"
       }
      ],
+     "descargas": [],
+     "piezas": [],
+     "cambiado": null
+    },
+    {
+     "id": "sombras-y-contexto",
+     "tipo": "version",
+     "nombre": "sombras y contexto",
+     "fecha": "2026-11-20",
+     "texto": "El visor 3D tiene luz de estudio y las piezas se ven con relieve. Una vista puede enseñar la pieza colocada en su sitio, con su propio encuadre: los cajones de la isla se ven dentro de la estantería, con las sombras calculadas en el modelo.",
+     "cambio": "luz de estudio en el visor y cada pieza colocada en su sitio, con sombras",
+     "memoria": [
+      {
+       "tema": "uso",
+       "texto": "Luis: «me faltaría ver más sombras… y poder colocarlo en lo que sería la estantería, pero como STL, no como una foto… si no, veo una pieza blanca que no se entiende dónde se va a encajar». El objeto se enseña primero en su sitio; la pieza suelta pasa a ser otra vista."
+      },
+      {
+       "tema": "estética",
+       "texto": "El entorno «neutral» del visor ilumina igual desde todos lados y aplana las piezas claras. Ahora hay un estudio propio (docs/luz-visor.hdr, 128 KB): luz principal arriba a la izquierda, relleno a la derecha y contraluz. Cada cara recibe una luz distinta según hacia dónde mira. Vale para todos los objetos."
+      },
+      {
+       "tema": "método",
+       "texto": "El visor no sabe que una pieza le hace sombra a otra. En las escenas con contexto la sombra se calcula antes y viaja en el modelo: 48 rayos por vértice miran cuánto tapa lo que hay alrededor, hasta 300 mm. La malla se afina sola donde la sombra cambia. Cada escena pesa entre 0,4 y 1 MB."
+      },
+      {
+       "tema": "diseño",
+       "texto": "Una vista puede traer su encuadre en objetos.json: «orbita» y «objetivo». Con encuadre propio, la cámara puede acercarse hasta 25 cm. Al cambiar de vista se crea un visor nuevo: si solo se le cambia el modelo, conserva el ángulo de la vista anterior."
+      }
+     ],
+     "modelos": [],
+     "imagenes": [
+      {
+       "src": "files/labil-web/sombras-y-contexto/2026-11-20-pieza-en-la-estanteria.png",
+       "pie": "la tapa colocada en la estantería"
+      },
+      {
+       "src": "files/labil-web/sombras-y-contexto/2026-11-20-pieza-entrando.png",
+       "pie": "la tapa entrando, con las lengüetas fuera"
+      },
+      {
+       "src": "files/labil-web/sombras-y-contexto/2026-11-20-cajon-abierto.png",
+       "pie": "el cajón abierto"
+      },
+      {
+       "src": "files/labil-web/sombras-y-contexto/2026-11-20-pieza-en-la-estanteria-movil.png",
+       "pie": "en el móvil"
+      },
+      {
+       "src": "files/labil-web/sombras-y-contexto/2026-11-20-luz-nueva-pieza-sola.png",
+       "pie": "la pieza sola con la luz nueva"
+      },
+      {
+       "src": "files/labil-web/sombras-y-contexto/2026-11-20-antes-pieza-blanca-sin-relieve.png",
+       "pie": "antes: una pieza blanca sin relieve"
+      }
+     ],
+     "proceso": [],
      "descargas": [],
      "piezas": [],
      "cambiado": null

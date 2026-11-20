@@ -2,6 +2,37 @@
 
 > Movido desde el CLAUDE.md de la rama `claude/nice-goodall-9jt9q8` al unir el histórico (2026-11-16).
 
+## 2026-11-20 · La estantería en 3D: cada pieza en su sitio
+
+> Luis: «poder colocarlo en lo que sería la estantería, pero como STL, no como una foto… si no, veo una
+> pieza blanca que no se entiende dónde se va a encajar».
+
+- **`conceptos/estanteria.py`** modela la columna de huecos. No es para imprimir: es el contexto.
+  - **Medido por Luis**: hueco de 130 × 135 mm y 350 mm de fondo.
+  - **Estimado de las fotos**: 5 huecos, tableros de 18 mm, trasera de 8, zócalo de 100 mm, encimera de
+    20 mm con 20 de vuelo, el costado lacado de la isla a la derecha y un trozo del módulo de cajones a
+    la izquierda. Con esas cotas el mueble mide 903 mm de alto, lo normal en una isla.
+  - **Corrección**: en octubre se apuntó «6 huecos». En las dos fotos se cuentan **5** (en la del 20 de
+    noviembre, las bolsas tapan el estante que separa los dos de abajo). Pendiente de que Luis lo confirme.
+  - El hueco se modela con la medida nominal. El hueco real es más ancho (la tapa impresa bailaba) y no se
+    sabrá cuánto hasta medirlo con la galga.
+- **`conceptos/escenas.py`** coloca cada pieza en un hueco y escribe un GLB por escena en `docs/models/`
+  (`cajones_*.glb`) y sus encuadres en `escenas.json`. Necesita `embreex` para lanzar los rayos.
+  - Escenas: marco en el hueco, cajón abierto 175 mm, tapa de costillas (pasante y bolsillo), galga midiendo
+    el ancho y el alto, aro colocado y entrando, tapa de lengüetas colocada y entrando.
+  - La **pieza va en verde fósforo**, no en el color del filamento, para que se distinga del mueble blanco.
+  - **Colocada**, las lengüetas se dibujan recogidas (saliente = rendija); **entrando**, con sus 4 mm fuera.
+    El modelo no simula la flexión.
+  - Las tapas van en el segundo hueco desde abajo (Luis las quiere para los de abajo) y el cajón en el cuarto.
+  - Las placas Clickfinity no salen en la escena del cajón: no están en el repo por su licencia.
+- **Sombras**: van calculadas dentro del modelo (oclusión ambiental por vértice), porque el visor de la web
+  no sabe que una pieza le hace sombra a otra. Por eso el interior de los huecos sale oscuro.
+- Para regenerar tras cambiar una pieza o el mueble: `python3 conceptos/escenas.py` y después
+  `python3 3d-models/web.py`. Los encuadres de `escenas.json` se copian a mano en `3d-models/objetos.json`
+  (campos `glb`, `orbita` y `objetivo` de cada vista).
+
+---
+
 ## 2026-11-17 · La tapa se caía: qué falló y qué cambia
 
 > Luis: «la prueba que hicimos se caía. No se enganchaba por toda la holgura que dejaba».
@@ -125,7 +156,7 @@ Luis imprimió la **tapa pasante de costillas**. Preguntó si, además de añadi
   3. *Módulos* (reutilizables): cuerpo del cajón en medidas de una rejilla fija, frente/tirador como pieza aparte, separadores interiores.
   - Uniones candidatas: cola de milano deslizante (estructural, sin tornillos), tornillo M3 + inserto roscado de calor (desmontable muchas veces), clips (rápidos pero se fatigan).
   - Rejilla candidata: *Gridfinity* (estándar abierto de 42 mm, con miles de organizadores ya diseñados). En un hueco de 130 mm caben justo 3 unidades por dentro (≈125,8 mm útiles con pared de 1,6 y holgura de 0,5); hay que verificarlo.
-- **El mueble (foto de Luis, 2026-10-13)**: columna estrecha de 6 huecos apilados en el extremo de la isla, con estantes fijos, interior de tablero melaminado blanco y fondo cerrado. **Fondo útil: 35 cm.** Luis no sabe si pondrá cajón en todos. **Frente enrasado** (para ahorrar material).
+- **El mueble (foto de Luis, 2026-10-13)**: columna estrecha de 6 huecos apilados (**son 5**; ver la corrección del 20 de noviembre) en el extremo de la isla, con estantes fijos, interior de tablero melaminado blanco y fondo cerrado. **Fondo útil: 35 cm.** Luis no sabe si pondrá cajón en todos. **Frente enrasado** (para ahorrar material).
   - El melamina es más estable que la madera maciza (apenas se hincha) y el PLA desliza bien sobre él, así que 0,5 mm por lado es razonable e incluso podría bajar.
   - El *marco de prueba* sirve también de **galga**: probarlo en los 6 huecos dice en 2 minutos si todos miden lo mismo.
 - **Consecuencias de los 35 cm de fondo**

@@ -4,6 +4,9 @@ const reducido = matchMedia("(prefers-reduced-motion: reduce)").matches;
 let DATOS = null;
 let VER = "";
 
+// encuadre por defecto del visor 3D; una vista puede traer el suyo («orbita» y «objetivo»)
+const ORBITA = "0deg 75deg 105%", OBJETIVO = "auto auto auto";
+const CERCA = "auto auto 0.25m";   // en una escena con contexto se puede acercar la cámara hasta la pieza
 const TIPO = {
   version: { txt: "impresa", cls: "version" },
   pendiente: { txt: "por imprimir", cls: "pendiente" },
@@ -563,16 +566,22 @@ function vistaObjeto(oid, eid, abrirDetalles = false) {
 
   // posiciones: las vistas del modelo; si no hay modelo, las imágenes
   const posiciones = e.modelos.length
-    ? e.modelos.map((m) => ({ nombre: m.nombre, src: conVer(m.src), tipo: "modelo", coste: m.coste }))
+    ? e.modelos.map((m) => ({ nombre: m.nombre, src: conVer(m.src), tipo: "modelo", coste: m.coste, orbita: m.orbita, objetivo: m.objetivo }))
     : e.imagenes.map((im) => ({ nombre: im.pie, src: im.src, tipo: "imagen" }));
   const primera = posiciones[0];
+  // el visor 3D de una vista. Cada vista puede traer su encuadre («orbita» y «objetivo»),
+  // p. ej. la pieza dentro del mueble; en ese caso la cámara puede acercarse hasta la pieza.
+  const visor = (p) => `<model-viewer id="mv" src="${p.src}" alt="${esc(o.nombre)} · ${esc(e.nombre)}"
+           camera-orbit="${p.orbita || ORBITA}" camera-target="${p.objetivo || OBJETIVO}"
+           min-camera-orbit="${p.orbita ? CERCA : "auto auto auto"}"
+           camera-controls touch-action="none" interaction-prompt="none"
+           environment-image="luz-visor.hdr" exposure="0.9" tone-mapping="neutral"
+           shadow-intensity="1" shadow-softness="0.9" ar ar-modes="webxr scene-viewer quick-look">
+           <button slot="ar-button" class="boton-ar control">ver en tu espacio</button></model-viewer>`;
   const lienzo = !primera
     ? `<div class="vacio-lienzo caption">sin modelo 3D en el repositorio</div>`
     : primera.tipo === "modelo"
-      ? `<model-viewer id="mv" src="${primera.src}" alt="${esc(o.nombre)} · ${esc(e.nombre)}"
-           camera-controls touch-action="none" interaction-prompt="none" shadow-intensity="0"
-           exposure="1.05" ar ar-modes="webxr scene-viewer quick-look">
-           <button slot="ar-button" class="boton-ar control">ver en tu espacio</button></model-viewer>`
+      ? visor(primera)
       : `<img id="im" class="lienzo-img" src="${primera.src}" alt="${esc(primera.nombre)}">`;
 
   // desplegable propio (LG Señal): solo se ven las versiones; los borradores y las
@@ -768,8 +777,9 @@ ${burbujas}
     document.querySelectorAll(".pos").forEach((x) => x.setAttribute("aria-pressed", x === b));
     const p = posiciones[+b.dataset.k];
     const destino = document.getElementById(p.tipo === "modelo" ? "mv" : "im");
-    destino.src = p.src;
-    if (p.tipo === "imagen") destino.alt = p.nombre;
+    // un visor nuevo por vista: <model-viewer> conserva el ángulo de la anterior si solo se le cambia el modelo
+    if (p.tipo === "modelo") destino.outerHTML = visor(p);
+    else { destino.src = p.src; destino.alt = p.nombre; }
     const rotulo = document.getElementById("pos-nombre");
     if (rotulo) { rotulo.textContent = p.nombre; descifra(rotulo); }
     const pp = document.getElementById("precio-pos");

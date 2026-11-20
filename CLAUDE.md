@@ -35,11 +35,12 @@ sus estados en orden: versiones impresas, pruebas y borradores.
 
 | Archivo | Qué es |
 | --- | --- |
-| `3d-models/objetos.json` | **Fuente de la web.** Objetos y estados (`version` = impresa, `prueba`, `borrador`; `por_imprimir`), textos, piezas, modelos, imágenes, `proceso`, `memoria` y descargas. Al añadir un diseño o un estado, se añade aquí. Un modelo con `"prueba": "<ruta al STL>"` es la vista de una pieza de prueba: la web enseña su precio bajo el del diseño y la lista en detalles. |
+| `3d-models/objetos.json` | **Fuente de la web.** Objetos y estados (`version` = impresa, `prueba`, `borrador`; `por_imprimir`), textos, piezas, modelos, imágenes, `proceso`, `memoria` y descargas. Al añadir un diseño o un estado, se añade aquí. Un modelo con `"prueba": "<ruta al STL>"` es la vista de una pieza de prueba: la web enseña su precio bajo el del diseño y la lista en detalles. Una vista admite `orbita` y `objetivo` (su encuadre: `camera-orbit` y `camera-target`); así se enseña una pieza colocada en su contexto, como los cajones dentro de la estantería (`cajones-isla/conceptos/escenas.py`, con las sombras calculadas en el GLB). |
 | `proceso/` | Imágenes del proceso que sube Luis, por objeto. `proceso/guardar.py` las prepara. |
 | `3d-models/web.py` | Genera `docs/data/objetos.json`, los GLB que faltan (`docs/models/archivo/`) y copia descargas a `docs/files/<objeto>/<estado>/`. Corre en CI después de los `generate_stl.py`. |
 | `3d-models/costes.py` | Gramos y euros de cada pieza (laminador simplificado, perfil A1, **20 €/kg**). `--calibrar` lo compara con los gramos del laminador real (error medio 4 %, máx. 9 %). |
 | `docs/index.html`, `app.js`, `app.css` | La web v2 (rutas `#/`, `#/<objeto>/<estado>`, `#/historial`). Sin compilación. Portada en motion graphics casi sin texto: definición (frase) → diseño (rejilla) → cálculo (20 N → 17 MPa / 20) → impresión (three.js 0.160, placa real) → montaje (las piezas salen de la placa a su sitio; transformaciones de `3d-models/montaje.py`) y debajo las tarjetas. Página de objeto: modelo a pantalla completa; icono→inicio, nombre y precio arriba; burbujas a la derecha; versiones (desplegable propio: solo versiones, borradores plegados entre ellas) y posiciones abajo; banda «detalles». `index.html` carga `app.js`/`app.css` con la versión de `version.json` (sin caché). |
+| `docs/luz-visor.hdr` | Luz de estudio del visor 3D (la escribe `3d-models/luz_visor.py`). Sin ella las piezas claras se ven planas. |
 | `docs/v1/` | **Archivo**: la web anterior congelada, con copia de sus modelos. No se toca. |
 
 Los borradores **sí se publican** en la web v2 (lo pidió Luis): se ven en la página de su objeto

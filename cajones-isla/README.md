@@ -88,3 +88,12 @@ Ajustes del autor para las piezas Clickfinity: boquilla de 0,4, 2 paredes, relle
 - Si ya tienes impresa la tapa de costillas, se puede aprovechar pegando fieltro adhesivo en los costados del faldón.
 
 ![Tapas de costillas (descartadas)](tapas.png)
+
+## Ver cada pieza en la estantería
+
+`conceptos/estanteria.py` modela la columna de huecos a partir de las fotos y `conceptos/escenas.py` coloca cada pieza en un hueco, calcula las sombras y escribe un GLB por escena en `docs/models/cajones_*.glb`. La web las enseña como la primera vista de cada estado. Solo el hueco (130 × 135 × 350 mm) está medido; el resto del mueble es aproximado.
+
+```bash
+pip install manifold3d trimesh embreex
+python3 conceptos/escenas.py
+```
