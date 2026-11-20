@@ -362,3 +362,11 @@ algo que se pueda sopesar. **Código compartido**: las fuerzas se dan también e
 - **Códigos**: *vista* o *posición* = cada botón de abajo a la derecha; *escena* = una vista con contexto
   (la pieza y lo que la rodea); *encuadre* = desde dónde mira la cámara al abrir una vista.
 - **Orden de las vistas**: primero la pieza en su sitio, después la pieza suelta.
+
+## 2026-11-20 · La web: todo lo que rodea al modelo se puede plegar
+
+- Luis quiere poder dejar la pantalla limpia. **Código compartido**: cualquier panel que
+  rodee al modelo se pliega, y plegado sigue diciendo lo esencial en poco sitio.
+- En la simulación: el tablero se pliega en dos barras de progreso (una por lazo) con el
+  veredicto entre las dos; cada lista de objetos, en una pestaña lateral con «3/4».
+  El estado se recuerda mientras dura la visita.

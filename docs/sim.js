@@ -1,6 +1,8 @@
 // labil v2 — simulación de cargas de un objeto, dentro de su página.
 // El modelo ocupa la pantalla y los mandos van alrededor, como en el resto de la web:
-//   arriba   el tablero: la barra como viga sobre dos apoyos y un dial por apoyo
+//   arriba   el tablero: la barra como viga sobre dos apoyos y un dial por apoyo.
+//            se pliega (como «detalles») en dos barras de progreso, una por lazo,
+//            y el veredicto general entre las dos
 //   lados    los objetos de cada lado (en móvil, una tira deslizable). cada botón
 //            pasa con un clic por sus formas: arriba (▲, de pie sobre la línea),
 //            abajo (▼, colgado bajo la línea) y quitado; si solo tiene una, puesto/quitado
@@ -158,13 +160,51 @@ export async function montar(escena, { glb, datos }) {
   const brazos = html("p", "caption sim-brazos");
   const paso = html("p", "caption sim-paso"); paso.setAttribute("aria-live", "polite");
   centro.append(viga, veredicto, brazos, paso);
-  tablero.append(dCano.caja, centro, dMani.caja);
+  // plegado: una barra de progreso por lazo y, en medio, el veredicto general
+  const guarda = (k, v) => { try { sessionStorage.setItem(k, v ? "1" : ""); } catch (_) { /* sin almacenamiento */ } };
+  const lee = (k) => { try { return sessionStorage.getItem(k) === "1"; } catch (_) { return false; } };
+  const barra = (lado) => {
+    const b = html("div", `sim-barra ${lado}`); b.append(html("i"), html("span", "control"));
+    return b;
+  };
+  const mini = html("div", "sim-mini"), bCano = barra("izq"), bMani = barra("der"), general = html("span", "sim-general control");
+  mini.append(bCano, general, bMani);
+  const asa = html("button", "sim-asa"); asa.type = "button"; asa.appendChild(html("span"));
+  const pliegaTablero = (si) => {
+    tablero.classList.toggle("plegado", si); raiz.classList.toggle("tablero-plegado", si);
+    asa.setAttribute("aria-expanded", !si); asa.setAttribute("aria-label", si ? "desplegar el tablero" : "plegar el tablero");
+    guarda("sim-tablero-plegado", si);
+  };
+  asa.addEventListener("click", () => pliegaTablero(!tablero.classList.contains("plegado")));
+  mini.addEventListener("click", () => pliegaTablero(false));
+  tablero.append(dCano.caja, centro, dMani.caja, mini, asa);
+  const ponBarra = (b, nombre, r, aguanta) => {
+    const tiran = r < -0.05, uso = tiran ? -r / aguanta : 0;
+    b.dataset.nivel = uso >= 1 ? "mal" : uso >= 0.6 ? "justo" : tiran ? "tiran" : "bien";
+    b.firstChild.style.width = `${Math.round(Math.min(1, tiran ? uso : Math.max(r, 0) / 15) * 100)}%`;
+    b.lastChild.textContent = `${nombre} ${tiran ? "tiran" : "apoya"} ${n1(Math.abs(r))} n${tiran ? ` ×${n1(1 / uso)}` : ""}`;
+  };
 
-  const objetos = html("div", "sim-objetos");
+  const objetos = html("div", "sim-objetos"), pestanas = [];
+  function cuenta() {       // «izquierda 3/4»: cuántos de ese lado están puestos
+    for (const [pest, grupo, filtro, titulo] of pestanas) {
+      const los = D.objetos.filter(filtro), n = los.filter((o) => puestos.has(o.id)).length, plegado = grupo.classList.contains("plegado");
+      const izq = pest.dataset.lado === "izq", flecha = plegado === izq ? "›" : "‹";
+      pest.textContent = izq ? `${titulo} ${n}/${los.length} ${flecha}` : `${flecha} ${titulo} ${n}/${los.length}`;
+    }
+  }
   const botones = new Map();
   for (const [lado, filtro, titulo] of [["izq", (o) => o.x < 0, "izquierda"], ["der", (o) => o.x > 0, "derecha"]]) {
     const grupo = html("div", `sim-lado ${lado}`);
     grupo.setAttribute("role", "group"); grupo.setAttribute("aria-label", `objetos a la ${titulo} del grifo`);
+    // pestaña que pliega la lista contra su lateral y deja la pantalla limpia
+    const pest = html("button", "sim-lado-asa caption"); pest.type = "button"; pest.dataset.lado = lado;
+    const pliega = (si) => {
+      grupo.classList.toggle("plegado", si); pest.setAttribute("aria-expanded", !si);
+      pest.setAttribute("aria-label", `${si ? "mostrar" : "ocultar"} los objetos de la ${titulo}`); guarda(`sim-lado-${lado}`, si); cuenta();
+    };
+    pest.addEventListener("click", () => pliega(!grupo.classList.contains("plegado")));
+    grupo.appendChild(pest); pestanas.push([pest, grupo, filtro, titulo, pliega]);
     for (const o of D.objetos.filter(filtro).sort((a, b) => Math.abs(a.x) - Math.abs(b.x))) {
       const b = html("button", "sim-obj control");
       b.type = "button";
@@ -213,6 +253,8 @@ export async function montar(escena, { glb, datos }) {
     const nivel = uso >= 1 ? "mal" : uso >= 0.6 ? "justo" : "bien";
     veredicto.dataset.nivel = nivel;
     veredicto.textContent = `${nivel === "mal" ? "se suelta" : nivel === "justo" ? "aguanta, con poco margen" : uso > 0.001 ? `estable · margen ×${n1(1 / uso)}` : "estable"} · ${Math.round(e.peso).toLocaleString("es-ES")} g`;
+    ponBarra(bCano, "caño", e.cano, D.aguanta_cano_N); ponBarra(bMani, "manilla", e.manilla, D.aguanta_manilla_N);
+    general.dataset.nivel = nivel; general.textContent = veredicto.textContent.replace("estable · margen ", "estable ");
     brazos.textContent = `brazo izq ${n1(e.tension_izq)} mpa · punta ${n1(e.flecha_izq)} mm   |   brazo der ${n1(e.tension_der)} mpa · punta ${n1(e.flecha_der)} mm`;
     pintaViga(viga, D, est, puestos, e);
   }
@@ -226,10 +268,12 @@ export async function montar(escena, { glb, datos }) {
   function cambia(id, f) {
     forma.set(id, f);
     if (f === "fuera") puestos.delete(id); else { puestos.add(id); ultima.set(id, f); }
-    rotula(id); mover(id); pinta();
+    rotula(id); mover(id); pinta(); cuenta();
   }
   const pon = (id, si) => cambia(id, si ? ultima.get(id) : "fuera");
   D.objetos.forEach((o) => rotula(o.id));
+  pestanas.forEach(([, , , , pliega], k) => pliega(lee(`sim-lado-${k ? "der" : "izq"}`)));
+  pliegaTablero(lee("sim-tablero-plegado"));
   function parar() { cola = []; clearTimeout(reloj); paso.textContent = ""; }
   function sigue() {
     const p = cola.shift();

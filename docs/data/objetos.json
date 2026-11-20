@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-20T18:35Z",
+ "generado": "2026-11-20T18:42Z",
  "euros_kg": 20.0,
  "perfil": "A1 · capa 0.2 mm · relleno 15% · PLA 1.26 g/cm³",
  "objetos": [
@@ -959,7 +959,7 @@
       "euros": 0.23,
       "origen": "estimado"
      },
-     "cambiado": "2026-11-20"
+     "cambiado": "2026-11-17"
     },
     {
      "id": "conceptos",
@@ -1197,7 +1197,7 @@
       "euros": 1.07,
       "origen": "estimado"
      },
-     "cambiado": "2026-11-20"
+     "cambiado": "2026-11-17"
     },
     {
      "id": "tapa-pasante",
@@ -1472,7 +1472,7 @@
       "euros": 1.01,
       "origen": "estimado"
      },
-     "cambiado": "2026-11-20"
+     "cambiado": "2026-11-17"
     }
    ]
   },
@@ -2966,6 +2966,10 @@
       {
        "tema": "uso",
        "texto": "Luis: «me gustaría poder simular ambos cambiando en el selector de cada uno con un click». Cada botón pasa por las formas del objeto: ▲ de pie sobre la línea, ▼ colgado bajo ella y × quitado. «todo abajo» los cambia a la vez."
+      },
+      {
+       "tema": "uso",
+       "texto": "Luis: «quiero poder dejar limpia la pantalla». El tablero se pliega con un asa, como «detalles», y queda en dos barras de progreso, una por lazo (verde si apoya, ámbar si tiran, rojo en el límite), con el veredicto general entre las dos. Cada lista de objetos se pliega contra su lateral en una pestaña que dice cuántos hay puestos."
       }
      ],
      "feedback": "me faltaría ver más sombras, y poder colocarlo en la estantería. si no, veo una pieza blanca que no se entiende dónde se va a encajar",
