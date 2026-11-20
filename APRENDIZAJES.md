@@ -284,3 +284,15 @@ Detalle del objeto en `llaveros/st26/APRENDIZAJES.md`; aquí, lo que vale para c
   ve en la web hasta que se fusiona. Para verlo antes: `python3 -m http.server -d docs`.
 - **El visor mira las piezas tumbadas de frente.** Una pieza larga orientada hacia el fondo se ve
   de punta. Para la web se exporta una vista girada (`_vista.stl`), sin tocar las piezas de imprimir.
+
+## 2026-11-20 · Barra de baño: las pruebas mandan sobre las fotos
+
+- Las dos pruebas impresas encajan, pero una queda a 6 mm de la placa y la otra a 2. Desde
+  las fotos se había supuesto 3,5 mm en las dos. **Código compartido**: una medida estimada
+  de una foto se da por buena solo cuando la confirma una pieza impresa.
+- Luis decide con la pieza en la mano y lo dice en milímetros: «sumarle esos 4 milímetros
+  con un relleno por detrás».
+- **Realidad de Luis**: quiere ver el objeto en su sitio antes de imprimirlo. Sirve colocar
+  el modelo sobre sus propias fotos, sacando la cámara de un rectángulo conocido de la foto.
+- Estética de la barra: gris claro y naranja, «rollito Braun Dieter Rams».
+- Fotos con reflejos o espejo: se recorta o se difumina a la persona antes de publicarlas.

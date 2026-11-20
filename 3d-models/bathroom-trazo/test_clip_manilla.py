@@ -14,12 +14,13 @@ def main():
     xm = g.CTC / 2
     piece = g.stroke_profile().intersection(box(xm - 31, -99, xm + 33, 99))
     g.write_test_piece("test_clip_manilla", [piece], [
+        "Empujada a fondo, su cara de delante queda a ras con la del caño",
         "Abraza el casquillo fijo, no el mando que se mueve",
         "Abres y cierras el agua a tope sin que el mando la roce",
         "Giras frío/caliente a tope sin que la palanca la toque",
         "Entra con un clic y no sale al tirar hacia arriba",
         "Las puntas de la boca no blanquean ni se agrietan",
-    ])
+    ], pads=[g.mani_pad_polygon()])
     print("Touches the cap → lower DEPTH · tight/loose → FIT ± 0.2 · "
           "cracks → MANI_WRAP -= 10")
 

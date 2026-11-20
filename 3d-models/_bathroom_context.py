@@ -36,8 +36,8 @@ ARC_SEG = 48
 MAT_BLACK  = ([34, 34, 37, 255], 0.35, 0.55)     # matte black fixtures
 MAT_CHROME = ([212, 214, 220, 255], 1.0, 0.18)   # chrome rings / aerator
 MAT_WALL   = ([150, 146, 139, 255], 0.0, 0.95)   # grey microcement panel
-MAT_PLA    = ([238, 231, 216, 255], 0.0, 0.6)    # the printed line
-MAT_PLA_2  = ([207, 106, 52, 255], 0.0, 0.6)     # interchangeable hooks
+MAT_PLA    = ([214, 214, 209, 255], 0.0, 0.6)    # the printed line: light grey
+MAT_PLA_2  = ([236, 94, 28, 255], 0.0, 0.55)     # interchangeable hooks: orange
 
 # Kept for the older A/B/C generators, which paint with face colours.
 COLOR_BLACK  = MAT_BLACK[0]
@@ -107,10 +107,10 @@ def _tube(points: Iterable[Tuple[float, float, float]], radius: float):
 
 
 def make_context_meshes(faucet_od: float, handle_od: float, ctc: float,
-                        wall: bool = True
+                        wall: bool = True, cano_flange: float = 6.0,
+                        mani_flange: float = 2.0
                         ) -> List[Tuple[str, "trimesh.Trimesh"]]:
     """Wall panel, black plate, caño with its spout, manilla with its lever."""
-    FLANGE_T   = 3.5      # chrome flange at the base of each cylinder
     PLATE_T    = 4.0
     xc, xm = -ctc / 2, +ctc / 2
     items: List[Tuple[str, "trimesh.Trimesh"]] = []
@@ -120,14 +120,14 @@ def make_context_meshes(faucet_od: float, handle_od: float, ctc: float,
         panel.apply_translation([0, -PLATE_T - 2, -30])
         items.append(("pared", paint(panel, MAT_WALL)))
 
-    # Black plate: ~158 x 81 mm, sitting a little low relative to the axes.
-    plate = trimesh.creation.box(extents=[158, PLATE_T, 81])
-    plate.apply_translation([2, -PLATE_T / 2, -5.5])
+    # Black plate: ~150 x 68 mm (from the frontal photo of 17 Nov 2026).
+    plate = trimesh.creation.box(extents=[150, PLATE_T, 68])
+    plate.apply_translation([-1, -PLATE_T / 2, -2.5])
     items.append(("placa", paint(plate, MAT_BLACK)))
 
     # ---- caño: chrome flange, Ø29 tube that reaches out and turns down ----
     items.append(("cano_embellecedor", paint(
-        _cyl_y(faucet_od / 2 + 4, 0, FLANGE_T, xc), MAT_CHROME)))
+        _cyl_y(faucet_od / 2 + 4, 0, cano_flange, xc), MAT_CHROME)))
     reach, bend_r = 78.0, 40.0
     path = [(xc, 0.0, 0.0), (xc, reach, 0.0)]
     for i in range(1, 13):
@@ -146,17 +146,17 @@ def make_context_meshes(faucet_od: float, handle_od: float, ctc: float,
 
     # ---- manilla: flange, fixed sleeve, chrome dome, moving cap, lever ----
     items.append(("manilla_embellecedor", paint(
-        _cyl_y(handle_od / 2 + 3.5, 0, FLANGE_T, xm), MAT_CHROME)))
+        _cyl_y(handle_od / 2 + 3.5, 0, mani_flange, xm), MAT_CHROME)))
     items.append(("manilla_casquillo_fijo", paint(
-        _cyl_y(handle_od / 2, FLANGE_T, 13, xm), MAT_BLACK)))
+        _cyl_y(handle_od / 2, mani_flange, 15, xm), MAT_BLACK)))
     dome = trimesh.creation.icosphere(radius=handle_od / 2 - 2.5,
                                       subdivisions=3)
-    dome.apply_translation([xm, 15, 0])
+    dome.apply_translation([xm, 17, 0])
     items.append(("manilla_rotula", paint(dome, MAT_CHROME)))
     items.append(("manilla_mando", paint(
-        _cyl_y(handle_od / 2, 19, 42, xm), MAT_BLACK)))
+        _cyl_y(handle_od / 2, 21, 44, xm), MAT_BLACK)))
     lean = math.radians(24)                     # lever hangs down-right
-    start = np.array([xm + 6 * math.sin(lean), 31, -handle_od / 2 + 4])
+    start = np.array([xm + 6 * math.sin(lean), 33, -handle_od / 2 + 4])
     lever_dir = np.array([math.sin(lean), 0, -math.cos(lean)])
     items.append(("manilla_palanca", paint(
         _tube([start, start + lever_dir * 78], 4.0), MAT_BLACK)))

@@ -1172,7 +1172,7 @@
    "id": "barra-bano",
    "nombre": "barra de baño",
    "que": "línea modular que cuelga del grifo del baño",
-   "estado": "trazo por imprimir",
+   "estado": "pruebas impresas · trazo por imprimir",
    "estados": [
     {
      "id": "hilo",
@@ -1264,10 +1264,58 @@
      "feedback_de": "luis"
     },
     {
+     "id": "pruebas-lazos",
+     "tipo": "prueba",
+     "nombre": "pruebas de los lazos",
+     "fecha": "2026-11-20",
+     "texto": "Los dos lazos impresos por separado y encajados en el grifo. Entran y se quedan, pero no quedan a la misma distancia de la pared.",
+     "cambio": "primeras piezas impresas: los dos lazos encajan",
+     "feedback": "detrás del grifo hay un gap de unos 6 milímetros; a la otra pieza, que solo tiene 2, hay que sumarle esos 4 con un relleno por detrás",
+     "feedback_de": "luis",
+     "piezas": [
+      {
+       "nombre": "prueba caño",
+       "de": "3d-models/bathroom-trazo/test_clip_cano.stl"
+      },
+      {
+       "nombre": "prueba manilla",
+       "de": "3d-models/bathroom-trazo/test_clip_manilla.stl"
+      }
+     ],
+     "proceso": [
+      {
+       "de": "proceso/barra-bano/2026-11-20-las-dos-pruebas-impresas-y-encajadas-en-el-grifo.jpg",
+       "pie": "Las dos pruebas impresas y encajadas. El lazo de la manilla abraza el casquillo fijo, por detrás de la rótula cromada.",
+       "fecha": "2026-11-20"
+      },
+      {
+       "de": "proceso/barra-bano/2026-11-20-las-pruebas-de-frente-lazo-del-cano-y-lazo-de-la-manilla.jpg",
+       "pie": "De frente: los dos lazos entran desde arriba y se quedan.",
+       "fecha": "2026-11-20"
+      },
+      {
+       "de": "proceso/barra-bano/2026-11-20-las-pruebas-vistas-desde-abajo-la-del-cano-queda-mas-separada-de-la-pared.jpg",
+       "pie": "Desde abajo: la del caño queda a unos 6 mm de la placa y la de la manilla a 2. De aquí sale el relleno de 4 mm. (Reflejo del cromado difuminado.)",
+       "fecha": "2026-11-20"
+      }
+     ],
+     "memoria": [
+      {
+       "tema": "clic",
+       "texto": "Los dos lazos entran desde arriba y se quedan puestos. El de la manilla abraza el casquillo fijo, como se quería."
+      },
+      {
+       "tema": "medidas",
+       "texto": "El embellecedor del caño separa la pieza unos 6 mm de la placa; el de la manilla, 2 mm. Se había supuesto 3,5 mm en los dos."
+      }
+     ],
+     "descargas": []
+    },
+    {
      "id": "trazo",
      "tipo": "version",
      "nombre": "trazo",
-     "fecha": "2026-11-17",
+     "fecha": "2026-11-20",
      "por_imprimir": true,
      "texto": "Una línea plana de PLA que cuelga del propio grifo. Pasa por encima del caño y de la manilla, se engancha a cada uno con un lazo abierto hacia abajo y se alarga un palmo a cada lado. Los ganchos van a caballo sobre su canto.",
      "modelos": [
@@ -1364,15 +1412,49 @@
        "texto": "Todo son perfiles planos sin soportes; las capas quedan en el plano en que flexan los lazos. La línea mide 485 mm y se parte en dos con cola de milano: cada mitad (253 mm) entra en diagonal en la A1."
       },
       {
-       "tema": "medidas",
-       "texto": "Medido por Luis: caño Ø 29, manilla Ø 42, 49 mm de borde a borde, centros alineados. Supuesto desde las fotos: 3,5 mm de embellecedor y que los 42 mm son del casquillo fijo. Tres pruebas de 10-20 min lo confirman antes de imprimir la pieza."
-      },
-      {
        "tema": "método",
        "texto": "El modelo se renderizó y se miró desde varios ángulos antes de enseñarlo. Los tres borradores se exportaban tumbados, en espejo y mil veces más grandes; ya están corregidos."
+      },
+      {
+       "tema": "medidas",
+       "texto": "Medido por Luis: caño Ø 29, manilla Ø 42, 49 mm de borde a borde, centros alineados. Con las pruebas impresas: el caño separa 6 mm de la placa y la manilla 2 mm."
+      },
+      {
+       "tema": "montaje",
+       "texto": "Luis: «a la otra pieza, que solo tiene 2 milímetros, tendremos que sumarle esos 4 con un relleno por detrás para que estén alineadas». La línea vive en el plano del caño (6 mm) y el lazo de la manilla lleva un relleno de 4 mm por detrás, solo en su parte alta: los brazos del clic siguen como en la prueba."
+      },
+      {
+       "tema": "impresión",
+       "texto": "La mitad derecha se imprime con la cara de delante sobre la cama, para que el relleno sea lo último y no pida soportes. Mide 12 mm de alto en vez de 8."
+      },
+      {
+       "tema": "estética",
+       "texto": "Luis: línea en gris claro y enganches en naranja, «rollito Braun Dieter Rams»."
       }
      ],
-     "cambio": "lazos boca abajo, todo plano en pla y ganchos a caballo sobre la línea"
+     "cambio": "relleno de 4 mm tras el lazo de la manilla; línea gris claro y enganches naranja",
+     "imagenes": [
+      {
+       "de": "3d-models/bathroom-trazo/trazo_en_el_bano_frente.jpg",
+       "pie": "montaje sobre la foto de Luis, de frente"
+      },
+      {
+       "de": "3d-models/bathroom-trazo/trazo_en_el_bano_lado.jpg",
+       "pie": "montaje sobre la foto de Luis, desde arriba"
+      }
+     ],
+     "proceso": [
+      {
+       "de": "proceso/barra-bano/2026-11-17-el-bano-de-frente-donde-va-la-barra.jpg",
+       "pie": "El baño de frente, donde va la barra. Sobre esta foto se colocó el modelo. (Recortado el espejo.)",
+       "fecha": "2026-11-17"
+      },
+      {
+       "de": "proceso/barra-bano/2026-11-17-el-bano-desde-arriba-y-a-la-izquierda.jpg",
+       "pie": "El mismo sitio desde arriba y a la izquierda.",
+       "fecha": "2026-11-17"
+      }
+     ]
     }
    ],
    "aprendizajes": "3d-models/bathroom-trazo/APRENDIZAJES.md"
