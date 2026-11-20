@@ -298,11 +298,12 @@ def make_gancho(width=18.0, drop=16.0, radius=10.0):
     return side.copy().apply_transform(side_rider_to_local(width)), on_bed(side)
 
 
-def make_bandeja(width=COLONIA_W + 4, depth=COLONIA_D + 3, lip=12.0):
+def make_bandeja(width=COLONIA_W + 4, depth=COLONIA_D + 3, lip=12.0, drop=None):
     """Tray with a low front lip, open at both ends: the cologne bottle
     stands in front of the line and comes out by lifting it 12 mm or
-    sliding it sideways. Printed on its side."""
-    leg = RIDER_LEG + 3
+    sliding it sideways. Printed on its side. With `drop`, the floor hangs
+    that far below the top of the line, so the object stays under it."""
+    leg = drop or RIDER_LEG + 3
     u, y0, y1 = rider_saddle(leg=leg)
     y_end = y1 + depth + 3.0
     tray = unary_union([
@@ -385,6 +386,35 @@ def make_vasito(inner_d=ORALB_D + 3.0, wall=4.0, width=30.0, depth=42.0):
     return _plate_rider(plate, width, extra)
 
 
+def make_horquilla_baja(slot=BRUSH_NECK, reach=22.0, width=22.0, drop=34.0):
+    """Fork hanging `drop` below the top of the line, so what it holds stays
+    under the line. Printed on its side; the slot needs a small support."""
+    u, y0, y1 = rider_saddle(leg=drop)
+    plate = sbox(y0, -drop, y1 + reach, -drop + PLATE_T)
+    plate = unary_union([sbox(y0, -drop, y1, 0), plate]).buffer(1.5).buffer(-1.5)
+    side = extrude(unary_union([u, plate]), width)
+    local = side.copy().apply_transform(side_rider_to_local(width))
+    cut_len = reach + 6
+    channel = trimesh.creation.box(extents=[slot, cut_len, PLATE_T + 6])
+    channel.apply_translation([0, y1 + 3 + cut_len / 2, -drop + PLATE_T / 2])
+    local = trimesh.boolean.difference([local, channel], engine="manifold")
+    assert local.is_volume
+    bed = local.copy().apply_transform(np.linalg.inv(side_rider_to_local(width)))
+    return local, on_bed(bed)
+
+
+def make_pinza(width=40.0, drop=34.0, slit=1.2):
+    """Hanging clip for the toothpaste: the flat end of the tube slides in
+    sideways between the leg and a springy jaw. Printed on its side."""
+    u, y0, y1 = rider_saddle(leg=drop)
+    jaw = unary_union([
+        sbox(y1 + slit, -drop, y1 + slit + 2.2, -14),
+        sbox(y1 - 0.5, -16, y1 + slit + 2.2, -13),
+    ])
+    side = extrude(unary_union([u, jaw.buffer(-0.4).buffer(0.4)]), width)
+    return side.copy().apply_transform(side_rider_to_local(width)), on_bed(side)
+
+
 RIDERS = {
     "cepillo":     lambda: make_horquilla(BRUSH_NECK, 22.0, 22.0),
     "pasta":       lambda: make_horquilla(TUBE_NECK, 26.0, 30.0),
@@ -393,6 +423,17 @@ RIDERS = {
     "secador":     lambda: make_gancho(),
     "pelo":        lambda: make_horquilla(HAIRBRUSH_NECK, 32.0, 44.0),
     "oralb":       lambda: make_vasito(),
+}
+
+# The same objects hanging below the line instead of standing on it
+# ("la línea es el techo"). The hairdryer already hangs: it has no second form.
+RIDERS_BAJO = {
+    "cepillo":     lambda: make_horquilla_baja(BRUSH_NECK, 22.0, 22.0, 34.0),
+    "pasta":       lambda: make_pinza(),
+    "desodorante": lambda: make_bandeja(DEO_D + 4, DEO_D + 2, 14.0, drop=88.0),
+    "colonia":     lambda: make_bandeja(drop=COLONIA_H + 27.0),
+    "pelo":        lambda: make_gancho(5.5, 8.0, 7.0),
+    "oralb":       lambda: make_horquilla_baja(10.0, 24.0, 26.0, 32.0),
 }
 
 
@@ -438,7 +479,7 @@ def make_objetos():
     yd, yo = y_ring(DEO_D - 1, 4.0), y_ring(ORALB_D + 3, 4.0)
     yb, yp, yh = y_fork(BRUSH_NECK), y_fork(TUBE_NECK), y_fork(HAIRBRUSH_NECK)
     yc = y_leg + 1.5 + COLONIA_D / 2
-    return {
+    arriba = {
         "cepillo": [(_box(9, 6, 150, 0, yb, -150 + T), "celeste"),
                     (_box(11, 8, 12, 0, yb, T), "blanco"),
                     (_box(12, 14, 26, 0, yb + 3, T + 12), "blanco")],
@@ -459,6 +500,33 @@ def make_objetos():
                   (_cyl(9, 58, 0, yo, 80), "blanco"),
                   (_box(11, 12, 14, 0, yo + 3, 136), "blanco")],
     }
+    # hanging: nothing rises above the top of the line (z = 0)
+    zc = -(COLONIA_H + 27.0) + 3.2
+    zd = -88.0 + 3.2
+    ydb = y_leg + 1.5 + (DEO_D + 2) / 2
+    zb, zo = -34.0 + T, -32.0 + T
+    yob = y_leg + 3 + 5 + 3
+    yj = y_leg - RIDER_FRONT_T / 2 + 7
+    abajo = {
+        "cepillo": [(_box(9, 6, 150, 0, yb, zb - T - 150), "celeste"),
+                    (_box(11, 8, 4, 0, yb, zb - T), "blanco"),
+                    (_box(12, 14, 26, 0, yb + 3, zb), "blanco")],
+        "pasta": [(_box(38, 1.0, 16, 0, y_leg + 0.6, -32), "blanco"),
+                  (_box(36, 8, 22, 0, y_leg + 2, -56), "blanco"),
+                  (_cyl(30, 84, 0, y_leg + 6, -140), "rojo"),
+                  (_cyl(13, 14, 0, y_leg + 6, -154), "blanco")],
+        "desodorante": [(_cyl(DEO_D - 3, 38, 0, ydb, zd), "azul"),
+                        (_cyl(DEO_D, 44, 0, ydb, zd + 38), "blanco")],
+        "colonia": [(_box(COLONIA_W, COLONIA_D, COLONIA_H, 0, yc, zc), "ambar"),
+                    (_cyl(22, 22, 0, yc, zc + COLONIA_H), "plata")],
+        "pelo": [(_cyl(18, 118, 0, yj, -134), "negro"),
+                 (_blob(64, 20, 96, 0, yj, -228), "negro")],
+        "oralb": [(_box(11, 12, 14, 0, yob + 3, zo + 4), "blanco"),
+                  (_cyl(9, 60, 0, yob, zo - T - 56), "blanco"),
+                  (_cyl(ORALB_D + 0.6, 10, 0, yob, zo - T - 66), "azul"),
+                  (_cyl(ORALB_D, 122, 0, yob, zo - T - 188), "blanco")],
+    }
+    return arriba, abajo
 
 
 def to_wall(rider_local: "trimesh.Trimesh", x: float) -> "trimesh.Trimesh":
@@ -558,7 +626,8 @@ def cargas() -> dict:
         "E": E_PLA, "taper": TAPER, "sigma_ok": SIGMA_OK,
         "aguanta_cano_N": round(pull_cano, 1),
         "aguanta_manilla_N": round(pull_mani, 1),
-        "objetos": [{"id": i, "nombre": n, "gramos": g, "x": x}
+        "objetos": [{"id": i, "nombre": n, "gramos": g, "x": x,
+                     "formas": ["arriba", "abajo"] if i in RIDERS_BAJO else ["puesto"]}
                     for i, n, g, x in OBJETOS],
         "todo": {k: round(v, 2) for k, v in estado(ids).items()},
         "peor": {k: {"valor": round(v, 2), "con": list(c)}
@@ -633,6 +702,10 @@ def build():
         local, bed = maker()
         riders_local[oid] = local
         printed[f"jinete_{oid}"] = bed
+    for oid, maker in RIDERS_BAJO.items():
+        local, bed = maker()
+        riders_local[f"{oid}_bajo"] = local
+        printed[f"jinete_{oid}_bajo"] = bed
     return profile, left, right, printed, riders_local, stroke
 
 
@@ -684,11 +757,18 @@ def main():
 
     # --- the same view with Luis's things on it (node names drive the
     # load animation: obj_<id>_<n>) ---
+    # Each object can stand on the line ("arriba") or hang below it ("abajo"):
+    # obj_/jinete_ are the first form, objb_/jineteb_ the hanging one.
     uso = list(scene)
-    objetos = make_objetos()
+    arriba, abajo = make_objetos()
     for oid, _, _, x in OBJETOS:
-        for k, (mesh, mat) in enumerate(objetos[oid]):
+        for k, (mesh, mat) in enumerate(arriba[oid]):
             uso.append((f"obj_{oid}_{k}", paint(to_wall(mesh, x), MAT[mat])))
+        if oid in abajo:
+            uso.append((f"jineteb_{oid}",
+                        paint(to_wall(riders_local[f"{oid}_bajo"], x), MAT_PLA_2)))
+            for k, (mesh, mat) in enumerate(abajo[oid]):
+                uso.append((f"objb_{oid}_{k}", paint(to_wall(mesh, x), MAT[mat])))
     export_glb(uso, WEB_DIR / "bathroom_trazo_uso.glb")
     import json
     (HERE / "cargas.json").write_text(

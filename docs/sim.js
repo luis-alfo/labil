@@ -1,10 +1,13 @@
 // labil v2 — simulación de cargas de un objeto, dentro de su página.
 // El modelo ocupa la pantalla y los mandos van alrededor, como en el resto de la web:
 //   arriba   el tablero: la barra como viga sobre dos apoyos y un dial por apoyo
-//   lados    poner y quitar los objetos de cada lado (en móvil, una tira deslizable)
+//   lados    los objetos de cada lado (en móvil, una tira deslizable). cada botón
+//            pasa con un clic por sus formas: arriba (▲, de pie sobre la línea),
+//            abajo (▼, colgado bajo la línea) y quitado; si solo tiene una, puesto/quitado
 //   abajo    «i» (qué significan las cifras) y la secuencia
 // Los datos salen de 3d-models/<diseño>/cargas.json; el modelo nombra cada objeto
-// como obj_<id>_<n> para poder moverlo.
+// como obj_<id>_<n> (forma de arriba) y objb_<id>_<n> (forma colgada), y sus enganches
+// jinete_<id> y jineteb_<id>, para poder moverlos.
 
 const G = 9.81 / 1000; // newtons por gramo
 const n1 = (v) => v.toLocaleString("es-ES", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
@@ -137,7 +140,12 @@ const LECCION = [
 export async function montar(escena, { glb, datos }) {
   const D = await (await fetch(datos)).json();
   const est = estatica(D);
+  const formas = new Map(D.objetos.map((o) => [o.id, o.formas || ["puesto"]]));
+  const forma = new Map(D.objetos.map((o) => [o.id, formas.get(o.id)[0]]));   // forma actual o "fuera"
+  const ultima = new Map(forma);                                              // la última que estuvo puesta
   const puestos = new Set(D.objetos.map((o) => o.id));
+  const SIGNO = { arriba: "▲", abajo: "▼", puesto: "●", fuera: "×" };
+  const DICE = { arriba: "de pie, sobre la línea", abajo: "colgado, bajo la línea", puesto: "puesto", fuera: "quitado" };
   let vivo = true, mover = () => {}, cola = [], reloj = 0;
 
   const raiz = html("div", "sim");
@@ -159,9 +167,13 @@ export async function montar(escena, { glb, datos }) {
     grupo.setAttribute("role", "group"); grupo.setAttribute("aria-label", `objetos a la ${titulo} del grifo`);
     for (const o of D.objetos.filter(filtro).sort((a, b) => Math.abs(a.x) - Math.abs(b.x))) {
       const b = html("button", "sim-obj control");
-      b.type = "button"; b.setAttribute("aria-pressed", "true");
-      b.append(html("span", "sim-obj-nombre", o.nombre), html("span", "caption", `${o.gramos} g`));
-      b.addEventListener("click", () => { parar(); pon(o.id, !puestos.has(o.id)); });
+      b.type = "button";
+      b.append(html("span", "sim-obj-signo"), html("span", "sim-obj-nombre", o.nombre), html("span", "caption", `${o.gramos} g`));
+      b.addEventListener("click", () => {       // un clic: la forma siguiente, y al final quitado
+        parar();
+        const ciclo = [...formas.get(o.id), "fuera"];
+        cambia(o.id, ciclo[(ciclo.indexOf(forma.get(o.id)) + 1) % ciclo.length]);
+      });
       botones.set(o.id, b); grupo.appendChild(b);
     }
     objetos.appendChild(grupo);
@@ -170,7 +182,14 @@ export async function montar(escena, { glb, datos }) {
   const acciones = html("div", "sim-acciones");
   const bInfo = html("button", "sim-accion control", "i"); bInfo.type = "button"; bInfo.setAttribute("aria-label", "qué significan las cifras");
   const bPlay = html("button", "sim-accion control", "▶ secuencia"); bPlay.type = "button";
-  acciones.append(bInfo, bPlay);
+  const bTodos = html("button", "sim-accion control", "▼ todo abajo"); bTodos.type = "button";
+  acciones.append(bInfo, bPlay, bTodos);
+  bTodos.addEventListener("click", () => {      // todo lo que tiene dos formas, a la vez
+    parar();
+    const dobles = D.objetos.filter((o) => formas.get(o.id).length > 1);
+    const destino = dobles.some((o) => ultima.get(o.id) === "arriba") ? "abajo" : "arriba";
+    dobles.forEach((o) => cambia(o.id, destino));
+  });
 
   const leccion = html("section", "sim-leccion"); leccion.hidden = true; leccion.setAttribute("aria-label", "qué significan las cifras");
   const cerrar = html("button", "sim-leccion-cerrar control", "×"); cerrar.type = "button"; cerrar.setAttribute("aria-label", "cerrar");
@@ -197,11 +216,20 @@ export async function montar(escena, { glb, datos }) {
     brazos.textContent = `brazo izq ${n1(e.tension_izq)} mpa · punta ${n1(e.flecha_izq)} mm   |   brazo der ${n1(e.tension_der)} mpa · punta ${n1(e.flecha_der)} mm`;
     pintaViga(viga, D, est, puestos, e);
   }
-  function pon(id, si) {
-    si ? puestos.add(id) : puestos.delete(id);
-    botones.get(id).setAttribute("aria-pressed", si);
-    mover(id, si); pinta();
+  function rotula(id) {
+    const f = forma.get(id), b = botones.get(id), o = D.objetos.find((x) => x.id === id);
+    b.dataset.forma = f; b.firstChild.textContent = SIGNO[f];
+    b.setAttribute("aria-label", `${o.nombre}, ${o.gramos} g: ${DICE[f]}. pulsa para cambiar`);
+    const dobles = D.objetos.filter((x) => formas.get(x.id).length > 1);
+    bTodos.textContent = dobles.some((x) => ultima.get(x.id) === "arriba") ? "▼ todo abajo" : "▲ todo arriba";
   }
+  function cambia(id, f) {
+    forma.set(id, f);
+    if (f === "fuera") puestos.delete(id); else { puestos.add(id); ultima.set(id, f); }
+    rotula(id); mover(id); pinta();
+  }
+  const pon = (id, si) => cambia(id, si ? ultima.get(id) : "fuera");
+  D.objetos.forEach((o) => rotula(o.id));
   function parar() { cola = []; clearTimeout(reloj); paso.textContent = ""; }
   function sigue() {
     const p = cola.shift();
@@ -269,24 +297,38 @@ export async function montar(escena, { glb, datos }) {
     const gltf = await new GLTFLoader().loadAsync(glb);
     if (!vivo) { renderer.dispose(); return desmontar; }
     scene.add(gltf.scene);
-    const sueltos = [];
+    const sueltos = [], jinetes = new Map();
+    const FORMA = { obj: "arriba", objb: "abajo", jinete: "arriba", jineteb: "abajo" };
     gltf.scene.traverse((o) => {
       if (o.name === "pared") o.visible = false;      // el fondo de la web ya hace de pared
-      const m = /^obj_([a-z]+)_\d+$/.exec(o.name || "");
-      if (m && o.isMesh) sueltos.push([m[1], o]);
+      const m = /^(objb?)_([a-z]+)_\d+$/.exec(o.name || "");
+      if (m && o.isMesh) sueltos.push([`${m[2]}|${FORMA[m[1]]}`, o]);
+      const j = /^(jineteb?)_([a-z]+)$/.exec(o.name || "");
+      if (j) jinetes.set(`${j[2]}|${FORMA[j[1]]}`, o);
     });
-    for (const [id, malla] of sueltos) {
-      if (!grupos.has(id)) { const g = new THREE.Group(); scene.add(g); grupos.set(id, g); }
-      malla.material = malla.material.clone(); malla.material.transparent = true; grupos.get(id).attach(malla);
+    for (const [clave, malla] of sueltos) {
+      if (!grupos.has(clave)) { const g = new THREE.Group(); scene.add(g); grupos.set(clave, g); }
+      malla.material = malla.material.clone(); malla.material.transparent = true; grupos.get(clave).attach(malla);
     }
+    // un objeto de una sola forma usa el grupo "arriba" esté como esté
+    const clave = (id, f) => (grupos.has(`${id}|${f}`) ? `${id}|${f}` : `${id}|arriba`);
     const esfera = new THREE.Box3().setFromObject(scene).getBoundingSphere(new THREE.Sphere());
     mira.copy(esfera.center); radio = esfera.radius;
-    mover = (id, si) => {
-      const g = grupos.get(id); if (!g) return;
-      const ahora = anim.has(id) ? anim.get(id).v : (g.visible ? 1 : 0);
-      anim.set(id, { de: ahora, a: si ? 1 : 0, t0: performance.now(), v: ahora }); pide();
+    const lleva = (k, a) => {
+      const g = grupos.get(k); if (!g) return;
+      const ahora = anim.has(k) ? anim.get(k).v : (g.visible ? 1 : 0);
+      if (ahora !== a) anim.set(k, { de: ahora, a, t0: performance.now(), v: ahora });
     };
-    for (const [id, g] of grupos) g.visible = puestos.has(id);
+    mover = (id) => {
+      const f = forma.get(id), visible = f === "fuera" ? null : clave(id, f);
+      for (const k of grupos.keys()) if (k.startsWith(`${id}|`)) lleva(k, k === visible ? 1 : 0);
+      // el enganche que se ve es el de la forma puesta (o la última, si está quitado)
+      const u = jinetes.has(`${id}|${ultima.get(id)}`) ? ultima.get(id) : "arriba";
+      for (const [k, j] of jinetes) if (k.startsWith(`${id}|`)) j.visible = k === `${id}|${u}`;
+      pide();
+    };
+    for (const g of grupos.values()) g.visible = false;
+    D.objetos.forEach((o) => { const k = forma.get(o.id) === "fuera" ? null : clave(o.id, forma.get(o.id)); if (k) grupos.get(k).visible = true; mover(o.id); });
 
     // arrastrar gira, pellizcar o la rueda acercan
     const dedos = new Map(); let sep = 0;
