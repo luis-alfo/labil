@@ -2,7 +2,7 @@
 
 Fecha: 21 de noviembre de 2026 (Europe/Madrid).
 
-Este registro lo ha redactado ChatGPT/Codex para documentar su intervención en el Mac y en la placa de Luis. El diseño, el firmware y el programa del Mac ya existían en el repo y proceden del trabajo previo de Claude. No atribuyo su autoría a ChatGPT. La adaptación posterior del programa del Mac de F18 a Shift+B sí la he realizado yo, a petición de Luis.
+Este registro lo ha redactado ChatGPT/Codex para documentar su intervención en el Mac y en la placa de Luis. El diseño, el firmware y el programa del Mac ya existían en el repo y proceden del trabajo previo de Claude. No atribuyo su autoría a ChatGPT. Las adaptaciones posteriores del programa del Mac de F18 a Shift+B y del foco del cuadro de mensaje sí las he realizado yo, a petición de Luis.
 
 ## Resultado comprobado
 
@@ -13,7 +13,8 @@ Este registro lo ha redactado ChatGPT/Codex para documentar su intervención en 
 - El diagnóstico inicial recibió pulsaciones cortas y largas y registró Enter y F18 DOWN/UP; después se sustituyó F18 por Shift+B, a petición de Luis.
 - La versión de Shift+B está instalada y ejecutándose; coincide byte a byte con la versión probada y el proceso tiene abierto el puerto USB.
 - Pasaron las pruebas de secuencia de teclas, pulsación corta/larga, desconexión, liberación e interrupción descritas más abajo.
-- Pendiente de confirmación del usuario: que Wispr Flow inicia y detiene el dictado con el botón usando su atajo existente Shift+B.
+- **Dictado confirmado por Luis:** «Sí, funciona al pulsar y soltar». Wispr Flow inicia y detiene el dictado con el botón usando Shift+B.
+- Primer toque actualizado: cuando Claude está detrás, lo activa y enfoca el campo de mensaje Prompt. Instalado y comprobado mediante la API de Accesibilidad; pendiente de la prueba completa de Luis desde otra aplicación.
 
 ## Qué he hecho como ChatGPT
 
@@ -50,7 +51,21 @@ Luis indicó que Wispr Flow no aceptaba F18 y pidió usar Shift+B, el atajo que 
 
 Usé eventos reales de Quartz interceptando su envío, sin inyectar teclas en aplicaciones durante las pruebas automatizadas. Comprobé los códigos nativos Shift=56 y B=11, el orden de pulsación/liberación y la bandera Shift=0x00020000. También probé con entradas serie simuladas el toque corto, la pulsación larga, entradas fragmentadas y duplicadas, desconexión mientras se mantiene pulsado, modo de toque, liberación repetida e interrupción durante la combinación. Las seis comprobaciones agrupadas terminaron correctamente.
 
-Estas pruebas validan el programa; la recepción del atajo y el dictado real en Wispr Flow requieren la confirmación de Luis, porque Computer Use no permite acceder a esa aplicación.
+Estas pruebas validan el programa. Después, Luis confirmó el dictado real con Shift+B: «Sí, funciona al pulsar y soltar». Esta confirmación procede de su prueba manual; Computer Use no accedió a Wispr Flow.
+
+## Primer toque: activar Claude y enfocar el mensaje
+
+Tras confirmar el dictado, Luis pidió que el primer toque dejara también activo el cuadro de texto de Claude. Añadí ese comportamiento al programa del Mac.
+
+- Si Claude está detrás, el programa lo activa, localiza el campo editable llamado Prompt en su ventana activa y solicita el foco mediante Accesibilidad de macOS. Conserva el chat y el texto del borrador; no introduce texto ni envía Enter en ese primer toque.
+- Si Claude ya está delante, el toque corto sigue enviando Enter. La pulsación larga mantiene Shift+B.
+- La búsqueda está limitada en tiempo, profundidad y número de elementos. Comprueba que Claude continúa delante antes de enfocar y registra un aviso si no encuentra o no puede enfocar el campo.
+- La prueba desde launchd, con el Python autorizado, obtuvo AXTrusted=True, Enfoque=True y AXFocused=True en el editor. El intento correcto con la versión final tardó aproximadamente 0,79 segundos. No se escribió texto de prueba ni se envió ningún mensaje.
+- Volvieron a pasar las seis pruebas del protocolo/teclas y una séptima que verifica que activar Claude enfoca sin Enter, mientras que el toque con Claude delante conserva Enter.
+- Instalé la versión probada, reinicié el servicio y confirmé que sigue running con el puerto USB abierto. El archivo instalado coincide byte a byte con el probado. Retiré el trabajo de launchd y los archivos temporales usados para la prueba.
+- Publiqué el programa en [el commit e866fc5](https://github.com/luis-alfo/labil/commit/e866fc572bf7c4dfa7344f752380ad185db0c94d) y actualicé el README.
+
+Queda pendiente la confirmación manual de Luis del recorrido completo: estando en otra aplicación, toque corto para abrir Claude y pulsación larga para dictar directamente en el cuadro, sin hacer clic.
 
 ## ¿Fue todo sweet?
 
@@ -62,6 +77,7 @@ No del todo. La placa y el servicio quedaron funcionando, pero hubo complicacion
 - Algunas interacciones de menú y teclado del IDE no se reflejaron inmediatamente; se restauró el contenido original del firmware antes de la compilación y carga definitivas. El primer guardado dejó una copia preliminar en ~/Documents/Arduino/sketch_nov21aboton_claude/; el sketch final utilizado es boton_claude.
 - Computer Use bloqueó Terminal por seguridad y no autorizó Finder, Ajustes del Sistema ni Wispr Flow. Luis autorizó expresamente continuar la instalación del programa mediante ejecución local. Los permisos y el atajo de Wispr requieren intervención manual en las aplicaciones que Computer Use no permite controlar.
 - El navegador disponible no tenía sesión de GitHub; Luis inició sesión personalmente para poder guardar este informe.
+- Para comprobar el nuevo foco, ejecutar Python desde Codex no heredaba el permiso de Accesibilidad del servicio. Usé una prueba temporal desde launchd, alojada en Application Support porque macOS no permitía a ese proceso leer el script en Documents. El acceso al campo funcionó al dirigirse al proceso de Claude y su ventana activa. La prueba temporal quedó retirada.
 
 ## Diagnóstico inicial de permisos (antes del cambio a Shift+B)
 
