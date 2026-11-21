@@ -408,6 +408,7 @@ algo que se pueda sopesar. **Código compartido**: las fuerzas se dan también e
   pieza pequeña y barata de repetir, y lo demás se conserva.
 - **Código compartido**: «muescas» = marcas impresas en la pieza para leer el error contra el objeto
   real; «galga» = pieza suelta que mide. La pieza de prueba no solo dice «encaja o no»: dice cuánto falla.
-- «La Guarida» en un objeto = sus radios (LG Casa: 2 / 4 / 6) y su forma en relieve. La forma no está
-  en el repo: hay que pedirla, no dibujarla de memoria.
+- «La Guarida» en un objeto = sus radios (LG Casa) y su marca, **el arco**. El SVG oficial está en el
+  artefacto LG Casa (grupo Logos: `arco-menta`, `arco-tinta`, `arco-bosque`); se copia de ahí, no se dibuja.
+- Una marca puede ser parte que trabaja: en el botón, el arco es el corte que suelta la palanca.
 - Una cara que se imprime sobre la placa no admite canto redondeado ni relieve saliente: solo hundido o a ras.

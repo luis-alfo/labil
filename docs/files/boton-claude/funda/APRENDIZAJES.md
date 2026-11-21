@@ -110,12 +110,17 @@ pero que podamos tener la parte de arriba por si fallamos al diseñar la parte d
   flexión, raíz redondeada), como pide la lección de la botonera: 23 MPa (×2,4) solo al cerrar.
 - **Por qué no una tapa deslizante**: se sale justo en la dirección en que tira el cable.
 - **Radios de LG Casa** por proporción: esquina 4 mm en las dos esquinas de delante, canto 2 mm en
-  las de detrás y en la punta de la palanca. El canto de arriba no se puede redondear: la tapa se
+  las de detrás. El canto de arriba no se puede redondear: la tapa se
   imprime con esa cara sobre la placa.
 - **Crece** de 21,6 × 25,8 a 23,2 × 29,5 mm: doble pared a los lados y el brazo delante.
-- **Pendiente: el relieve de La Guarida en la tapa.** Su forma no está en el repo y no se dibuja de
-  memoria (misma regla que el logo de Lagu). Al ir la cara de arriba sobre la placa de impresión, el
-  relieve saldrá hundido, o a ras en otro color con el AMS lite.
+- **La Guarida está en la palanca.** Luis: «La guarida está en LG Casa». La marca es **el arco**
+  (`marca/arco-la-guarida.svg`, copiado del grupo Logos de LG Casa, sin redibujar). El corte que
+  suelta la palanca sigue ese trazado: cumbre en la punta, hombros redondeados y patas hasta la bisagra.
+  - Las patas se alargan: el arco mide 190 × 122 y a esa proporción la palanca tendría 7,5 mm de
+    brazo en vez de 12,8. Es «tener la forma», no reproducir la marca exacta.
+  - Se hace con el corte y no con un relieve porque la palanca solo tiene 1 mm de grosor: hundirle
+    0,4 mm le quitaría resistencia. El arco exacto, a ras y en otro color con el AMS lite, sigue siendo posible.
+  - LG Casa pide radios cortos: «la forma la dan el canto y el color, no la curva».
 - Comprobado: tres mallas cerradas, sin choque entre base, tapa y placa; cortes y vista en la web.
 
 ## Cómo reparten el trabajo placa y Mac

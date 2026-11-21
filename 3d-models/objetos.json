@@ -2706,7 +2706,7 @@
      "nombre": "dos piezas",
      "archivo": "boton_modular",
      "fecha": "2026-11-21",
-     "texto": "Base y tapa, 23,2 × 29,5 × 7,4 mm y 3,3 g entre las dos. La base aloja la placa y lleva muescas para leer dónde cae de verdad el botón; la tapa lleva la palanca. Si falla el encaje de la placa se repite solo la base (0,8 g). Una galga en escalera mide el alto del pulsador. Falta el relieve de La Guarida en la tapa.",
+     "texto": "Base y tapa, 23,2 × 29,5 × 7,4 mm y 3,3 g entre las dos. La base aloja la placa y lleva muescas para leer dónde cae de verdad el botón; la tapa lleva la palanca. Si falla el encaje de la placa se repite solo la base (0,8 g). Una galga en escalera mide el alto del pulsador. La palanca tiene la forma del arco de La Guarida.",
      "modelos": [
       {
        "nombre": "montado",
@@ -2752,6 +2752,7 @@
       "fidgets/boton-claude/boton_modular_base.stl",
       "fidgets/boton-claude/boton_modular_tapa.stl",
       "fidgets/boton-claude/boton_modular_galga.stl",
+      "fidgets/boton-claude/marca/arco-la-guarida.svg",
       "fidgets/boton-claude/generar_modular.py",
       "fidgets/boton-claude/firmware/boton_claude/boton_claude.ino",
       "fidgets/boton-claude/mac/boton_claude.py",
@@ -2777,14 +2778,14 @@
       },
       {
        "tema": "estética",
-       "texto": "Radios de LG Casa por proporción: esquina 4 mm delante, canto 2 mm detrás y en la punta de la palanca. El relieve de La Guarida irá en la tapa cuando Luis pase la forma."
+       "texto": "Luis: «que tenga forma como la guarida… aunque sea en relieve, por encima». El corte que suelta la palanca es el arco de La Guarida, tomado del SVG de LG Casa: la cumbre en la punta y las patas alargadas hasta la bisagra. Radios de LG Casa por proporción: esquina 4 mm delante, canto 2 mm detrás."
       },
       {
        "tema": "coste",
        "texto": "Crece de 21,6 × 25,8 a 23,2 × 29,5 mm por la doble pared y el brazo. Repetir la base cuesta 0,8 g."
       }
      ],
-     "cambio": "dos piezas: base con muescas de medida y tapa con la palanca"
+     "cambio": "dos piezas: base con muescas de medida y tapa con el arco de la guarida"
     }
    ]
   }

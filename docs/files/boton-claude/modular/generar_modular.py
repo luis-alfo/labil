@@ -11,7 +11,7 @@ Marco (montado): x a lo ancho (0 en el centro), y a lo largo (0 = borde delanter
 placa; el USB en +y), z hacia arriba (0 = suelo interior, donde apoya la placa).
 La base se imprime tal cual; la tapa, boca abajo (techo sobre la placa PEI).
 
-Radios de LG Casa: esquina 4 (delante), canto 2 (detrás y punta de la palanca).
+Radios de LG Casa: esquina 4 (delante), canto 2 (detrás). La palanca es el arco de La Guarida.
 
 Uso: python3 generar_modular.py
 """
@@ -20,6 +20,7 @@ from pathlib import Path
 import numpy as np
 import trimesh
 from shapely.affinity import translate
+from shapely.geometry import LineString, Polygon
 from shapely.geometry import box as rect
 
 import generar as g
@@ -84,6 +85,24 @@ def cuna(x0, x1, yz):
     return trimesh.convex.convex_hull(np.array([[x, y, z] for x in (x0, x1) for y, z in yz]))
 
 
+def arco_guarida():
+    """El arco de La Guarida (marca/arco-la-guarida.svg, de LG Casa) como eje del corte de la palanca.
+
+    Trazado original: M155 310 V245 Q155 222 178 213 L246 189 Q250 188 254 189 L322 213
+    Q345 222 345 245 V310. Se escala a lo ancho de la palanca y la cumbre va en la punta.
+    Las patas se alargan hasta la bisagra: la proporción del arco no da brazo suficiente.
+    """
+    def q(p0, p1, p2, n=10):
+        t = np.linspace(0, 1, n)[:, None]
+        return (1 - t) ** 2 * np.array(p0) + 2 * (1 - t) * t * np.array(p1) + t ** 2 * np.array(p2)
+    pts = np.vstack([[[155, 245]], q((155, 245), (155, 222), (178, 213)), q((246, 189), (250, 188), (254, 189)),
+                     q((322, 213), (345, 222), (345, 245))])
+    s = (g.PAL_W + g.CORTE) / 190.0
+    cumbre = g.PAL_Y1 + g.CORTE / 2
+    xy = [((X - 250) * s, cumbre - (Y - 188) * s) for X, Y in pts]
+    return LineString([(xy[0][0], g.PAL_Y0)] + xy + [(xy[-1][0], g.PAL_Y0)])
+
+
 def base():
     d = FALDA + JUEGO
     pl = planta(EXT - d, Y0 + d, Y1 - d, R_ESQUINA - d, R_CANTO - d)
@@ -121,16 +140,16 @@ def tapa():
     cuerpo = prisma(planta(EXT, Y0, Y1, R_ESQUINA, R_CANTO), Z0, Z1)
     dentro = planta(EXT - FALDA, Y0 + FALDA, Y1 - FALDA, R_ESQUINA - FALDA, R_CANTO - FALDA)
     xp = g.PAL_W / 2
-    # palanca con la punta redondeada (canto 2) y su corte alrededor
-    pal = rect(-xp, g.PAL_Y0 - 6, xp, g.PAL_Y1).buffer(-R_CANTO).buffer(R_CANTO, resolution=12)
-    corte = pal.buffer(g.CORTE, resolution=12).difference(pal)
-    desde = rect(-20, g.PAL_Y0, 20, 40)
+    # la palanca tiene la forma del arco de La Guarida: el corte que la suelta es el arco
+    eje = arco_guarida()
+    corte = eje.buffer(g.CORTE / 2, resolution=12)
+    pal = Polygon(list(eje.coords))
     huecos = [
         prisma(dentro, Z0 - 1, MURO_H + 0.15),                                    # donde entra la base
         caja(-MEDIO + REPISA, MEDIO - REPISA, -0.2, CAJ_L, MURO_H, TECHO_Z),       # hueco de componentes
         caja(-BOCA, BOCA, PCB_L, Y1 + 5, Z0 - 1, Z1 + 1),                          # boca del USB
-        prisma(pal.buffer(g.CORTE).intersection(desde), TECHO_Z - 0.01, Z1 - g.PAL_T),  # palanca más fina
-        prisma(corte.intersection(desde), TECHO_Z - 0.01, Z1 + 1),                # corte en U
+        prisma(pal.union(corte), TECHO_Z - 0.01, Z1 - g.PAL_T),                   # palanca más fina
+        prisma(corte, TECHO_Z - 0.01, Z1 + 1),                                    # el corte: el arco
         cilindro(-xp - g.CORTE / 2, g.PAL_Y0, 0.6, TECHO_Z - 0.01, Z1 + 1),
         cilindro(xp + g.CORTE / 2, g.PAL_Y0, 0.6, TECHO_Z - 0.01, Z1 + 1),
         # ventana del diente: por ella se empuja para abrir
