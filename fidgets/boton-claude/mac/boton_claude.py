@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Botón Claude — programa del Mac. Escucha la placa por el puerto serie y decide.
 
-  toque corto        Claude no está delante -> trae la app de Claude al frente
+  toque corto        Claude no está delante -> trae Claude al frente y enfoca el mensaje
                      Claude está delante    -> Enter (aceptar)
   mantener pulsado   Shift+B mientras dure (Wispr Flow, modo «mantener para hablar»)
 
@@ -34,6 +34,119 @@ _cg.CGEventCreateKeyboardEvent.argtypes = [ctypes.c_void_p, ctypes.c_uint16, cty
 _cg.CGEventPost.argtypes = [ctypes.c_uint32, ctypes.c_void_p]
 _cg.CGEventSetFlags.argtypes = [ctypes.c_void_p, ctypes.c_uint64]
 _cg.CFRelease.argtypes = [ctypes.c_void_p]
+
+# Accesibilidad de macOS: enfocar el editor sin escribir ni cambiar de conversación.
+_cg.AXUIElementCreateApplication.argtypes = [ctypes.c_int]
+_cg.AXUIElementCreateApplication.restype = ctypes.c_void_p
+_cg.AXUIElementCopyAttributeValue.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.POINTER(ctypes.c_void_p)]
+_cg.AXUIElementSetAttributeValue.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p]
+_cg.AXUIElementSetMessagingTimeout.argtypes = [ctypes.c_void_p, ctypes.c_float]
+_cg.CFStringCreateWithCString.argtypes = [ctypes.c_void_p, ctypes.c_char_p, ctypes.c_uint32]
+_cg.CFStringCreateWithCString.restype = ctypes.c_void_p
+_cg.CFStringGetCString.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_long, ctypes.c_uint32]
+_cg.CFStringGetCString.restype = ctypes.c_bool
+_cg.CFGetTypeID.argtypes = [ctypes.c_void_p]
+_cg.CFGetTypeID.restype = ctypes.c_ulong
+_cg.CFStringGetTypeID.restype = ctypes.c_ulong
+_cg.CFArrayGetTypeID.restype = ctypes.c_ulong
+_cg.CFArrayGetCount.argtypes = [ctypes.c_void_p]
+_cg.CFArrayGetCount.restype = ctypes.c_long
+_cg.CFArrayGetValueAtIndex.argtypes = [ctypes.c_void_p, ctypes.c_long]
+_cg.CFArrayGetValueAtIndex.restype = ctypes.c_void_p
+_cg.CFBooleanGetValue.argtypes = [ctypes.c_void_p]
+_cg.CFBooleanGetValue.restype = ctypes.c_bool
+_cg.CFBooleanGetTypeID.restype = ctypes.c_ulong
+_cg.CFRetain.argtypes = [ctypes.c_void_p]
+_cg.CFRetain.restype = ctypes.c_void_p
+_AX = {nombre: _cg.CFStringCreateWithCString(None, nombre.encode(), 0x08000100)
+       for nombre in ("AXFocusedWindow", "AXRole", "AXTitle",
+                      "AXDescription", "AXChildren", "AXFocused")}
+_VERDADERO = ctypes.c_void_p.in_dll(_cg, "kCFBooleanTrue")
+
+
+def atributo(elemento, nombre):
+    valor = ctypes.c_void_p()
+    if _cg.AXUIElementCopyAttributeValue(elemento, _AX[nombre], ctypes.byref(valor)) == 0:
+        return valor.value                 # el llamador debe liberar esta referencia
+    return None
+
+
+def texto_atributo(elemento, nombre):
+    valor = atributo(elemento, nombre)
+    if not valor:
+        return ""
+    try:
+        if _cg.CFGetTypeID(valor) != _cg.CFStringGetTypeID():
+            return ""
+        texto = ctypes.create_string_buffer(512)
+        if _cg.CFStringGetCString(valor, texto, len(texto), 0x08000100):
+            return texto.value.decode("utf-8")
+        return ""
+    finally:
+        _cg.CFRelease(valor)
+
+
+def buscar_prompt(elemento, limite, restantes, profundidad=0):
+    if profundidad > 40 or restantes[0] <= 0 or time.monotonic() >= limite:
+        return None
+    restantes[0] -= 1
+    if texto_atributo(elemento, "AXRole") in ("AXTextArea", "AXTextField"):
+        if any(texto_atributo(elemento, nombre).strip().casefold() == "prompt"
+               for nombre in ("AXDescription", "AXTitle")):
+            return _cg.CFRetain(elemento)
+    hijos = atributo(elemento, "AXChildren")
+    if not hijos:
+        return None
+    try:
+        if _cg.CFGetTypeID(hijos) == _cg.CFArrayGetTypeID():
+            # El editor está después del historial: evita recorrer mensajes antiguos primero.
+            for i in reversed(range(_cg.CFArrayGetCount(hijos))):
+                encontrado = buscar_prompt(_cg.CFArrayGetValueAtIndex(hijos, i), limite,
+                                           restantes, profundidad + 1)
+                if encontrado:
+                    return encontrado
+    finally:
+        _cg.CFRelease(hijos)
+    return None
+
+
+def enfocar_entrada():
+    """Espera a Claude y enfoca su campo Prompt en la ventana activa, sin tocar el texto."""
+    limite = time.monotonic() + 2.0
+    while time.monotonic() < limite:
+        if app_delante() == APP_CLAUDE:
+            asn = subprocess.run(["lsappinfo", "front"], capture_output=True, text=True).stdout.strip()
+            info = subprocess.run(["lsappinfo", "info", "-only", "pid", asn],
+                                  capture_output=True, text=True).stdout
+            try:
+                pid = int(info.split("=")[-1].strip())
+            except ValueError:
+                return False
+            app = _cg.AXUIElementCreateApplication(pid)
+            ventana = prompt = None
+            try:
+                if app:
+                    _cg.AXUIElementSetMessagingTimeout(app, 0.2)
+                    ventana = atributo(app, "AXFocusedWindow")
+                if ventana:
+                    prompt = buscar_prompt(ventana, limite, [1200])
+                if prompt and app_delante() == APP_CLAUDE:
+                    if _cg.AXUIElementSetAttributeValue(prompt, _AX["AXFocused"], _VERDADERO) == 0:
+                        enfocado = atributo(prompt, "AXFocused")
+                        if enfocado:
+                            try:
+                                if (_cg.CFGetTypeID(enfocado) == _cg.CFBooleanGetTypeID()
+                                        and _cg.CFBooleanGetValue(enfocado)):
+                                    return True
+                            finally:
+                                _cg.CFRelease(enfocado)
+            finally:
+                for referencia in (prompt, ventana, app):
+                    if referencia:
+                        _cg.CFRelease(referencia)
+        time.sleep(0.05)
+    print("Claude abierto; no se pudo enfocar el campo Prompt")
+    return False
 
 
 def tecla(codigo, abajo, flags=0):
@@ -91,6 +204,7 @@ def corta():
         toque(TECLA_ENTER)
     else:
         subprocess.run(["open", "-b", APP_CLAUDE])
+        enfocar_entrada()
 
 
 def abrir_puerto():
