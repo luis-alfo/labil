@@ -154,6 +154,11 @@ def main() -> None:
         salida["objetos"].append(o)
     SALIDA.parent.mkdir(parents=True, exist_ok=True)
     SALIDA.write_text(json.dumps(salida, ensure_ascii=False, indent=1) + "\n")
+    lecciones = FUENTE.with_name("lecciones.json")  # lecciones de electrónica y modelado
+    if lecciones.exists():
+        datos = json.loads(lecciones.read_text())
+        datos.pop("_leeme", None)
+        (SALIDA.parent / "lecciones.json").write_text(json.dumps(datos, ensure_ascii=False) + "\n")
     sellar_index()
     try:  # portada: de la placa al objeto montado
         import montaje
