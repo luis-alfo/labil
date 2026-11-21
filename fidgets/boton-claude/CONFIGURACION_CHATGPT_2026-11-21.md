@@ -9,7 +9,9 @@ Este registro lo ha redactado ChatGPT/Codex para documentar su intervención en 
 - Firmware cargado en el ESP32-C3 y datos escritos verificados por Arduino.
 - Pulsaciones físicas comprobadas en el monitor serie: aparece D al pulsar BOOT y U al soltarlo, repetidamente.
 - Programa del Mac instalado y ejecutándose como servicio de usuario, con el puerto USB abierto.
-- Pendiente de confirmación manual: permiso de Accesibilidad de Python, atajo F18 de Wispr Flow y prueba completa de los tres gestos.
+- Permiso de teclado de Python comprobado desde el propio servicio: AX=True y enviar teclas=True.
+- El diagnóstico recibió pulsaciones cortas y largas, y registró la emisión de Enter y de F18 DOWN/UP.
+- Pendiente de confirmación del usuario: guardar F18 en Wispr Flow y verificar el dictado al mantener pulsado.
 
 ## Qué he hecho como ChatGPT
 
@@ -28,7 +30,7 @@ Este registro lo ha redactado ChatGPT/Codex para documentar su intervención en 
 7. Abrí el monitor serie, observé varias parejas D/U procedentes del botón y dejé la velocidad en 115200. Cerré después el monitor para liberar el puerto al programa del Mac. No he comprobado visualmente el LED físico.
 8. Con autorización expresa de Luis para usar ejecución local, descargué y revisé los tres archivos del programa Mac desde el commit 3efe98ae782949b528504efef7eea5304b3d9412: boton_claude.py, instalar.sh y es.lagu.boton-claude.plist. Comprobé la sintaxis Python y ejecuté el programa de prueba, que confirmó «escuchando /dev/cu.usbmodem1101».
 9. Instalé los archivos en ~/Library/Application Support/Boton Claude/ y registré el servicio ~/Library/LaunchAgents/es.lagu.boton-claude.plist. Conservé el código de boton_claude.py sin cambios.
-10. Registré el servicio con launchctl bootstrap en la sesión gráfica del usuario, en vez de ejecutar instalar.sh. El plist instalado mantiene RunAtLoad y KeepAlive; utiliza /usr/bin/python3 con -u para que el registro salga sin búfer. Después añadí temporalmente un lanzador local de diagnóstico para registrar el permiso de teclado y distinguir las pulsaciones cortas de F18. El código original del repo permanece intacto.
+10. Registré el servicio con launchctl bootstrap en la sesión gráfica del usuario, en vez de ejecutar instalar.sh. El plist instalado mantiene RunAtLoad y KeepAlive, añade -u para registrar sin búfer y usa directamente el ejecutable de Python.app indicado más abajo. Fue necesario sustituir /usr/bin/python3 para que el servicio reconociera el permiso concedido en este Mac. Añadí temporalmente un lanzador de diagnóstico de permisos y gestos y lo retiré al terminar la comprobación. El servicio definitivo ejecuta boton_claude.py sin cambios respecto al repo.
 11. Comprobé que launchctl muestra el servicio es.lagu.boton-claude como running, que su proceso Python tiene abierto /dev/cu.usbmodem1101 y que /tmp/boton-claude.log contiene el mensaje de escucha.
 12. Guardé este MD en GitHub mediante el navegador, porque Luis confirmó que no tiene una copia local del repo. No se ha creado una copia local de labil.
 
@@ -43,13 +45,19 @@ No del todo. La parte de la placa quedó funcionando, pero hubo complicaciones:
 - Computer Use bloqueó Terminal por seguridad y no autorizó Finder, Ajustes del Sistema ni Wispr Flow. Luis autorizó expresamente continuar la instalación del programa mediante ejecución local. Los permisos y el atajo de Wispr requieren intervención manual en las aplicaciones que Computer Use no permite controlar.
 - El navegador disponible no tenía sesión de GitHub; Luis inició sesión personalmente para poder guardar este informe.
 
-## Estado de los últimos pasos
+## Solución del bloqueo de F18 y estado final
 
-El intento de registrar F18 en Wispr Flow no recibía ninguna tecla. Se comprobó el permiso desde dentro del servicio: AX=False y enviar teclas=False. El bloqueo está en el permiso de macOS, no en que el ESP32 tenga que enviar F18 directamente; el firmware transmite D/U y el programa del Mac los convierte en gestos. El registro del servicio también confirmó una pulsación corta recibida desde el botón. Se pidió a Luis que activara Python en Ajustes > Privacidad y seguridad > Accesibilidad y configurara F18 como atajo de «mantener para hablar» en Wispr Flow. La aplicación Python disponible en este Mac está en:
+El intento de registrar F18 en Wispr Flow no recibía ninguna tecla. El firmware no tenía que enviar F18: transmite D/U y el programa del Mac los convierte en pulsación corta o larga. El diagnóstico confirmó la recepción de pulsaciones cortas y registró Enter DOWN/UP y F18 DOWN/UP.
 
-/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app
+Luis confirmó que había activado Python en Accesibilidad. Sin embargo, al iniciar el servicio mediante /usr/bin/python3 seguían apareciendo AX=False y enviar teclas=False. Cambié el ejecutable del LaunchAgent por el de Python.app que realmente estaba ejecutando el proceso:
 
-No se da por completada la prueba de traer Claude al frente, enviar Enter y dictar con pulsación larga hasta confirmar esos pasos y probar los gestos.
+/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python
+
+Después de ese cambio, el propio servicio confirmó AX=True y enviar teclas=True. Esa fue la solución observada en esta sesión. No se alteró la base de datos de permisos de macOS; Luis concedió el permiso desde Ajustes.
+
+Retiré el lanzador temporal de diagnóstico y reinicié el servicio definitivo con el programa original. Verifiqué que estaba running, que tenía abierto el puerto USB, que RunAtLoad y KeepAlive estaban activos y que los bytes de boton_claude.py coincidían con el archivo descargado del repo. El último mensaje del registro fue «escuchando /dev/cu.usbmodem1101».
+
+Queda pendiente que Luis confirme que Wispr Flow ha guardado F18 como «mantener para hablar» y que el dictado funciona con la pulsación larga. Computer Use no tiene acceso a Wispr Flow, así que no se presenta esa prueba como realizada por ChatGPT.
 
 ## Ubicaciones y mantenimiento
 
@@ -60,5 +68,6 @@ No se da por completada la prueba de traer Claude al frente, enviar Enter y dict
 - Para comprobar el servicio: launchctl print gui/$(id -u)/es.lagu.boton-claude
 - Para detener y desregistrar el servicio: launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/es.lagu.boton-claude.plist
 - El número del puerto USB puede cambiar al reconectar; el programa busca automáticamente /dev/cu.usbmodem*.
+- Si se vuelve a ejecutar instalar.sh del repo, se generará el plist original con /usr/bin/python3. En este Mac debe conservarse la ruta directa de Python.app cuya autorización se ha comprobado.
 
 La carcasa impresa, el ajuste mecánico de la palanca y las medidas de la galga no forman parte de las comprobaciones realizadas en esta sesión.
