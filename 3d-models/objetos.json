@@ -2712,13 +2712,15 @@
        "nombre": "montado",
        "de": [
         "fidgets/boton-claude/boton_modular_montado.stl"
-       ]
+       ],
+       "orbita": "25deg 28deg 105%"
       },
       {
        "nombre": "base",
        "de": [
         "fidgets/boton-claude/boton_modular_base.stl"
-       ]
+       ],
+       "orbita": "25deg 28deg 105%"
       },
       {
        "nombre": "tapa",

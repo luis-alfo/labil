@@ -573,7 +573,7 @@ function vistaObjeto(oid, eid, abrirDetalles = false) {
   // p. ej. la pieza dentro del mueble; en ese caso la cámara puede acercarse hasta la pieza.
   const visor = (p) => `<model-viewer id="mv" src="${p.src}" alt="${esc(o.nombre)} · ${esc(e.nombre)}"
            camera-orbit="${p.orbita || ORBITA}" camera-target="${p.objetivo || OBJETIVO}"
-           min-camera-orbit="${p.orbita ? CERCA : "auto auto auto"}"
+           min-camera-orbit="${p.objetivo ? CERCA : "auto auto auto"}"
            camera-controls touch-action="none" interaction-prompt="none"
            environment-image="luz-visor.hdr" exposure="0.9" tone-mapping="neutral"
            shadow-intensity="1" shadow-softness="0.9" ar ar-modes="webxr scene-viewer quick-look">

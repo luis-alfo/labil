@@ -412,3 +412,11 @@ algo que se pueda sopesar. **Código compartido**: las fuerzas se dan también e
   artefacto LG Casa (grupo Logos: `arco-menta`, `arco-tinta`, `arco-bosque`); se copia de ahí, no se dibuja.
 - Una marca puede ser parte que trabaja: en el botón, el arco es el corte que suelta la palanca.
 - Una cara que se imprime sobre la placa no admite canto redondeado ni relieve saliente: solo hundido o a ras.
+
+## 2026-11-21 · Visor: encuadre propio en piezas pequeñas
+
+- Una vista con `orbita` y sin `objetivo` hacía desaparecer el botón (3 cm): el visor limitaba el
+  acercamiento a 25 cm, pensado para escenas con mueble. Ahora ese límite solo se aplica si la vista
+  trae `objetivo` (escena con contexto).
+- Código: una pieza suelta puede llevar solo `orbita` (desde dónde se mira); una escena lleva las dos.
+- El botón se enseña desde arriba (`25deg 28deg`): de frente no se veían ni el arco ni las muescas.
