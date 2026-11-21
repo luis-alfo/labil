@@ -3,7 +3,7 @@
 
   toque corto        Claude no está delante -> trae la app de Claude al frente
                      Claude está delante    -> Enter (aceptar)
-  mantener pulsado   F18 mientras dure (dictado en Wispr Flow, modo «mantener para hablar»)
+  mantener pulsado   Shift+B mientras dure (Wispr Flow, modo «mantener para hablar»)
 
 Solo usa lo que trae macOS (sin instalar librerías). La primera vez, macOS pide permiso de
 Accesibilidad para quien lo ejecuta (Terminal o python3): sin él no puede enviar teclas.
@@ -16,32 +16,68 @@ import ctypes.util
 import glob
 import os
 import select
+import signal
 import subprocess
 import termios
 import time
 
 APP_CLAUDE = "com.anthropic.claudefordesktop"   # comprobar con: osascript -e 'id of app "Claude"'
 LARGA_S = 0.40             # a partir de aquí, la pulsación es «larga»
-DICTADO = "mantener"       # "mantener": F18 abajo mientras se pulsa · "toque": un F18 al llegar a larga
-TECLA_ENTER, TECLA_F18 = 36, 79
+DICTADO = "mantener"       # "mantener": Shift+B mientras se pulsa · "toque": un toque al llegar a larga
+TECLA_ENTER, TECLA_SHIFT, TECLA_B = 36, 56, 11
+FLAG_SHIFT = 0x00020000    # kCGEventFlagMaskShift
+dictado_pulsado = False
 
 _cg = ctypes.CDLL(ctypes.util.find_library("ApplicationServices"))
 _cg.CGEventCreateKeyboardEvent.restype = ctypes.c_void_p
 _cg.CGEventCreateKeyboardEvent.argtypes = [ctypes.c_void_p, ctypes.c_uint16, ctypes.c_bool]
 _cg.CGEventPost.argtypes = [ctypes.c_uint32, ctypes.c_void_p]
+_cg.CGEventSetFlags.argtypes = [ctypes.c_void_p, ctypes.c_uint64]
 _cg.CFRelease.argtypes = [ctypes.c_void_p]
 
 
-def tecla(codigo, abajo):
+def tecla(codigo, abajo, flags=0):
     ev = _cg.CGEventCreateKeyboardEvent(None, codigo, abajo)
-    _cg.CGEventPost(0, ev)          # 0 = como si viniera de un teclado
-    _cg.CFRelease(ev)
+    if not ev:
+        raise RuntimeError("No se pudo crear el evento de teclado")
+    try:
+        _cg.CGEventSetFlags(ev, flags)
+        _cg.CGEventPost(0, ev)      # 0 = como si viniera de un teclado
+    finally:
+        _cg.CFRelease(ev)
 
 
 def toque(codigo):
     tecla(codigo, True)
     time.sleep(0.02)
     tecla(codigo, False)
+
+
+def dictado(abajo):
+    """Mantiene Shift+B y suelta ambas teclas en orden inverso, una sola vez."""
+    global dictado_pulsado
+    if abajo == dictado_pulsado:
+        return
+    if abajo:
+        dictado_pulsado = True
+        tecla(TECLA_SHIFT, True, FLAG_SHIFT)
+        tecla(TECLA_B, True, FLAG_SHIFT)
+    else:
+        try:
+            tecla(TECLA_B, False, FLAG_SHIFT)
+        finally:
+            try:
+                tecla(TECLA_SHIFT, False)
+            finally:
+                dictado_pulsado = False
+
+
+def toque_dictado():
+    try:
+        dictado(True)
+        time.sleep(0.02)
+    finally:
+        dictado(False)
 
 
 def app_delante():
@@ -77,7 +113,7 @@ def escuchar(fd):
         listo, _, _ = select.select([fd], [], [], espera)
         if not listo:                               # se cumplió el tiempo con el botón aún pulsado
             larga = True
-            tecla(TECLA_F18, True) if DICTADO == "mantener" else toque(TECLA_F18)
+            dictado(True) if DICTADO == "mantener" else toque_dictado()
             continue
         datos = os.read(fd, 64)
         if not datos:
@@ -90,7 +126,7 @@ def escuchar(fd):
             elif s == b"U" and desde is not None:
                 if larga:
                     if DICTADO == "mantener":
-                        tecla(TECLA_F18, False)
+                        dictado(False)
                 else:
                     corta()
                 desde = None
@@ -103,9 +139,9 @@ def main():
             fd = abrir_puerto()
             if fd is not None:
                 escuchar(fd)
-        except OSError as e:                        # desenchufado: se suelta F18 por si acaso y se reintenta
+        except OSError as e:                        # desenchufado: se suelta Shift+B y se reintenta
             print(f"sin placa ({e}); reintento")
-            tecla(TECLA_F18, False)
+            dictado(False)
         finally:
             if fd is not None:
                 os.close(fd)
@@ -113,4 +149,12 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    def detener(signum, frame):
+        raise SystemExit(0)
+
+    signal.signal(signal.SIGTERM, detener)
+    signal.signal(signal.SIGINT, detener)
+    try:
+        main()
+    finally:
+        dictado(False)
