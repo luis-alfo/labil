@@ -2610,6 +2610,184 @@
      ]
     }
    ]
+  },
+  {
+   "id": "boton-claude",
+   "nombre": "botón claude",
+   "que": "un botón de mesa para Claude: una funda impresa cuya palanca pulsa el botón de un ESP32-C3",
+   "estado": "dos piezas por imprimir",
+   "aprendizajes": "fidgets/boton-claude/APRENDIZAJES.md",
+   "estados": [
+    {
+     "id": "funda",
+     "tipo": "borrador",
+     "nombre": "funda",
+     "archivo": "boton_claude",
+     "fecha": "2026-11-21",
+     "texto": "Funda de una pieza de 21,6 × 25,8 × 7,4 mm y 2 g. La placa entra por detrás y dos pestañas la retienen. El techo lleva una palanca recortada en U con un tetón sobre el botón BOOT. Un toque trae Claude al frente o acepta; mantener pulsado dicta. Es también la prueba de encaje: las medidas de la placa salen de internet y de una foto.",
+     "modelos": [
+      {
+       "nombre": "montada",
+       "de": [
+        "fidgets/boton-claude/boton_claude_montada.stl"
+       ]
+      },
+      {
+       "nombre": "para imprimir",
+       "de": [
+        "fidgets/boton-claude/boton_claude.3mf"
+       ]
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "funda",
+       "de": "fidgets/boton-claude/boton_claude.stl"
+      }
+     ],
+     "descargas": [
+      "fidgets/boton-claude/boton_claude.3mf",
+      "fidgets/boton-claude/boton_claude.stl",
+      "fidgets/boton-claude/generar.py",
+      "fidgets/boton-claude/firmware/boton_claude/boton_claude.ino",
+      "fidgets/boton-claude/mac/boton_claude.py",
+      "fidgets/boton-claude/README.md",
+      "fidgets/boton-claude/APRENDIZAJES.md"
+     ],
+     "proceso": [
+      {
+       "de": "proceso/boton-claude/2026-11-21-la-placa-comprada-en-su-bolsa.jpg",
+       "pie": "La placa comprada, con sus tiras de pines sin soldar. Se decidió no soldarlas: la funda queda en 7,4 mm de alto.",
+       "fecha": "2026-11-21"
+      },
+      {
+       "de": "proceso/boton-claude/2026-11-21-ficha-de-la-placa-en-diotronic.jpg",
+       "pie": "Ficha de la placa en Diotronic. No hay plano publicado: la posición del botón BOOT se midió sobre esta foto (15,1 px/mm, ±0,5 mm).",
+       "fecha": "2026-11-21"
+      }
+     ],
+     "memoria": [
+      {
+       "tema": "uso",
+       "texto": "Luis: «si Claude está activo, entonces que acepte»; si no, que lo traiga al frente en la última sesión. Mantener pulsado manda F18, que Luis configura en Wispr Flow para dictar."
+      },
+      {
+       "tema": "diseño",
+       "texto": "Sin interruptor aparte: la palanca impresa pulsa directamente el botón BOOT de la placa. Una sola palanca; RST queda tapado porque reinicia el chip y no se puede leer como tecla."
+      },
+      {
+       "tema": "método",
+       "texto": "El ESP32-C3 no puede ser teclado USB: su USB es un puerto serie. La placa solo dice «pulsado» y «soltado»; un programa en el Mac decide qué hacer, porque solo el Mac sabe si Claude está delante."
+      },
+      {
+       "tema": "medidas",
+       "texto": "Luis pidió buscar las medidas en internet. Contorno 22,5 × 18 mm de las fichas; el botón BOOT, medido sobre la foto de la tienda (±0,5 mm). Tetón de 3 mm de diámetro para absorber ±0,7 mm."
+      },
+      {
+       "tema": "resistencia",
+       "texto": "Palanca de 1 mm de grosor y 12,8 mm de brazo: 15 MPa al pulsar (9–20 MPa según el alto real del botón), frente a 55 MPa de rotura del PLA. Fuerza del dedo: unos 2 N más el pulsador. Pestañas: 18 MPa solo al meter la placa."
+      },
+      {
+       "tema": "impresión",
+       "texto": "Boca abajo: techo y palanca sobre la placa PEI, capas en el plano de la flexión. Sin soportes; el suelo es un puente de 18,4 mm."
+      },
+      {
+       "tema": "montaje",
+       "texto": "El suelo y el techo acaban donde acaba la placa para que el conector del cable no tropiece; las pestañas siguen por los lados."
+      }
+     ],
+     "cambio": "funda de una pieza: la palanca del techo pulsa el botón de la placa",
+     "feedback": "hacerlo modular: dos piezas que se encajan, validar el encaje de la placa y conservar la parte de arriba; muescas para medir; forma y radios de la guarida",
+     "feedback_de": "luis"
+    },
+    {
+     "id": "modular",
+     "tipo": "borrador",
+     "nombre": "dos piezas",
+     "archivo": "boton_modular",
+     "fecha": "2026-11-21",
+     "texto": "Base y tapa, 23,2 × 29,5 × 7,4 mm y 3,3 g entre las dos. La base aloja la placa y lleva muescas para leer dónde cae de verdad el botón; la tapa lleva la palanca. Si falla el encaje de la placa se repite solo la base (0,8 g). Una galga en escalera mide el alto del pulsador. La palanca tiene la forma del arco de La Guarida.",
+     "modelos": [
+      {
+       "nombre": "montado",
+       "de": [
+        "fidgets/boton-claude/boton_modular_montado.stl"
+       ]
+      },
+      {
+       "nombre": "base",
+       "de": [
+        "fidgets/boton-claude/boton_modular_base.stl"
+       ]
+      },
+      {
+       "nombre": "tapa",
+       "de": [
+        "fidgets/boton-claude/boton_modular_tapa.stl"
+       ]
+      },
+      {
+       "nombre": "placa de impresión",
+       "de": [
+        "fidgets/boton-claude/boton_modular.3mf"
+       ]
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "base",
+       "de": "fidgets/boton-claude/boton_modular_base.stl"
+      },
+      {
+       "nombre": "tapa",
+       "de": "fidgets/boton-claude/boton_modular_tapa.stl"
+      },
+      {
+       "nombre": "galga",
+       "de": "fidgets/boton-claude/boton_modular_galga.stl"
+      }
+     ],
+     "descargas": [
+      "fidgets/boton-claude/boton_modular.3mf",
+      "fidgets/boton-claude/boton_modular_base.stl",
+      "fidgets/boton-claude/boton_modular_tapa.stl",
+      "fidgets/boton-claude/boton_modular_galga.stl",
+      "fidgets/boton-claude/marca/arco-la-guarida.svg",
+      "fidgets/boton-claude/generar_modular.py",
+      "fidgets/boton-claude/firmware/boton_claude/boton_claude.ino",
+      "fidgets/boton-claude/mac/boton_claude.py",
+      "fidgets/boton-claude/README.md",
+      "fidgets/boton-claude/APRENDIZAJES.md"
+     ],
+     "memoria": [
+      {
+       "tema": "diseño",
+       "texto": "Luis: «que lo que imprimamos sean dos piezas que se encajan y que validemos el encaje de la placa, pero que podamos tener la parte de arriba por si fallamos al diseñar la parte de la placa». La base aloja la placa; la tapa lleva la palanca."
+      },
+      {
+       "tema": "medidas",
+       "texto": "Luis pidió «pequeñas muescas para medir el acierto o error de la placa». Muescas de 1 mm cada 2 mm en los dos lados y en el frente de la base; la central, más honda, marca el centro supuesto de BOOT. Una galga en escalera de 1,8 a 2,8 mm da el alto del pulsador."
+      },
+      {
+       "tema": "montaje",
+       "texto": "La placa cae desde arriba; dos postes traseros aguantan el tirón del cable. La tapa se engancha detrás con dos uñas a 45° y hace clic delante en un brazo de la base. Se abre empujando el diente por la ventana del frente."
+      },
+      {
+       "tema": "clic",
+       "texto": "El brazo de cierre va tumbado sobre la placa de impresión, con las capas en el plano de la flexión y la raíz redondeada, como se aprendió en la botonera. Trabaja a 23 MPa solo al poner la tapa."
+      },
+      {
+       "tema": "estética",
+       "texto": "Luis: «que tenga forma como la guarida… aunque sea en relieve, por encima». El corte que suelta la palanca es el arco de La Guarida, tomado del SVG de LG Casa: la cumbre en la punta y las patas alargadas hasta la bisagra. Radios de LG Casa por proporción: esquina 4 mm delante, canto 2 mm detrás."
+      },
+      {
+       "tema": "coste",
+       "texto": "Crece de 21,6 × 25,8 a 23,2 × 29,5 mm por la doble pared y el brazo. Repetir la base cuesta 0,8 g."
+      }
+     ],
+     "cambio": "dos piezas: base con muescas de medida y tapa con el arco de la guarida"
+    }
+   ]
   }
  ]
 }

@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-20T22:44Z",
+ "generado": "2026-11-21T13:45Z",
  "euros_kg": 20.0,
  "perfil": "A1 · capa 0.2 mm · relleno 15% · PLA 1.26 g/cm³",
  "objetos": [
@@ -3076,6 +3076,199 @@
      "descargas": [],
      "piezas": [],
      "cambiado": null
+    }
+   ]
+  },
+  {
+   "id": "boton-claude",
+   "nombre": "botón claude",
+   "que": "un botón de mesa para Claude: una funda impresa cuya palanca pulsa el botón de un ESP32-C3",
+   "estado": "dos piezas por imprimir",
+   "aprendizajes": "files/boton-claude/notas/APRENDIZAJES.md",
+   "estados": [
+    {
+     "id": "funda",
+     "tipo": "borrador",
+     "nombre": "funda",
+     "archivo": "boton_claude",
+     "fecha": "2026-11-21",
+     "texto": "Funda de una pieza de 21,6 × 25,8 × 7,4 mm y 2 g. La placa entra por detrás y dos pestañas la retienen. El techo lleva una palanca recortada en U con un tetón sobre el botón BOOT. Un toque trae Claude al frente o acepta; mantener pulsado dicta. Es también la prueba de encaje: las medidas de la placa salen de internet y de una foto.",
+     "memoria": [
+      {
+       "tema": "uso",
+       "texto": "Luis: «si Claude está activo, entonces que acepte»; si no, que lo traiga al frente en la última sesión. Mantener pulsado manda F18, que Luis configura en Wispr Flow para dictar."
+      },
+      {
+       "tema": "diseño",
+       "texto": "Sin interruptor aparte: la palanca impresa pulsa directamente el botón BOOT de la placa. Una sola palanca; RST queda tapado porque reinicia el chip y no se puede leer como tecla."
+      },
+      {
+       "tema": "método",
+       "texto": "El ESP32-C3 no puede ser teclado USB: su USB es un puerto serie. La placa solo dice «pulsado» y «soltado»; un programa en el Mac decide qué hacer, porque solo el Mac sabe si Claude está delante."
+      },
+      {
+       "tema": "medidas",
+       "texto": "Luis pidió buscar las medidas en internet. Contorno 22,5 × 18 mm de las fichas; el botón BOOT, medido sobre la foto de la tienda (±0,5 mm). Tetón de 3 mm de diámetro para absorber ±0,7 mm."
+      },
+      {
+       "tema": "resistencia",
+       "texto": "Palanca de 1 mm de grosor y 12,8 mm de brazo: 15 MPa al pulsar (9–20 MPa según el alto real del botón), frente a 55 MPa de rotura del PLA. Fuerza del dedo: unos 2 N más el pulsador. Pestañas: 18 MPa solo al meter la placa."
+      },
+      {
+       "tema": "impresión",
+       "texto": "Boca abajo: techo y palanca sobre la placa PEI, capas en el plano de la flexión. Sin soportes; el suelo es un puente de 18,4 mm."
+      },
+      {
+       "tema": "montaje",
+       "texto": "El suelo y el techo acaban donde acaba la placa para que el conector del cable no tropiece; las pestañas siguen por los lados."
+      }
+     ],
+     "cambio": "funda de una pieza: la palanca del techo pulsa el botón de la placa",
+     "feedback": "hacerlo modular: dos piezas que se encajan, validar el encaje de la placa y conservar la parte de arriba; muescas para medir; forma y radios de la guarida",
+     "feedback_de": "luis",
+     "modelos": [
+      {
+       "nombre": "montada",
+       "src": "models/archivo/boton-claude-funda-0.glb"
+      },
+      {
+       "nombre": "para imprimir",
+       "src": "models/archivo/boton-claude-funda-1.glb"
+      }
+     ],
+     "imagenes": [],
+     "proceso": [
+      {
+       "src": "files/boton-claude/funda/2026-11-21-la-placa-comprada-en-su-bolsa.jpg",
+       "pie": "La placa comprada, con sus tiras de pines sin soldar. Se decidió no soldarlas: la funda queda en 7,4 mm de alto.",
+       "fecha": "2026-11-21"
+      },
+      {
+       "src": "files/boton-claude/funda/2026-11-21-ficha-de-la-placa-en-diotronic.jpg",
+       "pie": "Ficha de la placa en Diotronic. No hay plano publicado: la posición del botón BOOT se midió sobre esta foto (15,1 px/mm, ±0,5 mm).",
+       "fecha": "2026-11-21"
+      }
+     ],
+     "descargas": [
+      "files/boton-claude/funda/boton_claude.3mf",
+      "files/boton-claude/funda/boton_claude.stl",
+      "files/boton-claude/funda/generar.py",
+      "files/boton-claude/funda/boton_claude.ino",
+      "files/boton-claude/funda/boton_claude.py",
+      "files/boton-claude/funda/README.md",
+      "files/boton-claude/funda/APRENDIZAJES.md"
+     ],
+     "piezas": [
+      {
+       "nombre": "funda",
+       "cantidad": 1,
+       "gramos": 2.1,
+       "euros": 0.04,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 2.1,
+      "euros": 0.04,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-21"
+    },
+    {
+     "id": "modular",
+     "tipo": "borrador",
+     "nombre": "dos piezas",
+     "archivo": "boton_modular",
+     "fecha": "2026-11-21",
+     "texto": "Base y tapa, 23,2 × 29,5 × 7,4 mm y 3,3 g entre las dos. La base aloja la placa y lleva muescas para leer dónde cae de verdad el botón; la tapa lleva la palanca. Si falla el encaje de la placa se repite solo la base (0,8 g). Una galga en escalera mide el alto del pulsador. La palanca tiene la forma del arco de La Guarida.",
+     "memoria": [
+      {
+       "tema": "diseño",
+       "texto": "Luis: «que lo que imprimamos sean dos piezas que se encajan y que validemos el encaje de la placa, pero que podamos tener la parte de arriba por si fallamos al diseñar la parte de la placa». La base aloja la placa; la tapa lleva la palanca."
+      },
+      {
+       "tema": "medidas",
+       "texto": "Luis pidió «pequeñas muescas para medir el acierto o error de la placa». Muescas de 1 mm cada 2 mm en los dos lados y en el frente de la base; la central, más honda, marca el centro supuesto de BOOT. Una galga en escalera de 1,8 a 2,8 mm da el alto del pulsador."
+      },
+      {
+       "tema": "montaje",
+       "texto": "La placa cae desde arriba; dos postes traseros aguantan el tirón del cable. La tapa se engancha detrás con dos uñas a 45° y hace clic delante en un brazo de la base. Se abre empujando el diente por la ventana del frente."
+      },
+      {
+       "tema": "clic",
+       "texto": "El brazo de cierre va tumbado sobre la placa de impresión, con las capas en el plano de la flexión y la raíz redondeada, como se aprendió en la botonera. Trabaja a 23 MPa solo al poner la tapa."
+      },
+      {
+       "tema": "estética",
+       "texto": "Luis: «que tenga forma como la guarida… aunque sea en relieve, por encima». El corte que suelta la palanca es el arco de La Guarida, tomado del SVG de LG Casa: la cumbre en la punta y las patas alargadas hasta la bisagra. Radios de LG Casa por proporción: esquina 4 mm delante, canto 2 mm detrás."
+      },
+      {
+       "tema": "coste",
+       "texto": "Crece de 21,6 × 25,8 a 23,2 × 29,5 mm por la doble pared y el brazo. Repetir la base cuesta 0,8 g."
+      }
+     ],
+     "cambio": "dos piezas: base con muescas de medida y tapa con el arco de la guarida",
+     "modelos": [
+      {
+       "nombre": "montado",
+       "src": "models/archivo/boton-claude-modular-0.glb"
+      },
+      {
+       "nombre": "base",
+       "src": "models/archivo/boton-claude-modular-1.glb"
+      },
+      {
+       "nombre": "tapa",
+       "src": "models/archivo/boton-claude-modular-2.glb"
+      },
+      {
+       "nombre": "placa de impresión",
+       "src": "models/archivo/boton-claude-modular-3.glb"
+      }
+     ],
+     "imagenes": [],
+     "proceso": [],
+     "descargas": [
+      "files/boton-claude/modular/boton_modular.3mf",
+      "files/boton-claude/modular/boton_modular_base.stl",
+      "files/boton-claude/modular/boton_modular_tapa.stl",
+      "files/boton-claude/modular/boton_modular_galga.stl",
+      "files/boton-claude/modular/arco-la-guarida.svg",
+      "files/boton-claude/modular/generar_modular.py",
+      "files/boton-claude/modular/boton_claude.ino",
+      "files/boton-claude/modular/boton_claude.py",
+      "files/boton-claude/modular/README.md",
+      "files/boton-claude/modular/APRENDIZAJES.md"
+     ],
+     "piezas": [
+      {
+       "nombre": "base",
+       "cantidad": 1,
+       "gramos": 0.8,
+       "euros": 0.02,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "tapa",
+       "cantidad": 1,
+       "gramos": 2.4,
+       "euros": 0.05,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "galga",
+       "cantidad": 1,
+       "gramos": 0.1,
+       "euros": 0.0,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 3.3,
+      "euros": 0.07,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-21"
     }
    ]
   }

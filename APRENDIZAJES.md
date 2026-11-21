@@ -386,3 +386,29 @@ algo que se pueda sopesar. **Código compartido**: las fuerzas se dan también e
   «alma», la diagonal del codo; «lomo», la U que cabalga sobre la línea.
 - Los radios de LG Casa se llevan a la pieza por proporción (canto 2, esquina 4, encuentro 6,
   doblez a 4 veces el grosor). Detalle en `3d-models/bathroom-trazo/APRENDIZAJES.md`.
+
+## 2026-11-21 · Electrónica: cómo habla un chip con el ordenador (botón Claude)
+
+- Primer objeto con electrónica: un botón impreso cuya palanca pulsa el BOOT de un ESP32-C3 Super Mini.
+- El ESP32-C3 **no puede ser teclado USB**: su USB es un puerto serie fijo. Teclado USB (HID) lo dan
+  el ESP32-S2/S3, el RP2040 o el ATmega32U4.
+- Tres caminos: teclado USB, teclado Bluetooth, o serie + programa en el ordenador. Solo el
+  tercero deja que el botón actúe según lo que pasa en la pantalla.
+- En estas placas, **RST no es un botón programable**: reinicia el chip. BOOT (GPIO9) sí.
+- Códigos: «palanca», «serie», «HID», «BOOT/RST». Detalle en `fidgets/boton-claude/APRENDIZAJES.md`.
+- Reparto: la placa solo dice «pulsado» y «soltado»; el Mac mide el tiempo y decide (toque = traer Claude
+  o aceptar; larga = F18 para dictar). Cambiar un gesto no obliga a recargar la placa.
+- Una funda que aloja una placa con conector debe acabar donde acaba la placa: el cuerpo del cable
+  es más alto que el hueco interior.
+- Si la pieza entera pesa 2 g, ella misma es la prueba de encaje.
+
+## 2026-11-21 · Botón Claude en dos piezas: separar lo que puede fallar
+
+- Luis quiere **modular lo incierto**: si una parte depende de medidas dudosas (la placa), va en una
+  pieza pequeña y barata de repetir, y lo demás se conserva.
+- **Código compartido**: «muescas» = marcas impresas en la pieza para leer el error contra el objeto
+  real; «galga» = pieza suelta que mide. La pieza de prueba no solo dice «encaja o no»: dice cuánto falla.
+- «La Guarida» en un objeto = sus radios (LG Casa) y su marca, **el arco**. El SVG oficial está en el
+  artefacto LG Casa (grupo Logos: `arco-menta`, `arco-tinta`, `arco-bosque`); se copia de ahí, no se dibuja.
+- Una marca puede ser parte que trabaja: en el botón, el arco es el corte que suelta la palanca.
+- Una cara que se imprime sobre la placa no admite canto redondeado ni relieve saliente: solo hundido o a ras.

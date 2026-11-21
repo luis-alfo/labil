@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Arranca el programa al iniciar sesión. Lo instala instalar.sh (cambia RUTA por la carpeta real). -->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>es.lagu.boton-claude</string>
+  <key>ProgramArguments</key>
+  <array><string>/usr/bin/python3</string><string>RUTA/boton_claude.py</string></array>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <key>StandardOutPath</key><string>/tmp/boton-claude.log</string>
+  <key>StandardErrorPath</key><string>/tmp/boton-claude.log</string>
+</dict>
+</plist>
