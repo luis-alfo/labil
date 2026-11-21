@@ -2,7 +2,8 @@
 
 Botón de mesa impreso en la A1: una palanca de plástico pulsa directamente el botón BOOT de un
 ESP32-C3 Super Mini (sin interruptor aparte). Alimentado por USB-C desde un Mac.
-Estado: **borrador «funda», sin imprimir** (21 nov 2026). Fuente: `generar.py`. Uso y ajustes: `README.md`.
+Estado: **borrador «dos piezas», sin imprimir** (21 nov 2026). Fuente: `generar_modular.py` (toma la placa y la
+palanca de `generar.py`, el borrador anterior «funda»). Uso y ajustes: `README.md`.
 
 ## La placa (ESP32-C3 Super Mini, comprada en Diotronic)
 
@@ -88,6 +89,35 @@ Estado: **borrador «funda», sin imprimir** (21 nov 2026). Fuente: `generar.py`
 - **Supuestos que la primera impresión dirá**: alto del pulsador, posición de BOOT, grosor y
   ancho reales de la placa.
 
+## El diseño «dos piezas» (petición de Luis, 21 nov 2026)
+
+Luis: «que lo que imprimamos sean dos piezas que se encajan y que validemos el encaje de la placa,
+pero que podamos tener la parte de arriba por si fallamos al diseñar la parte de la placa». Y:
+«pequeñas muescas para medir el acierto o error de la placa».
+
+- **Base** (0,8 g): cajeado donde la placa cae desde arriba, dos **postes** traseros que aguantan el
+  tirón del cable, **muescas** de medida y el **brazo** de cierre.
+- **Tapa** (2,4 g): techo, palanca y tetón, repisas que no dejan subir la placa. Boca abajo al imprimir.
+- **Galga** (0,1 g): escalera de 1,8 a 2,8 mm para leer el alto del pulsador.
+- **Qué pieza se repite según el fallo**: encaje de la placa → base. Posición o alto del botón → tapa.
+  El reparto no es perfecto: el tetón va en la tapa, así que un error en BOOT obliga a repetir la tapa.
+- **Muescas**: 1 mm de ancho cada 2 mm, en los dos lados (leen la posición a lo largo) y en el frente
+  (a lo ancho). La muesca honda es el centro supuesto de BOOT. Con 0,4 de boquilla no salen marcas
+  fiables más finas: se lee al medio milímetro, a ojo, entre borde y borde de muesca.
+- **Encaje de la tapa**: detrás, dos **uñas** a 45° que entran bajo un chaflán de la base; delante, un
+  brazo en voladizo de la base con un **diente** que asoma por una **ventana** de la tapa. Se abre
+  empujando el diente. El brazo va tumbado sobre la placa de impresión (capas en el plano de la
+  flexión, raíz redondeada), como pide la lección de la botonera: 23 MPa (×2,4) solo al cerrar.
+- **Por qué no una tapa deslizante**: se sale justo en la dirección en que tira el cable.
+- **Radios de LG Casa** por proporción: esquina 4 mm en las dos esquinas de delante, canto 2 mm en
+  las de detrás y en la punta de la palanca. El canto de arriba no se puede redondear: la tapa se
+  imprime con esa cara sobre la placa.
+- **Crece** de 21,6 × 25,8 a 23,2 × 29,5 mm: doble pared a los lados y el brazo delante.
+- **Pendiente: el relieve de La Guarida en la tapa.** Su forma no está en el repo y no se dibuja de
+  memoria (misma regla que el logo de Lagu). Al ir la cara de arriba sobre la placa de impresión, el
+  relieve saldrá hundido, o a ras en otro color con el AMS lite.
+- Comprobado: tres mallas cerradas, sin choque entre base, tapa y placa; cortes y vista en la web.
+
 ## Cómo reparten el trabajo placa y Mac
 
 - La placa solo manda `D` (pulsado) y `U` (soltado). No sabe qué es un toque corto o largo.
@@ -98,7 +128,9 @@ Estado: **borrador «funda», sin imprimir** (21 nov 2026). Fuente: `generar.py`
 
 ## Códigos compartidos
 
-- *funda*: la pieza entera. *tetón*: el cilindro bajo la palanca que toca el botón.
+- *base* / *tapa* / *galga*: las tres piezas del diseño modular. *poste*: tope trasero de la placa.
+- *muesca*: marca de medida en la base. *uña*: enganche trasero de la tapa. *brazo* y *ventana*: el cierre de delante.
+- *funda*: el borrador de una pieza. *tetón*: el cilindro bajo la palanca que toca el botón.
 - *pestaña*: el tramo suelto de pared que retiene la placa. *diente*: su resalte. *labio*: el apoyo bajo la placa.
 - *toque* / *larga*: pulsación de menos / más de 0,4 s.
 

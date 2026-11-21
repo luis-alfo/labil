@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-21T13:28Z",
+ "generado": "2026-11-21T13:42Z",
  "euros_kg": 20.0,
  "perfil": "A1 · capa 0.2 mm · relleno 15% · PLA 1.26 g/cm³",
  "objetos": [
@@ -3083,7 +3083,7 @@
    "id": "boton-claude",
    "nombre": "botón claude",
    "que": "un botón de mesa para Claude: una funda impresa cuya palanca pulsa el botón de un ESP32-C3",
-   "estado": "funda por imprimir",
+   "estado": "dos piezas por imprimir",
    "aprendizajes": "files/boton-claude/notas/APRENDIZAJES.md",
    "estados": [
     {
@@ -3124,6 +3124,8 @@
       }
      ],
      "cambio": "funda de una pieza: la palanca del techo pulsa el botón de la placa",
+     "feedback": "hacerlo modular: dos piezas que se encajan, validar el encaje de la placa y conservar la parte de arriba; muescas para medir; forma y radios de la guarida",
+     "feedback_de": "luis",
      "modelos": [
       {
        "nombre": "montada",
@@ -3168,6 +3170,101 @@
      "coste": {
       "gramos": 2.1,
       "euros": 0.04,
+      "origen": "estimado"
+     },
+     "cambiado": "2026-11-21"
+    },
+    {
+     "id": "modular",
+     "tipo": "borrador",
+     "nombre": "dos piezas",
+     "archivo": "boton_modular",
+     "fecha": "2026-11-21",
+     "texto": "Base y tapa, 23,2 × 29,5 × 7,4 mm y 3,3 g entre las dos. La base aloja la placa y lleva muescas para leer dónde cae de verdad el botón; la tapa lleva la palanca. Si falla el encaje de la placa se repite solo la base (0,8 g). Una galga en escalera mide el alto del pulsador. Falta el relieve de La Guarida en la tapa.",
+     "memoria": [
+      {
+       "tema": "diseño",
+       "texto": "Luis: «que lo que imprimamos sean dos piezas que se encajan y que validemos el encaje de la placa, pero que podamos tener la parte de arriba por si fallamos al diseñar la parte de la placa». La base aloja la placa; la tapa lleva la palanca."
+      },
+      {
+       "tema": "medidas",
+       "texto": "Luis pidió «pequeñas muescas para medir el acierto o error de la placa». Muescas de 1 mm cada 2 mm en los dos lados y en el frente de la base; la central, más honda, marca el centro supuesto de BOOT. Una galga en escalera de 1,8 a 2,8 mm da el alto del pulsador."
+      },
+      {
+       "tema": "montaje",
+       "texto": "La placa cae desde arriba; dos postes traseros aguantan el tirón del cable. La tapa se engancha detrás con dos uñas a 45° y hace clic delante en un brazo de la base. Se abre empujando el diente por la ventana del frente."
+      },
+      {
+       "tema": "clic",
+       "texto": "El brazo de cierre va tumbado sobre la placa de impresión, con las capas en el plano de la flexión y la raíz redondeada, como se aprendió en la botonera. Trabaja a 23 MPa solo al poner la tapa."
+      },
+      {
+       "tema": "estética",
+       "texto": "Radios de LG Casa por proporción: esquina 4 mm delante, canto 2 mm detrás y en la punta de la palanca. El relieve de La Guarida irá en la tapa cuando Luis pase la forma."
+      },
+      {
+       "tema": "coste",
+       "texto": "Crece de 21,6 × 25,8 a 23,2 × 29,5 mm por la doble pared y el brazo. Repetir la base cuesta 0,8 g."
+      }
+     ],
+     "cambio": "dos piezas: base con muescas de medida y tapa con la palanca",
+     "modelos": [
+      {
+       "nombre": "montado",
+       "src": "models/archivo/boton-claude-modular-0.glb"
+      },
+      {
+       "nombre": "base",
+       "src": "models/archivo/boton-claude-modular-1.glb"
+      },
+      {
+       "nombre": "tapa",
+       "src": "models/archivo/boton-claude-modular-2.glb"
+      },
+      {
+       "nombre": "placa de impresión",
+       "src": "models/archivo/boton-claude-modular-3.glb"
+      }
+     ],
+     "imagenes": [],
+     "proceso": [],
+     "descargas": [
+      "files/boton-claude/modular/boton_modular.3mf",
+      "files/boton-claude/modular/boton_modular_base.stl",
+      "files/boton-claude/modular/boton_modular_tapa.stl",
+      "files/boton-claude/modular/boton_modular_galga.stl",
+      "files/boton-claude/modular/generar_modular.py",
+      "files/boton-claude/modular/boton_claude.ino",
+      "files/boton-claude/modular/boton_claude.py",
+      "files/boton-claude/modular/README.md",
+      "files/boton-claude/modular/APRENDIZAJES.md"
+     ],
+     "piezas": [
+      {
+       "nombre": "base",
+       "cantidad": 1,
+       "gramos": 0.8,
+       "euros": 0.02,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "tapa",
+       "cantidad": 1,
+       "gramos": 2.4,
+       "euros": 0.05,
+       "fuente": "stl"
+      },
+      {
+       "nombre": "galga",
+       "cantidad": 1,
+       "gramos": 0.1,
+       "euros": 0.0,
+       "fuente": "stl"
+      }
+     ],
+     "coste": {
+      "gramos": 3.3,
+      "euros": 0.07,
       "origen": "estimado"
      },
      "cambiado": "2026-11-21"

@@ -401,3 +401,13 @@ algo que se pueda sopesar. **Código compartido**: las fuerzas se dan también e
 - Una funda que aloja una placa con conector debe acabar donde acaba la placa: el cuerpo del cable
   es más alto que el hueco interior.
 - Si la pieza entera pesa 2 g, ella misma es la prueba de encaje.
+
+## 2026-11-21 · Botón Claude en dos piezas: separar lo que puede fallar
+
+- Luis quiere **modular lo incierto**: si una parte depende de medidas dudosas (la placa), va en una
+  pieza pequeña y barata de repetir, y lo demás se conserva.
+- **Código compartido**: «muescas» = marcas impresas en la pieza para leer el error contra el objeto
+  real; «galga» = pieza suelta que mide. La pieza de prueba no solo dice «encaja o no»: dice cuánto falla.
+- «La Guarida» en un objeto = sus radios (LG Casa: 2 / 4 / 6) y su forma en relieve. La forma no está
+  en el repo: hay que pedirla, no dibujarla de memoria.
+- Una cara que se imprime sobre la placa no admite canto redondeado ni relieve saliente: solo hundido o a ras.
