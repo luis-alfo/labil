@@ -6,8 +6,19 @@ Estado: **entrevista** (21 nov 2026). Sin geometría todavía.
 
 ## La placa (ESP32-C3 Super Mini, comprada en Diotronic)
 
-- Medidas nominales: 22,5 × 18 mm, USB-C en un extremo, 8 pines por lado. **Sin medir aún
-  con calibre**: posición y altura de los botones pendientes de la placa real de Luis.
+- Luis pidió buscar las medidas en internet en vez de medir (21 nov 2026). Lo que hay:
+  | Dato | Valor | De dónde sale | Incertidumbre |
+  | --- | --- | --- | --- |
+  | Contorno | 22,5 × 18,0 mm | varias fichas (mischianti, espboards) | ±0,2; cambia algo según fabricante |
+  | Alto total con componentes | 4,5 mm | ficha | manda el USB-C (~3,2 mm sobre la placa) |
+  | Grosor de la placa | ~1,0 mm | fichas, dato ambiguo (0,8–1,2) | ±0,2 |
+  | Centro de BOOT | 5,6 mm del borde largo izquierdo, 8,7 mm del borde del USB | **medido por Claude sobre la foto de Diotronic** (15,1 px/mm) | ±0,5 |
+  | Centro de RST | 12,2 mm y 8,7 mm | ídem | ±0,5 |
+  | Separación BOOT–RST | 6,6 mm | ídem | ±0,3 |
+  | Alto del pulsador | ~2 mm sobre la placa (pulsador SMD típico de 3×4×2) | supuesto | ±0,5 |
+- **No hay plano mecánico publicado con la posición de los botones.** Por eso el diseño absorbe
+  ±0,7 mm (apoyo ancho en la palanca, holgura en el alojamiento) y antes de la pieza final se imprime
+  una **prueba de encaje**. «Izquierda» = con el USB arriba y los componentes hacia ti.
 - Fotos: `proceso/boton-claude/`.
 
 ## Cómo se relaciona este chip con el ordenador
@@ -37,8 +48,10 @@ Estado: **entrevista** (21 nov 2026). Sin geometría todavía.
 - **Una sola palanca sobre BOOT.** RST queda tapado (accesible con un clip si acaso).
 - **Serie USB + programa en el Mac.**
 - **Un botón que depende del contexto:** si Claude no está activo, lo trae al frente en la última
-  sesión en la que estaba Luis; si Claude ya está activo, acepta. (Interpretación de Claude de una
-  respuesta dictada; pendiente de confirmar, y de saber si «Claude» es la app o Claude Code.)
+  sesión en la que estaba Luis; si Claude ya está activo, acepta. Confirmado por Luis.
+- **Además, pulsación larga** con otra acción. Cuál: pendiente de que Luis la diga.
+- **«Claude» = la app de escritorio de Claude para Mac.**
+- **Sin soldar los pines. PLA.**
 - **En la mesa, con cable. Mac.**
 
 ## Códigos compartidos
