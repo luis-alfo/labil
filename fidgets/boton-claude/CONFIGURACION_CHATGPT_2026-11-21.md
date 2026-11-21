@@ -14,7 +14,7 @@ Este registro lo ha redactado ChatGPT/Codex para documentar su intervención en 
 - La versión de Shift+B está instalada y ejecutándose; coincide byte a byte con la versión probada y el proceso tiene abierto el puerto USB.
 - Pasaron las pruebas de secuencia de teclas, pulsación corta/larga, desconexión, liberación e interrupción descritas más abajo.
 - **Dictado confirmado por Luis:** «Sí, funciona al pulsar y soltar». Wispr Flow inicia y detiene el dictado con el botón usando Shift+B.
-- Primer toque actualizado: cuando Claude está detrás, lo activa y enfoca el campo de mensaje Prompt. Instalado y comprobado mediante la API de Accesibilidad; pendiente de la prueba completa de Luis desde otra aplicación.
+- Primer toque actualizado: cuando Claude está detrás, lo activa y enfoca el campo de mensaje Prompt. Instalado y comprobado mediante la API de Accesibilidad. Luis confirmó la prueba completa desde otra aplicación: «Sí, entra directamente».
 
 ## Qué he hecho como ChatGPT
 
@@ -65,7 +65,11 @@ Tras confirmar el dictado, Luis pidió que el primer toque dejara también activ
 - Instalé la versión probada, reinicié el servicio y confirmé que sigue running con el puerto USB abierto. El archivo instalado coincide byte a byte con el probado. Retiré el trabajo de launchd y los archivos temporales usados para la prueba.
 - Publiqué el programa en [el commit e866fc5](https://github.com/luis-alfo/labil/commit/e866fc572bf7c4dfa7344f752380ad185db0c94d) y actualicé el README.
 
-Queda pendiente la confirmación manual de Luis del recorrido completo: estando en otra aplicación, toque corto para abrir Claude y pulsación larga para dictar directamente en el cuadro, sin hacer clic.
+### Confirmación final de Luis
+
+Luis probó el recorrido completo desde otra aplicación: toque corto para abrir Claude y pulsación larga para dictar directamente en el cuadro, sin hacer clic. Su respuesta fue: **«Sí, entra directamente»**.
+
+Con esta prueba manual quedan confirmados el enfoque del mensaje y el dictado con Shift+B al pulsar y soltar. La configuración funcional del botón queda completada; las incidencias resueltas se conservan en este registro.
 
 ## ¿Fue todo sweet?
 
