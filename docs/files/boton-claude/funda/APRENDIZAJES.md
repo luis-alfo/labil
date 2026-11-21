@@ -131,6 +131,20 @@ pero que podamos tener la parte de arriba por si fallamos al diseñar la parte d
 - Para enviar teclas, macOS exige permiso de **Accesibilidad** al programa que las envía.
 - Si BOOT está pulsado al enchufar, el chip arranca en modo de carga y no ejecuta el programa.
 
+## Para qué más sirve esta placa (pregunta de Luis, 21 nov 2026)
+
+- **Wi-Fi** (solo 2,4 GHz): llamar a un webhook (Make, Airtable) al pulsar; leer un dato de internet y
+  enseñarlo con LED o pantalla; publicar sensores (ESPHome / Home Assistant, MQTT); servir una página
+  web pequeña; actualizarse sin cable (OTA). Puede escuchar a la Bambu A1 por MQTT en la red local.
+- **Bluetooth** (solo BLE, de bajo consumo): teclado o mando inalámbrico, baliza de presencia, leer
+  sensores BLE baratos (termómetros), hacer de puente BLE para Home Assistant.
+- **ESP-NOW**: dos placas se hablan entre sí sin router.
+- **Límites**: no es teclado USB; no tiene Bluetooth clásico (ni audio ni altavoces); 11 pines útiles
+  a 3,3 V; antena pequeña (alcance corto con paredes); con Wi-Fi encendido gasta demasiado para una
+  pila pequeña si no duerme casi todo el tiempo.
+- **Regla**: Wi-Fi cuando el aparato habla con internet o con la casa; BLE cuando habla con un
+  ordenador o un móvil que tiene al lado; serie USB cuando el ordenador tiene que decidir.
+
 ## Códigos compartidos
 
 - *base* / *tapa* / *galga*: las tres piezas del diseño modular. *poste*: tope trasero de la placa.

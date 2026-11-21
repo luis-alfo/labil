@@ -7,7 +7,7 @@ ESP32-C3 Super Mini; la palanca de la tapa pulsa directamente el botón BOOT de 
 | --- | --- |
 | Toque, con Claude detrás | trae la app de Claude al frente, donde la dejaste |
 | Toque, con Claude delante | Enter (aceptar) |
-| Mantener pulsado (más de 0,4 s) | F18 mientras dure: dictado en Wispr Flow |
+| Mantener pulsado (más de 0,4 s) | Shift+B mientras dure: dictado en Wispr Flow |
 
 ## Tres pasos
 
@@ -16,8 +16,10 @@ ESP32-C3 Super Mini; la palanca de la tapa pulsa directamente el botón BOOT de 
 2. **Cargar el programa de la placa**: `firmware/boton_claude/boton_claude.ino` con Arduino IDE
    (placa «ESP32C3 Dev Module», «USB CDC On Boot: Enabled»), o `pio run -t upload` desde `firmware/`.
 3. **En el Mac**: `python3 mac/boton_claude.py` para probar; `mac/instalar.sh` para que arranque solo.
-   macOS pedirá permiso de Accesibilidad (Ajustes → Privacidad y seguridad → Accesibilidad).
-   En Wispr Flow, poner F18 como atajo de «mantener para hablar».
+   Concede permiso de Accesibilidad al Python que ejecuta el programa (Ajustes → Privacidad y seguridad → Accesibilidad).
+   En Wispr Flow, poner Shift+B como atajo de «mantener para hablar».
+
+El [registro de configuración de ChatGPT](CONFIGURACION_CHATGPT_2026-11-21.md) documenta la ruta de Python.app autorizada en el Mac de Luis y las comprobaciones realizadas.
 
 ## Montaje
 
