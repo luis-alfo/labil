@@ -2610,6 +2610,95 @@
      ]
     }
    ]
+  },
+  {
+   "id": "boton-claude",
+   "nombre": "botón claude",
+   "que": "un botón de mesa para Claude: una funda impresa cuya palanca pulsa el botón de un ESP32-C3",
+   "estado": "funda por imprimir",
+   "aprendizajes": "fidgets/boton-claude/APRENDIZAJES.md",
+   "estados": [
+    {
+     "id": "funda",
+     "tipo": "borrador",
+     "nombre": "funda",
+     "archivo": "boton_claude",
+     "fecha": "2026-11-21",
+     "texto": "Funda de una pieza de 21,6 × 25,8 × 7,4 mm y 2 g. La placa entra por detrás y dos pestañas la retienen. El techo lleva una palanca recortada en U con un tetón sobre el botón BOOT. Un toque trae Claude al frente o acepta; mantener pulsado dicta. Es también la prueba de encaje: las medidas de la placa salen de internet y de una foto.",
+     "modelos": [
+      {
+       "nombre": "montada",
+       "de": [
+        "fidgets/boton-claude/boton_claude_montada.stl"
+       ]
+      },
+      {
+       "nombre": "para imprimir",
+       "de": [
+        "fidgets/boton-claude/boton_claude.3mf"
+       ]
+      }
+     ],
+     "piezas": [
+      {
+       "nombre": "funda",
+       "de": "fidgets/boton-claude/boton_claude.stl"
+      }
+     ],
+     "descargas": [
+      "fidgets/boton-claude/boton_claude.3mf",
+      "fidgets/boton-claude/boton_claude.stl",
+      "fidgets/boton-claude/generar.py",
+      "fidgets/boton-claude/firmware/boton_claude/boton_claude.ino",
+      "fidgets/boton-claude/mac/boton_claude.py",
+      "fidgets/boton-claude/README.md",
+      "fidgets/boton-claude/APRENDIZAJES.md"
+     ],
+     "proceso": [
+      {
+       "de": "proceso/boton-claude/2026-11-21-la-placa-comprada-en-su-bolsa.jpg",
+       "pie": "La placa comprada, con sus tiras de pines sin soldar. Se decidió no soldarlas: la funda queda en 7,4 mm de alto.",
+       "fecha": "2026-11-21"
+      },
+      {
+       "de": "proceso/boton-claude/2026-11-21-ficha-de-la-placa-en-diotronic.jpg",
+       "pie": "Ficha de la placa en Diotronic. No hay plano publicado: la posición del botón BOOT se midió sobre esta foto (15,1 px/mm, ±0,5 mm).",
+       "fecha": "2026-11-21"
+      }
+     ],
+     "memoria": [
+      {
+       "tema": "uso",
+       "texto": "Luis: «si Claude está activo, entonces que acepte»; si no, que lo traiga al frente en la última sesión. Mantener pulsado manda F18, que Luis configura en Wispr Flow para dictar."
+      },
+      {
+       "tema": "diseño",
+       "texto": "Sin interruptor aparte: la palanca impresa pulsa directamente el botón BOOT de la placa. Una sola palanca; RST queda tapado porque reinicia el chip y no se puede leer como tecla."
+      },
+      {
+       "tema": "método",
+       "texto": "El ESP32-C3 no puede ser teclado USB: su USB es un puerto serie. La placa solo dice «pulsado» y «soltado»; un programa en el Mac decide qué hacer, porque solo el Mac sabe si Claude está delante."
+      },
+      {
+       "tema": "medidas",
+       "texto": "Luis pidió buscar las medidas en internet. Contorno 22,5 × 18 mm de las fichas; el botón BOOT, medido sobre la foto de la tienda (±0,5 mm). Tetón de 3 mm de diámetro para absorber ±0,7 mm."
+      },
+      {
+       "tema": "resistencia",
+       "texto": "Palanca de 1 mm de grosor y 12,8 mm de brazo: 15 MPa al pulsar (9–20 MPa según el alto real del botón), frente a 55 MPa de rotura del PLA. Fuerza del dedo: unos 2 N más el pulsador. Pestañas: 18 MPa solo al meter la placa."
+      },
+      {
+       "tema": "impresión",
+       "texto": "Boca abajo: techo y palanca sobre la placa PEI, capas en el plano de la flexión. Sin soportes; el suelo es un puente de 18,4 mm."
+      },
+      {
+       "tema": "montaje",
+       "texto": "El suelo y el techo acaban donde acaba la placa para que el conector del cable no tropiece; las pestañas siguen por los lados."
+      }
+     ],
+     "cambio": "funda de una pieza: la palanca del techo pulsa el botón de la placa"
+    }
+   ]
   }
  ]
 }

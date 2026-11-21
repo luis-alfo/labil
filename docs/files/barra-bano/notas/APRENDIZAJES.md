@@ -203,3 +203,52 @@ simulación de la web, con un clic por objeto (arriba → abajo → quitado).
 - **Por comprobar**: la altura hasta la encimera (secador, Oral-B y cepillo del pelo bajan
   20-25 cm) y si la pinza sujeta el tubo mojado.
 - Colgado, el cepillo del pelo queda pegado al secador: habría que separarlos.
+
+## 2026-11-20 · Secador en embudo, bandejas de nervios y radios de LG Casa
+
+Lo pidió Luis tras ver la simulación.
+
+### Secador
+- Motivo: es eléctrico y colgado del gancho quedaba más abajo que el grifo, donde salpica.
+- Ahora encaja morro abajo en un **aro en embudo** a la altura de la línea (`make_embudo`).
+  Se bloquea donde el cono del secador toca el del aro. Motor e interruptor quedan arriba.
+- El mango es plegable y no sirve para colgar: queda fuera, hacia quien lo coge.
+- Medidas supuestas: 48 mm en el morro y 66 en el cuerpo (`SECADOR_D_MORRO`, `SECADOR_D_CUERPO`).
+  El embudo va de 64 a 50 mm en 26 mm (15° por lado). **Medir antes de imprimir.**
+- Se imprime con la placa abajo: el cono crece inclinado 15°, sin soportes.
+- Carga: 250 g con el centro de masas a unos 85 mm de la línea. Placa 2,2 MPa y pata 2,8 MPa de 15.
+- Pendiente de prueba: retuerce la línea con 208 N·mm, el doble que la colonia (103).
+  El lazo tiene 0,3 mm de holgura en 8 mm de fondo, así que el aro puede cabecear 2 o 3 mm.
+
+### Bandejas abiertas (colonia y desodorante)
+- Principio de la cuna de El Secadero: nervios y suelo abierto en vez de lámina maciza.
+- Pared y suelo son nervios de 8 mm de fondo (`TRAY_T`) que van del lomo al labio.
+  Entre ellos, ventanas en cápsula, un travesaño cada 30–45 mm y un alma en diagonal en el codo.
+- Por qué funciona: en flexión el centro de la sección casi no trabaja. Llevar el material
+  lejos del centro da más módulo resistente (W) con menos plástico.
+
+| Bandeja | Peso antes → ahora | W antes → ahora | Tensión antes → ahora | Rigidez |
+|---|---|---|---|---|
+| Colonia colgada | 46 → 38 g (−18 %) | 123 → 154 mm³ | 0,58 → 0,58 MPa | ×3,1 |
+| Desodorante colgado | 30 → 24 g (−20 %) | 79 → 93 mm³ | 0,22 → 0,22 MPa | ×3,0 |
+| Colonia a nivel de la línea | 21 → 21 g | igual que la colgada | igual | ×3,1 |
+
+- Lo que no salió a la primera:
+  - Engrosar toda la pared a 6 mm y abrirle ventanas pesaba **más** que la lámina maciza.
+    Las zonas sin ventana (lomo, codo, pie del labio) crecen con el grosor y se comen el ahorro.
+  - Con el mismo W la tensión subía un 24 %: el bote queda 5 mm más afuera y hace más palanca.
+    Se corrigió ensanchando los nervios (2,9 → 3,6 mm en la colonia).
+  - La bandeja a nivel de la línea no baja de peso: casi no tiene pared que abrir.
+- Impresión: de canto, como antes. Los nervios quedan tumbados y cada ventana se cierra con
+  un puente recto de menos de 30 mm. El alma del codo es el apoyo del nervio al imprimir.
+- El desodorante se queda con una sola forma (bandeja colgada). Luis descartó el aro del revés.
+
+### Radios de LG Casa en los enganches
+- Regla tomada de la cajonera de LARC HQ: los píxeles no son milímetros; se copia la proporción.
+- Constantes en `generate_stl.py`:
+  - `R_CANTO = 2`: el canto fino del lomo, por detrás.
+  - `R_ESQUINA = 4`: la esquina delantera del lomo.
+  - `R_ENCUENTRO = 6`: donde la pared se encuentra con el suelo.
+  - `BEND_K = 4`: una lámina se dobla a 4 veces su grosor (3,2 → 12,8 mm). Labio y codo de las bandejas.
+- Las patas del lomo y las puntas de las horquillas acaban en media caña, como la punta de la línea.
+- Las patas de los enganches de placa siguen el contorno redondeado de la placa.

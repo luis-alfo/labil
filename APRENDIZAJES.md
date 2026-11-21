@@ -396,3 +396,8 @@ algo que se pueda sopesar. **Código compartido**: las fuerzas se dan también e
   tercero deja que el botón actúe según lo que pasa en la pantalla.
 - En estas placas, **RST no es un botón programable**: reinicia el chip. BOOT (GPIO9) sí.
 - Códigos: «palanca», «serie», «HID», «BOOT/RST». Detalle en `fidgets/boton-claude/APRENDIZAJES.md`.
+- Reparto: la placa solo dice «pulsado» y «soltado»; el Mac mide el tiempo y decide (toque = traer Claude
+  o aceptar; larga = F18 para dictar). Cambiar un gesto no obliga a recargar la placa.
+- Una funda que aloja una placa con conector debe acabar donde acaba la placa: el cuerpo del cable
+  es más alto que el hueco interior.
+- Si la pieza entera pesa 2 g, ella misma es la prueba de encaje.
