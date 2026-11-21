@@ -5,7 +5,7 @@ ESP32-C3 Super Mini; la palanca de la tapa pulsa directamente el botón BOOT de 
 
 | Gesto | Qué hace |
 | --- | --- |
-| Toque, con Claude detrás | trae la app de Claude al frente, donde la dejaste |
+| Toque, con Claude detrás | trae Claude al frente y enfoca el cuadro de mensaje del chat actual |
 | Toque, con Claude delante | Enter (aceptar) |
 | Mantener pulsado (más de 0,4 s) | Shift+B mientras dure: dictado en Wispr Flow |
 
