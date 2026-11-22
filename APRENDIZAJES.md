@@ -420,3 +420,16 @@ algo que se pueda sopesar. **Código compartido**: las fuerzas se dan también e
   trae `objetivo` (escena con contexto).
 - Código: una pieza suelta puede llevar solo `orbita` (desde dónde se mira); una escena lleva las dos.
 - El botón se enseña desde arriba (`25deg 28deg`): de frente no se veían ni el arco ni las muescas.
+
+## text-to-cad (earthtojake) — evaluado el 22 nov 2026
+
+- Qué es: plugin + skills para agentes (Claude Code incluido). El agente escribe la pieza en Python
+  con **build123d** (OpenCASCADE) y saca STEP, STL, 3MF, GLB, planos PDF; extras: FEA con CalculiX,
+  laminado con OrcaSlicer, renders con Blender, KiCad. MIT, ~27k estrellas, muy activo.
+- Instalación: `curl … | sh` que instala `uv`, el comando `cad`, el plugin en cada app detectada y
+  **autoactualizaciones**; **telemetría activada por defecto**.
+- Veredicto: **no instalarlo entero ahora**. Ya tenemos el flujo propio (OpenSCAD/trimesh → GLB,
+  3MF de Bambu Studio para la A1, `costes.py`, web). Lo que sí vale: probar **build123d** en un
+  diseño concreto (STEP real, chaflanes/redondeos fáciles) y su **FEA con CalculiX** para los
+  «cálculos de resistencia» antes de una versión final. Si se prueba: en una rama, instalación
+  manual (`docs/install.md`), sin autoactualización y con la telemetría apagada.
