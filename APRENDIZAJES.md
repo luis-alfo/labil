@@ -420,3 +420,14 @@ algo que se pueda sopesar. **Código compartido**: las fuerzas se dan también e
   trae `objetivo` (escena con contexto).
 - Código: una pieza suelta puede llevar solo `orbita` (desde dónde se mira); una escena lleva las dos.
 - El botón se enseña desde arriba (`25deg 28deg`): de frente no se veían ni el arco ni las muescas.
+
+## 2026-11-21 · La web enseña: lecciones de tres minutos
+
+- Luis quiere **asimilar** electrónica y modelado, no solo recibir piezas. La web lleva, bajo los
+  objetos, lecciones de 3 minutos en tres módulos: electrónica, modelado y combinado.
+- **Código compartido**: una *lección* = *apertura* (una pregunta), varias *lecturas* (una idea por
+  pantalla) y un *recap*. Una lectura puede llevar una *clave*: la frase que hay que recordar.
+- Fuente: `3d-models/lecciones.json`. Las siete primeras salen del botón Claude y de los aprendizajes
+  de impresión. Lo que se explique a Luis y sirva para más de un objeto, se convierte en lección.
+- Datos que hay que comprobar con el fabricante antes de fiarse: temperaturas de soldadura (dependen
+  del estaño) y corriente máxima por pin (depende del chip).

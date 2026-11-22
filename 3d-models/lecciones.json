@@ -1,0 +1,442 @@
+{
+ "_leeme": "Lecciones de la web (docs/). Cada una se lee en unos 3 minutos: una apertura, varias lecturas y un recap. 'modulo' = electrónica, modelado o combinado. En una lectura: 't' título, 'p' párrafos, 'l' lista de pares [término, explicación] y 'c' la idea clave. `python3 3d-models/web.py` la copia a docs/data/lecciones.json.",
+ "lecciones": [
+  {
+   "id": "que-es-una-placa",
+   "modulo": "electrónica",
+   "titulo": "qué es una placa y cuál elegir",
+   "minutos": 3,
+   "apertura": {
+    "pregunta": "¿qué he comprado exactamente?",
+    "p": "Una placa de desarrollo es un chip con todo lo que necesita alrededor para enchufarlo, programarlo y conectarle cosas. Entender qué pone el chip y qué pone la placa es lo que permite elegir bien la siguiente."
+   },
+   "lecturas": [
+    {
+     "t": "el chip: un ordenador de una sola tarea",
+     "p": [
+      "El chip es un microcontrolador: procesador, memoria y conexiones en una sola pastilla.",
+      "No tiene sistema operativo. Ejecuta un único programa, en bucle, desde que recibe corriente. Por eso arranca en milisegundos y gasta muy poco."
+     ],
+     "c": "Un microcontrolador no «abre programas»: es su programa."
+    },
+    {
+     "t": "lo que la placa añade al chip",
+     "p": ["El chip solo no se puede usar. La placa le pone lo imprescindible:"],
+     "l": [
+      ["conector USB", "corriente y carga del programa"],
+      ["regulador", "baja los 5 V del USB a los 3,3 V del chip"],
+      ["antena", "si el chip tiene radio"],
+      ["BOOT y RST", "modo de carga y reinicio"],
+      ["pines", "agujeros a 2,54 mm para conectar el resto"]
+     ]
+    },
+    {
+     "t": "los pines: leer y escribir",
+     "p": [
+      "Cada pin puede leer (un botón, un sensor) o escribir (un LED, un aviso a otro chip).",
+      "Trabajan a 3,3 V y dan muy poca corriente: un LED sí, un motor no. Lo que pide más corriente se enciende a través de un transistor o un relé.",
+      "Algunos pines forman buses (I2C, SPI) para hablar con pantallas y sensores con solo dos o cuatro cables."
+     ]
+    },
+    {
+     "t": "cuatro familias que nos vamos a encontrar",
+     "p": [],
+     "l": [
+      ["ESP32-C3", "Wi-Fi y Bluetooth. Su USB es solo puerto serie. Muy barata"],
+      ["ESP32-S3", "Wi-Fi y Bluetooth, y además puede ser teclado USB"],
+      ["RP2040 (Pi Pico)", "teclado USB, muchos pines. Sin radio, salvo la Pico W"],
+      ["ATmega32U4 (Pro Micro)", "el teclado USB clásico. A 5 V, sin radio"]
+     ]
+    },
+    {
+     "t": "cómo elegir",
+     "p": ["Cuatro preguntas, en este orden:"],
+     "l": [
+      ["¿teclado sin instalar nada?", "un chip con USB programable: S3, RP2040, 32U4"],
+      ["¿habla con internet?", "un ESP32, por el Wi-Fi"],
+      ["¿meses con una pila?", "Bluetooth de bajo consumo, y dormir casi siempre"],
+      ["¿cuántas cosas conecto?", "contar pines antes de comprar"]
+     ]
+    }
+   ],
+   "recap": [
+    "El chip es el ordenador; la placa, lo que lo hace usable.",
+    "Pines a 3,3 V y con poca corriente: leen y avisan, no mueven cosas.",
+    "La radio y el tipo de USB dependen del chip, no de la placa.",
+    "Se elige por lo que tiene que hacer con el ordenador, con internet y con la pila."
+   ]
+  },
+  {
+   "id": "como-habla-una-placa",
+   "modulo": "electrónica",
+   "titulo": "cómo habla una placa con el ordenador",
+   "minutos": 3,
+   "apertura": {
+    "pregunta": "pulso un botón. ¿cómo se entera el ordenador?",
+    "p": "Hay cuatro caminos, y no son intercambiables. Lo que cambia de uno a otro es qué cree el ordenador que tiene enchufado y quién toma las decisiones."
+   },
+   "lecturas": [
+    {
+     "t": "puerto serie: un canal de texto",
+     "p": [
+      "La placa y el ordenador se mandan letras por el cable USB. El ordenador ve «un puerto», no un aparato concreto.",
+      "Nada ocurre solo: hace falta un programa en el ordenador que escuche y actúe.",
+      "A cambio, ese programa puede hacer cualquier cosa: mirar qué aplicación está delante, abrirla, escribir."
+     ],
+     "c": "Es el camino cuando el ordenador tiene que decidir."
+    },
+    {
+     "t": "hid: hacerse pasar por teclado",
+     "p": [
+      "HID es el idioma de teclados y ratones. Un chip con USB programable se presenta como teclado y el ordenador le cree.",
+      "Funciona en cualquier ordenador sin instalar nada. Pero solo manda teclas: no sabe qué hay en pantalla.",
+      "El ESP32-C3 no puede: su USB viene fijo de fábrica como puerto serie."
+     ]
+    },
+    {
+     "t": "bluetooth: lo mismo, sin cable",
+     "p": [
+      "Con Bluetooth de bajo consumo (BLE), la placa puede ser un teclado inalámbrico. Se empareja una vez y queda.",
+      "Tiene las ventajas y el límite del HID: no hay que instalar nada, y solo manda teclas.",
+      "El cable, si lo hay, ya solo da corriente."
+     ]
+    },
+    {
+     "t": "wi-fi: la placa va por su cuenta",
+     "p": [
+      "Con Wi-Fi la placa no necesita al ordenador: habla directamente con internet o con la red de casa.",
+      "Puede llamar a un webhook, leer un dato o publicar un sensor. El ordenador puede estar apagado.",
+      "Necesita saber el nombre y la contraseña de la red, y gasta bastante más."
+     ]
+    },
+    {
+     "t": "quién decide",
+     "p": ["La pregunta que ordena los cuatro caminos:"],
+     "l": [
+      ["decide el ordenador", "serie + programa. El botón claude"],
+      ["no decide nadie", "teclado USB o Bluetooth: siempre la misma tecla"],
+      ["decide la placa", "Wi-Fi: ella llama a quien haga falta"]
+     ]
+    }
+   ],
+   "recap": [
+    "Serie: canal de texto; exige un programa en el ordenador y lo permite todo.",
+    "HID: teclado sin instalar nada; solo teclas fijas.",
+    "Bluetooth: HID sin cable.",
+    "Wi-Fi: la placa sola contra internet.",
+    "Antes de elegir chip, decide quién decide."
+   ]
+  },
+  {
+   "id": "objeto-inalambrico",
+   "modulo": "combinado",
+   "titulo": "volver inalámbrico un objeto",
+   "minutos": 3,
+   "apertura": {
+    "pregunta": "¿qué hay que meter dentro de una pieza para que hable sin cables?",
+    "p": "Menos de lo que parece y más de lo que cabe a la primera. Son cinco cosas, y la que manda en el tamaño casi nunca es la placa: es la energía."
+   },
+   "lecturas": [
+    {
+     "t": "primero: wi-fi o bluetooth",
+     "p": [],
+     "l": [
+      ["Wi-Fi", "llega a internet y a la casa. Gasta mucho. Hay que darle la contraseña de la red"],
+      ["Bluetooth (BLE)", "habla con un móvil u ordenador a pocos metros. Gasta muy poco. Se empareja"]
+     ],
+     "c": "Wi-Fi para hablar con lejos; Bluetooth para hablar con lo que tienes al lado."
+    },
+    {
+     "t": "las cinco cosas",
+     "p": [],
+     "l": [
+      ["una placa con radio", "ESP32 para Wi-Fi y BLE; nRF52 si es solo BLE con pila"],
+      ["energía", "cable USB, o batería con su circuito"],
+      ["entrada", "botón, sensor: lo que el objeto percibe"],
+      ["salida", "LED, zumbador, pantalla: lo que el objeto dice"],
+      ["la pieza", "que lo sujeta todo y deja salir la señal"]
+     ]
+    },
+    {
+     "t": "la energía decide el tamaño",
+     "p": [
+      "Con cable USB no hay problema: corriente de sobra y nada que cargar.",
+      "Con batería hacen falta tres cosas más: la celda, un circuito que la cargue y la proteja, y un interruptor.",
+      "El Wi-Fi pide picos de unos 300 mA. Encendido siempre, vacía una batería pequeña en horas. La solución es dormir: despertar, enviar y volver a dormir."
+     ],
+     "c": "Si puede ir con cable, que vaya con cable."
+    },
+    {
+     "t": "la antena necesita aire",
+     "p": [
+      "La antena es esa pieza pequeña en un extremo de la placa. El plástico no le molesta; el metal sí.",
+      "No se le ponen encima tornillos, baterías ni cables. Mejor hacia fuera de la pieza y lejos de la mesa metálica.",
+      "Las placas mini tienen antenas mini: alcance corto en cuanto hay una pared."
+     ]
+    },
+    {
+     "t": "cómo se le dice la contraseña",
+     "p": [
+      "Un objeto sin teclado no sabe la clave del Wi-Fi. Hay dos maneras:",
+      "Escribirla en el programa: rápido, pero queda fija y a la vista en el código.",
+      "Un portal propio: la primera vez la placa crea su red, te conectas con el móvil y se la das. Es lo que hacen los enchufes inteligentes."
+     ]
+    }
+   ],
+   "recap": [
+    "Wi-Fi para internet y casa; Bluetooth para lo cercano y la pila.",
+    "Placa con radio, energía, entrada, salida y pieza.",
+    "La batería trae consigo cargador, protección e interruptor.",
+    "Antena despejada: sin metal encima.",
+    "El objeto tiene que poder recibir la contraseña de algún modo."
+   ]
+  },
+  {
+   "id": "riesgos",
+   "modulo": "electrónica",
+   "titulo": "riesgos: qué puede salir mal",
+   "minutos": 3,
+   "apertura": {
+    "pregunta": "¿qué es lo peor que puede pasar?",
+    "p": "Con una placa alimentada por USB, casi siempre lo peor es estropear una placa de pocos euros. Hay dos excepciones serias: las baterías de litio y la corriente del enchufe. Conviene saber dónde está cada línea."
+   },
+   "lecturas": [
+    {
+     "t": "tensión: 3,3 no es 5",
+     "p": [
+      "Los pines de estas placas trabajan a 3,3 V. Meterles 5 V puede matar el chip, a veces sin aviso.",
+      "Antes de conectar un módulo se mira a qué tensión trabaja. Y la polaridad: positivo y negativo al revés rompen cosas."
+     ],
+     "c": "Mirar dos veces, enchufar una."
+    },
+    {
+     "t": "cortocircuito: el camino sin freno",
+     "p": [
+      "Un corto es unir positivo y negativo sin nada en medio. La corriente se dispara y algo se calienta.",
+      "Pasa con una gota de estaño entre dos pines, un cable pelado o la placa apoyada sobre algo metálico.",
+      "Con USB el ordenador suele cortar. Con una batería no corta nadie."
+     ]
+    },
+    {
+     "t": "baterías de litio: el riesgo serio",
+     "p": [
+      "Una batería de litio guarda mucha energía en poco sitio. Perforada, en corto o mal cargada puede arder.",
+      "Reglas: celdas con circuito de protección, un cargador hecho para litio, nunca cables sueltos que puedan tocarse.",
+      "No se carga sin vigilar ni dentro de una pieza cerrada de plástico."
+     ],
+     "c": "Si un objeto puede ir sin batería, es más seguro sin ella."
+    },
+    {
+     "t": "calor: el pla se ablanda a 55 °C",
+     "p": [
+      "Un regulador o un cargador en marcha se calientan. Dentro de una caja cerrada, el calor se queda.",
+      "El PLA empieza a ceder sobre los 55–60 °C: lo que era un clic firme deja de serlo. El PETG aguanta hasta unos 80 °C.",
+      "Solución: aire alrededor de lo que calienta, y no dejar el objeto al sol en un coche."
+     ]
+    },
+    {
+     "t": "230 v: no",
+     "p": [
+      "La corriente del enchufe puede matar. No se cablea dentro de una pieza impresa.",
+      "Si un objeto tiene que encender algo de 230 V, se usa un enchufe inteligente comprado y se le da la orden por Wi-Fi.",
+      "Para alimentar, siempre una fuente cerrada y certificada: un cargador USB."
+     ],
+     "c": "Nuestro terreno acaba en los 5 V del USB."
+    }
+   ],
+   "recap": [
+    "3,3 V en los pines; comprobar tensión y polaridad antes de conectar.",
+    "Un corto calienta; con batería no hay quien lo corte.",
+    "Litio: protección, cargador propio y vigilancia.",
+    "El PLA cede a 55–60 °C: dar aire a lo que calienta.",
+    "Nada de 230 V dentro de una pieza impresa."
+   ]
+  },
+  {
+   "id": "soldar-bien",
+   "modulo": "electrónica",
+   "titulo": "soldar bien",
+   "minutos": 3,
+   "apertura": {
+    "pregunta": "¿por qué unas soldaduras brillan y otras parecen una bola?",
+    "p": "Soldar no es pegar con estaño. Es calentar dos metales hasta que el estaño fluye solo y los moja a los dos. Casi todos los fallos vienen de calentar el estaño en vez de calentar la unión."
+   },
+   "lecturas": [
+    {
+     "t": "lo que hace falta",
+     "p": [],
+     "l": [
+      ["soldador con temperatura regulable", "es lo único en lo que no conviene ahorrar"],
+      ["estaño fino con resina", "de 0,6 a 0,8 mm"],
+      ["flux", "limpia el metal y hace que el estaño corra"],
+      ["esponja de latón y soporte", "punta limpia, soldador siempre en su sitio"],
+      ["algo que sujete", "una protoboard, pinzas o una tercera mano"]
+     ]
+    },
+    {
+     "t": "la temperatura",
+     "p": [
+      "Estaño con plomo: de 320 a 350 °C. Sin plomo: de 350 a 380 °C.",
+      "Más caliente no es mejor: quema la resina y levanta las pistas de la placa.",
+      "La punta se limpia y se le pone un poco de estaño antes de cada tanda. Una punta negra no transmite calor."
+     ]
+    },
+    {
+     "t": "el gesto, en cuatro tiempos",
+     "p": [],
+     "l": [
+      ["1 · calentar", "la punta toca a la vez el pin y la almohadilla de la placa"],
+      ["2 · aportar", "el estaño se acerca a la unión, no a la punta"],
+      ["3 · dejar fluir", "el estaño sube por el pin y cubre la almohadilla"],
+      ["4 · retirar", "primero el estaño, después el soldador"]
+     ],
+     "c": "Tres o cuatro segundos en total. Si tarda más, falta limpieza o calor."
+    },
+    {
+     "t": "cómo se ve una buena",
+     "p": [
+      "Buena: un cono pequeño y brillante, como un volcán, que abraza el pin y cubre toda la almohadilla.",
+      "Fría: una bola mate posada encima. Parece unida y no lo está. Se arregla recalentando con un poco de flux.",
+      "Puente: estaño uniendo dos pines vecinos. Es un cortocircuito. Se quita pasando la punta limpia entre los dos."
+     ]
+    },
+    {
+     "t": "las tiras de pines de nuestra placa",
+     "p": [
+      "Truco: pinchar las dos tiras en una protoboard y apoyar la placa encima. Así quedan rectas y a la distancia justa.",
+      "Se suelda un pin de cada esquina, se comprueba que la placa asienta plana y se sigue con el resto.",
+      "Siempre con la placa desenchufada. Ventana abierta, gafas, y manos lavadas al terminar."
+     ]
+    }
+   ],
+   "recap": [
+    "Se calienta la unión, no el estaño.",
+    "320–350 °C con plomo, 350–380 °C sin plomo; punta limpia y estañada.",
+    "Calentar, aportar, dejar fluir, retirar: unos tres segundos.",
+    "Cono brillante sí; bola mate o puente, no.",
+    "Protoboard como plantilla, placa desenchufada, aire y gafas."
+   ]
+  },
+  {
+   "id": "disenar-para-imprimir",
+   "modulo": "modelado",
+   "titulo": "diseñar para imprimir",
+   "minutos": 3,
+   "apertura": {
+    "pregunta": "¿por qué una pieza que se ve bien en pantalla se rompe en la mano?",
+    "p": "Porque la pantalla enseña una forma y la impresora fabrica capas. Una pieza impresa es una pila de hojas pegadas. Diseñar para imprimir es decidir hacia dónde miran esas hojas."
+   },
+   "lecturas": [
+    {
+     "t": "las capas son la fibra",
+     "p": [
+      "A lo largo de una capa, el plástico es un hilo continuo y resiste. Entre capa y capa solo hay pegado.",
+      "Una pieza se rompe casi siempre separando capas. Por eso lo que flexa se imprime tumbado, con las capas en el plano de la flexión.",
+      "Es la misma lógica que la veta de la madera."
+     ],
+     "c": "Primero se decide cómo se apoya en la placa; después, la forma."
+    },
+    {
+     "t": "lo que se imprime en el aire",
+     "p": [],
+     "l": [
+      ["voladizo", "hasta 45° sale bien sin soportes. Más inclinado, se descuelga"],
+      ["puente", "una línea recta entre dos apoyos. Hasta unos 20–30 mm sale limpio"],
+      ["saliente plano", "más de medio milímetro sin apoyo sale feo. Mejor un chaflán"]
+     ]
+    },
+    {
+     "t": "la boquilla manda en las medidas",
+     "p": [
+      "Con boquilla de 0,4 mm, cada línea mide unos 0,4 de ancho y cada capa 0,2 de alto.",
+      "Las paredes salen mejor en múltiplos de 0,4: 1,2 o 1,6. Los altos, en múltiplos de 0,2.",
+      "Un detalle más fino que una línea no existe: una marca de 0,3 mm desaparece."
+     ]
+    },
+    {
+     "t": "las holguras",
+     "p": [
+      "Dos piezas dibujadas a la misma medida no encajan: el plástico se expande un poco al salir.",
+      "Regla de partida en PLA: 0,2 mm por lado para algo que entra justo, 0,3–0,4 para algo que desliza.",
+      "Se afina de dos en dos décimas, con una pieza de prueba pequeña."
+     ]
+    },
+    {
+     "t": "las esquinas",
+     "p": [
+      "Una esquina interior viva concentra la tensión: ahí empieza la grieta.",
+      "Se redondea siempre donde una pieza hace fuerza o flexa. Un radio pequeño basta.",
+      "La cara que toca la placa de impresión no admite cantos redondeados ni relieves que salgan: solo hundidos."
+     ]
+    }
+   ],
+   "recap": [
+    "Capas en el plano de la flexión.",
+    "Voladizos hasta 45°, puentes cortos, chaflanes en vez de salientes.",
+    "Paredes en múltiplos de 0,4; altos en múltiplos de 0,2.",
+    "0,2 mm por lado para encajar; se afina con una prueba.",
+    "Radio en toda esquina que trabaja."
+   ]
+  },
+  {
+   "id": "alojar-electronica",
+   "modulo": "combinado",
+   "titulo": "meter una placa en una pieza",
+   "minutos": 3,
+   "apertura": {
+    "pregunta": "¿cómo se diseña una caja para algo que no has medido?",
+    "p": "Aceptando que te vas a equivocar un poco, y diseñando para averiguar cuánto. Es lo que aprendimos con el botón claude: la primera impresión no es la pieza, es el instrumento de medida."
+   },
+   "lecturas": [
+    {
+     "t": "cada medida, con su duda",
+     "p": [
+      "De cada dato se apunta de dónde sale y cuánto puede fallar. No es lo mismo una ficha del fabricante que una foto.",
+      "En el botón: el contorno, de las fichas (±0,2 mm). La posición del pulsador, medida sobre una foto (±0,5). Su altura, supuesta.",
+      "La pieza se diseña para absorber esa duda: un apoyo ancho, una holgura generosa."
+     ]
+    },
+    {
+     "t": "separar lo que puede fallar",
+     "p": [
+      "Lo incierto va en una pieza pequeña y barata de repetir. Lo demás se conserva.",
+      "En el botón: la base aloja la placa y pesa 0,8 g. Si no encaja, se repite solo la base.",
+      "Dos piezas obligan a pensar el encaje entre ellas. Es el precio de poder equivocarse barato."
+     ],
+     "c": "Modular lo incierto."
+    },
+    {
+     "t": "que la pieza mida por ti",
+     "p": [
+      "Una prueba que solo dice «encaja o no» desperdicia la impresión.",
+      "Muescas a distancias conocidas dicen cuánto se desvía el botón real. Una galga en escalera dice su altura.",
+      "Con una impresión de 0,8 g se obtienen los números que faltaban."
+     ]
+    },
+    {
+     "t": "el cable manda",
+     "p": [
+      "El cuerpo de un conector USB-C es más alto y más ancho que el hueco de la placa. Si la caja sigue más allá del borde, el cable no entra.",
+      "Y al desenchufar se tira con fuerza, de 10 a 20 N. Algo tiene que retener la placa: aquí, dos postes detrás.",
+      "Se modela también lo que se enchufa, no solo lo que se guarda."
+     ]
+    },
+    {
+     "t": "pulsar sin interruptor",
+     "p": [
+      "Una lengüeta recortada en el techo hace de palanca, con un tetón encima del pulsador de la placa.",
+      "Larga y fina para que flexe sin romper: 1 mm de grosor y 12,8 de brazo dan 15 MPa, frente a los 55 del PLA.",
+      "Entre tetón y pulsador se deja un juego: si no, el botón queda pulsado siempre."
+     ]
+    }
+   ],
+   "recap": [
+    "Cada medida, con su origen y su margen de error.",
+    "Lo incierto, en la pieza barata de repetir.",
+    "Muescas y galgas: que la prueba dé números.",
+    "Modelar el cable y su tirón.",
+    "Palanca larga y fina, con juego sobre el pulsador."
+   ]
+  }
+ ]
+}

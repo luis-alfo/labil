@@ -497,3 +497,48 @@ body.en-escena { overflow: hidden; }
   .sim-general { grid-column: 1 / -1; grid-row: 1; text-align: center; }
   .sim-lado-asa { flex: 0 0 auto; min-height: 40px; }
 }
+
+/* ── lecciones: lecturas de tres minutos, una pantalla por idea ─────────── */
+.lecciones-inicio { margin-top: var(--s6); padding-top: var(--s5); border-top: 1px solid var(--line); }
+.lecciones-que { margin-bottom: var(--s4); }
+.modulo-nombre { margin: var(--s4) 0 var(--s2); letter-spacing: 0.2em; }
+.lec .signal { white-space: nowrap; }
+
+.leccion {
+  position: fixed; inset: 0; overflow-y: auto; overscroll-behavior: contain;
+  scroll-snap-type: y mandatory; background: var(--surface);
+}
+.lec-top {
+  position: sticky; top: 0; z-index: 2; height: 48px;
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--s4);
+  padding: 0 max(var(--s4), env(safe-area-inset-left)); padding-top: env(safe-area-inset-top);
+  background: var(--surface); border-bottom: 1px solid var(--line);
+}
+.lec-pasos { display: flex; gap: var(--s1); }
+.lec-pasos li { flex: 1; height: 4px; background: var(--pixel-off); }
+.lec-pasos li.on { background: var(--signal); }
+.pantalla {
+  scroll-snap-align: start; scroll-snap-stop: always; scroll-margin-top: 0;
+  min-height: 100dvh; margin-top: -48px; padding: calc(48px + var(--s6)) var(--s5) var(--s6);
+  display: flex; flex-direction: column; justify-content: center; gap: var(--s4);
+  max-width: 640px; margin-left: auto; margin-right: auto;
+}
+.pantalla + .pantalla { margin-top: 0; }
+.lec-t { font-size: 22px; line-height: 28px; font-weight: 500; letter-spacing: -0.01em; }
+.lec-p { font-size: 15px; line-height: 24px; color: var(--ink-muted); }
+.apertura .display { font-size: 32px; line-height: 36px; }
+.lec-pregunta { font-size: 18px; line-height: 26px; font-weight: 500; }
+.lec-sigue { margin-top: var(--s5); }
+.lec-lista { display: grid; margin: 0; border-top: 1px solid var(--line); }
+.lec-lista div { display: grid; gap: var(--s1); padding: var(--s3) 0; border-bottom: 1px solid var(--line); }
+.lec-lista dt { font-size: 14px; line-height: 20px; }
+.lec-lista dd { margin: 0; font-size: 14px; line-height: 22px; }
+.lec-clave { padding: var(--s4); font-size: 15px; line-height: 24px; font-weight: 500; color: var(--signal); background: var(--signal-soft); }
+.lec-recap { display: grid; gap: var(--s3); }
+.lec-recap li { display: grid; grid-template-columns: 20px 1fr; gap: var(--s3); font-size: 15px; line-height: 24px; }
+.lec-fin { display: grid; gap: var(--s2); margin-top: var(--s4); }
+.lec-boton { display: block; padding: var(--s3) var(--s4); border: 1px solid var(--signal); color: var(--signal); border-radius: var(--r1); }
+.lec-boton.tenue { border-color: var(--line-strong); color: var(--ink-muted); }
+@media (min-width: 720px) {
+  .lec-lista div { grid-template-columns: 220px 1fr; gap: var(--s4); }
+}

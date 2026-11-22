@@ -3,6 +3,8 @@ const app = document.getElementById("app");
 const reducido = matchMedia("(prefers-reduced-motion: reduce)").matches;
 let DATOS = null;
 let VER = "";
+let LECCIONES = [];
+let aLecciones = false;   // al volver de una lección, la portada baja hasta la lista de lecciones
 
 // encuadre por defecto del visor 3D; una vista puede traer el suyo («orbita» y «objetivo»)
 const ORBITA = "0deg 75deg 105%", OBJETIVO = "auto auto auto";
@@ -132,6 +134,7 @@ function vistaInicio() {
         <span class="status version">impresa</span><span class="status pendiente">por imprimir</span>
         <span class="status prueba">prueba</span><span class="status borrador">borrador</span>
       </div>
+      ${leccionesInicio()}
       ${pie()}
     </main>`;
   document.getElementById("bajar").addEventListener("click", () =>
@@ -909,6 +912,81 @@ function vistaHistorial() {
   document.title = "labil · historial";
 }
 
+// ── lecciones: tres minutos cada una ─────────────────────────────────────────
+// Una apertura, varias lecturas y un recap. Cada pantalla ocupa el alto del
+// móvil y el desplazamiento se detiene en cada una (scroll snap).
+const MODULOS = ["electrónica", "modelado", "combinado"];
+function leccionesInicio() {
+  if (!LECCIONES.length) return "";
+  const grupos = MODULOS.map((m) => {
+    const ls = LECCIONES.filter((l) => l.modulo === m);
+    if (!ls.length) return "";
+    return `<h3 class="caption modulo-nombre">${m}</h3><ol class="lista">${ls.map((l) => `<li>
+      <a class="panel obj lec" href="#/lecciones/${l.id}">
+        <div class="obj-cab"><h2 class="title">${esc(l.titulo)}</h2><span class="strong signal">${l.minutos} min</span></div>
+        <p class="body muted">${esc(l.apertura.pregunta)}</p>
+        <p class="caption">${l.lecturas.length} lecturas · recap</p>
+      </a></li>`).join("")}</ol>`;
+  }).join("");
+  return `<section class="lecciones-inicio" id="lecciones">
+    <h2 class="label titulo-objetos">lecciones</h2>
+    <p class="body muted lecciones-que">Electrónica y modelado, en lecturas de tres minutos.</p>${grupos}</section>`;
+}
+
+function vistaLeccion(id) {
+  const n = LECCIONES.findIndex((x) => x.id === id);
+  if (n < 0) return (location.hash = "#/");
+  const l = LECCIONES[n], sig = LECCIONES[n + 1];
+  const total = l.lecturas.length + 2;
+  const lista = (ps) => `<dl class="lec-lista">${ps.map(([k, v]) => `<div><dt class="strong">${esc(k)}</dt><dd class="muted">${esc(v)}</dd></div>`).join("")}</dl>`;
+  const pantallas = [
+    `<section class="pantalla apertura"><p class="label">${esc(l.modulo)} · ${l.minutos} min</p>
+      <h1 class="display" id="titulo">${esc(l.titulo)}</h1>
+      <p class="lec-pregunta signal">${esc(l.apertura.pregunta)}</p>
+      <p class="lec-p">${esc(l.apertura.p)}</p>
+      <p class="caption lec-sigue" aria-hidden="true">↓ ${l.lecturas.length} lecturas</p></section>`,
+    ...l.lecturas.map((x, i) => `<section class="pantalla"><p class="label">lectura ${i + 1} de ${l.lecturas.length}</p>
+      <h2 class="lec-t">${esc(x.t)}</h2>
+      ${(x.p || []).map((p) => `<p class="lec-p">${esc(p)}</p>`).join("")}
+      ${x.l ? lista(x.l) : ""}
+      ${x.c ? `<p class="lec-clave panel">${esc(x.c)}</p>` : ""}</section>`),
+    `<section class="pantalla recap"><p class="label">recap</p>
+      <h2 class="lec-t">${esc(l.titulo)}</h2>
+      <ol class="lec-recap">${l.recap.map((r, i) => `<li><span class="signal strong">${i + 1}</span><span>${esc(r)}</span></li>`).join("")}</ol>
+      <div class="lec-fin">${sig ? `<a class="control lec-boton" href="#/lecciones/${sig.id}">siguiente: ${esc(sig.titulo)} →</a>` : ""}
+        <a class="control lec-boton tenue" href="#/" id="lec-todas">← todas las lecciones</a></div></section>`,
+  ];
+  app.innerHTML = `<div class="leccion" id="leccion">
+      <header class="lec-top"><a class="control" href="#/" aria-label="volver al inicio">← labil</a>
+        <ol class="lec-pasos" aria-hidden="true">${pantallas.map(() => "<li></li>").join("")}</ol>
+        <span class="caption" id="lec-cuenta">1/${total}</span></header>
+      ${pantallas.join("")}</div>`;
+  const caja = document.getElementById("leccion");
+  const secciones = [...caja.querySelectorAll(".pantalla")];
+  const pasos = [...caja.querySelectorAll(".lec-pasos li")];
+  const marcar = (k) => {
+    pasos.forEach((p, i) => p.classList.toggle("on", i <= k));
+    document.getElementById("lec-cuenta").textContent = `${k + 1}/${total}`;
+  };
+  marcar(0);
+  const ojo = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && marcar(secciones.indexOf(e.target))),
+    { root: caja, threshold: 0.55 });
+  secciones.forEach((x) => ojo.observe(x));
+  const ir = (d) => {
+    const k = secciones.findIndex((x) => x.getBoundingClientRect().top >= -4);
+    const destino = secciones[Math.max(0, Math.min(secciones.length - 1, (k < 0 ? secciones.length - 1 : k) + d))];
+    destino.scrollIntoView({ behavior: reducido ? "auto" : "smooth" });
+  };
+  teclas = (ev) => {
+    if (["ArrowDown", "PageDown", " "].includes(ev.key)) { ev.preventDefault(); ir(1); }
+    if (["ArrowUp", "PageUp"].includes(ev.key)) { ev.preventDefault(); ir(-1); }
+  };
+  document.getElementById("lec-todas").addEventListener("click", () => { aLecciones = true; });
+  document.body.classList.add("en-escena");
+  descifra(document.getElementById("titulo"));
+  document.title = `labil · ${l.titulo}`;
+}
+
 // ── rutas ────────────────────────────────────────────────────────────────────
 function ruta() {
   teclas = null;
@@ -917,11 +995,14 @@ function ruta() {
   const partes = location.hash.replace(/^#\/?/, "").split("/").filter(Boolean).map(decodeURIComponent);
   if (!partes.length) vistaInicio();
   else if (partes[0] === "historial") vistaHistorial();
+  else if (partes[0] === "lecciones") vistaLeccion(partes[1]);
   else if (partes[1] === "memoria") {
     const o = DATOS.objetos.find((x) => x.id === partes[0]);
     o ? vistaMemoria(o) : (location.hash = "#/");
   } else vistaObjeto(partes[0], partes[1]);
   window.scrollTo(0, 0);
+  if (aLecciones && !partes.length) document.getElementById("lecciones")?.scrollIntoView();
+  aLecciones = false;
 }
 
 (async function inicio() {
@@ -931,6 +1012,10 @@ function ruta() {
   } catch (_) { /* sin cache-buster */ }
   const r = await fetch("data/objetos.json?_=" + (VER || Date.now()), { cache: "no-store" });
   DATOS = await r.json();
+  try {
+    const l = await fetch("data/lecciones.json?_=" + (VER || Date.now()), { cache: "no-store" });
+    if (l.ok) LECCIONES = (await l.json()).lecciones;
+  } catch (_) { /* sin lecciones */ }
   addEventListener("hashchange", ruta);
   ruta();
 })();

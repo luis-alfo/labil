@@ -2608,6 +2608,47 @@
        "texto": "Una vista puede traer su encuadre en objetos.json: «orbita» y «objetivo». Con encuadre propio, la cámara puede acercarse hasta 25 cm. Al cambiar de vista se crea un visor nuevo: si solo se le cambia el modelo, conserva el ángulo de la vista anterior."
       }
      ]
+    },
+    {
+     "id": "lecciones",
+     "tipo": "version",
+     "por_imprimir": true,
+     "nombre": "lecciones",
+     "fecha": "2026-11-21",
+     "texto": "Debajo de los objetos, una sección de lecciones de electrónica, modelado y las dos cosas a la vez. Cada lección se lee en tres minutos: una apertura con una pregunta, cinco lecturas de una pantalla y un recap. El desplazamiento se detiene en cada pantalla.",
+     "cambio": "lecciones de tres minutos: apertura, lecturas y recap, una pantalla por idea",
+     "imagenes": [
+      {
+       "de": "labil-web/capturas/2026-11-21-lecciones-en-la-portada.png",
+       "pie": "las lecciones, debajo de los objetos"
+      },
+      {
+       "de": "labil-web/capturas/2026-11-21-leccion-apertura.png",
+       "pie": "apertura: una pregunta"
+      },
+      {
+       "de": "labil-web/capturas/2026-11-21-leccion-lectura.png",
+       "pie": "una lectura, con su idea clave"
+      },
+      {
+       "de": "labil-web/capturas/2026-11-21-leccion-recap.png",
+       "pie": "recap y paso a la siguiente"
+      }
+     ],
+     "memoria": [
+      {
+       "tema": "uso",
+       "texto": "Luis: «lecciones que puedo leer en 3 minutos… de módulos de electrónica y de modelaje 3D y lo que viene siendo combinado… una apertura, varias lecturas y luego un recap al final». Siete lecciones para empezar: placas, cómo hablan con el ordenador, objetos inalámbricos, riesgos, soldar, diseñar para imprimir y meter una placa en una pieza."
+      },
+      {
+       "tema": "diseño",
+       "texto": "Una pantalla por idea, con scroll snap. Arriba, una barra de pasos dice por dónde vas. Cada lectura tiene como mucho tres párrafos o una lista, y a veces una idea clave en fósforo."
+      },
+      {
+       "tema": "método",
+       "texto": "Las lecciones salen de lo aprendido en los objetos (el botón claude, sobre todo) y se escriben en 3d-models/lecciones.json: añadir una lección es añadir un bloque de texto."
+      }
+     ]
     }
    ]
   },
